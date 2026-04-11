@@ -258,6 +258,22 @@ input[type=range]{width:100%;accent-color:var(--acc)}
 .ferr-panel{display:none}.ferr-panel.on{display:block}
 .ferr-pill{background:var(--bg-input);border:1px solid var(--border-input);border-radius:20px;padding:7px 14px;font-size:12px;font-weight:700;color:var(--text2);cursor:pointer;transition:all .2s}
 .ferr-pill.on{background:var(--acc-bg);border-color:var(--acc);color:var(--acc)}
+@media print{
+  body>*{display:none!important}
+  #print-area{display:block!important;position:fixed;inset:0;background:#fff;color:#000;padding:20px;font-family:Arial,sans-serif;font-size:12px;z-index:9999}
+  #print-area h1{font-size:18px;margin-bottom:4px}
+  #print-area h2{font-size:14px;margin:12px 0 6px;border-bottom:1px solid #ccc;padding-bottom:4px}
+  #print-area table{width:100%;border-collapse:collapse;margin-bottom:10px}
+  #print-area th,#print-area td{border:1px solid #ccc;padding:5px 8px;font-size:11px}
+  #print-area th{background:#f0f0f0;font-weight:700}
+  #print-area .res-box{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+  #print-area .res-item{border:1px solid #ccc;border-radius:4px;padding:8px;text-align:center}
+  #print-area .res-lbl{font-size:9px;color:#666;text-transform:uppercase;margin-bottom:3px}
+  #print-area .res-val{font-size:16px;font-weight:700}
+  #print-area .circ-tag{display:inline-block;background:#e8f0fe;color:#1a56db;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:700;margin:2px}
+  #print-area .alerta{background:#fee;border:1px solid #f00;border-radius:4px;padding:6px 8px;font-size:10px;color:#c00;margin-bottom:4px}
+  #print-area .rodape{margin-top:20px;font-size:9px;color:#999;border-top:1px solid #eee;padding-top:8px}
+}
 .dem-stab{flex:1;padding:10px 6px;text-align:center;font-size:11px;font-weight:800;letter-spacing:.5px;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:color .2s,border-color .2s}
 .dem-stab.on{color:var(--acc);border-color:var(--acc)}
 .dem-spanel{display:none}.dem-spanel.on{display:block}
@@ -383,34 +399,37 @@ input[type=range]{width:100%;accent-color:var(--acc)}
       </div>
       <!-- SERVIÇOS -->
       <div class="card">
-        <div class="sec-head"><div class="sec-lbl"><div class="dot" style="background:#22c55e"></div>Serviços Elétricos</div><button class="tag tag-green">+ Item</button></div>
-        <div class="sw"><span class="sw-ico">🔍</span><input class="inp" type="text" placeholder="Buscar serviço para adicionar..."></div>
-        <div class="sh">Busque um serviço acima para adicionar</div>
-        <textarea class="inp" placeholder="Observações técnicas dos serviços..."></textarea>
+        <div class="sec-head"><div class="sec-lbl"><div class="dot" style="background:#22c55e"></div>Serviços Elétricos</div><span id="orc-serv-count" style="font-size:10px;color:var(--text3)"></span></div>
+        <div class="sw"><span class="sw-ico">🔍</span><input class="inp" id="orc-serv-busca" type="text" placeholder="Buscar serviço... ex: tomada, chuveiro, ar" oninput="orcBuscarServ(this.value)" style="margin-bottom:0"></div>
+        <div id="orc-serv-resultados" style="display:none;border:1px solid var(--border-card);border-radius:10px;margin-top:6px;overflow:hidden;max-height:200px;overflow-y:auto"></div>
+        <div id="orc-serv-lista" style="margin-top:8px"></div>
+        <textarea class="inp" id="orc-serv-obs" placeholder="Observações técnicas dos serviços..." style="margin-top:8px"></textarea>
       </div>
-      <!-- MATERIAIS -->
+      <!-- MATERIAIS EXTRAS -->
       <div class="card">
-        <div class="sec-head"><div class="sec-lbl"><div class="dot" style="background:#a78bfa"></div>Materiais Elétricos</div><button class="tag tag-purple">+ Item</button></div>
-        <div class="sw"><span class="sw-ico">🔍</span><input class="inp" type="text" placeholder="Buscar material para adicionar..."></div>
-        <div class="sh">Busque um material acima para adicionar</div>
-        <textarea class="inp" placeholder="Observações sobre materiais (marca, especificações)..."></textarea>
+        <div class="sec-head"><div class="sec-lbl"><div class="dot" style="background:#a78bfa"></div>Materiais Extras</div><span id="orc-mat-count" style="font-size:10px;color:var(--text3)"></span></div>
+        <div class="sw"><span class="sw-ico">🔍</span><input class="inp" id="orc-mat-busca" type="text" placeholder="Buscar material... ex: cabo, disjuntor, pomada" oninput="orcBuscarMat(this.value)" style="margin-bottom:0"></div>
+        <div id="orc-mat-resultados" style="display:none;border:1px solid var(--border-card);border-radius:10px;margin-top:6px;overflow:hidden;max-height:200px;overflow-y:auto"></div>
+        <div id="orc-mat-lista" style="margin-top:8px"></div>
+        <textarea class="inp" id="orc-mat-obs" placeholder="Observações sobre materiais..." style="margin-top:8px"></textarea>
       </div>
       <!-- CUSTOS -->
       <div class="card">
         <div class="sec-head"><div class="sec-lbl"><div class="dot" style="background:#f97316"></div>Custos Operacionais</div></div>
         <div class="custo-grid">
-          <div class="custo-c"><div class="custo-top">Desconto %</div><div class="custo-row"><span>%</span><input class="custo-inp" type="number" value="0" min="0" max="100"></div></div>
-          <div class="custo-c"><div class="custo-top">Acréscimo</div><div class="custo-row"><span>💰</span><span class="custo-inp" style="color:var(--acc)">R$ 0,00</span></div></div>
-          <div class="custo-c"><div class="custo-top">Km Total</div><div class="custo-row"><span>📍</span><input class="custo-inp" type="number" value="0" min="0"></div></div>
-          <div class="custo-c"><div class="custo-top">Horas</div><div class="custo-row"><span>🕘</span><input class="custo-inp" type="number" value="0" min="0"></div></div>
+          <div class="custo-c"><div class="custo-top">Desconto %</div><div class="custo-row"><span>%</span><input class="custo-inp" id="orc-desc" type="number" value="0" min="0" max="100" onchange="orcCalcTotal()"></div></div>
+          <div class="custo-c"><div class="custo-top">Acréscimo R$</div><div class="custo-row"><span>💰</span><input class="custo-inp" id="orc-acre" type="number" value="0" min="0" onchange="orcCalcTotal()"></div></div>
+          <div class="custo-c"><div class="custo-top">Km Total</div><div class="custo-row"><span>📍</span><input class="custo-inp" id="orc-km" type="number" value="0" min="0" onchange="orcCalcTotal()"></div></div>
+          <div class="custo-c"><div class="custo-top">R$/km</div><div class="custo-row"><span>💲</span><input class="custo-inp" id="orc-km-val" type="number" value="2" min="0" onchange="orcCalcTotal()"></div></div>
         </div>
-        <button class="btn-calc">⚡ SELECIONE UM SERVIÇO PARA CALCULAR</button>
+        <button class="btn-calc" onclick="orcCalcTotal()">⚡ CALCULAR TOTAL</button>
       </div>
       <!-- TOTAL -->
       <div class="total-bar">
-        <div><div class="total-lbl">Total do Orçamento</div><div class="total-sub">Serviços + Materiais + Custos</div></div>
-        <div class="total-val">R$ 0,00</div>
+        <div><div class="total-lbl">Total do Orçamento</div><div class="total-sub" id="orc-total-sub">Serviços + Materiais + Custos</div></div>
+        <div class="total-val" id="orc-total-val">R$ 0,00</div>
       </div>
+
     </div>
   </div>
   <div class="bnav">
@@ -633,6 +652,8 @@ input[type=range]{width:100%;accent-color:var(--acc)}
             <div id="nbr-r-circs-lista"></div>
           </div>
           <button class="btn-salvar-full" style="margin-top:10px;background:#1d4ed8;color:#fff;font-size:12px;padding:12px" onclick="demLevarMUC()">🏢 Levar resultado para MUC</button>
+          <button class="btn-salvar-full" style="margin-top:6px;background:rgba(99,102,241,.15);color:#818cf8;border:1px solid rgba(99,102,241,.25);font-size:12px;padding:12px" onclick="demLevarQuedaV()">📉 Verificar Queda de Tensão</button>
+          <button class="btn-salvar-full" style="margin-top:6px;background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.25);font-size:12px;padding:12px" onclick="demExportarPDF()">📄 COMPARTILHAR / EXPORTAR PDF</button>
           </div><!-- fim dem-nbr-body -->
         </div>
 
@@ -788,6 +809,9 @@ input[type=range]{width:100%;accent-color:var(--acc)}
 
   </div>
 </div>
+
+<!-- ÁREA DE IMPRESSÃO -->
+<div id="print-area" style="display:none"></div>
 
 <!-- CLIENTES MODAL -->
 <div id="modal-clientes" class="modal">
@@ -990,6 +1014,298 @@ input[type=range]{width:100%;accent-color:var(--acc)}
 <script>
 // DATA
 document.getElementById('orc-data').value = new Date().toISOString().split('T')[0];
+
+// ══ ORÇAMENTO ══
+// Dados de serviços organizados por categoria
+const ORC_SERVICOS=[
+  // TOMADAS
+  {cat:'Tomadas',ico:'🔌',n:'Instalação de tomada simples 10A embutir',p:120,
+    config:[{k:'tipo',lbl:'Tipo',ops:['Simples','Dupla','Tripla'],precos:[0,30,60]},{k:'amp',lbl:'Amperes',ops:['10A','20A'],precos:[0,20]},{k:'inst',lbl:'Instalação',ops:['Embutir','Sobrepor'],precos:[0,10]}],
+    mats:[{n:'Tomada 2P+T',un:'un',qt:1,p:18},{n:'Caixa de embutir 4x2',un:'un',qt:1,p:5},{n:'Cabo flexível 2,5mm²',un:'m',qt:5,p:3.5},{n:'Eletroduto corrugado 3/4"',un:'m',qt:3,p:2.2}]},
+  {cat:'Tomadas',ico:'🔌',n:'Instalação de tomada 20A (TUE)',p:180,
+    config:[{k:'inst',lbl:'Instalação',ops:['Embutir','Sobrepor'],precos:[0,10]}],
+    mats:[{n:'Tomada 2P+T 20A',un:'un',qt:1,p:28},{n:'Caixa de embutir 4x2',un:'un',qt:1,p:5},{n:'Cabo flexível 4mm²',un:'m',qt:5,p:5.5},{n:'Eletroduto corrugado 3/4"',un:'m',qt:3,p:2.2}]},
+  // INTERRUPTORES
+  {cat:'Interruptores',ico:'🔴',n:'Instalação de interruptor simples',p:100,
+    config:[{k:'tipo',lbl:'Tipo',ops:['Simples','Paralelo','Intermediário'],precos:[0,30,60]}],
+    mats:[{n:'Interruptor simples',un:'un',qt:1,p:15},{n:'Caixa de embutir 4x2',un:'un',qt:1,p:5},{n:'Cabo flexível 1,5mm²',un:'m',qt:5,p:2.2}]},
+  // ILUMINAÇÃO
+  {cat:'Iluminação',ico:'💡',n:'Instalação de luminária embutida',p:120,
+    config:[{k:'tipo',lbl:'Tipo',ops:['Embutida','Sobrepor','Spot'],precos:[0,0,10]}],
+    mats:[{n:'Luminária LED 9W',un:'un',qt:1,p:45},{n:'Cabo flexível 1,5mm²',un:'m',qt:4,p:2.2}]},
+  {cat:'Iluminação',ico:'☀️',n:'Instalação de lustre/pendente',p:180,
+    config:[],
+    mats:[{n:'Suporte de teto',un:'un',qt:1,p:12},{n:'Cabo flexível 1,5mm²',un:'m',qt:3,p:2.2}]},
+  {cat:'Iluminação',ico:'🌀',n:'Instalação de ventilador de teto',p:220,
+    config:[],
+    mats:[{n:'Suporte ventilador',un:'un',qt:1,p:25},{n:'Cabo flexível 2,5mm²',un:'m',qt:5,p:3.5}]},
+  // CHUVEIRO
+  {cat:'Chuveiro',ico:'🚿',n:'Instalação de chuveiro elétrico',p:200,
+    config:[{k:'tipo',lbl:'Tipo',ops:['Simples','Blindado/Lorenzetti'],precos:[0,150]}],
+    mats:[{n:'Cabo flexível 6mm²',un:'m',qt:6,p:8},{n:'Disjuntor 40A',un:'un',qt:1,p:45},{n:'Caixa de passagem 4x4',un:'un',qt:1,p:7},{n:'Eletroduto corrugado 1"',un:'m',qt:4,p:3.2}]},
+  // AR-CONDICIONADO
+  {cat:'Ar-condicionado',ico:'❄️',n:'Instalação ar-condicionado split até 12000 BTU',p:350,
+    config:[{k:'btu',lbl:'Capacidade',ops:['Até 12000 BTU','Até 18000 BTU','Até 24000 BTU'],precos:[0,50,100]}],
+    mats:[{n:'Cabo PP 2,5mm²',un:'m',qt:5,p:6},{n:'Disjuntor 20A',un:'un',qt:1,p:28},{n:'Suporte externo',un:'un',qt:1,p:35}]},
+  // QUADRO
+  {cat:'Quadro Elétrico',ico:'⚡',n:'Instalação de quadro de distribuição',p:400,
+    config:[{k:'circ',lbl:'Circuitos',ops:['4 circuitos','8 circuitos','12 circuitos','16 circuitos'],precos:[0,80,150,220]}],
+    mats:[{n:'Quadro de distribuição 12 disj.',un:'un',qt:1,p:180},{n:'Disjuntor monopolar 10A',un:'un',qt:2,p:25},{n:'Disjuntor monopolar 16A',un:'un',qt:2,p:27},{n:'Barramento',un:'un',qt:1,p:45}]},
+  // ATERRAMENTO
+  {cat:'Aterramento',ico:'🌐',n:'Instalação de aterramento (haste)',p:300,
+    config:[],
+    mats:[{n:'Haste de aterramento 2,4m',un:'un',qt:1,p:85},{n:'Cabo PP 6mm²',un:'m',qt:6,p:8},{n:'Conector haste',un:'un',qt:1,p:15}]},
+  // CABEAMENTO
+  {cat:'Cabeamento',ico:'🔧',n:'Passagem de cabo em eletroduto',p:80,
+    config:[{k:'bit',lbl:'Bitola',ops:['1,5mm²','2,5mm²','4mm²','6mm²'],precos:[0,10,20,35]},{k:'inst',lbl:'Instalação',ops:['Embutido','Aparente'],precos:[0,15]}],
+    mats:[{n:'Cabo flexível 2,5mm²',un:'m',qt:10,p:3.5},{n:'Eletroduto corrugado 3/4"',un:'m',qt:8,p:2.2},{n:'Abraçadeiras',un:'un',qt:5,p:0.5}]},
+  // MANUTENÇÃO
+  {cat:'Manutenção',ico:'🔧',n:'Troca de disjuntor',p:120,
+    config:[{k:'amp',lbl:'Amperes',ops:['10A','16A','20A','25A','32A','40A'],precos:[0,5,8,12,18,25]}],
+    mats:[{n:'Disjuntor monopolar',un:'un',qt:1,p:25}]},
+  {cat:'Manutenção',ico:'🔧',n:'Manutenção elétrica geral',p:150,config:[],mats:[]},
+];
+
+// Dados de materiais organizados por categoria
+const ORC_MATERIAIS=[
+  {cat:'Condutores',ico:'⚡',n:'Cabo flexível 1,5mm²',un:'m',p:2.2},
+  {cat:'Condutores',ico:'⚡',n:'Cabo flexível 2,5mm²',un:'m',p:3.5},
+  {cat:'Condutores',ico:'⚡',n:'Cabo flexível 4mm²',un:'m',p:5.5},
+  {cat:'Condutores',ico:'⚡',n:'Cabo flexível 6mm²',un:'m',p:8.0},
+  {cat:'Condutores',ico:'⚡',n:'Cabo flexível 10mm²',un:'m',p:14.0},
+  {cat:'Condutores',ico:'⚡',n:'Cabo PP 2x2,5mm²',un:'m',p:6.0},
+  {cat:'Condutores',ico:'⚡',n:'Cabo PP 3x2,5mm²',un:'m',p:8.5},
+  {cat:'Proteção',ico:'🛡️',n:'Disjuntor monopolar 10A',un:'un',p:25},
+  {cat:'Proteção',ico:'🛡️',n:'Disjuntor monopolar 16A',un:'un',p:27},
+  {cat:'Proteção',ico:'🛡️',n:'Disjuntor monopolar 20A',un:'un',p:30},
+  {cat:'Proteção',ico:'🛡️',n:'Disjuntor monopolar 25A',un:'un',p:35},
+  {cat:'Proteção',ico:'🛡️',n:'Disjuntor monopolar 40A',un:'un',p:45},
+  {cat:'Proteção',ico:'🛡️',n:'DR 25A bipolar',un:'un',p:90},
+  {cat:'Proteção',ico:'🛡️',n:'DPS 275V',un:'un',p:65},
+  {cat:'Eletrodutos',ico:'📦',n:'Eletroduto corrugado 3/4"',un:'m',p:2.2},
+  {cat:'Eletrodutos',ico:'📦',n:'Eletroduto corrugado 1"',un:'m',p:3.2},
+  {cat:'Eletrodutos',ico:'📦',n:'Eletroduto PVC rígido 3/4"',un:'m',p:4.5},
+  {cat:'Eletrodutos',ico:'📦',n:'Eletroduto PVC rígido 1"',un:'m',p:6.5},
+  {cat:'Eletrodutos',ico:'📦',n:'Eletroduto metálico 3/4"',un:'m',p:12.0},
+  {cat:'Caixas',ico:'🗃️',n:'Caixa de embutir 4x2',un:'un',p:5},
+  {cat:'Caixas',ico:'🗃️',n:'Caixa de embutir 4x4',un:'un',p:6},
+  {cat:'Caixas',ico:'🗃️',n:'Caixa de passagem octagonal',un:'un',p:7},
+  {cat:'Caixas',ico:'🗃️',n:'Caixa de sobrepor 4x2',un:'un',p:8},
+  {cat:'Dispositivos',ico:'🔌',n:'Tomada 2P+T 10A',un:'un',p:18},
+  {cat:'Dispositivos',ico:'🔌',n:'Tomada 2P+T 20A',un:'un',p:28},
+  {cat:'Dispositivos',ico:'🔴',n:'Interruptor simples',un:'un',p:15},
+  {cat:'Dispositivos',ico:'🔴',n:'Interruptor paralelo',un:'un',p:22},
+  {cat:'Iluminação',ico:'💡',n:'Luminária LED embutida 9W',un:'un',p:45},
+  {cat:'Iluminação',ico:'💡',n:'Luminária LED sobrepor 12W',un:'un',p:55},
+  {cat:'Iluminação',ico:'💡',n:'Fita LED 5m',un:'un',p:60},
+  {cat:'Fixação',ico:'🔩',n:'Abraçadeira nylon 100un',un:'pct',p:12},
+  {cat:'Fixação',ico:'🔩',n:'Bucha + parafuso 100un',un:'pct',p:18},
+  {cat:'Fixação',ico:'🔩',n:'Fita isolante 19mm',un:'un',p:4},
+  {cat:'Fixação',ico:'🔩',n:'Fita autofusão',un:'un',p:12},
+  {cat:'Fixação',ico:'🔩',n:'Pomada grafite 150g',un:'un',p:15},
+  {cat:'Aterramento',ico:'🌐',n:'Haste de aterramento 2,4m',un:'un',p:85},
+  {cat:'Aterramento',ico:'🌐',n:'Cabo PP 6mm²',un:'m',p:8},
+];
+
+let orcServicos=[], orcMateriais=[];
+
+// Busca de serviços
+function orcBuscarServ(q){
+  const res=document.getElementById('orc-serv-resultados');
+  if(!q||q.length<1){res.style.display='none';return;}
+  const found=ORC_SERVICOS.filter(s=>s.n.toLowerCase().includes(q.toLowerCase())||s.cat.toLowerCase().includes(q.toLowerCase()));
+  if(!found.length){res.style.display='none';return;}
+  res.style.display='block';
+  res.innerHTML=found.map((s,i)=>`
+    <div onclick="orcAbrirConfig(${ORC_SERVICOS.indexOf(s)})" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--bg-input)'" onmouseout="this.style.background=''">
+      <span style="font-size:16px">${s.ico}</span>
+      <div style="flex:1">
+        <div style="font-size:12px;font-weight:700;color:var(--text)">${s.n}</div>
+        <div style="font-size:10px;color:var(--text3)">${s.cat} • R$ ${s.p.toFixed(2)}</div>
+      </div>
+      <span style="font-size:16px;color:var(--text3)">⚙️</span>
+    </div>`).join('');
+}
+
+// Configurador de serviço
+function orcAbrirConfig(idx){
+  document.getElementById('orc-serv-resultados').style.display='none';
+  document.getElementById('orc-serv-busca').value='';
+  const s=ORC_SERVICOS[idx];
+  const configHTML=s.config.map((c,ci)=>`
+    <div style="margin-bottom:10px">
+      <div class="ilbl">${c.lbl}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:5px">
+        ${c.ops.map((op,oi)=>`<button class="ferr-pill${oi===0?' on':''}" onclick="orcSelConfig(this,'cfg-${ci}')" data-extra="${c.precos[oi]}">${op}</button>`).join('')}
+      </div>
+    </div>`).join('');
+  const matsHTML=s.mats.map((m,mi)=>`
+    <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border)" id="cfg-mat-${mi}">
+      <input type="checkbox" checked id="cfg-mat-chk-${mi}" style="accent-color:var(--acc);width:16px;height:16px">
+      <span style="flex:1;font-size:12px;color:var(--text2)">${m.n}</span>
+      <input type="number" value="${m.qt}" min="0.1" step="0.1" id="cfg-mat-qt-${mi}" style="width:55px;background:var(--bg-input);border:1px solid var(--border-input);border-radius:7px;padding:4px 6px;font-size:12px;color:var(--text);text-align:center">
+      <span style="font-size:10px;color:var(--text3)">${m.un}</span>
+      <span style="font-size:10px;color:var(--acc);font-family:'IBM Plex Mono',monospace">R$ ${m.p}</span>
+    </div>`).join('');
+  const popup=document.createElement('div');
+  popup.style.cssText='position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.6);display:flex;align-items:flex-end';
+  popup.innerHTML=`<div style="background:var(--bg-card);border-radius:20px 20px 0 0;width:100%;max-height:85vh;overflow-y:auto;padding:16px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+      <span style="font-size:20px">${s.ico}</span>
+      <div style="flex:1"><div style="font-size:14px;font-weight:800;color:var(--text)">${s.n}</div><div style="font-size:11px;color:var(--text3)">${s.cat}</div></div>
+    </div>
+    ${configHTML?`<div style="background:var(--bg-input);border-radius:10px;padding:12px;margin-bottom:12px">${configHTML}</div>`:''}
+    <div class="ilbl" style="margin-bottom:6px">Mão de obra</div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+      <span style="font-size:12px;color:var(--text2)">R$</span>
+      <input type="number" id="cfg-mdo" value="${s.p}" style="flex:1;background:var(--bg-input);border:1px solid var(--border-input);border-radius:10px;padding:10px;font-size:14px;font-weight:700;color:var(--text);font-family:'IBM Plex Mono',monospace">
+      <span style="font-size:10px;color:var(--text3)">por serviço</span>
+    </div>
+    ${s.mats.length?`<div class="ilbl" style="margin-bottom:6px">Materiais incluídos</div><div style="background:var(--bg-input);border-radius:10px;padding:10px;margin-bottom:12px">${matsHTML}</div>`:''}
+    <div class="ilbl" style="margin-bottom:4px">Observação</div>
+    <input class="inp" id="cfg-obs" type="text" placeholder="Detalhe do serviço..." style="margin-bottom:12px">
+    <div style="display:flex;gap:8px">
+      <button onclick="this.closest('[style*=fixed]').remove()" style="flex:1;padding:12px;background:var(--bg-input);border:1px solid var(--border-input);border-radius:12px;font-size:13px;font-weight:700;color:var(--text);cursor:pointer">Cancelar</button>
+      <button onclick="orcAdicionarServ(${idx},this)" style="flex:2;padding:12px;background:var(--acc);border:none;border-radius:12px;font-size:13px;font-weight:800;color:#000;cursor:pointer">+ Adicionar ao Orçamento</button>
+    </div>
+  </div>`;
+  document.body.appendChild(popup);
+}
+
+function orcSelConfig(el,grupo){
+  el.closest('[style]').querySelectorAll('.ferr-pill').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+}
+
+function orcAdicionarServ(idx,btn){
+  const popup=btn.closest('[style*="fixed"]');
+  const s=ORC_SERVICOS[idx];
+  // Calcula extras de config
+  let extra=0;
+  popup.querySelectorAll('.ferr-pill.on[data-extra]').forEach(b=>extra+=parseFloat(b.dataset.extra)||0);
+  const mdo=parseFloat(document.getElementById('cfg-mdo').value)||s.p;
+  const obs=document.getElementById('cfg-obs').value;
+  // Coleta materiais selecionados
+  const mats=s.mats.map((m,mi)=>{
+    const chk=document.getElementById(`cfg-mat-chk-${mi}`);
+    const qt=parseFloat(document.getElementById(`cfg-mat-qt-${mi}`).value)||m.qt;
+    return chk?.checked?{...m,qt,total:qt*m.p}:null;
+  }).filter(Boolean);
+  orcServicos.push({...s,mdo:mdo+extra,obs,mats,id:Date.now()});
+  popup.remove();
+  orcRenderServicos();
+  orcCalcTotal();
+}
+
+function orcRenderServicos(){
+  const lista=document.getElementById('orc-serv-lista');
+  document.getElementById('orc-serv-count').textContent=orcServicos.length?`${orcServicos.length} serviço${orcServicos.length>1?'s':''}`:'';
+  lista.innerHTML=orcServicos.map((s,i)=>`
+    <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:12px;padding:12px;margin-bottom:8px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+        <span style="font-size:16px">${s.ico}</span>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:700;color:var(--text)">${s.n}</div>
+          ${s.obs?`<div style="font-size:10px;color:var(--text3)">${s.obs}</div>`:''}
+        </div>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:var(--acc)">R$ ${s.mdo.toFixed(2)}</span>
+        <button onclick="orcRemServ(${i})" style="width:24px;height:24px;border-radius:6px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#f87171;cursor:pointer;font-size:10px">✕</button>
+      </div>
+      ${s.mats.length?`<div style="border-top:1px solid var(--border);padding-top:6px">${s.mats.map(m=>`<div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);padding:2px 0"><span>${m.n} × ${m.qt}${m.un}</span><span>R$ ${m.total.toFixed(2)}</span></div>`).join('')}</div>`:''}
+    </div>`).join('');
+}
+
+function orcRemServ(i){orcServicos.splice(i,1);orcRenderServicos();orcCalcTotal();}
+
+// Busca de materiais extras
+function orcBuscarMat(q){
+  const res=document.getElementById('orc-mat-resultados');
+  if(!q||q.length<1){res.style.display='none';return;}
+  const found=ORC_MATERIAIS.filter(m=>m.n.toLowerCase().includes(q.toLowerCase())||m.cat.toLowerCase().includes(q.toLowerCase()));
+  if(!found.length){res.style.display='none';return;}
+  res.style.display='block';
+  res.innerHTML=found.map((m,i)=>`
+    <div onclick="orcAdicionarMat(${ORC_MATERIAIS.indexOf(m)})" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--border);cursor:pointer" onmouseover="this.style.background='var(--bg-input)'" onmouseout="this.style.background=''">
+      <span style="font-size:16px">${m.ico}</span>
+      <div style="flex:1"><div style="font-size:12px;font-weight:700;color:var(--text)">${m.n}</div><div style="font-size:10px;color:var(--text3)">${m.cat} • R$ ${m.p}/${m.un}</div></div>
+    </div>`).join('');
+}
+
+function orcAdicionarMat(idx){
+  document.getElementById('orc-mat-resultados').style.display='none';
+  document.getElementById('orc-mat-busca').value='';
+  const m=ORC_MATERIAIS[idx];
+  const popup=document.createElement('div');
+  popup.style.cssText='position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.6);display:flex;align-items:flex-end';
+  popup.innerHTML=`<div style="background:var(--bg-card);border-radius:20px 20px 0 0;width:100%;padding:16px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+      <span style="font-size:20px">${m.ico}</span>
+      <div style="flex:1"><div style="font-size:14px;font-weight:800;color:var(--text)">${m.n}</div><div style="font-size:11px;color:var(--text3)">${m.cat}</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+      <div><div class="ilbl">Quantidade (${m.un})</div><input class="inp" type="number" id="mat-qt" value="1" min="0.1" step="0.1" style="margin-top:4px"></div>
+      <div><div class="ilbl">Preço unitário (R$)</div><input class="inp" type="number" id="mat-p" value="${m.p}" min="0" style="margin-top:4px"></div>
+    </div>
+    <div class="ilbl">Fabricante / Marca</div>
+    <input class="inp" id="mat-fab" type="text" placeholder="Ex: Pial, Schneider..." style="margin-bottom:8px;margin-top:4px">
+    <div class="ilbl">Observação</div>
+    <input class="inp" id="mat-obs" type="text" placeholder="Detalhe..." style="margin-bottom:12px;margin-top:4px">
+    <div style="display:flex;gap:8px">
+      <button onclick="this.closest('[style*=fixed]').remove()" style="flex:1;padding:12px;background:var(--bg-input);border:1px solid var(--border-input);border-radius:12px;font-size:13px;font-weight:700;color:var(--text);cursor:pointer">Cancelar</button>
+      <button onclick="orcConfirmarMat(${idx},this)" style="flex:2;padding:12px;background:var(--acc);border:none;border-radius:12px;font-size:13px;font-weight:800;color:#000;cursor:pointer">+ Adicionar</button>
+    </div>
+  </div>`;
+  document.body.appendChild(popup);
+}
+
+function orcConfirmarMat(idx,btn){
+  const popup=btn.closest('[style*="fixed"]');
+  const m=ORC_MATERIAIS[idx];
+  const qt=parseFloat(document.getElementById('mat-qt').value)||1;
+  const p=parseFloat(document.getElementById('mat-p').value)||m.p;
+  const fab=document.getElementById('mat-fab').value;
+  const obs=document.getElementById('mat-obs').value;
+  orcMateriais.push({...m,qt,p,fab,obs,total:qt*p,id:Date.now()});
+  popup.remove();
+  orcRenderMateriais();
+  orcCalcTotal();
+}
+
+function orcRenderMateriais(){
+  const lista=document.getElementById('orc-mat-lista');
+  document.getElementById('orc-mat-count').textContent=orcMateriais.length?`${orcMateriais.length} item${orcMateriais.length>1?'s':''}`:'';
+  lista.innerHTML=orcMateriais.map((m,i)=>`
+    <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:12px;padding:12px;margin-bottom:8px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:16px">${m.ico}</span>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:700;color:var(--text)">${m.n}</div>
+          <div style="font-size:10px;color:var(--text3)">${m.qt}${m.un} × R$ ${m.p.toFixed(2)}${m.fab?' • '+m.fab:''}${m.obs?' — '+m.obs:''}</div>
+        </div>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#a78bfa">R$ ${m.total.toFixed(2)}</span>
+        <button onclick="orcRemMat(${i})" style="width:24px;height:24px;border-radius:6px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#f87171;cursor:pointer;font-size:10px">✕</button>
+      </div>
+    </div>`).join('');
+}
+
+function orcRemMat(i){orcMateriais.splice(i,1);orcRenderMateriais();orcCalcTotal();}
+
+function orcCalcTotal(){
+  const servTotal=orcServicos.reduce((s,sv)=>s+sv.mdo+sv.mats.reduce((a,m)=>a+m.total,0),0);
+  const matTotal=orcMateriais.reduce((s,m)=>s+m.total,0);
+  const desc=parseFloat(document.getElementById('orc-desc').value)||0;
+  const acre=parseFloat(document.getElementById('orc-acre').value)||0;
+  const km=parseFloat(document.getElementById('orc-km').value)||0;
+  const kmVal=parseFloat(document.getElementById('orc-km-val').value)||2;
+  const subtotal=servTotal+matTotal;
+  const descVal=subtotal*(desc/100);
+  const kmTotal=km*kmVal;
+  const total=subtotal-descVal+acre+kmTotal;
+  document.getElementById('orc-total-val').textContent='R$ '+total.toFixed(2).replace('.',',');
+  document.getElementById('orc-total-sub').textContent=`Serv: R$ ${servTotal.toFixed(2)} | Mat: R$ ${matTotal.toFixed(2)} | Km: R$ ${kmTotal.toFixed(2)}`;
+  document.querySelector('.btn-calc').textContent=total>0?`⚡ TOTAL: R$ ${total.toFixed(2).replace('.',',')} — Recalcular`:'⚡ CALCULAR TOTAL';
+}
+
 
 // TEMA
 function setTheme(t,btn){
@@ -1534,8 +1850,23 @@ function demLevarMUC(){
 }
 
 function demLevarQuedaV(){
-  if(!window._demResultadoMUC){alert('Calcule o MUC primeiro!');return;}
+  if(!window._demResultadoNBR){alert('Calcule a demanda NBR 5410 primeiro!');return;}
+  const r=window._demResultadoNBR;
   ferrAba(2);
+  setTimeout(()=>{
+    // Preenche tensão
+    const sel=document.getElementById('qv-tensao');
+    const tVal=r.tensao===127?'127':r.tensao===380?'380':'220';
+    sel.value=tVal;
+    // Preenche corrente
+    document.getElementById('qv-corrente').value=r.corrente.toFixed(1);
+    // Preenche bitola com a calculada
+    const bitMap={'1,5mm²':'1.5','2,5mm²':'2.5','4mm²':'4','6mm²':'6','10mm²':'10','16mm²':'16','25mm²':'25','35mm²':'35'};
+    const bitVal=bitMap[r.bit]||'2.5';
+    document.getElementById('qv-bitola').value=bitVal;
+    // Scroll até o topo
+    document.getElementById('ferr-2').scrollIntoView({behavior:'smooth',block:'start'});
+  },200);
 }
 
 // MUC — DIS-NOR-053 REV06
@@ -1603,6 +1934,65 @@ function demCalcMUC(){
   window._demResultadoMUC={Ded,cat,tensaoKey};
 }
 
+// ── EXPORTAR PDF ──
+function demExportarPDF(){
+  if(!window._demResultadoNBR){alert('Calcule a demanda primeiro!');return;}
+  const r=window._demResultadoNBR;
+  const data=new Date().toLocaleDateString('pt-BR');
+  const keys=Object.keys(demComodos);
+  // Tabela de cômodos
+  const tabelaComodos=keys.map(i=>{
+    const c=demComodos[i];
+    const ilumVA=demCalcIlum(c.area);
+    const pts_tom=c.pts_tom||demCalcPtsTom(c.tp,c.area);
+    const tomVA=demCalcVaTom(c.tp,pts_tom);
+    const equipW=c.equips.reduce((s,e)=>s+e.w,0);
+    return `<tr>
+      <td>${c.ico} ${c.n}</td>
+      <td style="text-align:center">${c.area}m²</td>
+      <td style="text-align:center">${c.pts_ilum||1}</td>
+      <td style="text-align:center">${pts_tom}</td>
+      <td style="text-align:center">${c.equips.length?c.equips.map(e=>e.n).join(', '):'—'}</td>
+      <td style="text-align:center;font-weight:700">${ilumVA+tomVA+equipW} VA</td>
+    </tr>`;
+  }).join('');
+  // Alertas circuito independente
+  const alertas=keys.flatMap(i=>demComodos[i].equips.filter(e=>e.circ).map(e=>`<div class="alerta">⚡ Circ. independente: ${demComodos[i].n} — ${e.n} (${e.w}W)</div>`)).join('');
+  // Queda V se calculada
+  const quedaV=document.getElementById('qv-res-title')?.textContent&&document.getElementById('qv-resultado')?.style.display!=='none'?`
+    <h2>Queda de Tensão</h2>
+    <div class="res-box">
+      <div class="res-item"><div class="res-lbl">Queda</div><div class="res-val">${document.getElementById('qv-res-pct').textContent}</div></div>
+      <div class="res-item"><div class="res-lbl">ΔV</div><div class="res-val">${document.getElementById('qv-res-v').textContent}</div></div>
+    </div>
+    <div style="text-align:center;padding:6px;border-radius:4px;font-weight:700;font-size:11px;background:${document.getElementById('qv-res-status').style.background};color:${document.getElementById('qv-res-status').style.color}">${document.getElementById('qv-res-status').textContent}</div>`:'';
+  document.getElementById('print-area').innerHTML=`
+    <h1>⚡ Laudo de Demanda Elétrica</h1>
+    <div style="font-size:11px;color:#666;margin-bottom:16px">Calculado em ${data} — NBR 5410:2004</div>
+    <h2>Planta da Residência</h2>
+    <table>
+      <thead><tr><th>Cômodo</th><th>Área</th><th>Pts Ilum.</th><th>Pts Tom.</th><th>Equipamentos</th><th>VA Total</th></tr></thead>
+      <tbody>${tabelaComodos}</tbody>
+    </table>
+    ${alertas}
+    <h2>Resultado da Demanda</h2>
+    <div class="res-box">
+      <div class="res-item"><div class="res-lbl">Carga Instalada</div><div class="res-val">${r.totalVA} VA</div></div>
+      <div class="res-item"><div class="res-lbl">Carga Demandada</div><div class="res-val">${Math.round(r.demandada)} VA</div></div>
+      <div class="res-item"><div class="res-lbl">Corrente</div><div class="res-val">${r.corrente.toFixed(1)} A</div></div>
+      <div class="res-item"><div class="res-lbl">Disjuntor Geral</div><div class="res-val">${r.disj} A</div></div>
+    </div>
+    <div class="res-box">
+      <div class="res-item"><div class="res-lbl">Bitola Mínima</div><div class="res-val">${r.bit}</div></div>
+      <div class="res-item"><div class="res-lbl">Proteção DR</div><div class="res-val">30 mA</div></div>
+    </div>
+    <h2>Circuitos Sugeridos</h2>
+    <div>${document.getElementById('nbr-r-circs-lista').innerHTML}</div>
+    ${quedaV}
+    <div class="rodape">Eletricista Power PRO — Gerado automaticamente com base na NBR 5410:2004. Este laudo é uma estimativa e deve ser validado por profissional habilitado.</div>`;
+  window.print();
+}
+
 // ── QUEDA V ──
 function calcQuedaV(){
   const tStr=document.getElementById('qv-tensao').value;
@@ -1613,7 +2003,7 @@ function calcQuedaV(){
   const L=parseFloat(document.getElementById('qv-comp').value);
   const S=parseFloat(document.getElementById('qv-bitola').value);
   if(!I||!L){alert('Preencha corrente e comprimento!');return;}
-  const rho=0.0172; // resistividade cobre Ω.mm²/m
+  const rho=0.0172;
   const R=(rho*L)/S;
   const dv=trifasico?(Math.sqrt(3)*I*R*fp*2):(2*I*R*fp);
   const pct=(dv/tensao)*100;
@@ -1629,9 +2019,26 @@ function calcQuedaV(){
   document.getElementById('qv-res-pct').style.color=ok?'#4ade80':'#f87171';
   document.getElementById('qv-res-v').textContent=dv.toFixed(1)+'V';
   document.getElementById('qv-res-v').style.color=ok?'#4ade80':'#f87171';
-  document.getElementById('qv-res-status').textContent=ok?`Limite: ${limite}% — Queda: ${pct.toFixed(2)}%`:`Recomendado: aumentar bitola do cabo`;
+  // Se reprovado, calcula bitola mínima necessária
+  let statusText=ok?`Limite: ${limite}% — Queda: ${pct.toFixed(2)}%`:'';
+  if(!ok){
+    const bitolas=[1.5,2.5,4,6,10,16,25,35,50];
+    const bitOk=bitolas.find(b=>{
+      const Rb=(rho*L)/b;
+      const dvb=trifasico?(Math.sqrt(3)*I*Rb*fp*2):(2*I*Rb*fp);
+      return (dvb/tensao)*100<=limite;
+    });
+    statusText=bitOk?`Bitola mínima necessária: ${bitOk}mm² para aprovação`:'Cabo muito curto — verifique os dados';
+    // Atualiza select automaticamente com bitola sugerida
+    if(bitOk){
+      document.getElementById('qv-bitola').value=String(bitOk);
+      statusText+=` ← selecionada automaticamente`;
+    }
+  }
+  document.getElementById('qv-res-status').textContent=statusText;
   document.getElementById('qv-res-status').style.background=ok?'rgba(34,197,94,.12)':'rgba(239,68,68,.12)';
   document.getElementById('qv-res-status').style.color=ok?'#4ade80':'#f87171';
+  setTimeout(()=>res.scrollIntoView({behavior:'smooth',block:'start'}),50);
 }
 
 // ── CHECK ──
