@@ -1016,95 +1016,347 @@ input[type=range]{width:100%;accent-color:var(--acc)}
 document.getElementById('orc-data').value = new Date().toISOString().split('T')[0];
 
 // ══ ORÇAMENTO ══
-// Dados de serviços organizados por categoria
 const ORC_SERVICOS=[
-  // TOMADAS
-  {cat:'Tomadas',ico:'🔌',n:'Instalação de tomada simples 10A embutir',p:120,
-    config:[{k:'tipo',lbl:'Tipo',ops:['Simples','Dupla','Tripla'],precos:[0,30,60]},{k:'amp',lbl:'Amperes',ops:['10A','20A'],precos:[0,20]},{k:'inst',lbl:'Instalação',ops:['Embutir','Sobrepor'],precos:[0,10]}],
-    mats:[{n:'Tomada 2P+T',un:'un',qt:1,p:18},{n:'Caixa de embutir 4x2',un:'un',qt:1,p:5},{n:'Cabo flexível 2,5mm²',un:'m',qt:5,p:3.5},{n:'Eletroduto corrugado 3/4"',un:'m',qt:3,p:2.2}]},
-  {cat:'Tomadas',ico:'🔌',n:'Instalação de tomada 20A (TUE)',p:180,
-    config:[{k:'inst',lbl:'Instalação',ops:['Embutir','Sobrepor'],precos:[0,10]}],
+  // ── INSTALAÇÕES RESIDENCIAIS ──
+  // Tomadas
+  {cat:'Residencial',sub:'Tomadas',ico:'🔌',n:'Instalação de tomada simples 10A',p:120,
+    config:[{k:'tipo',lbl:'Tipo',ops:['Simples','Dupla','Tripla'],precos:[0,30,60]},{k:'amp',lbl:'Amperes',ops:['10A','20A'],precos:[0,20]},{k:'inst',lbl:'Instalação',ops:['Embutir','Sobrepor'],precos:[0,10]},{k:'cx',lbl:'Caixa',ops:['4x2','4x4'],precos:[0,5]}],
+    mats:[{n:'Tomada 2P+T 10A',un:'un',qt:1,p:18},{n:'Caixa de embutir 4x2',un:'un',qt:1,p:5},{n:'Cabo flexível 2,5mm²',un:'m',qt:5,p:3.5},{n:'Eletroduto corrugado 3/4"',un:'m',qt:3,p:2.2}]},
+  {cat:'Residencial',sub:'Tomadas',ico:'🔌',n:'Instalação de tomada 20A (TUE)',p:180,
+    config:[{k:'inst',lbl:'Instalação',ops:['Embutir','Sobrepor'],precos:[0,10]},{k:'cx',lbl:'Caixa',ops:['4x2','4x4'],precos:[0,5]}],
     mats:[{n:'Tomada 2P+T 20A',un:'un',qt:1,p:28},{n:'Caixa de embutir 4x2',un:'un',qt:1,p:5},{n:'Cabo flexível 4mm²',un:'m',qt:5,p:5.5},{n:'Eletroduto corrugado 3/4"',un:'m',qt:3,p:2.2}]},
-  // INTERRUPTORES
-  {cat:'Interruptores',ico:'🔴',n:'Instalação de interruptor simples',p:100,
-    config:[{k:'tipo',lbl:'Tipo',ops:['Simples','Paralelo','Intermediário'],precos:[0,30,60]}],
+  {cat:'Residencial',sub:'Tomadas',ico:'🔌',n:'Instalação de tomada externa/quintal',p:160,
+    config:[{k:'amp',lbl:'Amperes',ops:['10A','20A'],precos:[0,20]}],
+    mats:[{n:'Tomada 2P+T 10A',un:'un',qt:1,p:18},{n:'Caixa de sobrepor 4x2',un:'un',qt:1,p:8},{n:'Cabo flexível 2,5mm²',un:'m',qt:6,p:3.5},{n:'Eletroduto corrugado 3/4"',un:'m',qt:4,p:2.2}]},
+  {cat:'Residencial',sub:'Tomadas',ico:'🔌',n:'Instalação de tomada USB',p:150,
+    config:[{k:'inst',lbl:'Instalação',ops:['Embutir','Sobrepor'],precos:[0,10]}],
+    mats:[{n:'Tomada com USB',un:'un',qt:1,p:45},{n:'Caixa de embutir 4x2',un:'un',qt:1,p:5},{n:'Cabo flexível 2,5mm²',un:'m',qt:3,p:3.5}]},
+  // Interruptores
+  {cat:'Residencial',sub:'Interruptores',ico:'🔴',n:'Instalação de interruptor simples',p:100,
+    config:[{k:'tipo',lbl:'Tipo',ops:['Simples','Paralelo','Intermediário'],precos:[0,30,60]},{k:'inst',lbl:'Instalação',ops:['Embutir','Sobrepor'],precos:[0,10]}],
     mats:[{n:'Interruptor simples',un:'un',qt:1,p:15},{n:'Caixa de embutir 4x2',un:'un',qt:1,p:5},{n:'Cabo flexível 1,5mm²',un:'m',qt:5,p:2.2}]},
-  // ILUMINAÇÃO
-  {cat:'Iluminação',ico:'💡',n:'Instalação de luminária embutida',p:120,
+  {cat:'Residencial',sub:'Interruptores',ico:'🔴',n:'Instalação de interruptor duplo',p:130,
+    config:[{k:'inst',lbl:'Instalação',ops:['Embutir','Sobrepor'],precos:[0,10]}],
+    mats:[{n:'Interruptor duplo',un:'un',qt:1,p:22},{n:'Caixa de embutir 4x2',un:'un',qt:1,p:5},{n:'Cabo flexível 1,5mm²',un:'m',qt:6,p:2.2}]},
+  {cat:'Residencial',sub:'Interruptores',ico:'🔴',n:'Instalação de dimmer',p:160,
+    config:[],
+    mats:[{n:'Dimmer',un:'un',qt:1,p:65},{n:'Caixa de embutir 4x2',un:'un',qt:1,p:5},{n:'Cabo flexível 1,5mm²',un:'m',qt:4,p:2.2}]},
+  // Iluminação
+  {cat:'Residencial',sub:'Iluminação',ico:'💡',n:'Instalação de luminária embutida',p:120,
     config:[{k:'tipo',lbl:'Tipo',ops:['Embutida','Sobrepor','Spot'],precos:[0,0,10]}],
     mats:[{n:'Luminária LED 9W',un:'un',qt:1,p:45},{n:'Cabo flexível 1,5mm²',un:'m',qt:4,p:2.2}]},
-  {cat:'Iluminação',ico:'☀️',n:'Instalação de lustre/pendente',p:180,
+  {cat:'Residencial',sub:'Iluminação',ico:'☀️',n:'Instalação de lustre/pendente',p:180,
     config:[],
     mats:[{n:'Suporte de teto',un:'un',qt:1,p:12},{n:'Cabo flexível 1,5mm²',un:'m',qt:3,p:2.2}]},
-  {cat:'Iluminação',ico:'🌀',n:'Instalação de ventilador de teto',p:220,
-    config:[],
-    mats:[{n:'Suporte ventilador',un:'un',qt:1,p:25},{n:'Cabo flexível 2,5mm²',un:'m',qt:5,p:3.5}]},
-  // CHUVEIRO
-  {cat:'Chuveiro',ico:'🚿',n:'Instalação de chuveiro elétrico',p:200,
-    config:[{k:'tipo',lbl:'Tipo',ops:['Simples','Blindado/Lorenzetti'],precos:[0,150]}],
+  {cat:'Residencial',sub:'Iluminação',ico:'🌀',n:'Instalação de ventilador de teto',p:220,
+    config:[{k:'vel',lbl:'Velocidades',ops:['3 velocidades','6 velocidades'],precos:[0,30]}],
+    mats:[{n:'Suporte ventilador',un:'un',qt:1,p:25},{n:'Cabo flexível 2,5mm²',un:'m',qt:5,p:3.5},{n:'Interruptor de ventilador',un:'un',qt:1,p:28}]},
+  {cat:'Residencial',sub:'Iluminação',ico:'💡',n:'Instalação de fita LED',p:150,
+    config:[{k:'tam',lbl:'Metragem',ops:['5m','10m','15m'],precos:[0,50,100]}],
+    mats:[{n:'Fita LED 5m',un:'un',qt:1,p:60},{n:'Fonte para fita LED',un:'un',qt:1,p:35}]},
+  {cat:'Residencial',sub:'Iluminação',ico:'💡',n:'Instalação de sensor de presença',p:140,
+    config:[{k:'tipo',lbl:'Tipo',ops:['Teto','Parede'],precos:[0,0]}],
+    mats:[{n:'Sensor de presença',un:'un',qt:1,p:55},{n:'Cabo flexível 1,5mm²',un:'m',qt:3,p:2.2}]},
+  // Chuveiro/Aquecimento
+  {cat:'Residencial',sub:'Chuveiro',ico:'🚿',n:'Instalação de chuveiro elétrico',p:200,
+    config:[{k:'tipo',lbl:'Tipo',ops:['Simples','Blindado'],precos:[0,150]},{k:'pot',lbl:'Potência',ops:['4000W','5500W','7000W'],precos:[0,20,40]}],
     mats:[{n:'Cabo flexível 6mm²',un:'m',qt:6,p:8},{n:'Disjuntor 40A',un:'un',qt:1,p:45},{n:'Caixa de passagem 4x4',un:'un',qt:1,p:7},{n:'Eletroduto corrugado 1"',un:'m',qt:4,p:3.2}]},
-  // AR-CONDICIONADO
-  {cat:'Ar-condicionado',ico:'❄️',n:'Instalação ar-condicionado split até 12000 BTU',p:350,
-    config:[{k:'btu',lbl:'Capacidade',ops:['Até 12000 BTU','Até 18000 BTU','Até 24000 BTU'],precos:[0,50,100]}],
-    mats:[{n:'Cabo PP 2,5mm²',un:'m',qt:5,p:6},{n:'Disjuntor 20A',un:'un',qt:1,p:28},{n:'Suporte externo',un:'un',qt:1,p:35}]},
-  // QUADRO
-  {cat:'Quadro Elétrico',ico:'⚡',n:'Instalação de quadro de distribuição',p:400,
-    config:[{k:'circ',lbl:'Circuitos',ops:['4 circuitos','8 circuitos','12 circuitos','16 circuitos'],precos:[0,80,150,220]}],
-    mats:[{n:'Quadro de distribuição 12 disj.',un:'un',qt:1,p:180},{n:'Disjuntor monopolar 10A',un:'un',qt:2,p:25},{n:'Disjuntor monopolar 16A',un:'un',qt:2,p:27},{n:'Barramento',un:'un',qt:1,p:45}]},
-  // ATERRAMENTO
-  {cat:'Aterramento',ico:'🌐',n:'Instalação de aterramento (haste)',p:300,
+  {cat:'Residencial',sub:'Chuveiro',ico:'🚿',n:'Instalação de aquecedor elétrico de passagem',p:280,
     config:[],
-    mats:[{n:'Haste de aterramento 2,4m',un:'un',qt:1,p:85},{n:'Cabo PP 6mm²',un:'m',qt:6,p:8},{n:'Conector haste',un:'un',qt:1,p:15}]},
-  // CABEAMENTO
-  {cat:'Cabeamento',ico:'🔧',n:'Passagem de cabo em eletroduto',p:80,
-    config:[{k:'bit',lbl:'Bitola',ops:['1,5mm²','2,5mm²','4mm²','6mm²'],precos:[0,10,20,35]},{k:'inst',lbl:'Instalação',ops:['Embutido','Aparente'],precos:[0,15]}],
+    mats:[{n:'Cabo flexível 6mm²',un:'m',qt:6,p:8},{n:'Disjuntor 40A',un:'un',qt:1,p:45},{n:'Eletroduto corrugado 1"',un:'m',qt:4,p:3.2}]},
+  // Ar-condicionado
+  {cat:'Residencial',sub:'Ar-condicionado',ico:'❄️',n:'Instalação de ar-condicionado split',p:350,
+    config:[{k:'btu',lbl:'Capacidade',ops:['9.000 BTU','12.000 BTU','18.000 BTU','24.000 BTU'],precos:[0,50,100,150]},{k:'fase',lbl:'Fase',ops:['Monofásico','Trifásico'],precos:[0,80]}],
+    mats:[{n:'Cabo PP 2,5mm²',un:'m',qt:5,p:6},{n:'Disjuntor 20A',un:'un',qt:1,p:28},{n:'Suporte externo',un:'un',qt:1,p:35},{n:'Abraçadeiras',un:'un',qt:5,p:0.5}]},
+  {cat:'Residencial',sub:'Ar-condicionado',ico:'❄️',n:'Instalação de ar-condicionado janela',p:180,
+    config:[{k:'btu',lbl:'Capacidade',ops:['7.500 BTU','10.000 BTU','12.000 BTU'],precos:[0,30,50]}],
+    mats:[{n:'Cabo PP 2,5mm²',un:'m',qt:4,p:6},{n:'Disjuntor 20A',un:'un',qt:1,p:28}]},
+  // Portão/Campainha
+  {cat:'Residencial',sub:'Automação Residencial',ico:'🚪',n:'Instalação de portão automático',p:400,
+    config:[{k:'tipo',lbl:'Tipo',ops:['Deslizante','Basculante','Basculante 2 folhas'],precos:[0,50,80]}],
+    mats:[{n:'Motor de portão',un:'un',qt:1,p:350},{n:'Cabo PP 2x1,5mm²',un:'m',qt:8,p:4},{n:'Eletroduto corrugado 1/2"',un:'m',qt:6,p:1.8}]},
+  {cat:'Residencial',sub:'Automação Residencial',ico:'🔔',n:'Instalação de campainha',p:80,
+    config:[{k:'tipo',lbl:'Tipo',ops:['Convencional','Wireless','Vídeo porteiro'],precos:[0,20,150]}],
+    mats:[{n:'Campainha',un:'un',qt:1,p:45},{n:'Cabo flexível 1,5mm²',un:'m',qt:8,p:2.2}]},
+  {cat:'Residencial',sub:'Automação Residencial',ico:'💡',n:'Instalação de interruptor inteligente',p:180,
+    config:[{k:'tipo',lbl:'Tipo',ops:['Wi-Fi','Zigbee'],precos:[0,30]}],
+    mats:[{n:'Interruptor inteligente',un:'un',qt:1,p:85},{n:'Cabo flexível 1,5mm²',un:'m',qt:4,p:2.2}]},
+
+  // ── INSTALAÇÕES COMERCIAIS ──
+  {cat:'Comercial',sub:'Iluminação Comercial',ico:'💡',n:'Projeto de iluminação comercial',p:600,
+    config:[{k:'area',lbl:'Área',ops:['Até 50m²','50-100m²','100-200m²'],precos:[0,300,600]}],
+    mats:[{n:'Luminária LED tubular 36W',un:'un',qt:4,p:85},{n:'Cabo flexível 2,5mm²',un:'m',qt:20,p:3.5}]},
+  {cat:'Comercial',sub:'Iluminação Comercial',ico:'💡',n:'Instalação de luminária de emergência',p:120,
+    config:[],
+    mats:[{n:'Luminária de emergência',un:'un',qt:1,p:95},{n:'Cabo flexível 1,5mm²',un:'m',qt:5,p:2.2}]},
+  {cat:'Comercial',sub:'Tomadas Comerciais',ico:'🔌',n:'Instalação de tomada trifásica',p:280,
+    config:[{k:'amp',lbl:'Amperes',ops:['20A','32A','63A'],precos:[0,40,120]}],
+    mats:[{n:'Tomada trifásica 20A',un:'un',qt:1,p:65},{n:'Caixa de embutir 4x4',un:'un',qt:1,p:6},{n:'Cabo flexível 4mm²',un:'m',qt:6,p:5.5}]},
+  {cat:'Comercial',sub:'Som e Segurança',ico:'📷',n:'Instalação de câmera de segurança',p:250,
+    config:[{k:'tipo',lbl:'Tipo',ops:['Dome','Bullet','PTZ'],precos:[0,50,200]},{k:'res',lbl:'Resolução',ops:['1MP','2MP','4MP','8MP'],precos:[0,50,100,200]}],
+    mats:[{n:'Câmera dome 2MP',un:'un',qt:1,p:180},{n:'Cabo coaxial RG59',un:'m',qt:15,p:3},{n:'Conector BNC',un:'un',qt:2,p:3}]},
+  {cat:'Comercial',sub:'Som e Segurança',ico:'🔒',n:'Instalação de sistema de alarme',p:400,
+    config:[{k:'zonas',lbl:'Zonas',ops:['4 zonas','8 zonas','16 zonas'],precos:[0,100,200]}],
+    mats:[{n:'Central de alarme',un:'un',qt:1,p:280},{n:'Sensor infravermelho',un:'un',qt:2,p:45},{n:'Cabo flexível 4 vias',un:'m',qt:20,p:2.5}]},
+  {cat:'Comercial',sub:'Som e Segurança',ico:'🔊',n:'Instalação de som ambiente',p:350,
+    config:[{k:'amp',lbl:'Amplificador',ops:['Mono','Estéreo','Multi-zona'],precos:[0,100,250]}],
+    mats:[{n:'Amplificador',un:'un',qt:1,p:280},{n:'Cabo para alto-falante',un:'m',qt:20,p:2.5},{n:'Alto-falante de teto',un:'un',qt:2,p:95}]},
+
+  // ── INFRAESTRUTURA ──
+  {cat:'Infraestrutura',sub:'Cabeamento',ico:'🔧',n:'Passagem de cabo em eletroduto',p:80,
+    config:[{k:'bit',lbl:'Bitola',ops:['1,5mm²','2,5mm²','4mm²','6mm²','10mm²'],precos:[0,10,20,35,60]},{k:'inst',lbl:'Instalação',ops:['Embutido','Aparente'],precos:[0,15]}],
     mats:[{n:'Cabo flexível 2,5mm²',un:'m',qt:10,p:3.5},{n:'Eletroduto corrugado 3/4"',un:'m',qt:8,p:2.2},{n:'Abraçadeiras',un:'un',qt:5,p:0.5}]},
-  // MANUTENÇÃO
-  {cat:'Manutenção',ico:'🔧',n:'Troca de disjuntor',p:120,
-    config:[{k:'amp',lbl:'Amperes',ops:['10A','16A','20A','25A','32A','40A'],precos:[0,5,8,12,18,25]}],
-    mats:[{n:'Disjuntor monopolar',un:'un',qt:1,p:25}]},
-  {cat:'Manutenção',ico:'🔧',n:'Manutenção elétrica geral',p:150,config:[],mats:[]},
+  {cat:'Infraestrutura',sub:'Cabeamento',ico:'🔧',n:'Instalação de calha metálica',p:120,
+    config:[{k:'tam',lbl:'Largura',ops:['50mm','75mm','100mm','150mm'],precos:[0,10,20,40]}],
+    mats:[{n:'Calha metálica 50mm',un:'m',qt:5,p:18},{n:'Tampa de calha',un:'m',qt:5,p:8},{n:'Suporte de calha',un:'un',qt:4,p:5}]},
+  {cat:'Infraestrutura',sub:'Eletrodutos',ico:'📦',n:'Instalação de eletroduto corrugado',p:60,
+    config:[{k:'bit',lbl:'Bitola',ops:['1/2"','3/4"','1"','1.1/4"'],precos:[0,5,10,20]},{k:'inst',lbl:'Instalação',ops:['Embutido','Aparente'],precos:[0,10]}],
+    mats:[{n:'Eletroduto corrugado 3/4"',un:'m',qt:10,p:2.2},{n:'Abraçadeiras',un:'un',qt:8,p:0.5},{n:'Curvas 90°',un:'un',qt:2,p:2}]},
+  {cat:'Infraestrutura',sub:'Eletrodutos',ico:'📦',n:'Instalação de eletroduto rígido PVC',p:80,
+    config:[{k:'bit',lbl:'Bitola',ops:['3/4"','1"','1.1/4"','2"'],precos:[0,8,15,30]}],
+    mats:[{n:'Eletroduto PVC rígido 3/4"',un:'m',qt:10,p:4.5},{n:'Luva PVC',un:'un',qt:3,p:2.5},{n:'Curva 90° PVC',un:'un',qt:2,p:3}]},
+  {cat:'Infraestrutura',sub:'Caixas',ico:'🗃️',n:'Instalação de caixa de passagem',p:70,
+    config:[{k:'tipo',lbl:'Tipo',ops:['4x2','4x4','Octogonal'],precos:[0,5,5]},{k:'inst',lbl:'Instalação',ops:['Embutir','Sobrepor'],precos:[0,10]}],
+    mats:[{n:'Caixa de embutir 4x2',un:'un',qt:1,p:5},{n:'Tampa cega',un:'un',qt:1,p:3}]},
+
+  // ── QUADROS ELÉTRICOS ──
+  {cat:'Quadros Elétricos',sub:'Quadro de Distribuição',ico:'⚡',n:'Instalação de quadro de distribuição',p:400,
+    config:[{k:'circ',lbl:'Circuitos',ops:['4 circuitos','8 circuitos','12 circuitos','16 circuitos','24 circuitos'],precos:[0,80,150,220,350]},{k:'fase',lbl:'Alimentação',ops:['Monofásico','Bifásico','Trifásico'],precos:[0,100,200]}],
+    mats:[{n:'Quadro de distribuição 12 disj.',un:'un',qt:1,p:180},{n:'Disjuntor monopolar 10A',un:'un',qt:2,p:25},{n:'Disjuntor monopolar 16A',un:'un',qt:2,p:27},{n:'Barramento',un:'un',qt:1,p:45}]},
+  {cat:'Quadros Elétricos',sub:'Proteção',ico:'🛡️',n:'Troca de disjuntor',p:120,
+    config:[{k:'amp',lbl:'Amperes',ops:['10A','16A','20A','25A','32A','40A','50A','63A'],precos:[0,5,8,12,18,25,35,45]},{k:'polo',lbl:'Polo',ops:['Monopolar','Bipolar','Tripolar'],precos:[0,30,60]}],
+    mats:[{n:'Disjuntor monopolar 10A',un:'un',qt:1,p:25}]},
+  {cat:'Quadros Elétricos',sub:'Proteção',ico:'🛡️',n:'Instalação de DR (Diferencial Residual)',p:150,
+    config:[{k:'amp',lbl:'Amperes',ops:['25A','40A','63A'],precos:[0,30,60]},{k:'sens',lbl:'Sensibilidade',ops:['30mA','100mA','300mA'],precos:[0,20,30]}],
+    mats:[{n:'DR 25A bipolar',un:'un',qt:1,p:90}]},
+  {cat:'Quadros Elétricos',sub:'Proteção',ico:'🛡️',n:'Instalação de DPS (Proteção Surto)',p:130,
+    config:[{k:'tipo',lbl:'Tensão',ops:['220V','127V'],precos:[0,10]}],
+    mats:[{n:'DPS 275V',un:'un',qt:1,p:65},{n:'Cabo flexível 4mm²',un:'m',qt:1,p:5.5}]},
+  // Aterramento
+  {cat:'Quadros Elétricos',sub:'Aterramento',ico:'🌐',n:'Instalação de aterramento (haste)',p:300,
+    config:[{k:'hastes',lbl:'Qtd Hastes',ops:['1 haste','2 hastes','3 hastes'],precos:[0,250,500]}],
+    mats:[{n:'Haste de aterramento 2,4m',un:'un',qt:1,p:85},{n:'Cabo PP 6mm²',un:'m',qt:6,p:8},{n:'Conector haste',un:'un',qt:1,p:15},{n:'Caixa de inspeção',un:'un',qt:1,p:35}]},
+  {cat:'Quadros Elétricos',sub:'Aterramento',ico:'🌐',n:'Medição de resistência de aterramento',p:200,
+    config:[],mats:[]},
+
+  // ── MANUTENÇÃO ──
+  {cat:'Manutenção',sub:'Diagnóstico',ico:'🔍',n:'Diagnóstico elétrico geral',p:150,config:[],mats:[]},
+  {cat:'Manutenção',sub:'Diagnóstico',ico:'🔍',n:'Localização de curto-circuito',p:200,config:[],mats:[]},
+  {cat:'Manutenção',sub:'Manutenção Preventiva',ico:'🔧',n:'Revisão geral da instalação',p:300,
+    config:[{k:'tam',lbl:'Porte',ops:['Residencial pequeno','Residencial médio','Comercial'],precos:[0,150,350]}],
+    mats:[]},
+  {cat:'Manutenção',sub:'Manutenção Preventiva',ico:'🔧',n:'Limpeza e aperto de conexões QD',p:120,config:[],mats:[]},
+  {cat:'Manutenção',sub:'Reparos',ico:'🔧',n:'Troca de tomada danificada',p:80,
+    config:[{k:'amp',lbl:'Amperes',ops:['10A','20A'],precos:[0,15]}],
+    mats:[{n:'Tomada 2P+T 10A',un:'un',qt:1,p:18}]},
+  {cat:'Manutenção',sub:'Reparos',ico:'🔧',n:'Troca de interruptor danificado',p:70,
+    config:[{k:'tipo',lbl:'Tipo',ops:['Simples','Duplo','Paralelo'],precos:[0,15,25]}],
+    mats:[{n:'Interruptor simples',un:'un',qt:1,p:15}]},
+  {cat:'Manutenção',sub:'Reparos',ico:'🔧',n:'Troca de cabo danificado',p:100,
+    config:[{k:'bit',lbl:'Bitola',ops:['1,5mm²','2,5mm²','4mm²','6mm²'],precos:[0,15,30,55]}],
+    mats:[{n:'Cabo flexível 2,5mm²',un:'m',qt:5,p:3.5}]},
+
+  // ── PROJETOS E LAUDOS ──
+  {cat:'Projetos e Laudos',sub:'Projetos',ico:'📐',n:'Projeto elétrico residencial',p:800,
+    config:[{k:'area',lbl:'Área',ops:['Até 100m²','100-200m²','200-400m²','Acima 400m²'],precos:[0,400,800,1500]}],
+    mats:[]},
+  {cat:'Projetos e Laudos',sub:'Projetos',ico:'📐',n:'Projeto elétrico comercial',p:1500,
+    config:[{k:'area',lbl:'Área',ops:['Até 200m²','200-500m²','Acima 500m²'],precos:[0,800,2000]}],
+    mats:[]},
+  {cat:'Projetos e Laudos',sub:'Laudos',ico:'📋',n:'Laudo técnico de instalação',p:500,
+    config:[{k:'tipo',lbl:'Tipo',ops:['Residencial','Comercial','Industrial'],precos:[0,300,600]}],
+    mats:[]},
+  {cat:'Projetos e Laudos',sub:'Laudos',ico:'📋',n:'ART (Anotação de Responsabilidade Técnica)',p:350,
+    config:[],mats:[]},
+  {cat:'Projetos e Laudos',sub:'Laudos',ico:'📋',n:'Vistoria elétrica',p:300,
+    config:[{k:'tipo',lbl:'Tipo',ops:['Residencial','Comercial'],precos:[0,200]}],
+    mats:[]},
+
+  // ── AUTOMAÇÃO E SEGURANÇA ──
+  {cat:'Automação e Segurança',sub:'CFTV',ico:'📷',n:'Instalação de DVR/NVR',p:300,
+    config:[{k:'ch',lbl:'Canais',ops:['4 canais','8 canais','16 canais'],precos:[0,100,200]}],
+    mats:[{n:'DVR 4 canais',un:'un',qt:1,p:280},{n:'Cabo HDMI',un:'m',qt:2,p:8}]},
+  {cat:'Automação e Segurança',sub:'Cerca Elétrica',ico:'⚡',n:'Instalação de cerca elétrica',p:500,
+    config:[{k:'tam',lbl:'Metragem',ops:['Até 50m','50-100m','Acima 100m'],precos:[0,400,800]}],
+    mats:[{n:'Central de cerca elétrica',un:'un',qt:1,p:280},{n:'Fio de aço inox',un:'m',qt:50,p:2.5},{n:'Isoladores',un:'un',qt:20,p:2}]},
+  {cat:'Automação e Segurança',sub:'Automação',ico:'🏠',n:'Instalação de central de automação',p:800,
+    config:[{k:'tipo',lbl:'Protocolo',ops:['Wi-Fi','Zigbee','Z-Wave'],precos:[0,200,400]}],
+    mats:[{n:'Central de automação',un:'un',qt:1,p:450}]},
+
+  // ── ENERGIA SOLAR ──
+  {cat:'Energia Solar',sub:'Instalação',ico:'☀️',n:'Instalação de inversor solar',p:600,
+    config:[{k:'pot',lbl:'Potência',ops:['1-3kW','3-5kW','5-10kW','10-20kW'],precos:[0,300,600,1200]}],
+    mats:[{n:'Cabo solar 6mm²',un:'m',qt:20,p:12},{n:'String box DC',un:'un',qt:1,p:180},{n:'Conector MC4',un:'un',qt:4,p:8}]},
+  {cat:'Energia Solar',sub:'Instalação',ico:'☀️',n:'Cabeamento DC/AC para solar',p:400,
+    config:[{k:'dist',lbl:'Distância',ops:['Até 10m','10-20m','20-40m'],precos:[0,100,200]}],
+    mats:[{n:'Cabo solar 6mm²',un:'m',qt:15,p:12},{n:'Cabo flexível 6mm²',un:'m',qt:10,p:8},{n:'Eletroduto corrugado 1"',un:'m',qt:10,p:3.2}]},
+  {cat:'Energia Solar',sub:'Proteção Solar',ico:'🛡️',n:'Instalação de proteções para solar',p:350,
+    config:[],
+    mats:[{n:'DPS DC',un:'un',qt:1,p:120},{n:'Disjuntor bipolar 40A',un:'un',qt:1,p:65},{n:'Cabo flexível 6mm²',un:'m',qt:5,p:8}]},
+
+  // ── INDUSTRIAL / COMANDOS ──
+  {cat:'Industrial',sub:'Comandos Elétricos',ico:'⚙️',n:'Instalação de contator',p:300,
+    config:[{k:'amp',lbl:'Corrente',ops:['Até 9A','9-18A','18-32A','32-65A'],precos:[0,50,120,250]},{k:'fase',lbl:'Fase',ops:['Monofásico','Trifásico'],precos:[0,80]}],
+    mats:[{n:'Contator tripolar 9A',un:'un',qt:1,p:85},{n:'Cabo PP 2,5mm²',un:'m',qt:5,p:6},{n:'Terminal ilhós',un:'un',qt:6,p:1.5}]},
+  {cat:'Industrial',sub:'Comandos Elétricos',ico:'⚙️',n:'Instalação de relé térmico',p:200,
+    config:[{k:'amp',lbl:'Faixa',ops:['1-4A','4-6A','6-10A','10-16A','16-25A'],precos:[0,20,30,40,60]}],
+    mats:[{n:'Relé térmico',un:'un',qt:1,p:65},{n:'Terminal ilhós',un:'un',qt:4,p:1.5}]},
+  {cat:'Industrial',sub:'Comandos Elétricos',ico:'⚙️',n:'Instalação de relé de falta de fase',p:250,
+    config:[{k:'tensao',lbl:'Tensão',ops:['220V','380V'],precos:[0,30]}],
+    mats:[{n:'Relé de falta de fase',un:'un',qt:1,p:95},{n:'Terminal ilhós',un:'un',qt:6,p:1.5}]},
+  {cat:'Industrial',sub:'Comandos Elétricos',ico:'⚙️',n:'Instalação de relé de nível',p:220,
+    config:[{k:'tipo',lbl:'Tipo',ops:['Boia','Eletrônico'],precos:[0,80]}],
+    mats:[{n:'Relé de nível',un:'un',qt:1,p:85},{n:'Eletrodos de nível',un:'un',qt:3,p:15}]},
+  {cat:'Industrial',sub:'Comandos Elétricos',ico:'⚙️',n:'Instalação de relé temporizador',p:200,
+    config:[{k:'tipo',lbl:'Tipo',ops:['Liga com retardo','Desliga com retardo','Intervalo'],precos:[0,20,30]}],
+    mats:[{n:'Relé temporizador',un:'un',qt:1,p:75},{n:'Terminal ilhós',un:'un',qt:4,p:1.5}]},
+  {cat:'Industrial',sub:'Comandos Elétricos',ico:'🔘',n:'Instalação de botoeiras',p:150,
+    config:[{k:'tipo',lbl:'Tipo',ops:['Liga/Desliga','Liga/Desliga/Emergência','Pulso'],precos:[0,30,20]}],
+    mats:[{n:'Botoeira verde (liga)',un:'un',qt:1,p:18},{n:'Botoeira vermelha (desliga)',un:'un',qt:1,p:18},{n:'Cogumelo emergência',un:'un',qt:1,p:35},{n:'Caixa de comando',un:'un',qt:1,p:45}]},
+  {cat:'Industrial',sub:'Motores',ico:'⚡',n:'Instalação de motor elétrico',p:500,
+    config:[{k:'cv',lbl:'Potência',ops:['Até 1CV','1-3CV','3-7,5CV','7,5-15CV'],precos:[0,150,350,700]},{k:'fase',lbl:'Fase',ops:['Monofásico','Trifásico'],precos:[0,100]}],
+    mats:[{n:'Cabo PP 4mm²',un:'m',qt:6,p:8.5},{n:'Disjuntor motor (DM)',un:'un',qt:1,p:95},{n:'Contator tripolar',un:'un',qt:1,p:85},{n:'Relé térmico',un:'un',qt:1,p:65}]},
+  {cat:'Industrial',sub:'Motores',ico:'⚡',n:'Instalação de soft-starter',p:600,
+    config:[{k:'amp',lbl:'Corrente',ops:['Até 17A','17-30A','30-60A'],precos:[0,300,700]}],
+    mats:[{n:'Soft-starter',un:'un',qt:1,p:450},{n:'Cabo PP 4mm²',un:'m',qt:5,p:8.5}]},
+  {cat:'Industrial',sub:'Motores',ico:'⚡',n:'Instalação de inversor de frequência (VFD)',p:700,
+    config:[{k:'cv',lbl:'Potência',ops:['Até 1CV','1-3CV','3-7,5CV','7,5-15CV'],precos:[0,200,500,1000]}],
+    mats:[{n:'Inversor de frequência',un:'un',qt:1,p:550},{n:'Cabo PP 4mm²',un:'m',qt:5,p:8.5},{n:'Filtro de linha',un:'un',qt:1,p:95}]},
+  {cat:'Industrial',sub:'Painéis',ico:'🗄️',n:'Montagem de painel de comando',p:800,
+    config:[{k:'tam',lbl:'Porte',ops:['Pequeno (até 5 componentes)','Médio (5-15)','Grande (acima 15)'],precos:[0,400,1200]}],
+    mats:[{n:'Caixa metálica para painel',un:'un',qt:1,p:180},{n:'Trilho DIN',un:'m',qt:1,p:12},{n:'Terminal ilhós',un:'un',qt:20,p:1.5},{n:'Cabo flexível 2,5mm²',un:'m',qt:15,p:3.5}]},
+  {cat:'Industrial',sub:'Painéis',ico:'🗄️',n:'Manutenção de painel elétrico industrial',p:400,
+    config:[{k:'tipo',lbl:'Tipo',ops:['Preventiva','Corretiva'],precos:[0,200]}],
+    mats:[]},
 ];
 
 // Dados de materiais organizados por categoria
 const ORC_MATERIAIS=[
+  // Condutores
   {cat:'Condutores',ico:'⚡',n:'Cabo flexível 1,5mm²',un:'m',p:2.2},
   {cat:'Condutores',ico:'⚡',n:'Cabo flexível 2,5mm²',un:'m',p:3.5},
   {cat:'Condutores',ico:'⚡',n:'Cabo flexível 4mm²',un:'m',p:5.5},
   {cat:'Condutores',ico:'⚡',n:'Cabo flexível 6mm²',un:'m',p:8.0},
   {cat:'Condutores',ico:'⚡',n:'Cabo flexível 10mm²',un:'m',p:14.0},
+  {cat:'Condutores',ico:'⚡',n:'Cabo flexível 16mm²',un:'m',p:22.0},
+  {cat:'Condutores',ico:'⚡',n:'Cabo flexível 25mm²',un:'m',p:35.0},
+  {cat:'Condutores',ico:'⚡',n:'Cabo PP 2x1,5mm²',un:'m',p:4.5},
   {cat:'Condutores',ico:'⚡',n:'Cabo PP 2x2,5mm²',un:'m',p:6.0},
   {cat:'Condutores',ico:'⚡',n:'Cabo PP 3x2,5mm²',un:'m',p:8.5},
-  {cat:'Proteção',ico:'🛡️',n:'Disjuntor monopolar 10A',un:'un',p:25},
-  {cat:'Proteção',ico:'🛡️',n:'Disjuntor monopolar 16A',un:'un',p:27},
-  {cat:'Proteção',ico:'🛡️',n:'Disjuntor monopolar 20A',un:'un',p:30},
-  {cat:'Proteção',ico:'🛡️',n:'Disjuntor monopolar 25A',un:'un',p:35},
-  {cat:'Proteção',ico:'🛡️',n:'Disjuntor monopolar 40A',un:'un',p:45},
-  {cat:'Proteção',ico:'🛡️',n:'DR 25A bipolar',un:'un',p:90},
-  {cat:'Proteção',ico:'🛡️',n:'DPS 275V',un:'un',p:65},
+  {cat:'Condutores',ico:'⚡',n:'Cabo PP 4x2,5mm²',un:'m',p:11.0},
+  {cat:'Condutores',ico:'⚡',n:'Cabo solar 6mm²',un:'m',p:12.0},
+  {cat:'Condutores',ico:'⚡',n:'Cabo coaxial RG59',un:'m',p:3.0},
+  {cat:'Condutores',ico:'⚡',n:'Cabo flexível 4 vias (alarme)',un:'m',p:2.5},
+  // Proteção
+  {cat:'Proteção',ico:'🛡️',n:'Disjuntor monopolar 10A curva B',un:'un',p:25},
+  {cat:'Proteção',ico:'🛡️',n:'Disjuntor monopolar 16A curva B',un:'un',p:27},
+  {cat:'Proteção',ico:'🛡️',n:'Disjuntor monopolar 20A curva C',un:'un',p:30},
+  {cat:'Proteção',ico:'🛡️',n:'Disjuntor monopolar 25A curva C',un:'un',p:35},
+  {cat:'Proteção',ico:'🛡️',n:'Disjuntor monopolar 32A curva C',un:'un',p:40},
+  {cat:'Proteção',ico:'🛡️',n:'Disjuntor monopolar 40A curva C',un:'un',p:45},
+  {cat:'Proteção',ico:'🛡️',n:'Disjuntor monopolar 50A curva C',un:'un',p:55},
+  {cat:'Proteção',ico:'🛡️',n:'Disjuntor monopolar 63A curva C',un:'un',p:65},
+  {cat:'Proteção',ico:'🛡️',n:'Disjuntor bipolar 20A',un:'un',p:55},
+  {cat:'Proteção',ico:'🛡️',n:'Disjuntor bipolar 40A',un:'un',p:75},
+  {cat:'Proteção',ico:'🛡️',n:'Disjuntor tripolar 20A',un:'un',p:85},
+  {cat:'Proteção',ico:'🛡️',n:'Disjuntor tripolar 40A',un:'un',p:110},
+  {cat:'Proteção',ico:'🛡️',n:'Disjuntor motor (DM) 9A',un:'un',p:95},
+  {cat:'Proteção',ico:'🛡️',n:'DR 25A bipolar 30mA',un:'un',p:90},
+  {cat:'Proteção',ico:'🛡️',n:'DR 40A bipolar 30mA',un:'un',p:115},
+  {cat:'Proteção',ico:'🛡️',n:'DPS 275V monofásico',un:'un',p:65},
+  {cat:'Proteção',ico:'🛡️',n:'DPS 385V trifásico',un:'un',p:120},
+  {cat:'Proteção',ico:'🛡️',n:'Fusível NH 63A',un:'un',p:18},
+  {cat:'Proteção',ico:'🛡️',n:'Fusível NH 100A',un:'un',p:25},
+  // Eletrodutos
+  {cat:'Eletrodutos',ico:'📦',n:'Eletroduto corrugado 1/2"',un:'m',p:1.5},
   {cat:'Eletrodutos',ico:'📦',n:'Eletroduto corrugado 3/4"',un:'m',p:2.2},
   {cat:'Eletrodutos',ico:'📦',n:'Eletroduto corrugado 1"',un:'m',p:3.2},
+  {cat:'Eletrodutos',ico:'📦',n:'Eletroduto corrugado 1.1/4"',un:'m',p:4.5},
   {cat:'Eletrodutos',ico:'📦',n:'Eletroduto PVC rígido 3/4"',un:'m',p:4.5},
   {cat:'Eletrodutos',ico:'📦',n:'Eletroduto PVC rígido 1"',un:'m',p:6.5},
+  {cat:'Eletrodutos',ico:'📦',n:'Eletroduto PVC rígido 1.1/4"',un:'m',p:9.0},
   {cat:'Eletrodutos',ico:'📦',n:'Eletroduto metálico 3/4"',un:'m',p:12.0},
+  {cat:'Eletrodutos',ico:'📦',n:'Eletroduto metálico 1"',un:'m',p:16.0},
+  {cat:'Eletrodutos',ico:'📦',n:'Luva PVC 3/4"',un:'un',p:2.5},
+  {cat:'Eletrodutos',ico:'📦',n:'Curva 90° PVC 3/4"',un:'un',p:3.0},
+  // Caixas
   {cat:'Caixas',ico:'🗃️',n:'Caixa de embutir 4x2',un:'un',p:5},
   {cat:'Caixas',ico:'🗃️',n:'Caixa de embutir 4x4',un:'un',p:6},
-  {cat:'Caixas',ico:'🗃️',n:'Caixa de passagem octagonal',un:'un',p:7},
+  {cat:'Caixas',ico:'🗃️',n:'Caixa octogonal 3x3"',un:'un',p:5},
   {cat:'Caixas',ico:'🗃️',n:'Caixa de sobrepor 4x2',un:'un',p:8},
+  {cat:'Caixas',ico:'🗃️',n:'Caixa de sobrepor 4x4',un:'un',p:10},
+  {cat:'Caixas',ico:'🗃️',n:'Caixa de passagem PVC 10x10cm',un:'un',p:12},
+  {cat:'Caixas',ico:'🗃️',n:'Caixa de passagem PVC 20x20cm',un:'un',p:22},
+  {cat:'Caixas',ico:'🗃️',n:'Caixa metálica para painel',un:'un',p:180},
+  // Dispositivos
   {cat:'Dispositivos',ico:'🔌',n:'Tomada 2P+T 10A',un:'un',p:18},
   {cat:'Dispositivos',ico:'🔌',n:'Tomada 2P+T 20A',un:'un',p:28},
+  {cat:'Dispositivos',ico:'🔌',n:'Tomada com USB',un:'un',p:45},
+  {cat:'Dispositivos',ico:'🔌',n:'Tomada trifásica 20A',un:'un',p:65},
   {cat:'Dispositivos',ico:'🔴',n:'Interruptor simples',un:'un',p:15},
+  {cat:'Dispositivos',ico:'🔴',n:'Interruptor duplo',un:'un',p:22},
   {cat:'Dispositivos',ico:'🔴',n:'Interruptor paralelo',un:'un',p:22},
+  {cat:'Dispositivos',ico:'🔴',n:'Interruptor intermediário',un:'un',p:35},
+  {cat:'Dispositivos',ico:'🔴',n:'Dimmer',un:'un',p:65},
+  {cat:'Dispositivos',ico:'🔴',n:'Interruptor de ventilador',un:'un',p:28},
+  {cat:'Dispositivos',ico:'🔴',n:'Interruptor inteligente Wi-Fi',un:'un',p:85},
+  {cat:'Dispositivos',ico:'🔴',n:'Sensor de presença teto',un:'un',p:55},
+  // Iluminação
   {cat:'Iluminação',ico:'💡',n:'Luminária LED embutida 9W',un:'un',p:45},
+  {cat:'Iluminação',ico:'💡',n:'Luminária LED embutida 12W',un:'un',p:55},
   {cat:'Iluminação',ico:'💡',n:'Luminária LED sobrepor 12W',un:'un',p:55},
+  {cat:'Iluminação',ico:'💡',n:'Luminária LED tubular 36W',un:'un',p:85},
+  {cat:'Iluminação',ico:'💡',n:'Luminária de emergência',un:'un',p:95},
   {cat:'Iluminação',ico:'💡',n:'Fita LED 5m',un:'un',p:60},
+  {cat:'Iluminação',ico:'💡',n:'Fonte para fita LED 60W',un:'un',p:35},
+  {cat:'Iluminação',ico:'💡',n:'Spot LED 7W',un:'un',p:35},
+  // Quadros
+  {cat:'Quadros',ico:'⚡',n:'Quadro de distribuição 4 disj.',un:'un',p:65},
+  {cat:'Quadros',ico:'⚡',n:'Quadro de distribuição 8 disj.',un:'un',p:95},
+  {cat:'Quadros',ico:'⚡',n:'Quadro de distribuição 12 disj.',un:'un',p:180},
+  {cat:'Quadros',ico:'⚡',n:'Quadro de distribuição 16 disj.',un:'un',p:220},
+  {cat:'Quadros',ico:'⚡',n:'Quadro de distribuição 24 disj.',un:'un',p:310},
+  {cat:'Quadros',ico:'⚡',n:'Barramento de neutro/terra',un:'un',p:45},
+  {cat:'Quadros',ico:'⚡',n:'Trilho DIN',un:'m',p:12},
+  // Aterramento
+  {cat:'Aterramento',ico:'🌐',n:'Haste de aterramento 2,4m',un:'un',p:85},
+  {cat:'Aterramento',ico:'🌐',n:'Conector haste de aterramento',un:'un',p:15},
+  {cat:'Aterramento',ico:'🌐',n:'Caixa de inspeção aterramento',un:'un',p:35},
+  {cat:'Aterramento',ico:'🌐',n:'Cabo PP 6mm² (aterramento)',un:'m',p:8},
+  // Fixação e Acessórios
   {cat:'Fixação',ico:'🔩',n:'Abraçadeira nylon 100un',un:'pct',p:12},
+  {cat:'Fixação',ico:'🔩',n:'Abraçadeira metálica',un:'un',p:2.5},
   {cat:'Fixação',ico:'🔩',n:'Bucha + parafuso 100un',un:'pct',p:18},
   {cat:'Fixação',ico:'🔩',n:'Fita isolante 19mm',un:'un',p:4},
   {cat:'Fixação',ico:'🔩',n:'Fita autofusão',un:'un',p:12},
   {cat:'Fixação',ico:'🔩',n:'Pomada grafite 150g',un:'un',p:15},
-  {cat:'Aterramento',ico:'🌐',n:'Haste de aterramento 2,4m',un:'un',p:85},
-  {cat:'Aterramento',ico:'🌐',n:'Cabo PP 6mm²',un:'m',p:8},
+  {cat:'Fixação',ico:'🔩',n:'Terminal ilhós 2,5mm²',un:'un',p:1.5},
+  {cat:'Fixação',ico:'🔩',n:'Terminal ilhós 4mm²',un:'un',p:2.0},
+  {cat:'Fixação',ico:'🔩',n:'Conector MC4 (solar)',un:'un',p:8},
+  // Componentes Industriais
+  {cat:'Industrial',ico:'⚙️',n:'Contator tripolar 9A',un:'un',p:85},
+  {cat:'Industrial',ico:'⚙️',n:'Contator tripolar 18A',un:'un',p:120},
+  {cat:'Industrial',ico:'⚙️',n:'Contator tripolar 32A',un:'un',p:180},
+  {cat:'Industrial',ico:'⚙️',n:'Relé térmico 4-6A',un:'un',p:65},
+  {cat:'Industrial',ico:'⚙️',n:'Relé térmico 6-10A',un:'un',p:70},
+  {cat:'Industrial',ico:'⚙️',n:'Relé de falta de fase 220V',un:'un',p:95},
+  {cat:'Industrial',ico:'⚙️',n:'Relé de falta de fase 380V',un:'un',p:110},
+  {cat:'Industrial',ico:'⚙️',n:'Relé de nível eletrônico',un:'un',p:85},
+  {cat:'Industrial',ico:'⚙️',n:'Eletrodos de nível (jogo)',un:'jogo',p:45},
+  {cat:'Industrial',ico:'⚙️',n:'Relé temporizador',un:'un',p:75},
+  {cat:'Industrial',ico:'🔘',n:'Botoeira verde (liga)',un:'un',p:18},
+  {cat:'Industrial',ico:'🔘',n:'Botoeira vermelha (desliga)',un:'un',p:18},
+  {cat:'Industrial',ico:'🔘',n:'Cogumelo emergência',un:'un',p:35},
+  {cat:'Industrial',ico:'🔘',n:'Caixa de comando plástica',un:'un',p:45},
+  {cat:'Industrial',ico:'⚙️',n:'Chave seccionadora 32A',un:'un',p:65},
+  {cat:'Industrial',ico:'⚙️',n:'Soft-starter 17A',un:'un',p:450},
+  {cat:'Industrial',ico:'⚙️',n:'Inversor de frequência 1CV',un:'un',p:550},
+  // Energia Solar
+  {cat:'Energia Solar',ico:'☀️',n:'Cabo solar 6mm²',un:'m',p:12},
+  {cat:'Energia Solar',ico:'☀️',n:'String box DC',un:'un',p:180},
+  {cat:'Energia Solar',ico:'☀️',n:'DPS DC solar',un:'un',p:120},
+  {cat:'Energia Solar',ico:'☀️',n:'Conector MC4',un:'par',p:8},
+  {cat:'Energia Solar',ico:'☀️',n:'Filtro de linha solar',un:'un',p:95},
 ];
 
 let orcServicos=[], orcMateriais=[];
@@ -1209,6 +1461,7 @@ function orcRenderServicos(){
           ${s.obs?`<div style="font-size:10px;color:var(--text3)">${s.obs}</div>`:''}
         </div>
         <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:var(--acc)">R$ ${s.mdo.toFixed(2)}</span>
+        <button onclick="orcEditarServ(${i})" style="width:24px;height:24px;border-radius:6px;background:var(--bg-input);border:1px solid var(--border-input);color:var(--text2);cursor:pointer;font-size:11px">✏️</button>
         <button onclick="orcRemServ(${i})" style="width:24px;height:24px;border-radius:6px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#f87171;cursor:pointer;font-size:10px">✕</button>
       </div>
       ${s.mats.length?`<div style="border-top:1px solid var(--border);padding-top:6px">${s.mats.map(m=>`<div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);padding:2px 0"><span>${m.n} × ${m.qt}${m.un}</span><span>R$ ${m.total.toFixed(2)}</span></div>`).join('')}</div>`:''}
@@ -1216,6 +1469,47 @@ function orcRenderServicos(){
 }
 
 function orcRemServ(i){orcServicos.splice(i,1);orcRenderServicos();orcCalcTotal();}
+
+function orcEditarServ(i){
+  const s=orcServicos[i];
+  const matsHTML=s.mats.map((m,mi)=>`
+    <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border)">
+      <input type="checkbox" ${m.ativo!==false?'checked':''} onchange="s_mats[${mi}].ativo=this.checked" style="accent-color:var(--acc);width:16px;height:16px">
+      <span style="flex:1;font-size:12px;color:var(--text2)">${m.n}</span>
+      <input type="number" value="${m.qt}" min="0.1" step="0.1" id="eserv-mat-qt-${mi}" style="width:55px;background:var(--bg-input);border:1px solid var(--border-input);border-radius:7px;padding:4px 6px;font-size:12px;color:var(--text);text-align:center">
+      <span style="font-size:10px;color:var(--text3)">${m.un}</span>
+      <input type="number" value="${m.p}" min="0" id="eserv-mat-p-${mi}" style="width:60px;background:var(--bg-input);border:1px solid var(--border-input);border-radius:7px;padding:4px 6px;font-size:12px;color:var(--acc);text-align:center">
+    </div>`).join('');
+  const popup=document.createElement('div');
+  popup.style.cssText='position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.6);display:flex;align-items:flex-end';
+  popup.innerHTML=`<div style="background:var(--bg-card);border-radius:20px 20px 0 0;width:100%;max-height:85vh;overflow-y:auto;padding:16px">
+    <div style="font-size:14px;font-weight:800;color:var(--text);margin-bottom:14px">${s.ico} ${s.n}</div>
+    <div class="ilbl">Mão de obra (R$)</div>
+    <input class="inp" type="number" id="eserv-mdo" value="${s.mdo}" style="margin-bottom:10px;margin-top:4px">
+    ${s.mats.length?`<div class="ilbl" style="margin-bottom:6px">Materiais (qtd. e preço unit.)</div><div style="background:var(--bg-input);border-radius:10px;padding:10px;margin-bottom:10px">${matsHTML}</div>`:''}
+    <div class="ilbl">Observação</div>
+    <input class="inp" id="eserv-obs" value="${s.obs||''}" style="margin-bottom:12px;margin-top:4px">
+    <div style="display:flex;gap:8px">
+      <button onclick="this.closest('[style*=fixed]').remove()" style="flex:1;padding:12px;background:var(--bg-input);border:1px solid var(--border-input);border-radius:12px;font-size:13px;font-weight:700;color:var(--text);cursor:pointer">Cancelar</button>
+      <button onclick="orcSalvarEditServ(${i},this)" style="flex:2;padding:12px;background:var(--acc);border:none;border-radius:12px;font-size:13px;font-weight:800;color:#000;cursor:pointer">Salvar</button>
+    </div>
+  </div>`;
+  document.body.appendChild(popup);
+}
+
+function orcSalvarEditServ(i,btn){
+  const popup=btn.closest('[style*="fixed"]');
+  orcServicos[i].mdo=parseFloat(document.getElementById('eserv-mdo').value)||orcServicos[i].mdo;
+  orcServicos[i].obs=document.getElementById('eserv-obs').value;
+  orcServicos[i].mats=orcServicos[i].mats.map((m,mi)=>{
+    const qt=parseFloat(document.getElementById(`eserv-mat-qt-${mi}`)?.value)||m.qt;
+    const p=parseFloat(document.getElementById(`eserv-mat-p-${mi}`)?.value)||m.p;
+    return {...m,qt,p,total:qt*p};
+  });
+  popup.remove();
+  orcRenderServicos();
+  orcCalcTotal();
+}
 
 // Busca de materiais extras
 function orcBuscarMat(q){
@@ -1283,12 +1577,45 @@ function orcRenderMateriais(){
           <div style="font-size:10px;color:var(--text3)">${m.qt}${m.un} × R$ ${m.p.toFixed(2)}${m.fab?' • '+m.fab:''}${m.obs?' — '+m.obs:''}</div>
         </div>
         <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#a78bfa">R$ ${m.total.toFixed(2)}</span>
+        <button onclick="orcEditarMat(${i})" style="width:24px;height:24px;border-radius:6px;background:var(--bg-input);border:1px solid var(--border-input);color:var(--text2);cursor:pointer;font-size:11px">✏️</button>
         <button onclick="orcRemMat(${i})" style="width:24px;height:24px;border-radius:6px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#f87171;cursor:pointer;font-size:10px">✕</button>
       </div>
     </div>`).join('');
 }
 
 function orcRemMat(i){orcMateriais.splice(i,1);orcRenderMateriais();orcCalcTotal();}
+
+function orcEditarMat(i){
+  const m=orcMateriais[i];
+  const popup=document.createElement('div');
+  popup.style.cssText='position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.6);display:flex;align-items:flex-end';
+  popup.innerHTML=`<div style="background:var(--bg-card);border-radius:20px 20px 0 0;width:100%;padding:16px">
+    <div style="font-size:14px;font-weight:800;color:var(--text);margin-bottom:14px">${m.ico} ${m.n}</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+      <div><div class="ilbl">Quantidade (${m.un})</div><input class="inp" type="number" id="emat-qt" value="${m.qt}" min="0.1" step="0.1" style="margin-top:4px"></div>
+      <div><div class="ilbl">Preço unitário (R$)</div><input class="inp" type="number" id="emat-p" value="${m.p}" min="0" style="margin-top:4px"></div>
+    </div>
+    <div class="ilbl">Fabricante / Marca</div>
+    <input class="inp" id="emat-fab" value="${m.fab||''}" style="margin-bottom:8px;margin-top:4px">
+    <div class="ilbl">Observação</div>
+    <input class="inp" id="emat-obs" value="${m.obs||''}" style="margin-bottom:12px;margin-top:4px">
+    <div style="display:flex;gap:8px">
+      <button onclick="this.closest('[style*=fixed]').remove()" style="flex:1;padding:12px;background:var(--bg-input);border:1px solid var(--border-input);border-radius:12px;font-size:13px;font-weight:700;color:var(--text);cursor:pointer">Cancelar</button>
+      <button onclick="orcSalvarEditMat(${i},this)" style="flex:2;padding:12px;background:var(--acc);border:none;border-radius:12px;font-size:13px;font-weight:800;color:#000;cursor:pointer">Salvar</button>
+    </div>
+  </div>`;
+  document.body.appendChild(popup);
+}
+
+function orcSalvarEditMat(i,btn){
+  const popup=btn.closest('[style*="fixed"]');
+  const qt=parseFloat(document.getElementById('emat-qt').value)||orcMateriais[i].qt;
+  const p=parseFloat(document.getElementById('emat-p').value)||orcMateriais[i].p;
+  orcMateriais[i]={...orcMateriais[i],qt,p,fab:document.getElementById('emat-fab').value,obs:document.getElementById('emat-obs').value,total:qt*p};
+  popup.remove();
+  orcRenderMateriais();
+  orcCalcTotal();
+}
 
 function orcCalcTotal(){
   const servTotal=orcServicos.reduce((s,sv)=>s+sv.mdo+sv.mats.reduce((a,m)=>a+m.total,0),0);
