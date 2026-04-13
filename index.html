@@ -1510,12 +1510,20 @@ function orcAdicionarServ(idx,btn){
     const chk=document.getElementById(`cfg-mat-chk-${mi}`);
     if(!chk?.checked) return null;
     const qt=parseFloat(document.getElementById(`cfg-mat-qt-${mi}`).value)||m.qt;
-    const det=document.getElementById(`mat-det-${mi}`)?.textContent||m.n;
+    const det=document.getElementById(`mat-det-${mi}`)?.textContent||'';
     return {...m,qt,det,total:qt*m.p};
   }).filter(Boolean);
-  orcServicos.push({...s,mdo,obs,mats,id:Date.now()});
+  // Serviço sem materiais na lista própria — materiais vão para orcMateriais
+  orcServicos.push({...s,mdo,obs,mats:[],id:Date.now()});
+  // Adiciona materiais à lista geral, ordenados por categoria
+  mats.forEach(m=>{
+    orcMateriais.push({...m,fab:'',obs:'',total:m.qt*m.p,origem:s.n,id:Date.now()+Math.random()});
+  });
+  // Ordena materiais por categoria
+  orcMateriais.sort((a,b)=>(a.cat||'').localeCompare(b.cat||'')||(a.n||'').localeCompare(b.n||''));
   popup.remove();
   orcRenderServicos();
+  orcRenderMateriais();
   orcCalcTotal();
 }
 
@@ -1524,17 +1532,17 @@ function orcRenderServicos(){
   document.getElementById('orc-serv-count').textContent=orcServicos.length?`${orcServicos.length} serviço${orcServicos.length>1?'s':''}`:'';
   lista.innerHTML=orcServicos.map((s,i)=>`
     <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:12px;padding:12px;margin-bottom:8px">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+      <div style="display:flex;align-items:center;gap:8px">
         <span style="font-size:16px">${s.ico}</span>
         <div style="flex:1">
           <div style="font-size:12px;font-weight:700;color:var(--text)">${s.n}</div>
           ${s.obs?`<div style="font-size:10px;color:var(--text3)">${s.obs}</div>`:''}
+          <div style="font-size:10px;color:var(--text3);margin-top:2px">${s.cat}${s.sub?' • '+s.sub:''}</div>
         </div>
         <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:var(--acc)">R$ ${s.mdo.toFixed(2)}</span>
         <button onclick="orcEditarServ(${i})" style="width:24px;height:24px;border-radius:6px;background:var(--bg-input);border:1px solid var(--border-input);color:var(--text2);cursor:pointer;font-size:11px">✏️</button>
         <button onclick="orcRemServ(${i})" style="width:24px;height:24px;border-radius:6px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#f87171;cursor:pointer;font-size:10px">✕</button>
       </div>
-      ${s.mats.length?`<div style="border-top:1px solid var(--border);padding-top:6px">${s.mats.map(m=>`<div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);padding:2px 0"><span>${m.det||m.n} × ${m.qt}${m.un}</span><span>R$ ${m.total.toFixed(2)}</span></div>`).join('')}</div>`:''}
     </div>`).join('');
 }
 
@@ -1637,33 +1645,61 @@ function orcConfirmarMat(idx,btn){
 
 function orcRenderMateriais(){
   const lista=document.getElementById('orc-mat-lista');
-  document.getElementById('orc-mat-count').textContent=orcMateriais.length?`${orcMateriais.length} item${orcMateriais.length>1?'s':''}`:'';
-  lista.innerHTML=orcMateriais.map((m,i)=>`
-    <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:12px;padding:12px;margin-bottom:8px">
-      <div style="display:flex;align-items:center;gap:8px">
-        <span style="font-size:16px">${m.ico}</span>
-        <div style="flex:1">
-          <div style="font-size:12px;font-weight:700;color:var(--text)">${m.n}</div>
-          <div style="font-size:10px;color:var(--text3)">${m.qt}${m.un} × R$ ${m.p.toFixed(2)}${m.fab?' • '+m.fab:''}${m.obs?' — '+m.obs:''}</div>
-        </div>
-        <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#a78bfa">R$ ${m.total.toFixed(2)}</span>
-        <button onclick="orcEditarMat(${i})" style="width:24px;height:24px;border-radius:6px;background:var(--bg-input);border:1px solid var(--border-input);color:var(--text2);cursor:pointer;font-size:11px">✏️</button>
-        <button onclick="orcRemMat(${i})" style="width:24px;height:24px;border-radius:6px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#f87171;cursor:pointer;font-size:10px">✕</button>
-      </div>
-    </div>`).join('');
+  const total=orcMateriais.length;
+  document.getElementById('orc-mat-count').textContent=total?`${total} item${total>1?'s':''}`:'';
+  if(!total){lista.innerHTML='';return;}
+  // Agrupa por categoria para exibir com cabeçalho
+  const cats=[...new Set(orcMateriais.map(m=>m.cat))];
+  lista.innerHTML=cats.map(cat=>{
+    const itens=orcMateriais.map((m,i)=>({...m,_i:i})).filter(m=>m.cat===cat);
+    return `<div style="margin-bottom:10px">
+      <div style="font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--text3);padding:4px 2px;margin-bottom:4px">${cat}</div>
+      ${itens.map(m=>`
+        <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:12px;padding:10px 12px;margin-bottom:6px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:15px">${m.ico}</span>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:12px;font-weight:700;color:var(--text)">${m.det?`${m.n} · ${m.det}`:m.n}</div>
+              <div style="font-size:10px;color:var(--text3);margin-top:1px">
+                ${m.un==='m'?`${m.qt} metros`:`${m.qt} ${m.un}`} × R$ ${m.p.toFixed(2)}
+                ${m.fab?'· '+m.fab:''}
+                ${m.origem?`<span style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);border-radius:4px;padding:1px 5px;margin-left:3px;color:var(--acc);font-size:9px">${m.origem}</span>`:''}
+              </div>
+            </div>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#a78bfa;flex-shrink:0">R$ ${m.total.toFixed(2)}</span>
+            <button onclick="orcEditarMat(${m._i})" style="width:24px;height:24px;border-radius:6px;background:var(--bg-input);border:1px solid var(--border-input);color:var(--text2);cursor:pointer;font-size:11px;flex-shrink:0">✏️</button>
+            <button onclick="orcRemMat(${m._i})" style="width:24px;height:24px;border-radius:6px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#f87171;cursor:pointer;font-size:10px;flex-shrink:0">✕</button>
+          </div>
+        </div>`).join('')}
+    </div>`;
+  }).join('');
 }
 
 function orcRemMat(i){orcMateriais.splice(i,1);orcRenderMateriais();orcCalcTotal();}
 
 function orcEditarMat(i){
   const m=orcMateriais[i];
+  const unLabel=m.un==='m'?'Metros':'Unidades';
+  const specsHTML=matSpecsHTML(m,9900+i);
   const popup=document.createElement('div');
   popup.style.cssText='position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.6);display:flex;align-items:flex-end';
-  popup.innerHTML=`<div style="background:var(--bg-card);border-radius:20px 20px 0 0;width:100%;padding:16px">
-    <div style="font-size:14px;font-weight:800;color:var(--text);margin-bottom:14px">${m.ico} ${m.n}</div>
+  popup.innerHTML=`<div style="background:var(--bg-card);border-radius:20px 20px 0 0;width:100%;max-height:85vh;overflow-y:auto;padding:16px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+      <span style="font-size:20px">${m.ico}</span>
+      <div style="flex:1">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:4px">${m.cat}${m.origem?` · ${m.origem}`:''}</div>
+        <input class="inp" id="emat-nome" value="${m.det?m.n+' · '+m.det:m.n}" style="margin-bottom:0;font-weight:700">
+      </div>
+    </div>
+    ${specsHTML?`<div style="background:var(--bg-input);border-radius:10px;padding:10px;margin-bottom:12px;display:flex;flex-wrap:wrap;gap:4px;align-items:center">${specsHTML}</div>`:''}
+    <div id="emat-det-${9900+i}" style="font-size:10px;color:var(--acc);margin-bottom:10px;min-height:14px"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
-      <div><div class="ilbl">Quantidade (${m.un})</div><input class="inp" type="number" id="emat-qt" value="${m.qt}" min="0.1" step="0.1" style="margin-top:4px"></div>
-      <div><div class="ilbl">Preço unitário (R$)</div><input class="inp" type="number" id="emat-p" value="${m.p}" min="0" style="margin-top:4px"></div>
+      <div><div class="ilbl">${unLabel}</div><input class="inp" type="number" id="emat-qt" value="${m.qt}" min="0.1" step="0.1" style="margin-top:4px" onchange="document.getElementById('emat-total').textContent='R$ '+(this.value*parseFloat(document.getElementById('emat-p').value)).toFixed(2)"></div>
+      <div><div class="ilbl">Preço / ${m.un==='m'?'metro':'un'} (R$)</div><input class="inp" type="number" id="emat-p" value="${m.p}" min="0" style="margin-top:4px" onchange="document.getElementById('emat-total').textContent='R$ '+(this.value*parseFloat(document.getElementById('emat-qt').value)).toFixed(2)"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;background:var(--acc-bg);border:1px solid var(--acc-border);border-radius:10px;padding:10px 12px;margin-bottom:10px">
+      <span style="font-size:11px;color:var(--text3)">Total</span>
+      <span id="emat-total" style="font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:700;color:var(--acc)">R$ ${m.total.toFixed(2)}</span>
     </div>
     <div class="ilbl">Fabricante / Marca</div>
     <input class="inp" id="emat-fab" value="${m.fab||''}" style="margin-bottom:8px;margin-top:4px">
@@ -1681,14 +1717,26 @@ function orcSalvarEditMat(i,btn){
   const popup=btn.closest('[style*="fixed"]');
   const qt=parseFloat(document.getElementById('emat-qt').value)||orcMateriais[i].qt;
   const p=parseFloat(document.getElementById('emat-p').value)||orcMateriais[i].p;
-  orcMateriais[i]={...orcMateriais[i],qt,p,fab:document.getElementById('emat-fab').value,obs:document.getElementById('emat-obs').value,total:qt*p};
+  const nomeEditado=document.getElementById('emat-nome').value||orcMateriais[i].n;
+  // Separa nome do det se o usuário não editou manualmente
+  orcMateriais[i]={
+    ...orcMateriais[i],
+    n:nomeEditado,
+    det:'',
+    qt,p,
+    fab:document.getElementById('emat-fab').value,
+    obs:document.getElementById('emat-obs').value,
+    total:qt*p
+  };
   popup.remove();
+  orcMateriais.sort((a,b)=>(a.cat||'').localeCompare(b.cat||'')||(a.n||'').localeCompare(b.n||''));
   orcRenderMateriais();
   orcCalcTotal();
 }
 
 function orcCalcTotal(){
-  const servTotal=orcServicos.reduce((s,sv)=>s+sv.mdo+sv.mats.reduce((a,m)=>a+m.total,0),0);
+  // Serviços: só mão de obra (materiais já estão em orcMateriais)
+  const servTotal=orcServicos.reduce((s,sv)=>s+sv.mdo,0);
   const matTotal=orcMateriais.reduce((s,m)=>s+m.total,0);
   const desc=parseFloat(document.getElementById('orc-desc').value)||0;
   const acre=parseFloat(document.getElementById('orc-acre').value)||0;
@@ -1699,7 +1747,7 @@ function orcCalcTotal(){
   const kmTotal=km*kmVal;
   const total=subtotal-descVal+acre+kmTotal;
   document.getElementById('orc-total-val').textContent='R$ '+total.toFixed(2).replace('.',',');
-  document.getElementById('orc-total-sub').textContent=`Serv: R$ ${servTotal.toFixed(2)} | Mat: R$ ${matTotal.toFixed(2)} | Km: R$ ${kmTotal.toFixed(2)}`;
+  document.getElementById('orc-total-sub').textContent=`M.O.: R$ ${servTotal.toFixed(2)} | Mat: R$ ${matTotal.toFixed(2)} | Km: R$ ${kmTotal.toFixed(2)}`;
   document.querySelector('.btn-calc').textContent=total>0?`⚡ TOTAL: R$ ${total.toFixed(2).replace('.',',')} — Recalcular`:'⚡ CALCULAR TOTAL';
 }
 
