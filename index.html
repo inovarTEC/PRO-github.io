@@ -1380,40 +1380,117 @@ function orcBuscarServ(q){
 }
 
 // Configurador de serviço
+// ── SPECS INLINE POR CATEGORIA ──
+const MAT_SPECS={
+  'Tomada':{specs:[{k:'tipo',ops:['Simples','Dupla','Tripla']},{k:'amp',ops:['10A','20A']},{k:'inst',ops:['Embutir','Sobrepor']},{k:'cx',ops:['4x2','4x4']}]},
+  'Cabo flexível':{specs:[{k:'bit',ops:['1,5mm²','2,5mm²','4mm²','6mm²','10mm²']},{k:'cor',tipo:'cor',ops:[{n:'Preto',c:'#222'},{n:'Vermelho',c:'#e53'},{n:'Azul',c:'#3af'},{n:'Verde',c:'#3c3'},{n:'Amarelo',c:'#fa0'},{n:'Branco',c:'#eee'}]},{k:'mt',ops:['5m','25m','50m','100m','✏️']}]},
+  'Cabo PP':{specs:[{k:'bit',ops:['2x1,5mm²','2x2,5mm²','3x2,5mm²','4x2,5mm²']},{k:'cor',tipo:'cor',ops:[{n:'Preto',c:'#222'},{n:'Cinza',c:'#888'},{n:'Branco',c:'#eee'}]},{k:'mt',ops:['5m','10m','25m','50m','✏️']}]},
+  'Eletroduto':{specs:[{k:'tipo',ops:['Corrugado','Rígido PVC','Metálico']},{k:'bit',ops:['1/2"','3/4"','1"','1.1/4"','2"']}]},
+  'Caixa':{specs:[{k:'tipo',ops:['4x2','4x4','Octogonal','10x10cm','20x20cm']},{k:'inst',ops:['Embutir','Sobrepor']}]},
+  'Disjuntor':{specs:[{k:'amp',ops:['10A','16A','20A','25A','32A','40A','50A','63A']},{k:'polo',ops:['Monopolar','Bipolar','Tripolar']},{k:'curva',ops:['Curva B','Curva C','Curva D']}]},
+  'Interruptor':{specs:[{k:'tipo',ops:['Simples','Duplo','Paralelo','Intermediário','Dimmer']},{k:'inst',ops:['Embutir','Sobrepor']}]},
+  'Luminária':{specs:[{k:'tipo',ops:['Embutida','Sobrepor','Tubular','Spot','Emergência']},{k:'pot',ops:['9W','12W','18W','36W']}]},
+  'DR':{specs:[{k:'amp',ops:['25A','40A','63A']},{k:'sens',ops:['30mA','100mA','300mA']}]},
+  'DPS':{specs:[{k:'tensao',ops:['127V','220V','380V']}]},
+  'Haste':{specs:[{k:'comp',ops:['2,4m','3m']}]},
+  'Contator':{specs:[{k:'amp',ops:['9A','18A','32A','65A']},{k:'bobina',ops:['24V','110V','220V','380V']}]},
+  'Relé':{specs:[{k:'tipo',ops:['Térmico','Falta de fase','Nível','Temporizador']}]},
+  'Botoeira':{specs:[{k:'tipo',ops:['Liga','Desliga','Emergência','Sinaleiro']}]},
+};
+
+function matGetSpecs(nome){
+  const k=Object.keys(MAT_SPECS).find(k=>nome.toLowerCase().includes(k.toLowerCase()));
+  return k?MAT_SPECS[k]:null;
+}
+
+function matSpecsHTML(m,mi){
+  const specs=matGetSpecs(m.n);
+  if(!specs) return '';
+  const uid=`ms${mi}`;
+  return specs.specs.map(s=>{
+    if(s.tipo==='cor'){
+      return s.ops.map((op,oi)=>`<button data-uid="${uid}" data-k="${s.k}" data-cor="${op.n}" onclick="matSelCor(this)" style="width:12px;height:12px;border-radius:50%;background:${op.c};border:1.5px solid ${oi===0?'var(--acc)':'var(--border-input)'};cursor:pointer;padding:0;flex-shrink:0;${oi===0?'outline:2px solid var(--acc);outline-offset:1px':''}"></button>`).join('');
+    }
+    const sep=`<span style="color:var(--border-input);font-size:10px;margin:0 1px">·</span>`;
+    return s.ops.map((op,oi)=>`<button data-uid="${uid}" data-k="${s.k}" onclick="matSelSpec(this,'${uid}','${s.k}',${mi})" style="padding:2px 6px;border-radius:20px;border:0.5px solid ${oi===0?'var(--acc)':'var(--border-input)'};background:${oi===0?'var(--acc-bg)':'transparent'};font-size:10px;color:${oi===0?'var(--acc)':'var(--text3)'};cursor:pointer;white-space:nowrap;flex-shrink:0">${op}</button>`).join('')+sep;
+  }).join('');
+}
+
+function matSelSpec(el,uid,k,mi){
+  // Desseleciona do mesmo grupo
+  document.querySelectorAll(`[data-uid="${uid}"][data-k="${k}"]`).forEach(b=>{
+    b.style.borderColor='var(--border-input)';b.style.background='transparent';b.style.color='var(--text3)';
+  });
+  el.style.borderColor='var(--acc)';el.style.background='var(--acc-bg)';el.style.color='var(--acc)';
+  // Metragem personalizada
+  if(el.textContent==='✏️'){
+    const v=prompt('Metragem (m):');
+    if(v&&parseFloat(v)>0) el.textContent=parseFloat(v)+'m';
+  }
+  matAtualizaDet(mi);
+}
+
+function matSelCor(el){
+  const uid=el.dataset.uid, k=el.dataset.k;
+  document.querySelectorAll(`[data-uid="${uid}"][data-k="${k}"]`).forEach(b=>{
+    b.style.outline='none';
+  });
+  el.style.outline='2px solid var(--acc)';el.style.outlineOffset='1px';
+  const mi=parseInt(uid.replace('ms',''));
+  matAtualizaDet(mi);
+}
+
+function matAtualizaDet(mi){
+  const det=document.getElementById(`mat-det-${mi}`);
+  if(!det) return;
+  const uid=`ms${mi}`;
+  const partes=[];
+  // Coleta specs selecionadas
+  const grupos=[...new Set([...document.querySelectorAll(`[data-uid="${uid}"]`)].map(b=>b.dataset.k))];
+  grupos.forEach(k=>{
+    const btns=[...document.querySelectorAll(`[data-uid="${uid}"][data-k="${k}"]`)];
+    // Cor: pega o com outline
+    if(btns[0]?.dataset.cor){
+      const sel=btns.find(b=>b.style.outline&&b.style.outline!=='none'&&b.style.outline!=='');
+      if(sel) partes.push(sel.dataset.cor);
+    } else {
+      // Spec: pega o selecionado (bg != transparent)
+      const sel=btns.find(b=>b.style.background&&b.style.background!=='transparent');
+      if(sel&&sel.textContent!=='·') partes.push(sel.textContent.trim());
+    }
+  });
+  det.textContent=partes.filter(p=>p&&p!=='✏️').join(' · ');
+}
+
 function orcAbrirConfig(idx){
   document.getElementById('orc-serv-resultados').style.display='none';
   document.getElementById('orc-serv-busca').value='';
   const s=ORC_SERVICOS[idx];
-  const configHTML=s.config.map((c,ci)=>`
-    <div style="margin-bottom:10px">
-      <div class="ilbl">${c.lbl}</div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:5px">
-        ${c.ops.map((op,oi)=>`<button class="ferr-pill${oi===0?' on':''}" onclick="orcSelConfig(this,'cfg-${ci}')" data-extra="${c.precos[oi]}">${op}</button>`).join('')}
-      </div>
-    </div>`).join('');
   const matsHTML=s.mats.map((m,mi)=>`
-    <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border)" id="cfg-mat-${mi}">
-      <input type="checkbox" checked id="cfg-mat-chk-${mi}" style="accent-color:var(--acc);width:16px;height:16px">
-      <span style="flex:1;font-size:12px;color:var(--text2)">${m.n}</span>
-      <input type="number" value="${m.qt}" min="0.1" step="0.1" id="cfg-mat-qt-${mi}" style="width:55px;background:var(--bg-input);border:1px solid var(--border-input);border-radius:7px;padding:4px 6px;font-size:12px;color:var(--text);text-align:center">
-      <span style="font-size:10px;color:var(--text3)">${m.un}</span>
-      <span style="font-size:10px;color:var(--acc);font-family:'IBM Plex Mono',monospace">R$ ${m.p}</span>
+    <div style="border-bottom:0.5px solid var(--border);padding:8px 2px">
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+        <input type="checkbox" checked id="cfg-mat-chk-${mi}" style="accent-color:var(--acc);width:15px;height:15px;flex-shrink:0">
+        <span style="font-size:12px;font-weight:700;color:var(--text);min-width:80px;flex-shrink:0">${m.n}</span>
+        <div style="display:flex;align-items:center;flex-wrap:wrap;gap:3px;flex:1">${matSpecsHTML(m,mi)}</div>
+        <input type="number" value="${m.qt}" min="0.1" step="0.1" id="cfg-mat-qt-${mi}" style="width:44px;background:var(--bg-input);border:1px solid var(--border-input);border-radius:7px;padding:3px 4px;font-size:11px;color:var(--text);text-align:center;flex-shrink:0">
+        <span style="font-size:9px;color:var(--text3)">${m.un}</span>
+      </div>
+      <div id="mat-det-${mi}" style="font-size:10px;color:var(--acc);margin-top:3px;padding-left:21px"></div>
     </div>`).join('');
   const popup=document.createElement('div');
   popup.style.cssText='position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.6);display:flex;align-items:flex-end';
   popup.innerHTML=`<div style="background:var(--bg-card);border-radius:20px 20px 0 0;width:100%;max-height:85vh;overflow-y:auto;padding:16px">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
       <span style="font-size:20px">${s.ico}</span>
-      <div style="flex:1"><div style="font-size:14px;font-weight:800;color:var(--text)">${s.n}</div><div style="font-size:11px;color:var(--text3)">${s.cat}</div></div>
+      <div style="flex:1"><div style="font-size:14px;font-weight:800;color:var(--text)">${s.n}</div><div style="font-size:11px;color:var(--text3)">${s.cat}${s.sub?' • '+s.sub:''}</div></div>
     </div>
-    ${configHTML?`<div style="background:var(--bg-input);border-radius:10px;padding:12px;margin-bottom:12px">${configHTML}</div>`:''}
     <div class="ilbl" style="margin-bottom:6px">Mão de obra</div>
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
       <span style="font-size:12px;color:var(--text2)">R$</span>
       <input type="number" id="cfg-mdo" value="${s.p}" style="flex:1;background:var(--bg-input);border:1px solid var(--border-input);border-radius:10px;padding:10px;font-size:14px;font-weight:700;color:var(--text);font-family:'IBM Plex Mono',monospace">
       <span style="font-size:10px;color:var(--text3)">por serviço</span>
     </div>
-    ${s.mats.length?`<div class="ilbl" style="margin-bottom:6px">Materiais incluídos</div><div style="background:var(--bg-input);border-radius:10px;padding:10px;margin-bottom:12px">${matsHTML}</div>`:''}
+    ${s.mats.length?`<div class="ilbl" style="margin-bottom:6px">Materiais incluídos</div><div style="background:var(--bg-input);border-radius:10px;padding:8px 10px;margin-bottom:12px">${matsHTML}</div>`:''}
     <div class="ilbl" style="margin-bottom:4px">Observação</div>
     <input class="inp" id="cfg-obs" type="text" placeholder="Detalhe do serviço..." style="margin-bottom:12px">
     <div style="display:flex;gap:8px">
@@ -1424,26 +1501,19 @@ function orcAbrirConfig(idx){
   document.body.appendChild(popup);
 }
 
-function orcSelConfig(el,grupo){
-  el.closest('[style]').querySelectorAll('.ferr-pill').forEach(b=>b.classList.remove('on'));
-  el.classList.add('on');
-}
-
 function orcAdicionarServ(idx,btn){
   const popup=btn.closest('[style*="fixed"]');
   const s=ORC_SERVICOS[idx];
-  // Calcula extras de config
-  let extra=0;
-  popup.querySelectorAll('.ferr-pill.on[data-extra]').forEach(b=>extra+=parseFloat(b.dataset.extra)||0);
   const mdo=parseFloat(document.getElementById('cfg-mdo').value)||s.p;
   const obs=document.getElementById('cfg-obs').value;
-  // Coleta materiais selecionados
   const mats=s.mats.map((m,mi)=>{
     const chk=document.getElementById(`cfg-mat-chk-${mi}`);
+    if(!chk?.checked) return null;
     const qt=parseFloat(document.getElementById(`cfg-mat-qt-${mi}`).value)||m.qt;
-    return chk?.checked?{...m,qt,total:qt*m.p}:null;
+    const det=document.getElementById(`mat-det-${mi}`)?.textContent||m.n;
+    return {...m,qt,det,total:qt*m.p};
   }).filter(Boolean);
-  orcServicos.push({...s,mdo:mdo+extra,obs,mats,id:Date.now()});
+  orcServicos.push({...s,mdo,obs,mats,id:Date.now()});
   popup.remove();
   orcRenderServicos();
   orcCalcTotal();
@@ -1464,7 +1534,7 @@ function orcRenderServicos(){
         <button onclick="orcEditarServ(${i})" style="width:24px;height:24px;border-radius:6px;background:var(--bg-input);border:1px solid var(--border-input);color:var(--text2);cursor:pointer;font-size:11px">✏️</button>
         <button onclick="orcRemServ(${i})" style="width:24px;height:24px;border-radius:6px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#f87171;cursor:pointer;font-size:10px">✕</button>
       </div>
-      ${s.mats.length?`<div style="border-top:1px solid var(--border);padding-top:6px">${s.mats.map(m=>`<div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);padding:2px 0"><span>${m.n} × ${m.qt}${m.un}</span><span>R$ ${m.total.toFixed(2)}</span></div>`).join('')}</div>`:''}
+      ${s.mats.length?`<div style="border-top:1px solid var(--border);padding-top:6px">${s.mats.map(m=>`<div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);padding:2px 0"><span>${m.det||m.n} × ${m.qt}${m.un}</span><span>R$ ${m.total.toFixed(2)}</span></div>`).join('')}</div>`:''}
     </div>`).join('');
 }
 
