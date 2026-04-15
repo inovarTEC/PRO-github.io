@@ -1041,50 +1041,50 @@ const SRV = [
   // Instalação
   {id:'s001',ico:'🔌',n:'Ponto de tomada TUG',cat:'Instalação',p:80,un:'pt',cfg:'tomada'},
   {id:'s002',ico:'🔌',n:'Ponto de tomada TUE 20A',cat:'Instalação',p:130,un:'pt',cfg:'tomada'},
-  {id:'s003',ico:'💡',n:'Ponto de iluminação',cat:'Instalação',p:70,un:'pt',mats:['m001','m026','m051']},
+  {id:'s003',ico:'💡',n:'Ponto de iluminação',cat:'Instalação',p:70,un:'pt',cfg:'iluminacao'},
   {id:'s004',ico:'🚿',n:'Instalação de chuveiro elétrico',cat:'Instalação',p:150,un:'un',cfg:'chuveiro'},
   {id:'s005',ico:'❄️',n:'Instalação de ar-condicionado split',cat:'Instalação',p:380,un:'un',cfg:'ar'},
   {id:'s006',ico:'💧',n:"Instalação de bomba d'água",cat:'Instalação',p:300,un:'un',cfg:'bomba'},
   {id:'s007',ico:'🚗',n:'Instalação de portão elétrico',cat:'Instalação',p:350,un:'un'},
-  {id:'s008',ico:'🔆',n:'Instalação de luminária de teto',cat:'Instalação',p:80,un:'un',mats:['m026','m051','m049','m050']},
-  {id:'s009',ico:'🔆',n:'Instalação de lustre/pendente',cat:'Instalação',p:120,un:'un',mats:['m026','m051']},
+  {id:'s008',ico:'🔆',n:'Instalação de luminária de teto',cat:'Instalação',p:80,un:'un',cfg:'iluminacao'},
+  {id:'s009',ico:'🔆',n:'Instalação de lustre/pendente',cat:'Instalação',p:120,un:'un',cfg:'iluminacao'},
   {id:'s010',ico:'📺',n:'Tomada TV / antena / rede',cat:'Instalação',p:90,un:'pt'},
-  {id:'s011',ico:'⚡',n:'Interruptor simples',cat:'Instalação',p:60,un:'pt',mats:['m001','m026','m034','m038']},
-  {id:'s012',ico:'⚡',n:'Interruptor duplo',cat:'Instalação',p:80,un:'pt',mats:['m001','m026','m035','m038']},
-  {id:'s013',ico:'⚡',n:'Interruptor three-way',cat:'Instalação',p:120,un:'pt',mats:['m001','m026','m036','m038']},
-  {id:'s014',ico:'💡',n:'Dimmer',cat:'Instalação',p:150,un:'pt',mats:['m001','m026','m037','m038']},
+  {id:'s011',ico:'⚡',n:'Interruptor simples',cat:'Instalação',p:60,un:'pt',cfg:'interruptor'},
+  {id:'s012',ico:'⚡',n:'Interruptor duplo',cat:'Instalação',p:80,un:'pt',cfg:'interruptor'},
+  {id:'s013',ico:'⚡',n:'Interruptor three-way',cat:'Instalação',p:120,un:'pt',cfg:'interruptor'},
+  {id:'s014',ico:'💡',n:'Dimmer',cat:'Instalação',p:150,un:'pt',cfg:'interruptor'},
   {id:'s015',ico:'🏠',n:'Instalação elétrica residencial completa',cat:'Instalação',p:4500,un:'un'},
   {id:'s016',ico:'🏢',n:'Instalação elétrica comercial completa',cat:'Instalação',p:8000,un:'un'},
   {id:'s017',ico:'☀️',n:'Instalação solar fotovoltaica',cat:'Instalação',p:3500,un:'un'},
   {id:'s018',ico:'🔋',n:'Instalação de nobreak / estabilizador',cat:'Instalação',p:180,un:'un'},
   {id:'s019',ico:'🔌',n:'Tomada 3P+T industrial 32A',cat:'Instalação',p:160,un:'pt'},
   {id:'s020',ico:'🚿',n:'Instalação de aquecedor de passagem',cat:'Instalação',p:200,un:'un'},
-  {id:'s021',ico:'🔦',n:'Instalação de refletor externo',cat:'Instalação',p:130,un:'un',mats:['m009','m047','m049','m050']},
+  {id:'s021',ico:'🔦',n:'Instalação de refletor externo',cat:'Instalação',p:130,un:'un',cfg:'iluminacao'},
   {id:'s022',ico:'📡',n:'Cabeamento de dados (ponto RJ45)',cat:'Instalação',p:120,un:'pt'},
   // Manutenção
   {id:'s023',ico:'🔧',n:'Revisão geral da instalação',cat:'Manutenção',p:250,un:'un'},
   {id:'s024',ico:'🔍',n:'Diagnóstico e localização de defeito',cat:'Manutenção',p:150,un:'un'},
-  {id:'s025',ico:'🔧',n:'Substituição de tomada',cat:'Manutenção',p:60,un:'pt',mats:['m032','m026','m038']},
-  {id:'s026',ico:'🔧',n:'Substituição de interruptor',cat:'Manutenção',p:60,un:'pt',mats:['m034','m026','m038']},
+  {id:'s025',ico:'🔧',n:'Substituição de tomada',cat:'Manutenção',p:60,un:'pt',cfg:'tomada'},
+  {id:'s026',ico:'🔧',n:'Substituição de interruptor',cat:'Manutenção',p:60,un:'pt',cfg:'interruptor'},
   {id:'s027',ico:'🔧',n:'Substituição de chuveiro elétrico',cat:'Manutenção',p:100,un:'un'},
   {id:'s028',ico:'🔧',n:'Reparo em curto-circuito',cat:'Manutenção',p:200,un:'un'},
   {id:'s029',ico:'🔧',n:'Troca de cabo queimado',cat:'Manutenção',p:20,un:'m'},
   {id:'s030',ico:'🔆',n:'Substituição de lâmpada',cat:'Manutenção',p:30,un:'pt',mats:['m039','m040']},
   {id:'s031',ico:'🔆',n:'Substituição de luminária',cat:'Manutenção',p:80,un:'un'},
-  {id:'s032',ico:'⚡',n:'Instalação de DPS (proteção surto)',cat:'Manutenção',p:200,un:'un',mats:['m021']},
+  {id:'s032',ico:'⚡',n:'Instalação de DPS (proteção surto)',cat:'Manutenção',p:200,un:'un',cfg:'dr'},
   // Quadros
   {id:'s033',ico:'🗂️',n:'Montagem de quadro de distribuição (QD)',cat:'Quadros',p:350,un:'un',cfg:'qd'},
   {id:'s034',ico:'🗂️',n:'Revisão de quadro de distribuição',cat:'Quadros',p:180,un:'un'},
-  {id:'s035',ico:'⚙️',n:'Substituição de disjuntor',cat:'Quadros',p:80,un:'un',mats:['m012','m013','m014']},
-  {id:'s036',ico:'⚙️',n:'Instalação de DR/DPS no QD',cat:'Quadros',p:150,un:'un',mats:['m020','m021']},
+  {id:'s035',ico:'⚙️',n:'Substituição de disjuntor',cat:'Quadros',p:80,un:'un',cfg:'disjuntor'},
+  {id:'s036',ico:'⚙️',n:'Instalação de DR/DPS no QD',cat:'Quadros',p:150,un:'un',cfg:'dr'},
   {id:'s037',ico:'🗂️',n:'Identificação e etiquetagem do QD',cat:'Quadros',p:120,un:'un'},
   // Iluminação
-  {id:'s038',ico:'💡',n:'Instalação de spot LED embutir',cat:'Iluminação',p:60,un:'pt',mats:['m042','m001','m026']},
+  {id:'s038',ico:'💡',n:'Instalação de spot LED embutir',cat:'Iluminação',p:60,un:'pt',cfg:'iluminacao'},
   {id:'s039',ico:'💡',n:'Instalação de fita LED',cat:'Iluminação',p:45,un:'m',mats:['m041']},
-  {id:'s040',ico:'🔆',n:'Instalação de luminária de sobrepor',cat:'Iluminação',p:80,un:'un'},
-  {id:'s041',ico:'🔆',n:'Iluminação externa (ponto)',cat:'Iluminação',p:150,un:'pt'},
-  {id:'s042',ico:'💡',n:'Instalação de arandela',cat:'Iluminação',p:90,un:'un'},
-  {id:'s043',ico:'💡',n:'Iluminação de emergência',cat:'Iluminação',p:180,un:'un'},
+  {id:'s040',ico:'🔆',n:'Instalação de luminária de sobrepor',cat:'Iluminação',p:80,un:'un',cfg:'iluminacao'},
+  {id:'s041',ico:'🔆',n:'Iluminação externa (ponto)',cat:'Iluminação',p:150,un:'pt',cfg:'iluminacao'},
+  {id:'s042',ico:'💡',n:'Instalação de arandela',cat:'Iluminação',p:90,un:'un',cfg:'iluminacao'},
+  {id:'s043',ico:'💡',n:'Iluminação de emergência',cat:'Iluminação',p:180,un:'un',cfg:'iluminacao'},
   // Infraestrutura
   {id:'s044',ico:'🏗️',n:'Abertura e fechamento de rasgo',cat:'Infraestrutura',p:45,un:'m'},
   {id:'s045',ico:'🏗️',n:'Passagem de eletroduto',cat:'Infraestrutura',p:28,un:'m'},
@@ -1288,24 +1288,37 @@ const FIOS_PADRAO = [
   {cor:'Vermelho (Fase)',       emoji:'🔴'}
 ];
 
+// Seções reutilizáveis de cabeamento e conduíte
+const SECAO_CABO = (bitolaDefault='2,5mm²', metrosDefault=3, bitolas=['1,5mm²','2,5mm²','4mm²','6mm²','10mm²']) => ({
+  tipo:'secao', k:'tem_cabo', label:'Cabeamento',
+  cor:'#ef4444', icone:'🔴',
+  filhos:[
+    {tipo:'chips', k:'cabo_bitola', label:'Bitola do cabo', chips: bitolas, default: bitolaDefault},
+    {tipo:'number', k:'cabo_metros', label:'Comprimento (metros)', default: metrosDefault, min:1},
+    {tipo:'chips', k:'cabo_forma', label:'Como comprar', chips:['Por metro','Rolo 25m','Rolo 50m','Rolo 100m'], default:'Por metro'},
+    {tipo:'fios', k:'fios', label:'Fios (cores padrão)', default: FIOS_PADRAO},
+  ]
+});
+
+const SECAO_CONDUITE = () => ({
+  tipo:'secao', k:'tem_conduíte', label:'Conduíte',
+  cor:'#3b82f6', icone:'⬜',
+  filhos:[
+    {tipo:'chips', k:'cond_tipo', label:'Tipo de conduíte', chips:['Rígido PVC','Flexível PVC','Canaleta PVC'], default:'Rígido PVC'},
+    {tipo:'chips', k:'cond_diam', label:'Diâmetro', chips:['1/2"','3/4"','1"','1 1/4"'], default:'3/4"'},
+    {tipo:'number', k:'cond_metros', label:'Comprimento (metros)', default:3, min:1},
+  ]
+});
+
 const SERVICOS_CFG = {
   // ─── TOMADA ───────────────────────────────────────────────
   tomada: {
     label:'Ponto de Tomada',
     basePrice:{tipo:{'TUG 10A':80,'TUG 20A':130,'TUE 32A':180}},
     modulos:[
-      // 1. Tipo + quantidade
-      {
-        tipo:'chips', k:'tipo', label:'Tipo de tomada',
-        chips:['TUG 10A','TUG 20A','TUE 32A'], default:'TUG 10A'
-      },
-      {
-        tipo:'number', k:'qt', label:'Quantidade de pontos', default:1, min:1
-      },
-      // 2. Tomada ON/OFF → subtipo + caixa
-      {
-        tipo:'secao', k:'tem_tomada', label:'Tomadas',
-        cor:'#f59e0b', icone:'🔌',
+      {tipo:'chips', k:'tipo', label:'Tipo de tomada', chips:['TUG 10A','TUG 20A','TUE 32A'], default:'TUG 10A'},
+      {tipo:'number', k:'qt', label:'Quantidade de pontos', default:1, min:1},
+      {tipo:'secao', k:'tem_tomada', label:'Tomadas', cor:'#f59e0b', icone:'🔌',
         filhos:[
           {tipo:'chips', k:'tom_tipo', label:'Tipo de instalação', chips:['Embutir','Sobrepor'], default:'Embutir'},
           {tipo:'chips', k:'tom_caixa', label:'Caixa', chips:['4×2','4×4'], default:'4×2'},
@@ -1313,124 +1326,165 @@ const SERVICOS_CFG = {
           {tipo:'chips', k:'tom_placa', label:'Placa de acabamento', chips:['Com placa','Sem placa'], default:'Com placa'},
         ]
       },
-      // 3. Cabeamento ON/OFF
-      {
-        tipo:'secao', k:'tem_cabo', label:'Cabeamento',
-        cor:'#ef4444', icone:'🔴',
+      SECAO_CABO('2,5mm²', 3),
+      SECAO_CONDUITE(),
+    ]
+  },
+  // ─── ILUMINAÇÃO ───────────────────────────────────────────
+  iluminacao: {
+    label:'Ponto de Iluminação',
+    basePrice:{tipo_luz:{'Ponto simples':70,'Spot LED':60,'Luminária sobrepor':80,'Arandela':90,'Emergência':180}},
+    modulos:[
+      {tipo:'chips', k:'tipo_luz', label:'Tipo', chips:['Ponto simples','Spot LED','Luminária sobrepor','Arandela','Emergência'], default:'Ponto simples'},
+      {tipo:'number', k:'qt', label:'Quantidade de pontos', default:1, min:1},
+      {tipo:'secao', k:'tem_caixa', label:'Caixa de instalação', cor:'#f59e0b', icone:'📦',
         filhos:[
-          {tipo:'chips', k:'cabo_bitola', label:'Bitola do cabo', chips:['1,5mm²','2,5mm²','4mm²','6mm²','10mm²'], default:'2,5mm²'},
-          {tipo:'number', k:'cabo_metros', label:'Comprimento (metros)', default:3, min:1},
-          {tipo:'chips', k:'cabo_forma', label:'Como comprar', chips:['Por metro','Rolo 25m','Rolo 50m','Rolo 100m'], default:'Por metro'},
-          {tipo:'fios', k:'fios', label:'Fios (cores padrão — 3 fios)', default:FIOS_PADRAO},
+          {tipo:'chips', k:'caixa_tipo', label:'Tipo de caixa', chips:['4×2 embutir','4×4 embutir','Sobrepor','Sem caixa'], default:'4×2 embutir'},
         ]
       },
-      // 4. Conduíte ON/OFF
-      {
-        tipo:'secao', k:'tem_conduíte', label:'Conduíte',
-        cor:'#3b82f6', icone:'⬜',
+      SECAO_CABO('1,5mm²', 3, ['1,5mm²','2,5mm²','4mm²']),
+      SECAO_CONDUITE(),
+    ]
+  },
+  // ─── INTERRUPTOR ──────────────────────────────────────────
+  interruptor: {
+    label:'Interruptor / Dimmer',
+    basePrice:{tipo_sw:{'Simples':60,'Duplo':80,'Three-way':120,'Dimmer':150}},
+    modulos:[
+      {tipo:'chips', k:'tipo_sw', label:'Tipo', chips:['Simples','Duplo','Three-way','Dimmer'], default:'Simples'},
+      {tipo:'number', k:'qt', label:'Quantidade de pontos', default:1, min:1},
+      {tipo:'secao', k:'tem_placa', label:'Acabamento', cor:'#f59e0b', icone:'🖼️',
         filhos:[
-          {tipo:'chips', k:'cond_tipo', label:'Tipo de conduíte', chips:['Rígido PVC','Flexível PVC','Canaleta PVC'], default:'Rígido PVC'},
-          {tipo:'chips', k:'cond_diam', label:'Diâmetro', chips:['1/2"','3/4"','1"'], default:'3/4"'},
-          {tipo:'number', k:'cond_metros', label:'Comprimento (metros)', default:3, min:1},
+          {tipo:'chips', k:'sw_caixa', label:'Caixa', chips:['4×2','4×4'], default:'4×2'},
+          {tipo:'chips', k:'sw_placa', label:'Placa', chips:['Com placa','Sem placa'], default:'Com placa'},
         ]
       },
+      SECAO_CABO('1,5mm²', 3, ['1,5mm²','2,5mm²']),
+      SECAO_CONDUITE(),
+    ]
+  },
+  // ─── DISJUNTOR ────────────────────────────────────────────
+  disjuntor: {
+    label:'Instalação / Substituição de Disjuntor',
+    basePrice:{polo:{'Monopolar':80,'Bipolar':120,'Tripolar':160}},
+    modulos:[
+      {tipo:'chips', k:'polo', label:'Polo', chips:['Monopolar','Bipolar','Tripolar'], default:'Monopolar'},
+      {tipo:'chips', k:'amp_disj', label:'Amperagem', chips:['10A','16A','20A','25A','32A','40A','50A','63A','80A','100A'], default:'20A'},
+      {tipo:'chips', k:'curva', label:'Curva', chips:['Curva B','Curva C','Curva D'], default:'Curva C'},
+      {tipo:'number', k:'qt', label:'Quantidade', default:1, min:1},
+    ]
+  },
+  // ─── DR / DPS ─────────────────────────────────────────────
+  dr: {
+    label:'Instalação de DR / DPS no QD',
+    basePrice:{tipo_dr:{'DR Bipolar':150,'DR Tetrapolar':220,'DR+DPS (DDR)':280,'DPS isolado':120}},
+    modulos:[
+      {tipo:'chips', k:'tipo_dr', label:'Tipo', chips:['DR Bipolar','DR Tetrapolar','DR+DPS (DDR)','DPS isolado'], default:'DR Bipolar'},
+      {tipo:'chips', k:'amp_dr', label:'Amperagem', chips:['25A','40A','63A'], default:'25A'},
+      {tipo:'chips', k:'sens', label:'Sensibilidade', chips:['30mA','100mA','300mA'], default:'30mA'},
+      {tipo:'number', k:'qt', label:'Quantidade', default:1, min:1},
     ]
   },
   // ─── CHUVEIRO ─────────────────────────────────────────────
   chuveiro: {
     label:'Chuveiro Elétrico',
-    campos:[
-      {k:'pot', label:'Potência', chips:['4400W / 20A','5500W / 25A','6800W / 32A']},
-      {k:'cabo', label:'Bitola do cabo', chips:['4mm²','6mm²']},
-    ],
-    toggles:[
-      {k:'qd',label:'Adicionar disjuntor no QD'},
-      {k:'rasgo',label:'Incluir abertura de rasgo'},
-    ],
-    mats:['m003','m014','m026'],
     basePrice:{pot:{'4400W / 20A':150,'5500W / 25A':170,'6800W / 32A':200}},
+    modulos:[
+      {tipo:'chips', k:'pot', label:'Potência', chips:['4400W / 20A','5500W / 25A','6800W / 32A'], default:'4400W / 20A'},
+      {tipo:'chips', k:'tensao_chv', label:'Tensão', chips:['127V','220V'], default:'220V'},
+      {tipo:'number', k:'qt', label:'Quantidade', default:1, min:1},
+      SECAO_CABO('4mm²', 5, ['2,5mm²','4mm²','6mm²']),
+      SECAO_CONDUITE(),
+      {tipo:'secao', k:'tem_qd_chv', label:'Disjuntor no QD', cor:'#22c55e', icone:'⚡',
+        filhos:[
+          {tipo:'chips', k:'disj_chv', label:'Disjuntor', chips:['20A Monoplar','25A Monopolar','32A Bipolar'], default:'20A Monoplar'},
+        ]
+      },
+    ],
+    mats:['m003','m004','m014','m016','m026'],
   },
   // ─── AR-CONDICIONADO ──────────────────────────────────────
   ar: {
     label:'Ar-condicionado Split',
-    campos:[
-      {k:'btu', label:'BTUs', chips:['9.000','12.000','18.000','24.000']},
-      {k:'cabo', label:'Bitola do cabo', chips:['2,5mm²','4mm²','6mm²']},
-    ],
-    toggles:[
-      {k:'suporte',label:'Incluir suporte externo'},
-      {k:'dreno',label:'Instalação de dreno'},
-      {k:'qd',label:'Disjuntor exclusivo no QD'},
-    ],
-    mats:['m002','m016','m024'],
     basePrice:{btu:{'9.000':350,'12.000':380,'18.000':430,'24.000':500}},
+    modulos:[
+      {tipo:'chips', k:'btu', label:'BTUs', chips:['9.000','12.000','18.000','24.000'], default:'12.000'},
+      {tipo:'chips', k:'fase_ar', label:'Fase', chips:['Monofásico 220V','Trifásico 380V'], default:'Monofásico 220V'},
+      {tipo:'number', k:'qt', label:'Quantidade', default:1, min:1},
+      SECAO_CABO('2,5mm²', 6, ['2,5mm²','4mm²','6mm²']),
+      SECAO_CONDUITE(),
+      {tipo:'secao', k:'tem_extras_ar', label:'Extras', cor:'#8b5cf6', icone:'🔧',
+        filhos:[
+          {tipo:'chips', k:'extras_ar', label:'Incluir', chips:['Suporte externo','Dreno','Disjuntor no QD','Suporte + Dreno'], default:'Disjuntor no QD'},
+        ]
+      },
+    ],
+    mats:['m002','m003','m016','m024'],
   },
   // ─── BOMBA ────────────────────────────────────────────────
   bomba: {
     label:"Bomba d'água",
-    campos:[
-      {k:'cv', label:'Potência', chips:['0,5 CV','1 CV','2 CV','3 CV']},
-      {k:'tensao', label:'Tensão', chips:['220V','380V']},
-      {k:'cabo', label:'Bitola do cabo', chips:['2,5mm²','4mm²','6mm²','10mm²']},
-    ],
-    toggles:[
-      {k:'boia',label:'Instalação de chave boia'},
-      {k:'timer',label:'Instalação de timer'},
-      {k:'qd',label:'Disjuntor exclusivo no QD'},
+    basePrice:{cv:{'0,5 CV':250,'1 CV':280,'2 CV':320,'3 CV':380}},
+    modulos:[
+      {tipo:'chips', k:'cv', label:'Potência', chips:['0,5 CV','1 CV','2 CV','3 CV'], default:'1 CV'},
+      {tipo:'chips', k:'tensao_bom', label:'Tensão', chips:['220V','380V'], default:'220V'},
+      {tipo:'number', k:'qt', label:'Quantidade', default:1, min:1},
+      SECAO_CABO('2,5mm²', 8, ['2,5mm²','4mm²','6mm²','10mm²']),
+      SECAO_CONDUITE(),
+      {tipo:'secao', k:'tem_extras_bom', label:'Extras', cor:'#22c55e', icone:'💧',
+        filhos:[
+          {tipo:'chips', k:'extras_bom', label:'Incluir', chips:['Chave boia','Timer','Disjuntor no QD','Boia + Disjuntor'], default:'Disjuntor no QD'},
+        ]
+      },
     ],
     mats:['m003','m016','m024'],
-    basePrice:{cv:{'0,5 CV':250,'1 CV':280,'2 CV':320,'3 CV':380}},
   },
   // ─── QUADRO ───────────────────────────────────────────────
   qd: {
     label:'Quadro de Distribuição',
-    campos:[
-      {k:'disj', label:'Nº de disjuntores', chips:['6','12','20','24']},
-      {k:'tipo', label:'Tipo', chips:['Embutir','Sobrepor']},
-    ],
-    toggles:[
-      {k:'dr',label:'Incluir DR 30mA'},
-      {k:'dps',label:'Incluir DPS'},
-      {k:'etiq',label:'Etiquetagem dos circuitos'},
+    basePrice:{disj:{'6':280,'12':350,'20':450,'24':520}},
+    modulos:[
+      {tipo:'chips', k:'disj', label:'Nº de disjuntores', chips:['6','12','20','24'], default:'12'},
+      {tipo:'chips', k:'tipo_qd', label:'Tipo', chips:['Embutir','Sobrepor'], default:'Embutir'},
+      {tipo:'number', k:'qt', label:'Quantidade de quadros', default:1, min:1},
+      {tipo:'secao', k:'tem_dr_qd', label:'DR (Diferencial-Residual)', cor:'#3b82f6', icone:'🛡️',
+        filhos:[
+          {tipo:'chips', k:'dr_amp', label:'Amperagem DR', chips:['25A','40A','63A'], default:'25A'},
+          {tipo:'chips', k:'dr_sens', label:'Sensibilidade', chips:['30mA','100mA'], default:'30mA'},
+        ]
+      },
+      {tipo:'secao', k:'tem_dps_qd', label:'DPS (Proteção Surto)', cor:'#f59e0b', icone:'⚡',
+        filhos:[
+          {tipo:'chips', k:'dps_classe', label:'Classe', chips:['Classe I','Classe II','Classe I+II'], default:'Classe II'},
+        ]
+      },
+      {tipo:'secao', k:'tem_etiq', label:'Etiquetagem dos circuitos', cor:'#22c55e', icone:'🏷️',
+        filhos:[
+          {tipo:'chips', k:'etiq_tipo', label:'Tipo de etiqueta', chips:['Adesiva impressa','Plaquinha gravada'], default:'Adesiva impressa'},
+        ]
+      },
     ],
     mats:['m022','m020','m021'],
-    basePrice:{disj:{'6':280,'12':350,'20':450,'24':520}},
   },
   // ─── SOLAR ────────────────────────────────────────────────
   solar: {
     label:'Sistema Fotovoltaico',
     modulos:[
-      {
-        tipo:'chips', k:'potencia', label:'Potência do sistema',
-        chips:['1-2kWp (2-4 placas)','3-4kWp (6-8 placas)','5-6kWp (10-12 placas)','8-10kWp (16-20 placas)'], default:'3-4kWp (6-8 placas)'
-      },
-      {
-        tipo:'chips', k:'telhado', label:'Tipo de telhado',
-        chips:['Cerâmico','Metálico','Fibrocimento','Laje/Flat'], default:'Cerâmico'
-      },
-      {
-        tipo:'secao', k:'tem_inversor', label:'Inversor',
-        cor:'#f59e0b', icone:'🔋',
+      {tipo:'chips', k:'potencia', label:'Potência do sistema', chips:['1-2kWp (2-4 placas)','3-4kWp (6-8 placas)','5-6kWp (10-12 placas)','8-10kWp (16-20 placas)'], default:'3-4kWp (6-8 placas)'},
+      {tipo:'chips', k:'telhado', label:'Tipo de telhado', chips:['Cerâmico','Metálico','Fibrocimento','Laje/Flat'], default:'Cerâmico'},
+      {tipo:'secao', k:'tem_inversor', label:'Inversor', cor:'#f59e0b', icone:'🔋',
         filhos:[
           {tipo:'chips', k:'inv_tipo', label:'Tipo de inversor', chips:['String','Microinversor','Híbrido'], default:'String'},
           {tipo:'chips', k:'inv_pot', label:'Potência do inversor', chips:['1kW','2kW','3kW','5kW','8kW','10kW'], default:'3kW'},
         ]
       },
-      {
-        tipo:'secao', k:'tem_bateria', label:'Armazenamento (opcional)',
-        cor:'#3b82f6', icone:'🔋',
+      {tipo:'secao', k:'tem_bateria', label:'Armazenamento (opcional)', cor:'#3b82f6', icone:'🔋',
         filhos:[
           {tipo:'chips', k:'bat_cap', label:'Capacidade', chips:['2,4kWh','5kWh','10kWh'], default:'5kWh'},
         ]
       },
-      {
-        tipo:'secao', k:'tem_cabo', label:'Cabeamento',
-        cor:'#ef4444', icone:'🔴',
-        filhos:[
-          {tipo:'chips', k:'cabo_bitola', label:'Bitola cabo solar', chips:['4mm²','6mm²'], default:'6mm²'},
-          {tipo:'number', k:'cabo_metros', label:'Comprimento (metros)', default:15, min:5},
-        ]
-      },
+      SECAO_CABO('6mm²', 15, ['4mm²','6mm²','10mm²']),
+      SECAO_CONDUITE(),
     ],
     basePrice:{potencia:{'1-2kWp (2-4 placas)':3500,'3-4kWp (6-8 placas)':6500,'5-6kWp (10-12 placas)':9500,'8-10kWp (16-20 placas)':15000}},
     mats:['m061','m062','m066','m067','m068'],
@@ -1439,30 +1493,22 @@ const SERVICOS_CFG = {
   spda: {
     label:'SPDA (Para-raios)',
     modulos:[
-      {
-        tipo:'chips', k:'tipo', label:'Tipo de para-raios',
-        chips:['Franklin (haste simples)','Gaiola de Faraday','Dissipador de cargas','Ativo (ESE)'], default:'Franklin (haste simples)'
-      },
-      {
-        tipo:'chips', k:'nivel', label:'Nível de proteção (NBR 5419)',
-        chips:['Nível IV','Nível III','Nível II','Nível I'], default:'Nível III'
-      },
-      {
-        tipo:'secao', k:'tem_descida', label:'Descidas e Aterramento',
-        cor:'#22c55e', icone:'🌐',
+      {tipo:'chips', k:'tipo', label:'Tipo de para-raios', chips:['Franklin (haste simples)','Gaiola de Faraday','Dissipador de cargas','Ativo (ESE)'], default:'Franklin (haste simples)'},
+      {tipo:'chips', k:'nivel', label:'Nível de proteção (NBR 5419)', chips:['Nível IV','Nível III','Nível II','Nível I'], default:'Nível III'},
+      {tipo:'secao', k:'tem_descida', label:'Descidas e Aterramento', cor:'#22c55e', icone:'🌐',
         filhos:[
           {tipo:'number', k:'descidas', label:'Número de descidas', default:2, min:1},
           {tipo:'number', k:'hastes', label:'Hastes de aterramento', default:2, min:1},
           {tipo:'chips', k:'cabo_descida', label:'Cabo de descida', chips:['50mm²','70mm²','95mm²'], default:'50mm²'},
         ]
       },
-      {
-        tipo:'secao', k:'tem_dps', label:'DPS (Proteção Surto)',
-        cor:'#f59e0b', icone:'⚡',
+      {tipo:'secao', k:'tem_dps', label:'DPS (Proteção Surto)', cor:'#f59e0b', icone:'⚡',
         filhos:[
           {tipo:'chips', k:'dps_classe', label:'Classe do DPS', chips:['Classe I','Classe II','Classe I+II'], default:'Classe II'},
         ]
       },
+      SECAO_CABO('16mm²', 20, ['10mm²','16mm²','25mm²']),
+      SECAO_CONDUITE(),
     ],
     basePrice:{tipo:{'Franklin (haste simples)':2800,'Gaiola de Faraday':4500,'Dissipador de cargas':3800,'Ativo (ESE)':5500}},
     mats:['m029','m055','m056','m057','m058'],
@@ -1470,79 +1516,73 @@ const SERVICOS_CFG = {
   // ─── MOTOR TRIFÁSICO ──────────────────────────────────────
   motor: {
     label:'Motor Trifásico',
-    campos:[
-      {k:'cv', label:'Potência do motor', chips:['0,5 CV','1 CV','2 CV','3 CV','5 CV','7,5 CV','10 CV','15 CV','20 CV']},
-      {k:'tensao', label:'Tensão', chips:['220V','380V','440V']},
-      {k:'partida', label:'Tipo de partida', chips:['Direta','Estrela-Triângulo','Soft-Starter','Inversor de Frequência']},
-    ],
-    toggles:[
-      {k:'reversa',label:'Reversão de giro (contator reversor)'},
-      {k:'termistor',label:'Proteção por termistor'},
-      {k:'qd',label:'Disjuntor motor (DM) exclusivo'},
-      {k:'cabo',label:'Incluir cabeamento de força'},
+    basePrice:{cv:{'0,5 CV':450,'1 CV':500,'2 CV':550,'3 CV':620,'5 CV':750,'7,5 CV':900,'10 CV':1100,'15 CV':1400,'20 CV':1800}},
+    modulos:[
+      {tipo:'chips', k:'cv', label:'Potência do motor', chips:['0,5 CV','1 CV','2 CV','3 CV','5 CV','7,5 CV','10 CV','15 CV','20 CV'], default:'1 CV'},
+      {tipo:'chips', k:'tensao', label:'Tensão', chips:['220V','380V','440V'], default:'380V'},
+      {tipo:'chips', k:'partida', label:'Tipo de partida', chips:['Direta','Estrela-Triângulo','Soft-Starter','Inversor de Frequência'], default:'Direta'},
+      {tipo:'number', k:'qt', label:'Quantidade', default:1, min:1},
+      SECAO_CABO('4mm²', 10, ['2,5mm²','4mm²','6mm²','10mm²','16mm²']),
+      SECAO_CONDUITE(),
+      {tipo:'secao', k:'tem_extras_mot', label:'Extras', cor:'#8b5cf6', icone:'⚙️',
+        filhos:[
+          {tipo:'chips', k:'extras_mot', label:'Incluir', chips:['Reversão de giro','Proteção por termistor','Disjuntor motor (DM)'], default:'Disjuntor motor (DM)'},
+        ]
+      },
     ],
     mats:['m086','m089','m090','m091'],
-    basePrice:{cv:{'0,5 CV':450,'1 CV':500,'2 CV':550,'3 CV':620,'5 CV':750,'7,5 CV':900,'10 CV':1100,'15 CV':1400,'20 CV':1800}},
   },
   // ─── INVERSOR DE FREQUÊNCIA ───────────────────────────────
   inversor: {
     label:'Inversor de Frequência',
-    campos:[
-      {k:'cv', label:'Potência', chips:['1 CV','2 CV','3 CV','5 CV','7,5 CV','10 CV','15 CV']},
-      {k:'tensao', label:'Tensão', chips:['220V','380V','440V']},
-      {k:'aplicacao', label:'Aplicação', chips:['Bomba','Ventilador','Compressor','Esteira','Outros']},
-    ],
-    toggles:[
-      {k:'bypass',label:'Bypass manual (chave seletora)'},
-      {k:'rede',label:'Comunicação industrial (RS485/ModBus)'},
-      {k:'freio',label:'Módulo de frenagem dinâmica'},
-      {k:'cabo',label:'Incluir cabeamento de força'},
+    basePrice:{cv:{'1 CV':800,'2 CV':950,'3 CV':1100,'5 CV':1400,'7,5 CV':1900,'10 CV':2400,'15 CV':3200}},
+    modulos:[
+      {tipo:'chips', k:'cv', label:'Potência', chips:['1 CV','2 CV','3 CV','5 CV','7,5 CV','10 CV','15 CV'], default:'1 CV'},
+      {tipo:'chips', k:'tensao', label:'Tensão', chips:['220V','380V','440V'], default:'380V'},
+      {tipo:'chips', k:'aplicacao', label:'Aplicação', chips:['Bomba','Ventilador','Compressor','Esteira','Outros'], default:'Bomba'},
+      {tipo:'number', k:'qt', label:'Quantidade', default:1, min:1},
+      SECAO_CABO('4mm²', 8, ['2,5mm²','4mm²','6mm²','10mm²']),
+      SECAO_CONDUITE(),
+      {tipo:'secao', k:'tem_extras_inv', label:'Extras', cor:'#8b5cf6', icone:'⚙️',
+        filhos:[
+          {tipo:'chips', k:'extras_inv', label:'Incluir', chips:['Bypass manual','Comunicação RS485/ModBus','Módulo de frenagem'], default:'Bypass manual'},
+        ]
+      },
     ],
     mats:['m086','m087','m094','m095'],
-    basePrice:{cv:{'1 CV':800,'2 CV':950,'3 CV':1100,'5 CV':1400,'7,5 CV':1900,'10 CV':2400,'15 CV':3200}},
   },
   // ─── PONTO TRIFÁSICO ──────────────────────────────────────
   trifasico: {
     label:'Ponto Trifásico 380V',
-    campos:[
-      {k:'amp', label:'Amperagem', chips:['16A','25A','32A','63A','125A']},
-      {k:'tipo', label:'Tipo de instalação', chips:['Tomada industrial','Barramento','Painel']},
-    ],
-    toggles:[
-      {k:'disjuntor',label:'Disjuntor tripolar exclusivo'},
-      {k:'dr',label:'Incluir DR industrial'},
-      {k:'cabo',label:'Incluir cabeamento de força'},
+    basePrice:{amp:{'16A':280,'25A':320,'32A':380,'63A':550,'125A':900}},
+    modulos:[
+      {tipo:'chips', k:'amp', label:'Amperagem', chips:['16A','25A','32A','63A','125A'], default:'32A'},
+      {tipo:'chips', k:'tipo', label:'Tipo de instalação', chips:['Tomada industrial','Barramento','Painel'], default:'Tomada industrial'},
+      {tipo:'number', k:'qt', label:'Quantidade de pontos', default:1, min:1},
+      SECAO_CABO('4mm²', 10, ['2,5mm²','4mm²','6mm²','10mm²','16mm²']),
+      SECAO_CONDUITE(),
+      {tipo:'secao', k:'tem_prot_tri', label:'Proteção', cor:'#3b82f6', icone:'🛡️',
+        filhos:[
+          {tipo:'chips', k:'prot_tri', label:'Incluir', chips:['Disjuntor tripolar','DR industrial','Disjuntor + DR'], default:'Disjuntor tripolar'},
+        ]
+      },
     ],
     mats:['m019','m092','m024'],
-    basePrice:{amp:{'16A':280,'25A':320,'32A':380,'63A':550,'125A':900}},
   },
   // ─── CFTV ─────────────────────────────────────────────────
   cftv: {
     label:'Câmera CFTV',
     modulos:[
-      {
-        tipo:'chips', k:'tipo', label:'Tipo de câmera',
-        chips:['Dome interna','Dome externa','Bullet externa','PTZ','Mini dome'], default:'Dome externa'
-      },
-      {
-        tipo:'chips', k:'res', label:'Resolução',
-        chips:['2MP (Full HD)','4MP','8MP (4K)'], default:'2MP (Full HD)'
-      },
-      {
-        tipo:'chips', k:'infra', label:'Infravermelho',
-        chips:['Até 20m','Até 40m','Até 80m','Sem IR'], default:'Até 40m'
-      },
-      {
-        tipo:'secao', k:'tem_cabo', label:'Cabeamento',
-        cor:'#3b82f6', icone:'🔵',
+      {tipo:'chips', k:'tipo', label:'Tipo de câmera', chips:['Dome interna','Dome externa','Bullet externa','PTZ','Mini dome'], default:'Dome externa'},
+      {tipo:'chips', k:'res', label:'Resolução', chips:['2MP (Full HD)','4MP','8MP (4K)'], default:'2MP (Full HD)'},
+      {tipo:'chips', k:'infra', label:'Infravermelho', chips:['Até 20m','Até 40m','Até 80m','Sem IR'], default:'Até 40m'},
+      {tipo:'secao', k:'tem_cabo', label:'Cabeamento', cor:'#3b82f6', icone:'🔵',
         filhos:[
           {tipo:'chips', k:'cabo_tipo', label:'Tipo de cabo', chips:['UTP Cat5e','Cabo coaxial RG59','Cabo HDCVI'], default:'UTP Cat5e'},
           {tipo:'number', k:'cabo_metros', label:'Comprimento por câmera (metros)', default:20, min:5},
         ]
       },
-      {
-        tipo:'secao', k:'tem_dvr', label:'Gravador (DVR/NVR)',
-        cor:'#f59e0b', icone:'🎥',
+      {tipo:'secao', k:'tem_dvr', label:'Gravador (DVR/NVR)', cor:'#f59e0b', icone:'🎥',
         filhos:[
           {tipo:'chips', k:'dvr_tipo', label:'Tipo de gravador', chips:['DVR HDCVI','NVR IP','Sem gravador'], default:'NVR IP'},
           {tipo:'chips', k:'dvr_ch', label:'Canais', chips:['4 canais','8 canais','16 canais','32 canais'], default:'8 canais'},
@@ -1556,36 +1596,40 @@ const SERVICOS_CFG = {
   // ─── ALARME ───────────────────────────────────────────────
   alarme: {
     label:'Alarme de Segurança',
-    campos:[
-      {k:'central', label:'Capacidade da central', chips:['4 zonas','8 zonas','16 zonas','32 zonas']},
-      {k:'tipo', label:'Tecnologia', chips:['Sem fio','Com fio','Híbrido']},
-    ],
-    toggles:[
-      {k:'sirene_ext',label:'Sirene externa'},
-      {k:'sirene_int',label:'Sirene interna'},
-      {k:'teclado',label:'Teclado numérico/LCD'},
-      {k:'app',label:'Monitoramento por app'},
-      {k:'presenca',label:'Sensores de presença PIR'},
-      {k:'magnetico',label:'Sensores magnéticos portas/janelas'},
+    basePrice:{central:{'4 zonas':500,'8 zonas':650,'16 zonas':950,'32 zonas':1400}},
+    modulos:[
+      {tipo:'chips', k:'central', label:'Capacidade da central', chips:['4 zonas','8 zonas','16 zonas','32 zonas'], default:'8 zonas'},
+      {tipo:'chips', k:'tipo_al', label:'Tecnologia', chips:['Sem fio','Com fio','Híbrido'], default:'Híbrido'},
+      {tipo:'number', k:'qt', label:'Quantidade de centrais', default:1, min:1},
+      {tipo:'secao', k:'tem_cabo_al', label:'Cabeamento', cor:'#3b82f6', icone:'🔵',
+        filhos:[
+          {tipo:'chips', k:'cabo_al', label:'Tipo de cabo', chips:['Par trançado 4×0,5mm','UTP Cat5e'], default:'Par trançado 4×0,5mm'},
+          {tipo:'number', k:'cabo_metros', label:'Comprimento total (metros)', default:30, min:5},
+        ]
+      },
+      {tipo:'secao', k:'tem_perifericos', label:'Periféricos', cor:'#f59e0b', icone:'🔔',
+        filhos:[
+          {tipo:'chips', k:'perifericos', label:'Incluir', chips:['Sirene externa','Sirene interna','Teclado LCD','App + Monitoramento','Sensores PIR','Sensores magnéticos'], default:'Sirene externa'},
+        ]
+      },
     ],
     mats:['m076','m077','m078','m079'],
-    basePrice:{central:{'4 zonas':500,'8 zonas':650,'16 zonas':950,'32 zonas':1400}},
   },
   // ─── CERCA ELÉTRICA ───────────────────────────────────────
   cerca: {
     label:'Cerca Elétrica',
-    campos:[
-      {k:'extensao', label:'Extensão total', chips:['Até 50m','50-100m','100-200m','200-500m','Acima 500m']},
-      {k:'fios', label:'Número de fios', chips:['6 fios','8 fios','10 fios','12 fios']},
-    ],
-    toggles:[
-      {k:'alarme',label:'Integrar com alarme'},
-      {k:'energizador_duplo',label:'Energizador duplo (redundância)'},
-      {k:'aterramento',label:'Aterramento dedicado'},
-      {k:'sinalizacao',label:'Placas de sinalização NBR'},
+    basePrice:{extensao:{'Até 50m':750,'50-100m':1200,'100-200m':2200,'200-500m':4500,'Acima 500m':8000}},
+    modulos:[
+      {tipo:'chips', k:'extensao', label:'Extensão total', chips:['Até 50m','50-100m','100-200m','200-500m','Acima 500m'], default:'Até 50m'},
+      {tipo:'chips', k:'fios_cerca', label:'Número de fios', chips:['6 fios','8 fios','10 fios','12 fios'], default:'8 fios'},
+      SECAO_CABO('1,5mm²', 20, ['1,5mm²','2,5mm²']),
+      {tipo:'secao', k:'tem_extras_cerca', label:'Extras', cor:'#f59e0b', icone:'⚡',
+        filhos:[
+          {tipo:'chips', k:'extras_cerca', label:'Incluir', chips:['Integrar alarme','Energizador duplo','Aterramento dedicado','Placas NBR'], default:'Aterramento dedicado'},
+        ]
+      },
     ],
     mats:['m081','m082'],
-    basePrice:{extensao:{'Até 50m':750,'50-100m':1200,'100-200m':2200,'200-500m':4500,'Acima 500m':8000}},
   },
 };
 
@@ -1653,7 +1697,9 @@ function abrirConfiguradorLeve(d) {
       <div class="ilbl" style="margin-bottom:8px">Quantidade</div>
       <div style="display:flex;align-items:center;gap:12px">
         <button class="qty-btn" style="width:36px;height:36px;font-size:18px" onclick="leve_qty(-1)">−</button>
-        <span id="leve-qty" style="font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:700;color:var(--text);min-width:32px;text-align:center">1</span>
+        <input type="number" id="leve-qty" min="1" value="1"
+          style="width:64px;font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:700;color:var(--text);text-align:center;background:var(--bg-input);border:1px solid var(--border-input);border-radius:8px;padding:4px 6px;outline:none"
+          oninput="leveAtualizarPreview()" onfocus="this.select()">
         <span style="font-size:12px;color:var(--text3)">${d.un}</span>
         <button class="qty-btn" style="width:36px;height:36px;font-size:18px" onclick="leve_qty(1)">+</button>
       </div>
@@ -1682,13 +1728,13 @@ function abrirConfiguradorLeve(d) {
 
 function leve_qty(delta) {
   const el = document.getElementById('leve-qty');
-  const v = Math.max(1, (parseInt(el.textContent) || 1) + delta);
-  el.textContent = v;
+  const v = Math.max(1, (parseInt(el.value) || 1) + delta);
+  el.value = v;
   leveAtualizarPreview();
 }
 
 function leveAtualizarPreview() {
-  const qt = parseInt(document.getElementById('leve-qty')?.textContent || 1);
+  const qt = parseInt(document.getElementById('leve-qty')?.value || 1);
   const p  = parseFloat(document.getElementById('leve-preco')?.value || 0);
   document.getElementById('scp-preview-price').textContent = 'R$ ' + scpFmtBRL(qt * p);
   document.getElementById('scp-preview-tags').innerHTML =
@@ -1697,7 +1743,7 @@ function leveAtualizarPreview() {
 
 function leveAdicionar() {
   if (!srvPendente) return;
-  const qt  = parseInt(document.getElementById('leve-qty')?.textContent || 1);
+  const qt  = Math.max(1, parseInt(document.getElementById('leve-qty')?.value) || 1);
   const p   = parseFloat(document.getElementById('leve-preco')?.value || srvPendente.p);
   const obs = document.getElementById('leve-obs')?.value.trim();
   const nome = obs ? `${srvPendente.n} (${obs})` : srvPendente.n;
@@ -1808,7 +1854,10 @@ function renderConfigurador() {
         html += `<div style="margin-bottom:16px"><div class="ilbl" style="margin-bottom:8px">${mod.label}</div>`;
         html += `<div style="display:flex;align-items:center;gap:10px">
           <button class="qty-btn" onclick="scpSetVal('${mod.k}',Math.max(${mod.min||1},(scpEstado['${mod.k}']||1)-1));renderConfigurador();scpAtualizarPreview()">−</button>
-          <span style="font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:700;color:var(--text);min-width:32px;text-align:center">${scpEstado[mod.k]||1}</span>
+          <input type="number" min="${mod.min||1}" value="${scpEstado[mod.k]||1}"
+            style="width:64px;font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:700;color:var(--text);text-align:center;background:var(--bg-input);border:1px solid var(--border-input);border-radius:8px;padding:4px 6px;outline:none"
+            oninput="scpSetVal('${mod.k}',Math.max(${mod.min||1},parseInt(this.value)||${mod.min||1}));scpAtualizarPreview()"
+            onfocus="this.select()">
           <button class="qty-btn" onclick="scpSetVal('${mod.k}',(scpEstado['${mod.k}']||1)+1);renderConfigurador();scpAtualizarPreview()">+</button>
         </div></div>`;
 
@@ -1836,7 +1885,10 @@ function renderConfigurador() {
               html += `<div style="margin-bottom:14px"><div class="ilbl" style="margin-bottom:8px">${f.label}</div>`;
               html += `<div style="display:flex;align-items:center;gap:10px">
                 <button class="qty-btn" onclick="scpSetVal('${f.k}',Math.max(${f.min||1},(scpEstado['${f.k}']||1)-1));renderConfigurador();scpAtualizarPreview()">−</button>
-                <span style="font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:700;color:var(--text);min-width:32px;text-align:center">${scpEstado[f.k]||1}</span>
+                <input type="number" min="${f.min||1}" value="${scpEstado[f.k]||1}"
+                  style="width:64px;font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:700;color:var(--text);text-align:center;background:var(--bg-input);border:1px solid var(--border-input);border-radius:8px;padding:4px 6px;outline:none"
+                  oninput="scpSetVal('${f.k}',Math.max(${f.min||1},parseInt(this.value)||${f.min||1}));scpAtualizarPreview()"
+                  onfocus="this.select()">
                 <button class="qty-btn" onclick="scpSetVal('${f.k}',(scpEstado['${f.k}']||1)+1);renderConfigurador();scpAtualizarPreview()">+</button>
               </div></div>`;
             } else if (f.tipo === 'fios') {
@@ -1872,7 +1924,10 @@ function renderConfigurador() {
       } else if (c.type === 'number') {
         html += `<div style="display:flex;align-items:center;gap:10px">
           <button class="qty-btn" onclick="scpSetVal('${c.k}',Math.max(${c.min||1},(scpEstado['${c.k}']||1)-1));renderConfigurador();scpAtualizarPreview()">−</button>
-          <span style="font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:700;color:var(--text);min-width:32px;text-align:center">${scpEstado[c.k]||1}</span>
+          <input type="number" min="${c.min||1}" value="${scpEstado[c.k]||1}"
+            style="width:64px;font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:700;color:var(--text);text-align:center;background:var(--bg-input);border:1px solid var(--border-input);border-radius:8px;padding:4px 6px;outline:none"
+            oninput="scpSetVal('${c.k}',Math.max(${c.min||1},parseInt(this.value)||${c.min||1}));scpAtualizarPreview()"
+            onfocus="this.select()">
           <button class="qty-btn" onclick="scpSetVal('${c.k}',(scpEstado['${c.k}']||1)+1);renderConfigurador();scpAtualizarPreview()">+</button>
         </div>`;
       }
@@ -2008,6 +2063,62 @@ function scpAdicionar() {
 
   // ── injetar materiais automáticos (só sistema modular) ────
   if (cfg.modulos) {
+    // ILUMINAÇÃO — caixa
+    if (scpEstado['tem_caixa']) {
+      const caixaTipo = scpEstado['caixa_tipo'] || '4×2 embutir';
+      if (!caixaTipo.includes('Sem')) {
+        const caixaId = caixaTipo.includes('4×4') ? 'm027' : 'm026';
+        const matCaixa = MAT.find(x => x.id === caixaId);
+        if (matCaixa) addMaterial(null, {...matCaixa, n: `Caixa ${caixaTipo}`}, qt, matCaixa.p);
+      }
+    }
+
+    // INTERRUPTOR — switch + placa + caixa
+    if (scpEstado['tem_placa']) {
+      const tipo_sw = scpEstado['tipo_sw'] || 'Simples';
+      const swIds   = {Simples:'m034', Duplo:'m035', 'Three-way':'m036', Dimmer:'m037'};
+      const swId    = swIds[tipo_sw] || 'm034';
+      const matSw   = MAT.find(x => x.id === swId);
+      if (matSw) addMaterial(null, {...matSw, n: `${matSw.n} — ${tipo_sw}`}, qt, matSw.p);
+      const caixaId = scpEstado['sw_caixa'] === '4×4' ? 'm027' : 'm026';
+      const matCaixa = MAT.find(x => x.id === caixaId);
+      if (matCaixa) addMaterial(null, matCaixa, qt, matCaixa.p);
+      if (scpEstado['sw_placa'] !== 'Sem placa') {
+        const matPlaca = MAT.find(x => x.id === 'm038');
+        if (matPlaca) addMaterial(null, matPlaca, qt, matPlaca.p);
+      }
+    }
+
+    // DISJUNTOR — injetar material correto pelo polo
+    if (scpAtivo === 'disjuntor') {
+      const polo = scpEstado['polo'] || 'Monopolar';
+      const amp  = scpEstado['amp_disj'] || '20A';
+      const curva = scpEstado['curva'] || 'Curva C';
+      const poloIds = {Monopolar:['m012','m013','m014','m014','m016','m016','m016','m016','m016','m016'],
+                       Bipolar:  ['m017','m017','m017','m017','m018','m018','m018','m018','m018','m018'],
+                       Tripolar: ['m019','m019','m019','m019','m019','m019','m019','m019','m019','m019']};
+      const amps = ['10A','16A','20A','25A','32A','40A','50A','63A','80A','100A'];
+      const idx  = amps.indexOf(amp);
+      const matId = (poloIds[polo] || poloIds.Monopolar)[idx] || 'm012';
+      const matDisj = MAT.find(x => x.id === matId);
+      if (matDisj) addMaterial(null, {...matDisj, n: `Disjuntor ${polo} ${amp} ${curva}`}, qt, matDisj.p);
+    }
+
+    // DR / DPS — injetar material correto
+    if (scpAtivo === 'dr') {
+      const tipo_dr = scpEstado['tipo_dr'] || 'DR Bipolar';
+      const amp_dr  = scpEstado['amp_dr']  || '25A';
+      const sens    = scpEstado['sens']    || '30mA';
+      if (tipo_dr.includes('DPS')) {
+        const matDPS = MAT.find(x => x.id === 'm021');
+        if (matDPS) addMaterial(null, {...matDPS, n: `DPS Classe II`}, qt, matDPS.p);
+      }
+      if (!tipo_dr.includes('isolado')) {
+        const matDR = MAT.find(x => x.id === 'm020');
+        if (matDR) addMaterial(null, {...matDR, n: `DR ${tipo_dr} ${amp_dr} ${sens}`}, qt, matDR.p);
+      }
+    }
+
     // TOMADA
     if (scpEstado['tem_tomada']) {
       const amp = scpEstado['tom_amp'] || '10A';
@@ -2323,7 +2434,9 @@ function addService(e, s) {
     </div>
     <div class="row-qty-wrap">
       <button class="qty-btn" onclick="changeQty(this,-1)">−</button>
-      <span class="qty-val">1</span>
+      <input class="qty-val" type="number" min="1" step="1" value="1"
+        style="width:38px;text-align:center;border:none;border-bottom:1px solid var(--border-input);background:transparent;color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;outline:none;padding:0"
+        oninput="orcCalcTotal()" onfocus="this.select()">
       <span class="qty-un">${s.un}</span>
       <button class="qty-btn" onclick="changeQty(this,1)">+</button>
     </div>
@@ -2351,7 +2464,9 @@ function addMaterial(e, m, baseQty, baseUnitPrice) {
     </div>
     <div class="row-qty-wrap">
       <button class="qty-btn" onclick="changeQty(this,-0.1)">−</button>
-      <span class="qty-val">${qt}</span>
+      <input class="qty-val" type="number" min="0.1" step="0.1" value="${qt}"
+        style="width:38px;text-align:center;border:none;border-bottom:1px solid var(--border-input);background:transparent;color:#a78bfa;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;outline:none;padding:0"
+        oninput="orcCalcTotal()" onfocus="this.select()">
       <span class="qty-un">${m.un}</span>
       <button class="qty-btn" onclick="changeQty(this,0.1)">+</button>
     </div>
@@ -2365,12 +2480,12 @@ function addMaterial(e, m, baseQty, baseUnitPrice) {
 
 function changeQty(btn, delta) {
   const row = btn.closest('.srv-row, .mat-row');
-  const span = row.querySelector('.qty-val');
+  const inp = row.querySelector('.qty-val');
   const isMat = row.classList.contains('mat-row');
-  let v = parseFloat(span.textContent) + delta;
+  let v = parseFloat(inp.value || 1) + delta;
   if (isMat) v = Math.max(0.1, Math.round(v * 10) / 10);
   else v = Math.max(1, Math.round(v));
-  span.textContent = isMat ? (Number.isInteger(v) ? v : v.toFixed(1)) : v;
+  inp.value = isMat ? (Number.isInteger(v) ? v : v.toFixed(1)) : v;
   orcCalcTotal();
 }
 
@@ -2410,7 +2525,7 @@ function formatPriceInput(input) {
 function collectServices() {
   let total = 0;
   document.querySelectorAll('#srv-container .srv-row').forEach(row => {
-    const qt = parseFloat(row.querySelector('.qty-val')?.textContent || 1);
+    const qt = parseFloat(row.querySelector('.qty-val')?.value || 1);
     const p = parseCurrency(row.querySelector('.row-price-inp')?.value || '0');
     total += qt * p;
   });
@@ -2420,7 +2535,7 @@ function collectServices() {
 function collectMaterials() {
   let total = 0;
   document.querySelectorAll('#mat-container .mat-row').forEach(row => {
-    const qt = parseFloat(row.querySelector('.qty-val')?.textContent || 1);
+    const qt = parseFloat(row.querySelector('.qty-val')?.value || 1);
     const p = parseCurrency(row.querySelector('.row-price-inp')?.value || '0');
     total += qt * p;
   });
@@ -2684,7 +2799,7 @@ function gerarPDF() {
   document.querySelectorAll('#srv-container .srv-row').forEach(row => {
     const nome  = row.querySelector('.row-name')?.textContent || '';
     const cat   = row.querySelector('.row-sub')?.textContent || '';
-    const qt    = parseFloat(row.querySelector('.qty-val')?.textContent || 1);
+    const qt    = parseFloat(row.querySelector('.qty-val')?.value || 1);
     const un    = row.querySelector('.qty-un')?.textContent || '';
     const p     = parseCurrency(row.querySelector('.row-price-inp')?.value || '0');
     const sub   = qt * p;
@@ -2704,7 +2819,7 @@ function gerarPDF() {
   document.querySelectorAll('#mat-container .mat-row').forEach(row => {
     const nome = row.querySelector('.row-name')?.textContent || '';
     const cat  = row.querySelector('.row-sub')?.textContent  || '';
-    const qt   = parseFloat(row.querySelector('.qty-val')?.textContent || 1);
+    const qt   = parseFloat(row.querySelector('.qty-val')?.value || 1);
     const un   = row.querySelector('.qty-un')?.textContent   || '';
     const p    = parseCurrency(row.querySelector('.row-price-inp')?.value || '0');
     const sub  = qt * p;
@@ -2904,14 +3019,14 @@ function compartilharOrc() {
   let srv = '';
   document.querySelectorAll('#srv-container .srv-row').forEach(row => {
     const n = row.querySelector('.row-name')?.textContent || '';
-    const qt = row.querySelector('.qty-val')?.textContent || '1';
+    const qt = row.querySelector('.qty-val')?.value || '1';
     const p = parseCurrency(row.querySelector('.row-price-inp')?.value || '0');
     srv += `  • ${n} × ${qt} — R$ ${scpFmtBRL(parseFloat(qt) * p)}\n`;
   });
   let matTxt = '';
   document.querySelectorAll('#mat-container .mat-row').forEach(row => {
     const n = row.querySelector('.row-name')?.textContent || '';
-    const qt = row.querySelector('.qty-val')?.textContent || '1';
+    const qt = row.querySelector('.qty-val')?.value || '1';
     const p = parseCurrency(row.querySelector('.row-price-inp')?.value || '0');
     matTxt += `  • ${n} × ${qt} — R$ ${scpFmtBRL(parseFloat(qt) * p)}\n`;
   });
