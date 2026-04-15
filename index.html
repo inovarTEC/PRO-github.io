@@ -367,7 +367,10 @@ input[type=range]{width:100%;accent-color:var(--acc)}
 <div id="tela-orcamento" class="tela">
   <div class="hdr">
     <div class="hbk" onclick="navTo('home')">←</div>
-    <div class="hdr-title">Novo Orçamento</div>
+    <div style="display:flex;flex-direction:column;align-items:center">
+      <div class="hdr-title" id="orc-titulo">Novo Orçamento</div>
+      <div id="orc-num-badge" style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;color:var(--acc);letter-spacing:.5px;margin-top:1px"></div>
+    </div>
     <div style="display:flex;gap:7px">
       <button onclick="gerarPDF()" style="width:36px;height:36px;border-radius:10px;border:1px solid #3b82f6;background:rgba(59,130,246,.15);color:#60a5fa;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">📄</button>
       <button class="btn-acc">SALVAR</button>
@@ -381,10 +384,21 @@ input[type=range]{width:100%;accent-color:var(--acc)}
         <input class="inp" id="orc-cliente" type="text" placeholder="Nome do Cliente">
         <input class="inp" id="orc-endereco" type="text" placeholder="Endereço (Rua, Nº, Bairro)">
         <input class="inp" id="orc-tel" type="tel" placeholder="(DD) 9XXXX-XXXX">
-        <div class="row3" style="margin-bottom:0">
-          <div><div class="ilbl">Data</div><input class="inp" type="date" id="orc-data"></div>
-          <div><div class="ilbl">Hora</div><input class="inp" type="time" id="orc-hora" value="09:00"></div>
-          <div><div class="ilbl">Garantia</div><input class="inp" id="orc-garantia" type="number" placeholder="90"></div>
+        <div class="row3" style="margin-bottom:7px">
+          <div><div class="ilbl">Data</div><input class="inp" type="date" id="orc-data" style="margin-bottom:0"></div>
+          <div><div class="ilbl">Hora</div><input class="inp" type="time" id="orc-hora" value="09:00" style="margin-bottom:0"></div>
+          <div><div class="ilbl">Garantia (d)</div><input class="inp" id="orc-garantia" type="number" placeholder="90" style="margin-bottom:0"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:0">
+          <div>
+            <div class="ilbl">Validade da proposta (dias)</div>
+            <input class="inp" id="orc-validade" type="number" placeholder="15" value="15" style="margin-bottom:0;margin-top:4px">
+          </div>
+          <div>
+            <div class="ilbl">Nº do Orçamento</div>
+            <input class="inp" id="orc-numero" type="text" readonly
+              style="margin-bottom:0;margin-top:4px;font-family:'IBM Plex Mono',monospace;font-weight:700;color:var(--acc);background:var(--acc-bg);border-color:var(--acc-border);cursor:default">
+          </div>
         </div>
       </div>
       <div class="card">
@@ -503,12 +517,20 @@ input[type=range]{width:100%;accent-color:var(--acc)}
               <option value="12">12× sem juros</option>
             </select>
           </div>
-          <div style="background:var(--acc-bg);border:1px solid var(--acc-border);border-radius:11px;padding:10px 13px;display:flex;align-items:center;justify-content:space-between">
-            <div>
-              <div style="font-size:9px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--text3)">Sinal / Entrada (30%)</div>
-              <div id="orc-parcela-info" style="font-size:10px;color:var(--text3);margin-top:2px"></div>
+          <div style="background:var(--acc-bg);border:1px solid var(--acc-border);border-radius:11px;padding:10px 13px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
+              <div style="font-size:9px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--text3)">Sinal / Entrada</div>
+              <div style="display:flex;align-items:center;gap:5px">
+                <input type="number" id="orc-sinal-pct" value="30" min="0" max="100"
+                  style="width:42px;background:transparent;border:none;border-bottom:1px solid var(--acc-border);outline:none;color:var(--acc);font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;text-align:right;padding:2px 0"
+                  oninput="orcCalcTotal()">
+                <span style="font-size:12px;color:var(--text3);font-weight:700">%</span>
+              </div>
             </div>
-            <div id="orc-sinal-val" style="font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:700;color:var(--acc)">R$ 0,00</div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div id="orc-parcela-info" style="font-size:10px;color:var(--text3)"></div>
+              <div id="orc-sinal-val" style="font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:700;color:var(--acc)">R$ 0,00</div>
+            </div>
           </div>
         </div>
         <button class="btn-calc" onclick="orcCalcTotal()">⚡ CALCULAR TOTAL</button>
@@ -867,13 +889,14 @@ input[type=range]{width:100%;accent-color:var(--acc)}
   </div>
 </div>
 
-<div id="print-area" style="display:none"></div>
+<div id="print-area" style="display:none;position:fixed;inset:0;z-index:9999;background:#fff;overflow-y:auto;-webkit-overflow-scrolling:touch"></div>
 
 <script>
 // ══════════════════════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════════════════════
 document.getElementById('orc-data').value = new Date().toISOString().split('T')[0];
+gerarNumeroOrc();
 
 // ══════════════════════════════════════════════════════════════
 // BLOCO 1 — DADOS: SERVIÇOS
@@ -2163,6 +2186,19 @@ function collectMaterials() {
 }
 
 // ══════════════════════════════════════════════════════════════
+// NÚMERO DE ORÇAMENTO
+// ══════════════════════════════════════════════════════════════
+function gerarNumeroOrc() {
+  const n = (parseInt(localStorage.getItem('orcCounter') || '0') + 1);
+  localStorage.setItem('orcCounter', n);
+  const codigo = 'ORC-' + String(n).padStart(3, '0');
+  document.getElementById('orc-numero').value = codigo;
+  document.getElementById('orc-num-badge').textContent = '#' + codigo;
+  document.getElementById('orc-titulo').textContent = 'Orçamento';
+  return codigo;
+}
+
+// ══════════════════════════════════════════════════════════════
 // ORÇAMENTO — TOTAL (adaptado para DOM-direto)
 // ══════════════════════════════════════════════════════════════
 let orcPagamento = 'pix';
@@ -2198,8 +2234,9 @@ function orcCalcTotal() {
   document.getElementById('orc-sticky-sub').textContent =
     `M.O. R$ ${scpFmtBRL(servTotal)} · Mat R$ ${scpFmtBRL(matTotal)}` + (kmTotal > 0 ? ` · Km R$ ${scpFmtBRL(kmTotal)}` : '');
 
-  // sinal 30%
-  const sinal = total * 0.30;
+  // sinal editável
+  const sinalPct = parseFloat(document.getElementById('orc-sinal-pct')?.value) || 30;
+  const sinal = total * sinalPct / 100;
   document.getElementById('orc-sinal-val').textContent = 'R$ ' + scpFmtBRL(sinal);
 
   // parcela info
@@ -2223,6 +2260,8 @@ function gerarPDF() {
   const tel      = document.getElementById('orc-tel')?.value || '';
   const data     = document.getElementById('orc-data')?.value || '';
   const garantia = document.getElementById('orc-garantia')?.value || '90';
+  const validade = document.getElementById('orc-validade')?.value || '15';
+  const numero   = document.getElementById('orc-numero')?.value || gerarNumeroOrc();
   const obsServ  = document.getElementById('orc-serv-obs')?.value || '';
   const obsMat   = document.getElementById('orc-mat-obs')?.value || '';
 
@@ -2271,7 +2310,8 @@ function gerarPDF() {
   const kmTotal = km * kmVal;
   const sub     = servTotal + matTotal;
   const total   = sub - sub * (desc / 100) + acre + kmTotal;
-  const sinal   = total * 0.30;
+  const sinalPct = parseFloat(document.getElementById('orc-sinal-pct')?.value) || 30;
+  const sinal   = total * sinalPct / 100;
   const dataBr  = data ? new Date(data + 'T12:00:00').toLocaleDateString('pt-BR') : '—';
 
   const pagLabels = {pix:'💠 Pix',dinheiro:'💵 Dinheiro',credito:'💳 Cartão de Crédito',debito:'💳 Cartão de Débito',boleto:'📄 Boleto'};
@@ -2327,7 +2367,8 @@ function gerarPDF() {
       </div>
       <div style="text-align:right">
         <div class="pdf-badge">ORÇAMENTO</div>
-        <div style="font-size:11px;color:#888;margin-top:6px">${dataBr}</div>
+        <div style="font-size:11px;color:#888;margin-top:4px;font-family:monospace;font-weight:700">${numero}</div>
+        <div style="font-size:11px;color:#888;margin-top:2px">${dataBr}</div>
       </div>
     </div>
     <div class="pdf-info">
@@ -2366,12 +2407,12 @@ function gerarPDF() {
         <div style="font-weight:700">${pagLabel}${parcelaInfo}</div>
       </div>
       <div style="text-align:right">
-        <div style="font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#999;margin-bottom:3px">Sinal / Entrada (30%)</div>
+        <div style="font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#999;margin-bottom:3px">Sinal / Entrada (${sinalPct}%)</div>
         <div style="font-weight:700;color:#d97706">R$ ${scpFmtBRL(sinal)}</div>
       </div>
     </div>
     <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:10px 14px;font-size:11px;color:#166534">
-      🛡️ <strong>Garantia:</strong> ${garantia || 90} dias para todos os serviços executados · Válido por 15 dias a partir da data de emissão
+      🛡️ <strong>Garantia:</strong> ${garantia || 90} dias para todos os serviços &nbsp;·&nbsp; ⏳ <strong>Validade desta proposta:</strong> ${validade || 15} dias a partir de ${dataBr}
     </div>
     <div class="pdf-foot">
       <span>Gerado por Eletricista Power PRO</span>
