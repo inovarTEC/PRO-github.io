@@ -1030,6 +1030,7 @@ input[type=range]{width:100%;accent-color:var(--acc)}
 // ══════════════════════════════════════════════════════════════
 document.getElementById('orc-data').value = new Date().toISOString().split('T')[0];
 gerarNumeroOrc();
+_carregarCustomLocal();
 
 // ══════════════════════════════════════════════════════════════
 // BLOCO 1 — DADOS: SERVIÇOS
@@ -1040,46 +1041,46 @@ const SRV = [
   // Instalação
   {id:'s001',ico:'🔌',n:'Ponto de tomada TUG',cat:'Instalação',p:80,un:'pt',cfg:'tomada'},
   {id:'s002',ico:'🔌',n:'Ponto de tomada TUE 20A',cat:'Instalação',p:130,un:'pt',cfg:'tomada'},
-  {id:'s003',ico:'💡',n:'Ponto de iluminação',cat:'Instalação',p:70,un:'pt'},
+  {id:'s003',ico:'💡',n:'Ponto de iluminação',cat:'Instalação',p:70,un:'pt',mats:['m001','m026','m051']},
   {id:'s004',ico:'🚿',n:'Instalação de chuveiro elétrico',cat:'Instalação',p:150,un:'un',cfg:'chuveiro'},
   {id:'s005',ico:'❄️',n:'Instalação de ar-condicionado split',cat:'Instalação',p:380,un:'un',cfg:'ar'},
   {id:'s006',ico:'💧',n:"Instalação de bomba d'água",cat:'Instalação',p:300,un:'un',cfg:'bomba'},
   {id:'s007',ico:'🚗',n:'Instalação de portão elétrico',cat:'Instalação',p:350,un:'un'},
-  {id:'s008',ico:'🔆',n:'Instalação de luminária de teto',cat:'Instalação',p:80,un:'un'},
-  {id:'s009',ico:'🔆',n:'Instalação de lustre/pendente',cat:'Instalação',p:120,un:'un'},
+  {id:'s008',ico:'🔆',n:'Instalação de luminária de teto',cat:'Instalação',p:80,un:'un',mats:['m026','m051','m049','m050']},
+  {id:'s009',ico:'🔆',n:'Instalação de lustre/pendente',cat:'Instalação',p:120,un:'un',mats:['m026','m051']},
   {id:'s010',ico:'📺',n:'Tomada TV / antena / rede',cat:'Instalação',p:90,un:'pt'},
-  {id:'s011',ico:'⚡',n:'Interruptor simples',cat:'Instalação',p:60,un:'pt'},
-  {id:'s012',ico:'⚡',n:'Interruptor duplo',cat:'Instalação',p:80,un:'pt'},
-  {id:'s013',ico:'⚡',n:'Interruptor three-way',cat:'Instalação',p:120,un:'pt'},
-  {id:'s014',ico:'💡',n:'Dimmer',cat:'Instalação',p:150,un:'pt'},
+  {id:'s011',ico:'⚡',n:'Interruptor simples',cat:'Instalação',p:60,un:'pt',mats:['m001','m026','m034','m038']},
+  {id:'s012',ico:'⚡',n:'Interruptor duplo',cat:'Instalação',p:80,un:'pt',mats:['m001','m026','m035','m038']},
+  {id:'s013',ico:'⚡',n:'Interruptor three-way',cat:'Instalação',p:120,un:'pt',mats:['m001','m026','m036','m038']},
+  {id:'s014',ico:'💡',n:'Dimmer',cat:'Instalação',p:150,un:'pt',mats:['m001','m026','m037','m038']},
   {id:'s015',ico:'🏠',n:'Instalação elétrica residencial completa',cat:'Instalação',p:4500,un:'un'},
   {id:'s016',ico:'🏢',n:'Instalação elétrica comercial completa',cat:'Instalação',p:8000,un:'un'},
   {id:'s017',ico:'☀️',n:'Instalação solar fotovoltaica',cat:'Instalação',p:3500,un:'un'},
   {id:'s018',ico:'🔋',n:'Instalação de nobreak / estabilizador',cat:'Instalação',p:180,un:'un'},
   {id:'s019',ico:'🔌',n:'Tomada 3P+T industrial 32A',cat:'Instalação',p:160,un:'pt'},
   {id:'s020',ico:'🚿',n:'Instalação de aquecedor de passagem',cat:'Instalação',p:200,un:'un'},
-  {id:'s021',ico:'🔦',n:'Instalação de refletor externo',cat:'Instalação',p:130,un:'un'},
+  {id:'s021',ico:'🔦',n:'Instalação de refletor externo',cat:'Instalação',p:130,un:'un',mats:['m009','m047','m049','m050']},
   {id:'s022',ico:'📡',n:'Cabeamento de dados (ponto RJ45)',cat:'Instalação',p:120,un:'pt'},
   // Manutenção
   {id:'s023',ico:'🔧',n:'Revisão geral da instalação',cat:'Manutenção',p:250,un:'un'},
   {id:'s024',ico:'🔍',n:'Diagnóstico e localização de defeito',cat:'Manutenção',p:150,un:'un'},
-  {id:'s025',ico:'🔧',n:'Substituição de tomada',cat:'Manutenção',p:60,un:'pt'},
-  {id:'s026',ico:'🔧',n:'Substituição de interruptor',cat:'Manutenção',p:60,un:'pt'},
+  {id:'s025',ico:'🔧',n:'Substituição de tomada',cat:'Manutenção',p:60,un:'pt',mats:['m032','m026','m038']},
+  {id:'s026',ico:'🔧',n:'Substituição de interruptor',cat:'Manutenção',p:60,un:'pt',mats:['m034','m026','m038']},
   {id:'s027',ico:'🔧',n:'Substituição de chuveiro elétrico',cat:'Manutenção',p:100,un:'un'},
   {id:'s028',ico:'🔧',n:'Reparo em curto-circuito',cat:'Manutenção',p:200,un:'un'},
   {id:'s029',ico:'🔧',n:'Troca de cabo queimado',cat:'Manutenção',p:20,un:'m'},
-  {id:'s030',ico:'🔆',n:'Substituição de lâmpada',cat:'Manutenção',p:30,un:'pt'},
+  {id:'s030',ico:'🔆',n:'Substituição de lâmpada',cat:'Manutenção',p:30,un:'pt',mats:['m039','m040']},
   {id:'s031',ico:'🔆',n:'Substituição de luminária',cat:'Manutenção',p:80,un:'un'},
-  {id:'s032',ico:'⚡',n:'Instalação de DPS (proteção surto)',cat:'Manutenção',p:200,un:'un'},
+  {id:'s032',ico:'⚡',n:'Instalação de DPS (proteção surto)',cat:'Manutenção',p:200,un:'un',mats:['m021']},
   // Quadros
   {id:'s033',ico:'🗂️',n:'Montagem de quadro de distribuição (QD)',cat:'Quadros',p:350,un:'un',cfg:'qd'},
   {id:'s034',ico:'🗂️',n:'Revisão de quadro de distribuição',cat:'Quadros',p:180,un:'un'},
-  {id:'s035',ico:'⚙️',n:'Substituição de disjuntor',cat:'Quadros',p:80,un:'un'},
-  {id:'s036',ico:'⚙️',n:'Instalação de DR/DPS no QD',cat:'Quadros',p:150,un:'un'},
+  {id:'s035',ico:'⚙️',n:'Substituição de disjuntor',cat:'Quadros',p:80,un:'un',mats:['m012','m013','m014']},
+  {id:'s036',ico:'⚙️',n:'Instalação de DR/DPS no QD',cat:'Quadros',p:150,un:'un',mats:['m020','m021']},
   {id:'s037',ico:'🗂️',n:'Identificação e etiquetagem do QD',cat:'Quadros',p:120,un:'un'},
   // Iluminação
-  {id:'s038',ico:'💡',n:'Instalação de spot LED embutir',cat:'Iluminação',p:60,un:'pt'},
-  {id:'s039',ico:'💡',n:'Instalação de fita LED',cat:'Iluminação',p:45,un:'m'},
+  {id:'s038',ico:'💡',n:'Instalação de spot LED embutir',cat:'Iluminação',p:60,un:'pt',mats:['m042','m001','m026']},
+  {id:'s039',ico:'💡',n:'Instalação de fita LED',cat:'Iluminação',p:45,un:'m',mats:['m041']},
   {id:'s040',ico:'🔆',n:'Instalação de luminária de sobrepor',cat:'Iluminação',p:80,un:'un'},
   {id:'s041',ico:'🔆',n:'Iluminação externa (ponto)',cat:'Iluminação',p:150,un:'pt'},
   {id:'s042',ico:'💡',n:'Instalação de arandela',cat:'Iluminação',p:90,un:'un'},
@@ -1089,7 +1090,7 @@ const SRV = [
   {id:'s045',ico:'🏗️',n:'Passagem de eletroduto',cat:'Infraestrutura',p:28,un:'m'},
   {id:'s046',ico:'🏗️',n:'Passagem de cabo',cat:'Infraestrutura',p:15,un:'m'},
   {id:'s047',ico:'📦',n:'Instalação de eletrocalha',cat:'Infraestrutura',p:55,un:'m'},
-  {id:'s048',ico:'🌐',n:'Instalação de aterramento',cat:'Infraestrutura',p:380,un:'un'},
+  {id:'s048',ico:'🌐',n:'Instalação de aterramento',cat:'Infraestrutura',p:380,un:'un',mats:['m054','m055','m057','m058','m059']},
   {id:'s049',ico:'🌐',n:'Passagem de rede lógica (ponto)',cat:'Infraestrutura',p:120,un:'pt'},
   // Projetos/Laudos
   {id:'s050',ico:'📋',n:'Laudo técnico de instalação',cat:'Projetos/Laudos',p:450,un:'un'},
@@ -1602,15 +1603,15 @@ let matOvEspecsSel = {};  // specs do material no overlay
 // BLOCO 4 — CARD PENDENTE (SERVIÇO)
 // ══════════════════════════════════════════════════════════════
 function selecionarPendente(d) {
-  srvPendente = d;
   document.getElementById('srv-inline-results').style.display = 'none';
   document.getElementById('srv-inline-search').value = '';
-  document.getElementById('srv-pending-icon').textContent = d.ico;
-  document.getElementById('srv-pending-name').textContent = d.n;
-  document.getElementById('srv-pending-price').textContent = 'R$ ' + scpFmtBRL(d.p) + ' / ' + d.un;
-  const cfgBtn = document.getElementById('srv-pending-cfg-btn');
-  cfgBtn.style.display = d.cfg ? 'block' : 'none';
-  document.getElementById('srv-pending-card').style.display = 'flex';
+  // serviço com configurador completo → abre direto
+  if (d.cfg && SERVICOS_CFG[d.cfg]) {
+    abrirConfigurador(d);
+    return;
+  }
+  // todos os outros → configurador leve
+  abrirConfiguradorLeve(d);
 }
 
 function limparPendente() {
@@ -1630,13 +1631,95 @@ function addServiceDirect() {
   limparPendente();
 }
 
+// ── CONFIGURADOR LEVE (serviços sem cfg completo) ─────────────
+function abrirConfiguradorLeve(d) {
+  srvPendente = d;
+  const hasMats = d.mats && d.mats.length;
+  let matsHtml = '';
+  if (hasMats) {
+    matsHtml = `<div class="ilbl" style="margin-bottom:8px">Materiais sugeridos</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px">`;
+    d.mats.forEach(mid => {
+      const m = MAT.find(x => x.id === mid);
+      if (!m) return;
+      matsHtml += `<button class="scp-chip mat-chip" onclick="addMaterial(null,MAT.find(x=>x.id==='${mid}'),1,${m.p});flashButton(this)">${m.ico} ${m.n}</button>`;
+    });
+    matsHtml += `</div>`;
+  }
+
+  const body = document.getElementById('scp-body');
+  body.innerHTML = `
+    <div style="margin-bottom:16px">
+      <div class="ilbl" style="margin-bottom:8px">Quantidade</div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="qty-btn" style="width:36px;height:36px;font-size:18px" onclick="leve_qty(-1)">−</button>
+        <span id="leve-qty" style="font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:700;color:var(--text);min-width:32px;text-align:center">1</span>
+        <span style="font-size:12px;color:var(--text3)">${d.un}</span>
+        <button class="qty-btn" style="width:36px;height:36px;font-size:18px" onclick="leve_qty(1)">+</button>
+      </div>
+    </div>
+    <div style="margin-bottom:16px">
+      <div class="ilbl" style="margin-bottom:8px">Preço unitário (R$)</div>
+      <input class="inp" id="leve-preco" type="number" value="${d.p.toFixed(2)}" min="0" step="0.01"
+        style="font-family:'IBM Plex Mono',monospace;font-size:16px;margin-bottom:0"
+        oninput="leveAtualizarPreview()">
+    </div>
+    <div style="margin-bottom:16px">
+      <div class="ilbl" style="margin-bottom:8px">Observação (opcional)</div>
+      <input class="inp" id="leve-obs" type="text" placeholder="Ex: piso superior, sala..." style="margin-bottom:0">
+    </div>
+    ${matsHtml}`;
+
+  document.getElementById('scp-hdr-ico').textContent = d.ico;
+  document.getElementById('scp-hdr-name').textContent = d.n;
+  document.getElementById('scp-hdr-cat').textContent = d.cat;
+  leveAtualizarPreview();
+  document.getElementById('scp-overlay').classList.add('open');
+  // trocar botão adicionar para usar leveAdicionar
+  document.querySelector('#scp-footer button[onclick="scpAdicionar()"]')
+    .setAttribute('onclick', 'leveAdicionar()');
+}
+
+function leve_qty(delta) {
+  const el = document.getElementById('leve-qty');
+  const v = Math.max(1, (parseInt(el.textContent) || 1) + delta);
+  el.textContent = v;
+  leveAtualizarPreview();
+}
+
+function leveAtualizarPreview() {
+  const qt = parseInt(document.getElementById('leve-qty')?.textContent || 1);
+  const p  = parseFloat(document.getElementById('leve-preco')?.value || 0);
+  document.getElementById('scp-preview-price').textContent = 'R$ ' + scpFmtBRL(qt * p);
+  document.getElementById('scp-preview-tags').innerHTML =
+    `<span style="background:var(--acc-bg);border:1px solid var(--acc-border);border-radius:6px;padding:3px 8px;font-size:9px;font-weight:700;color:var(--acc)">${qt} ${srvPendente?.un || 'un'}</span>`;
+}
+
+function leveAdicionar() {
+  if (!srvPendente) return;
+  const qt  = parseInt(document.getElementById('leve-qty')?.textContent || 1);
+  const p   = parseFloat(document.getElementById('leve-preco')?.value || srvPendente.p);
+  const obs = document.getElementById('leve-obs')?.value.trim();
+  const nome = obs ? `${srvPendente.n} (${obs})` : srvPendente.n;
+  for (let i = 0; i < qt; i++) addService(null, {...srvPendente, n: nome, p});
+  fecharConfigurador();
+  // restaurar botão para scpAdicionar
+  const btn = document.querySelector('#scp-footer button[onclick="leveAdicionar()"]');
+  if (btn) btn.setAttribute('onclick', 'scpAdicionar()');
+}
+
 // ══════════════════════════════════════════════════════════════
 // BLOCO 5 — CARD PENDENTE (MATERIAL)
 // ══════════════════════════════════════════════════════════════
 function selecionarMaterialPendente(d) {
-  matPendente = d;
   document.getElementById('mat-inline-results').style.display = 'none';
   document.getElementById('mat-inline-search').value = '';
+  // se tem specs, abre configurador direto
+  if (d.specs) {
+    abrirConfiguradorMat(d);
+    return;
+  }
+  matPendente = d;
   document.getElementById('mat-pending-icon').textContent = d.ico;
   document.getElementById('mat-pending-name').textContent = d.n;
   document.getElementById('mat-pending-price').textContent = 'R$ ' + scpFmtBRL(d.p) + ' / ' + d.un;
@@ -1985,6 +2068,10 @@ function scpAdicionar() {
 function fecharConfigurador() {
   document.getElementById('scp-overlay').classList.remove('open');
   scpAtivo = null; scpSrvData = null; scpEstado = {};
+  // sempre restaurar botão para scpAdicionar
+  const btn = document.querySelector('#scp-footer button');
+  if (btn) btn.setAttribute('onclick', 'scpAdicionar()');
+  limparPendente();
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -2184,6 +2271,7 @@ function addCustomItem(type, salvarCatalogo) {
   if (salvarCatalogo) {
     if (type === 'srv') SRV.push(item);
     else MAT.push(item);
+    _salvarCustomLocal(type, item);
   }
   if (type === 'srv') addService(null, item);
   else addMaterial(null, item, 1, preco);
@@ -2191,6 +2279,27 @@ function addCustomItem(type, salvarCatalogo) {
   document.getElementById('cx-nf-' + type).style.display = 'none';
   const searchEl = document.getElementById(type === 'srv' ? 'srv-inline-search' : 'mat-inline-search');
   if (searchEl) searchEl.value = '';
+}
+
+function _salvarCustomLocal(type, item) {
+  try {
+    const key = 'custom_' + type;
+    const lista = JSON.parse(localStorage.getItem(key) || '[]');
+    lista.push(item);
+    localStorage.setItem(key, JSON.stringify(lista));
+  } catch(e) {}
+}
+
+function _carregarCustomLocal() {
+  try {
+    ['srv','mat'].forEach(type => {
+      const lista = JSON.parse(localStorage.getItem('custom_' + type) || '[]');
+      lista.forEach(item => {
+        const arr = type === 'srv' ? SRV : MAT;
+        if (!arr.find(x => x.id === item.id)) arr.push(item);
+      });
+    });
+  } catch(e) {}
 }
 
 function cancelarFormCustom(type) {
