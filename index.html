@@ -287,6 +287,13 @@ input[type=range]{width:100%;accent-color:var(--acc)}
 .check-cb.done{background:var(--acc);border-color:var(--acc);color:#000}
 .check-txt{font-size:13px;color:var(--text2);transition:color .2s}
 .check-txt.done{text-decoration:line-through;color:var(--text3)}
+/* ── ITEM CUSTOMIZADO ── */
+.cx-nf{border-radius:12px;padding:12px 14px;margin-top:4px;border:1px dashed;display:none}
+.cx-nf.srv{border-color:rgba(99,102,241,.3);background:rgba(99,102,241,.06)}
+.cx-nf.mat{border-color:rgba(167,139,250,.3);background:rgba(167,139,250,.06)}
+.cx-form{border-radius:14px;padding:14px;margin-top:4px;border:1px solid;display:none}
+.cx-form.srv{border-color:rgba(99,102,241,.3);background:rgba(99,102,241,.07)}
+.cx-form.mat{border-color:rgba(167,139,250,.3);background:rgba(167,139,250,.07)}
 @media print{
   body>*{display:none!important}
   #print-area{display:block!important;position:fixed;inset:0;background:#fff;color:#000;padding:20px;font-family:Arial,sans-serif;font-size:12px;z-index:9999}
@@ -390,6 +397,9 @@ input[type=range]{width:100%;accent-color:var(--acc)}
         </div>
         <!-- dropdown resultados -->
         <div id="srv-inline-results" class="inline-results"></div>
+        <!-- card não encontrado / form custom -->
+        <div id="cx-nf-srv" class="cx-nf srv"></div>
+        <div id="cx-form-srv" class="cx-form srv"></div>
         <!-- card pendente -->
         <div id="srv-pending-card" class="pending-card srv">
           <span id="srv-pending-icon" class="pending-ico">⚡</span>
@@ -425,6 +435,9 @@ input[type=range]{width:100%;accent-color:var(--acc)}
         </div>
         <!-- dropdown resultados -->
         <div id="mat-inline-results" class="inline-results"></div>
+        <!-- card não encontrado / form custom -->
+        <div id="cx-nf-mat" class="cx-nf mat"></div>
+        <div id="cx-form-mat" class="cx-form mat"></div>
         <!-- card pendente -->
         <div id="mat-pending-card" class="pending-card mat">
           <span id="mat-pending-icon" class="pending-ico">📦</span>
@@ -1829,15 +1842,28 @@ function fecharConfiguradorMat() {
 function inlineSearch(type, q) {
   const resultsId = type === 'srv' ? 'srv-inline-results' : 'mat-inline-results';
   const drop = document.getElementById(resultsId);
-  q = (q||'').trim().toLowerCase();
-  if (!q) { drop.style.display = 'none'; return; }
+  const nfEl = document.getElementById('cx-nf-' + type);
+  const formEl = document.getElementById('cx-form-' + type);
+  const rawQ = (type === 'srv' ? document.getElementById('srv-inline-search') : document.getElementById('mat-inline-search')).value.trim();
+  q = rawQ.toLowerCase();
+  if (!q) {
+    drop.style.display = 'none';
+    nfEl.style.display = 'none';
+    formEl.style.display = 'none';
+    return;
+  }
   const arr = type === 'srv' ? SRV : MAT;
   const res = arr.filter(d =>
     d.n.toLowerCase().includes(q) ||
     d.cat.toLowerCase().includes(q) ||
     (d.id && d.id.toLowerCase().includes(q))
   ).slice(0, 10);
-  if (!res.length) { drop.style.display = 'none'; return; }
+  if (!res.length) {
+    drop.style.display = 'none';
+    if (formEl.style.display !== 'block') _mostrarNF(type, rawQ);
+    return;
+  }
+  nfEl.style.display = 'none';
   const priceColor = type === 'srv' ? 'var(--acc)' : '#a78bfa';
   drop.innerHTML = res.map(d => {
     const onclick = type === 'srv'
@@ -1853,6 +1879,110 @@ function inlineSearch(type, q) {
     </div>`;
   }).join('');
   drop.style.display = 'block';
+}
+
+// ══════════════════════════════════════════════════════════════
+// BLOCO 7B — ITEM CUSTOMIZADO
+// ══════════════════════════════════════════════════════════════
+function gerarIdCustom(type) {
+  return (type === 'srv' ? 'cx_srv_' : 'cx_mat_') + Date.now();
+}
+
+function _mostrarNF(type, query) {
+  const isSrv = type === 'srv';
+  const corRgb = isSrv ? '99,102,241' : '167,139,250';
+  const corTxt = isSrv ? '#818cf8' : '#c4b5fd';
+  const nfEl = document.getElementById('cx-nf-' + type);
+  const safeQ = query.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+  nfEl.innerHTML = `
+    <div style="font-size:13px;font-weight:800;color:${corTxt};margin-bottom:3px">+ Criar item personalizado</div>
+    <div style="font-size:11px;color:var(--text3);margin-bottom:10px">"${query}" não está no catálogo</div>
+    <button onclick="abrirFormCustom('${type}','${safeQ}')"
+      style="width:100%;padding:9px;background:rgba(${corRgb},.15);border:1px solid rgba(${corRgb},.3);border-radius:10px;font-size:12px;font-weight:800;color:${corTxt};cursor:pointer">
+      ✏️ Criar e configurar
+    </button>`;
+  nfEl.style.display = 'block';
+}
+
+function abrirFormCustom(type, nome) {
+  const isSrv = type === 'srv';
+  const corRgb = isSrv ? '99,102,241' : '167,139,250';
+  const corTxt = isSrv ? '#818cf8' : '#c4b5fd';
+  const cats = isSrv ? SRV_CATS : MAT_CATS;
+  const uns = isSrv
+    ? ['pt','un','m','h','vb']
+    : ['un','m','pt','kg','cx','rl','h'];
+  const ico = isSrv ? '⚡' : '📦';
+  const label = isSrv ? 'Serviço' : 'Material';
+  const formEl = document.getElementById('cx-form-' + type);
+  formEl.innerHTML = `
+    <div style="font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:${corTxt};margin-bottom:12px">${ico} Novo ${label}</div>
+    <div style="display:flex;gap:8px;margin-bottom:8px">
+      <input class="inp" id="cx-ico-${type}" type="text" placeholder="${ico}"
+        style="width:56px;text-align:center;margin-bottom:0;font-size:18px">
+      <input class="inp" id="cx-nome-${type}" type="text" placeholder="Nome do ${label.toLowerCase()}"
+        value="${nome}" style="flex:1;margin-bottom:0">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+      <div>
+        <div class="ilbl">Categoria</div>
+        <select class="inp" id="cx-cat-${type}" style="margin-top:4px;margin-bottom:0">
+          ${cats.map(c => `<option>${c}</option>`).join('')}
+        </select>
+      </div>
+      <div>
+        <div class="ilbl">Unidade</div>
+        <select class="inp" id="cx-un-${type}" style="margin-top:4px;margin-bottom:0">
+          ${uns.map(u => `<option>${u}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div style="margin-bottom:10px">
+      <div class="ilbl">Preço unitário (R$)</div>
+      <input class="inp" id="cx-preco-${type}" type="number" placeholder="0,00" min="0" step="0.01"
+        style="margin-top:4px;margin-bottom:0;font-family:'IBM Plex Mono',monospace">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <button onclick="addCustomItem('${type}',false)"
+        style="padding:10px;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);border-radius:10px;font-size:11px;font-weight:800;color:#4ade80;cursor:pointer">
+        ➕ Só orçamento
+      </button>
+      <button onclick="addCustomItem('${type}',true)"
+        style="padding:10px;background:rgba(${corRgb},.2);border:1px solid rgba(${corRgb},.4);border-radius:10px;font-size:11px;font-weight:800;color:${corTxt};cursor:pointer">
+        💾 Salvar no catálogo
+      </button>
+    </div>
+    <button onclick="cancelarFormCustom('${type}')"
+      style="width:100%;margin-top:8px;padding:8px;background:transparent;border:1px solid var(--border-input);border-radius:9px;font-size:11px;color:var(--text3);cursor:pointer">
+      ✕ Cancelar
+    </button>`;
+  document.getElementById('cx-nf-' + type).style.display = 'none';
+  formEl.style.display = 'block';
+}
+
+function addCustomItem(type, salvarCatalogo) {
+  const nome = document.getElementById('cx-nome-' + type).value.trim();
+  const ico = document.getElementById('cx-ico-' + type).value.trim() || (type === 'srv' ? '⚡' : '📦');
+  const cat = document.getElementById('cx-cat-' + type).value;
+  const preco = parseFloat(document.getElementById('cx-preco-' + type).value) || 0;
+  const un = document.getElementById('cx-un-' + type).value || 'un';
+  if (!nome) { alert('Digite um nome para o item.'); return; }
+  const item = { id: gerarIdCustom(type), ico, n: nome, cat, p: preco, un };
+  if (salvarCatalogo) {
+    if (type === 'srv') SRV.push(item);
+    else MAT.push(item);
+  }
+  if (type === 'srv') addService(null, item);
+  else addMaterial(null, item, 1, preco);
+  document.getElementById('cx-form-' + type).style.display = 'none';
+  document.getElementById('cx-nf-' + type).style.display = 'none';
+  const searchEl = document.getElementById(type === 'srv' ? 'srv-inline-search' : 'mat-inline-search');
+  if (searchEl) searchEl.value = '';
+}
+
+function cancelarFormCustom(type) {
+  document.getElementById('cx-form-' + type).style.display = 'none';
+  document.getElementById('cx-nf-' + type).style.display = 'none';
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -2001,13 +2131,21 @@ function orcCalcTotal() {
 document.addEventListener('click', e => {
   const srvSearch = document.getElementById('srv-inline-search');
   const srvResults = document.getElementById('srv-inline-results');
+  const srvNF = document.getElementById('cx-nf-srv');
+  const srvForm = document.getElementById('cx-form-srv');
   const matSearch = document.getElementById('mat-inline-search');
   const matResults = document.getElementById('mat-inline-results');
-  if (!srvSearch?.contains(e.target) && !srvResults?.contains(e.target)) {
+  const matNF = document.getElementById('cx-nf-mat');
+  const matForm = document.getElementById('cx-form-mat');
+  const inSrv = srvSearch?.contains(e.target) || srvResults?.contains(e.target) || srvNF?.contains(e.target) || srvForm?.contains(e.target);
+  const inMat = matSearch?.contains(e.target) || matResults?.contains(e.target) || matNF?.contains(e.target) || matForm?.contains(e.target);
+  if (!inSrv) {
     if (srvResults) srvResults.style.display = 'none';
+    if (srvNF) srvNF.style.display = 'none';
   }
-  if (!matSearch?.contains(e.target) && !matResults?.contains(e.target)) {
+  if (!inMat) {
     if (matResults) matResults.style.display = 'none';
+    if (matNF) matNF.style.display = 'none';
   }
 });
 
