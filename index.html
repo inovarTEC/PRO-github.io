@@ -385,7 +385,10 @@ input[type=range]{width:100%;accent-color:var(--acc)}
       <div class="card" style="border-color:rgba(34,197,94,.2)">
         <div class="sec-head">
           <div class="sec-lbl"><div class="dot" style="background:#22c55e"></div>Serviços Elétricos</div>
-          <span id="orc-serv-count" style="font-size:10px;color:var(--text3)">0 itens</span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <button onclick="abrirCatalogo('srv')" style="display:flex;align-items:center;gap:5px;padding:5px 10px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25);border-radius:8px;font-size:10px;font-weight:800;color:#4ade80;cursor:pointer;letter-spacing:.4px">📋 Catálogo</button>
+            <span id="orc-serv-count" style="font-size:10px;color:var(--text3)">0 itens</span>
+          </div>
         </div>
         <div class="sw">
           <span class="sw-ico">🔍</span>
@@ -423,7 +426,10 @@ input[type=range]{width:100%;accent-color:var(--acc)}
       <div class="card" style="border-color:rgba(167,139,250,.2)">
         <div class="sec-head">
           <div class="sec-lbl"><div class="dot" style="background:#a78bfa"></div>Materiais Elétricos</div>
-          <span id="orc-mat-count" style="font-size:10px;color:var(--text3)">0 itens</span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <button onclick="abrirCatalogo('mat')" style="display:flex;align-items:center;gap:5px;padding:5px 10px;background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.25);border-radius:8px;font-size:10px;font-weight:800;color:#c4b5fd;cursor:pointer;letter-spacing:.4px">📦 Catálogo</button>
+            <span id="orc-mat-count" style="font-size:10px;color:var(--text3)">0 itens</span>
+          </div>
         </div>
         <div class="sw">
           <span class="sw-ico">🔍</span>
@@ -2183,6 +2189,29 @@ function renderCatalogo() {
       </div>`).join('')}
     </div>`;
   }).join('');
+}
+
+function abrirCatalogo(tipo) {
+  abrirModal('modal-ajustes');
+  // navegar para aba Catálogo (índice 2)
+  document.querySelectorAll('.ajtab').forEach((t,i) => {
+    t.classList.toggle('on', i===2);
+  });
+  document.querySelectorAll('.aj-panel').forEach((p,i) => {
+    if (i===2) p.style.display = i===2?'flex':'none';
+    else { p.classList.remove('on'); if(i===2) p.classList.add('on'); }
+  });
+  document.getElementById('aj-2').style.display = 'flex';
+  ['aj-0','aj-1','aj-3','aj-4'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.classList.remove('on'); el.style.display=''; }
+  });
+  renderCatalogo();
+  // selecionar sub-aba correta
+  const idx = tipo === 'srv' ? 0 : 1;
+  document.querySelectorAll('.cstab').forEach((t,i) => t.classList.toggle('on', i===idx));
+  document.getElementById('cat-servicos').style.display = idx===0?'block':'none';
+  document.getElementById('cat-materiais').style.display = idx===1?'block':'none';
 }
 
 // ══════════════════════════════════════════════════════════════
