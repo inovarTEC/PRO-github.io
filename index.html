@@ -287,6 +287,29 @@ input[type=range]{width:100%;accent-color:var(--acc)}
 .check-cb.done{background:var(--acc);border-color:var(--acc);color:#000}
 .check-txt{font-size:13px;color:var(--text2);transition:color .2s}
 .check-txt.done{text-decoration:line-through;color:var(--text3)}
+/* ── TELA RESULTADO ── */
+.res-total-lbl{font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--acc);margin-bottom:8px}
+.res-total-val{font-family:'Syne',sans-serif;font-size:48px;font-weight:900;color:var(--acc);line-height:1;letter-spacing:-1px}
+.res-card{border-radius:12px;padding:12px 14px;flex:1}
+.res-card-lbl{font-size:9px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;margin-bottom:5px}
+.res-card-val{font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:700}
+.res-row{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--border)}
+.res-row:last-child{border-bottom:none}
+.res-row-lbl{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text2)}
+.res-row-val{font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:700;color:var(--text)}
+.forn-pill{flex:1;padding:10px 6px;border-radius:11px;border:1px solid var(--border-input);background:var(--bg-input);font-size:11px;font-weight:800;color:var(--text2);cursor:pointer;text-align:center;line-height:1.4;transition:all .2s}
+.forn-pill.on{background:var(--acc-bg);border-color:var(--acc);color:var(--acc)}
+.msg-hdr{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;background:var(--bg-input);border:1px solid var(--border-input);border-radius:12px;cursor:pointer;transition:border-color .2s,border-radius .2s}
+.msg-hdr.open{border-radius:12px 12px 0 0;border-color:var(--acc)}
+.msg-hdr-left{display:flex;align-items:center;gap:10px}
+.msg-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0}
+.msg-title{font-size:12px;font-weight:800;letter-spacing:.5px;color:var(--text)}
+.msg-chevron{font-size:14px;color:var(--text3);transition:transform .2s}
+.msg-hdr.open .msg-chevron{transform:rotate(90deg)}
+.msg-body{display:none;background:var(--bg-card);border:1px solid var(--acc);border-top:none;border-radius:0 0 12px 12px;padding:12px 14px;margin-bottom:8px}
+.msg-body.open{display:block}
+.msg-txt{font-size:12px;color:var(--text2);line-height:1.7;white-space:pre-wrap;margin-bottom:10px}
+.btn-copiar{width:100%;padding:10px;background:var(--acc-bg);border:1px solid var(--acc-border);border-radius:9px;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;color:var(--acc);cursor:pointer}
 /* ── STICKY TOTAL BAR ── */
 .orc-sticky{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg-bnav);border-top:1px solid rgba(245,158,11,.22);flex-shrink:0;backdrop-filter:blur(12px);gap:12px}
 .orc-sticky-left{min-width:0}
@@ -372,6 +395,7 @@ input[type=range]{width:100%;accent-color:var(--acc)}
       <div id="orc-num-badge" style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;color:var(--acc);letter-spacing:.5px;margin-top:1px"></div>
     </div>
     <div style="display:flex;gap:7px">
+      <button onclick="abrirConfigPDF()" style="width:36px;height:36px;border-radius:10px;border:1px solid var(--border-input);background:var(--bg-card);color:var(--text2);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center" title="Configurar PDF">⚙️</button>
       <button onclick="gerarPDF()" style="width:36px;height:36px;border-radius:10px;border:1px solid #3b82f6;background:rgba(59,130,246,.15);color:#60a5fa;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">📄</button>
       <button class="btn-acc">SALVAR</button>
     </div>
@@ -533,23 +557,132 @@ input[type=range]{width:100%;accent-color:var(--acc)}
             </div>
           </div>
         </div>
-        <button class="btn-calc" onclick="orcCalcTotal()">⚡ CALCULAR TOTAL</button>
-      </div>
-      <div class="total-bar">
-        <div><div class="total-lbl">Total do Orçamento</div><div class="total-sub" id="orc-total-sub">Serviços + Materiais + Custos</div></div>
-        <div class="total-val" id="orc-total-val">R$ 0,00</div>
+        <button class="btn-calc" onclick="mostrarResultado()">⚡ CALCULAR TOTAL</button>
       </div>
     </div>
   </div>
-  <!-- ── STICKY TOTAL ── -->
-  <div class="orc-sticky">
+  <!-- ── STICKY MINI (feedback ao adicionar itens) ── -->
+  <div class="orc-sticky" id="orc-sticky-wrap" style="display:none">
     <div class="orc-sticky-left">
       <div class="orc-sticky-val" id="orc-sticky-val">R$ 0,00</div>
       <div class="orc-sticky-sub" id="orc-sticky-sub">Serviços + Materiais</div>
     </div>
-    <div class="orc-sticky-btns">
-      <button onclick="gerarPDF()" style="display:flex;align-items:center;gap:5px;padding:9px 14px;background:#3b82f6;border:none;border-radius:10px;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;color:#fff;cursor:pointer">📄 PDF</button>
-      <button onclick="compartilharOrc()" style="display:flex;align-items:center;gap:5px;padding:9px 14px;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);border-radius:10px;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;color:#4ade80;cursor:pointer">📤 Enviar</button>
+    <button onclick="mostrarResultado()" style="display:flex;align-items:center;gap:5px;padding:9px 14px;background:var(--acc);border:none;border-radius:10px;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;color:#000;cursor:pointer">⚡ Ver resultado</button>
+  </div>
+  <div class="bnav">
+    <div class="ni" onclick="navTo('home')"><div class="ni-i">🏠</div>Home<div class="ni-bar"></div></div>
+    <div class="ni" onclick="abrirModal('modal-ferramentas')"><div class="ni-i">🔧</div>Ferramentas<div class="ni-bar"></div></div>
+    <div class="ni" onclick="navTo('agenda')"><div class="ni-i">📅</div>Agendar<div class="ni-bar"></div></div>
+    <div class="ni" onclick="abrirModal('modal-relatorio')"><div class="ni-i">📊</div>Relatório<div class="ni-bar"></div></div>
+  </div>
+</div>
+
+<!-- ══ TELA RESULTADO ══ -->
+<div id="tela-resultado" class="tela">
+  <div class="hdr">
+    <div class="hbk" onclick="navTo('orcamento')">←</div>
+    <div style="display:flex;flex-direction:column;align-items:center">
+      <div class="hdr-title">Orçamento</div>
+      <div id="res-num-badge" style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;color:var(--acc);margin-top:1px"></div>
+    </div>
+    <div style="display:flex;gap:7px">
+      <button onclick="abrirConfigPDF()" style="width:36px;height:36px;border-radius:10px;border:1px solid var(--border-input);background:var(--bg-card);color:var(--text2);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center">⚙️</button>
+    </div>
+  </div>
+  <div class="scroll">
+    <div style="padding:14px 12px 100px">
+
+      <!-- TOTAL -->
+      <div class="card" style="margin-bottom:12px">
+        <div class="res-total-lbl">⚡ VALOR TOTAL</div>
+        <div class="res-total-val" id="res-total-val">R$ 0,00</div>
+        <div style="display:flex;gap:10px;margin-top:14px">
+          <div class="res-card" style="background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25)">
+            <div class="res-card-lbl" style="color:#4ade80">Lucro Líquido</div>
+            <div class="res-card-val" style="color:#4ade80" id="res-lucro-val">R$ 0,00</div>
+          </div>
+          <div class="res-card" style="background:rgba(239,68,68,.10);border:1px solid rgba(239,68,68,.25)">
+            <div class="res-card-lbl" style="color:#f87171">Despesas</div>
+            <div class="res-card-val" style="color:#f87171" id="res-despesa-val">R$ 0,00</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BREAKDOWN -->
+      <div class="card" style="margin-bottom:12px">
+        <div class="res-row">
+          <span class="res-row-lbl">🚗 Logística</span>
+          <span class="res-row-val" id="res-km-val">R$ 0,00</span>
+        </div>
+        <div class="res-row">
+          <span class="res-row-lbl">🔧 Mão de obra</span>
+          <span class="res-row-val" id="res-serv-val">R$ 0,00</span>
+        </div>
+        <div class="res-row">
+          <span class="res-row-lbl">📦 Materiais</span>
+          <span class="res-row-val" id="res-mat-val">R$ 0,00</span>
+        </div>
+      </div>
+
+      <!-- FORNECIMENTO -->
+      <div class="card" style="margin-bottom:12px">
+        <div class="ilbl" style="margin-bottom:10px">📦 FORNECIMENTO DE MATERIAL</div>
+        <div style="display:flex;gap:8px">
+          <button class="forn-pill on" id="forn-eletricista" onclick="selFornecimento(this,'eletricista')">✅ Eletricista<br>fornece</button>
+          <button class="forn-pill" id="forn-cliente" onclick="selFornecimento(this,'cliente')">🛒 Cliente<br>compra</button>
+          <button class="forn-pill" id="forn-nao" onclick="selFornecimento(this,'nao_incluir')">— Não<br>incluir</button>
+        </div>
+      </div>
+
+      <!-- AÇÕES -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px">
+        <button onclick="gerarPDF()" style="padding:13px 6px;background:var(--acc);border:none;border-radius:12px;font-family:'Syne',sans-serif;font-size:12px;font-weight:800;color:#000;cursor:pointer">↗ PDF</button>
+        <button onclick="navTo('orcamento')" style="padding:13px 6px;background:#3b82f6;border:none;border-radius:12px;font-family:'Syne',sans-serif;font-size:12px;font-weight:800;color:#fff;cursor:pointer">✏️ Editar</button>
+        <button onclick="novoOrcamento()" style="padding:13px 6px;background:var(--bg-card);border:1px solid var(--border-card);border-radius:12px;font-family:'Syne',sans-serif;font-size:12px;font-weight:800;color:var(--text2);cursor:pointer">↺ Novo</button>
+      </div>
+
+      <!-- MENSAGENS PRONTAS -->
+      <div class="sec" style="margin-bottom:10px">Mensagens prontas</div>
+      <div>
+        <div class="msg-hdr" onclick="toggleMsg(this)">
+          <div class="msg-hdr-left">
+            <div class="msg-num" style="background:#3b82f6">1</div>
+            <span class="msg-title">PROPOSTA</span>
+          </div>
+          <span class="msg-chevron">›</span>
+        </div>
+        <div class="msg-body">
+          <div class="msg-txt" id="msg-proposta"></div>
+          <button class="btn-copiar" onclick="copiarMsg('msg-proposta')">📋 Copiar mensagem</button>
+        </div>
+      </div>
+      <div style="margin-top:8px">
+        <div class="msg-hdr" onclick="toggleMsg(this)">
+          <div class="msg-hdr-left">
+            <div class="msg-num" style="background:#f59e0b">2</div>
+            <span class="msg-title">COBRANÇA DE SINAL</span>
+          </div>
+          <span class="msg-chevron">›</span>
+        </div>
+        <div class="msg-body">
+          <div class="msg-txt" id="msg-sinal"></div>
+          <button class="btn-copiar" onclick="copiarMsg('msg-sinal')">📋 Copiar mensagem</button>
+        </div>
+      </div>
+      <div style="margin-top:8px">
+        <div class="msg-hdr" onclick="toggleMsg(this)">
+          <div class="msg-hdr-left">
+            <div class="msg-num" style="background:#22c55e">3</div>
+            <span class="msg-title">CONCLUSÃO DO SERVIÇO</span>
+          </div>
+          <span class="msg-chevron">›</span>
+        </div>
+        <div class="msg-body">
+          <div class="msg-txt" id="msg-conclusao"></div>
+          <button class="btn-copiar" onclick="copiarMsg('msg-conclusao')">📋 Copiar mensagem</button>
+        </div>
+      </div>
+
     </div>
   </div>
   <div class="bnav">
@@ -2199,7 +2332,23 @@ function gerarNumeroOrc() {
 }
 
 // ══════════════════════════════════════════════════════════════
-// ORÇAMENTO — TOTAL (adaptado para DOM-direto)
+// HELPER — CÁLCULO DE TOTAIS (fonte única da fórmula)
+// ══════════════════════════════════════════════════════════════
+function calcOrcTotais(servTotal, matTotal) {
+  const desc     = parseFloat(document.getElementById('orc-desc').value)       || 0;
+  const acre     = parseFloat(document.getElementById('orc-acre').value)       || 0;
+  const km       = parseFloat(document.getElementById('orc-km').value)         || 0;
+  const kmVal    = parseFloat(document.getElementById('orc-km-val').value)     || 2;
+  const sinalPct = parseFloat(document.getElementById('orc-sinal-pct')?.value) || 30;
+  const sub      = servTotal + matTotal;
+  const kmTotal  = km * kmVal;
+  const total    = sub - sub * (desc / 100) + acre + kmTotal;
+  const sinal    = total * sinalPct / 100;
+  return { desc, acre, km, kmVal, kmTotal, sub, total, sinalPct, sinal };
+}
+
+// ══════════════════════════════════════════════════════════════
+// ORÇAMENTO — TOTAL
 // ══════════════════════════════════════════════════════════════
 let orcPagamento = 'pix';
 
@@ -2213,49 +2362,204 @@ function selPagamento(btn, tipo) {
 
 function orcCalcTotal() {
   const { total: servTotal } = collectServices();
-  const { total: matTotal } = collectMaterials();
-  const desc   = parseFloat(document.getElementById('orc-desc').value) || 0;
-  const acre   = parseFloat(document.getElementById('orc-acre').value) || 0;
-  const km     = parseFloat(document.getElementById('orc-km').value) || 0;
-  const kmVal  = parseFloat(document.getElementById('orc-km-val').value) || 2;
-  const sub    = servTotal + matTotal;
-  const kmTotal = km * kmVal;
-  const total  = sub - sub * (desc / 100) + acre + kmTotal;
+  const { total: matTotal }  = collectMaterials();
+  const { desc, acre, km, kmVal, kmTotal, sub, total, sinalPct, sinal } =
+    calcOrcTotais(servTotal, matTotal);
 
-  // total bar
-  document.getElementById('orc-total-val').textContent = 'R$ ' + scpFmtBRL(total);
-  document.getElementById('orc-total-sub').textContent =
-    `M.O.: R$ ${scpFmtBRL(servTotal)} | Mat: R$ ${scpFmtBRL(matTotal)} | Km: R$ ${scpFmtBRL(kmTotal)}`;
-  document.querySelector('.btn-calc').textContent = total > 0
-    ? `⚡ TOTAL: R$ ${scpFmtBRL(total)} — Recalcular` : '⚡ CALCULAR TOTAL';
-
-  // sticky bar
+  // sticky mini bar
+  const stickyWrap = document.getElementById('orc-sticky-wrap');
+  if (stickyWrap) stickyWrap.style.display = total > 0 ? 'flex' : 'none';
   document.getElementById('orc-sticky-val').textContent = 'R$ ' + scpFmtBRL(total);
   document.getElementById('orc-sticky-sub').textContent =
-    `M.O. R$ ${scpFmtBRL(servTotal)} · Mat R$ ${scpFmtBRL(matTotal)}` + (kmTotal > 0 ? ` · Km R$ ${scpFmtBRL(kmTotal)}` : '');
+    `M.O. R$ ${scpFmtBRL(servTotal)} · Mat R$ ${scpFmtBRL(matTotal)}` +
+    (kmTotal > 0 ? ` · Km R$ ${scpFmtBRL(kmTotal)}` : '');
 
-  // sinal editável
-  const sinalPct = parseFloat(document.getElementById('orc-sinal-pct')?.value) || 30;
-  const sinal = total * sinalPct / 100;
+  // sinal e parcela
   document.getElementById('orc-sinal-val').textContent = 'R$ ' + scpFmtBRL(sinal);
+  const parcelas = parseInt(document.getElementById('orc-parcelas')?.value || 1);
+  const infoEl   = document.getElementById('orc-parcela-info');
+  infoEl.textContent = (orcPagamento === 'credito' && parcelas > 1 && total > 0)
+    ? `${parcelas}× de R$ ${scpFmtBRL(total / parcelas)}` : '';
 
-  // parcela info
-  const parcelasEl = document.getElementById('orc-parcelas');
-  const parcelas = parseInt(parcelasEl?.value || 1);
-  const infoEl = document.getElementById('orc-parcela-info');
-  if (orcPagamento === 'credito' && parcelas > 1 && total > 0) {
-    infoEl.textContent = `${parcelas}× de R$ ${scpFmtBRL(total / parcelas)}`;
+  // btn-calc label
+  document.querySelector('.btn-calc').textContent = total > 0
+    ? `⚡ TOTAL: R$ ${scpFmtBRL(total)} — Ver resultado` : '⚡ CALCULAR TOTAL';
+
+  return { servTotal, matTotal, kmTotal, sub, total, sinalPct, sinal, desc, acre, km, kmVal };
+}
+
+// ══════════════════════════════════════════════════════════════
+// TELA RESULTADO
+// ══════════════════════════════════════════════════════════════
+let orcFornecimento = 'eletricista';
+
+function mostrarResultado() {
+  orcCalcTotal(); // atualiza sticky bar
+
+  // totais independentes respeitando fornecimento
+  const { total: servTotal } = collectServices();
+  const { total: matTotal }  = collectMaterials();
+  const matEfetivo = orcFornecimento === 'eletricista' ? matTotal : 0;
+  const { kmTotal, total, sinalPct, sinal } = calcOrcTotais(servTotal, matEfetivo);
+
+  // cards resultado
+  document.getElementById('res-total-val').textContent   = 'R$ ' + scpFmtBRL(total);
+  document.getElementById('res-serv-val').textContent    = 'R$ ' + scpFmtBRL(servTotal);
+  document.getElementById('res-mat-val').textContent     = 'R$ ' + scpFmtBRL(matTotal);
+  document.getElementById('res-km-val').textContent      = 'R$ ' + scpFmtBRL(kmTotal);
+  document.getElementById('res-lucro-val').textContent   = 'R$ ' + scpFmtBRL(servTotal);
+  document.getElementById('res-despesa-val').textContent = 'R$ ' + scpFmtBRL(matEfetivo);
+
+  // nota sob card de materiais
+  const matLabel = {
+    eletricista: '',
+    cliente:     '🛒 por conta do cliente',
+    nao_incluir: '— não incluído'
+  }[orcFornecimento];
+  const matEl = document.getElementById('res-mat-val');
+  if (matEl) matEl.title = matLabel;
+
+  // número badge
+  const num = document.getElementById('orc-numero')?.value || '';
+  document.getElementById('res-num-badge').textContent = num ? '#' + num : '';
+
+  // sincronizar pills
+  ['eletricista','cliente','nao_incluir'].forEach(k => {
+    const idMap = {eletricista:'forn-eletricista', cliente:'forn-cliente', nao_incluir:'forn-nao'};
+    document.getElementById(idMap[k])?.classList.toggle('on', k === orcFornecimento);
+  });
+
+  gerarMensagens(servTotal, matTotal, matEfetivo, total, sinalPct, sinal);
+  navTo('resultado');
+}
+
+function selFornecimento(btn, tipo) {
+  orcFornecimento = tipo;
+  ['forn-eletricista','forn-cliente','forn-nao'].forEach(id =>
+    document.getElementById(id)?.classList.remove('on'));
+  btn.classList.add('on');
+  mostrarResultado();
+}
+
+function gerarMensagens(servTotal, matTotal, matEfetivo, total, sinalPct, sinal) {
+  const empresa  = document.getElementById('orc-empresa')?.value  || 'Eletricista Power PRO';
+  const cliente  = document.getElementById('orc-cliente')?.value  || 'cliente';
+  const garantia = document.getElementById('orc-garantia')?.value || '90';
+  const validade = document.getElementById('orc-validade')?.value || '15';
+  const numero   = document.getElementById('orc-numero')?.value   || '';
+  const pagLabels= {pix:'Pix',dinheiro:'dinheiro',credito:'cartão de crédito',debito:'cartão de débito',boleto:'boleto'};
+  const pag      = pagLabels[orcPagamento] || orcPagamento;
+
+  const linhasMat = {
+    eletricista: `📦 Materiais: R$ ${scpFmtBRL(matTotal)}\n`,
+    cliente:     `📦 Materiais: por conta do cliente\n`,
+    nao_incluir: ''
+  }[orcFornecimento];
+
+  const proposta =
+`Olá, *${cliente}*! 👋
+
+Segue o orçamento *${numero}* para o serviço solicitado:
+
+🔧 Mão de obra: R$ ${scpFmtBRL(servTotal)}
+${linhasMat}━━━━━━━━━━━━━━━━━━
+💰 *TOTAL: R$ ${scpFmtBRL(total)}*
+
+💳 Pagamento via ${pag}
+🤝 Sinal de ${sinalPct}%: R$ ${scpFmtBRL(sinal)}
+🛡️ Garantia: ${garantia} dias
+⏳ Proposta válida por ${validade} dias
+
+Qualquer dúvida estou à disposição! ⚡
+*${empresa}*`;
+
+  const cobSinal =
+`Olá, *${cliente}*! ⚡
+
+Tudo certo para iniciarmos o serviço!
+
+Para confirmar o agendamento, solicito o sinal de *${sinalPct}% — R$ ${scpFmtBRL(sinal)}*.
+
+${orcPagamento === 'pix' ? `🔑 Chave Pix: confirme comigo o número.\n\nApós o pagamento, me envie o comprovante. 🙏` : `Forma de pagamento: ${pag}.`}
+
+*${empresa}*`;
+
+  const conclusao =
+`Olá, *${cliente}*! ✅
+
+O serviço foi concluído com sucesso! 🎉
+
+🛡️ Garantia de *${garantia} dias* para todos os itens executados. Qualquer problema, é só me chamar.
+
+Foi um prazer trabalhar para você! Caso precise de outros serviços elétricos, estou à disposição. 💡
+
+*${empresa}* ⚡`;
+
+  const el1 = document.getElementById('msg-proposta');
+  const el2 = document.getElementById('msg-sinal');
+  const el3 = document.getElementById('msg-conclusao');
+  if (el1) el1.textContent = proposta;
+  if (el2) el2.textContent = cobSinal;
+  if (el3) el3.textContent = conclusao;
+}
+
+function toggleMsg(hdr) {
+  const body = hdr.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  // fechar todos
+  document.querySelectorAll('.msg-hdr').forEach(h => h.classList.remove('open'));
+  document.querySelectorAll('.msg-body').forEach(b => b.classList.remove('open'));
+  if (!isOpen) { hdr.classList.add('open'); body.classList.add('open'); }
+}
+
+function copiarMsg(id) {
+  const txt = document.getElementById(id)?.textContent || '';
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(txt).then(() => {
+      const btn = document.querySelector(`[onclick="copiarMsg('${id}')"]`);
+      if (btn) { btn.textContent = '✅ Copiado!'; setTimeout(() => btn.textContent = '📋 Copiar mensagem', 2000); }
+    });
   } else {
-    infoEl.textContent = '';
+    prompt('Copie o texto:', txt);
   }
+}
+
+function novoOrcamento() {
+  // limpar containers
+  document.getElementById('srv-container').innerHTML = '';
+  document.getElementById('mat-container').innerHTML = '';
+  // limpar obs
+  const se = document.getElementById('orc-serv-obs'); if (se) se.value = '';
+  const me = document.getElementById('orc-mat-obs');  if (me) me.value = '';
+  // resetar custos
+  ['orc-desc','orc-acre','orc-km'].forEach(id => { const el = document.getElementById(id); if(el) el.value = '0'; });
+  // resetar pagamento
+  orcPagamento = 'pix';
+  document.querySelectorAll('.pagbtn').forEach((b,i) => b.classList.toggle('on', i===0));
+  document.getElementById('orc-parcelas-wrap').style.display = 'none';
+  // resetar fornecimento
+  orcFornecimento = 'eletricista';
+  // novo número
+  gerarNumeroOrc();
+  // badges
+  updateServiceBadge(); updateMaterialBadge();
+  // esconder sticky
+  const sw = document.getElementById('orc-sticky-wrap'); if(sw) sw.style.display = 'none';
+  // btn-calc label
+  const bc = document.querySelector('.btn-calc'); if(bc) bc.textContent = '⚡ CALCULAR TOTAL';
+  navTo('orcamento');
 }
 
 // ══════════════════════════════════════════════════════════════
 // PDF / COMPARTILHAR
 // ══════════════════════════════════════════════════════════════
 function gerarPDF() {
-  const empresa  = document.getElementById('orc-empresa')?.value || 'Eletricista Power PRO';
-  const cliente  = document.getElementById('orc-cliente')?.value || '—';
+  const cor       = pdfCfg.cor || '#f59e0b';
+  const subtitulo = pdfCfg.subtitulo || 'Serviços Elétricos Profissionais';
+  const msgCliente = pdfCfg.msgCliente || '';
+  const S         = pdfCfg.secoes;
+  const empresa   = document.getElementById('orc-empresa')?.value || 'Eletricista Power PRO';
+  const cliente   = document.getElementById('orc-cliente')?.value || '—';
   const endereco = document.getElementById('orc-endereco')?.value || '';
   const tel      = document.getElementById('orc-tel')?.value || '';
   const data     = document.getElementById('orc-data')?.value || '';
@@ -2284,34 +2588,34 @@ function gerarPDF() {
     </tr>`;
   });
 
-  // coletar materiais
-  let matRows = '';
+  // coletar materiais — 3 variantes conforme fornecimento
+  let matRows = '';        // com preços (eletricista fornece)
+  let matRowsSemPreco = ''; // sem preços (cliente compra)
   let matTotal = 0;
   document.querySelectorAll('#mat-container .mat-row').forEach(row => {
-    const nome  = row.querySelector('.row-name')?.textContent || '';
-    const cat   = row.querySelector('.row-sub')?.textContent || '';
-    const qt    = parseFloat(row.querySelector('.qty-val')?.textContent || 1);
-    const un    = row.querySelector('.qty-un')?.textContent || '';
-    const p     = parseCurrency(row.querySelector('.row-price-inp')?.value || '0');
-    const sub   = qt * p;
-    matTotal   += sub;
-    matRows    += `<tr>
+    const nome = row.querySelector('.row-name')?.textContent || '';
+    const cat  = row.querySelector('.row-sub')?.textContent  || '';
+    const qt   = parseFloat(row.querySelector('.qty-val')?.textContent || 1);
+    const un   = row.querySelector('.qty-un')?.textContent   || '';
+    const p    = parseCurrency(row.querySelector('.row-price-inp')?.value || '0');
+    const sub  = qt * p;
+    matTotal  += sub;
+    matRows += `<tr>
       <td style="padding:8px 10px;border-bottom:1px solid #f0f0f0">${nome}<br><span style="font-size:10px;color:#888">${cat}</span></td>
       <td style="padding:8px 10px;border-bottom:1px solid #f0f0f0;text-align:center">${qt} ${un}</td>
       <td style="padding:8px 10px;border-bottom:1px solid #f0f0f0;text-align:right">R$ ${scpFmtBRL(p)}</td>
       <td style="padding:8px 10px;border-bottom:1px solid #f0f0f0;text-align:right;font-weight:700">R$ ${scpFmtBRL(sub)}</td>
     </tr>`;
+    matRowsSemPreco += `<tr>
+      <td style="padding:8px 10px;border-bottom:1px solid #f0f0f0">${nome}<br><span style="font-size:10px;color:#888">${cat}</span></td>
+      <td style="padding:8px 10px;border-bottom:1px solid #f0f0f0;text-align:center">${qt} ${un}</td>
+    </tr>`;
   });
 
-  const desc    = parseFloat(document.getElementById('orc-desc').value) || 0;
-  const acre    = parseFloat(document.getElementById('orc-acre').value) || 0;
-  const km      = parseFloat(document.getElementById('orc-km').value) || 0;
-  const kmVal   = parseFloat(document.getElementById('orc-km-val').value) || 2;
-  const kmTotal = km * kmVal;
-  const sub     = servTotal + matTotal;
-  const total   = sub - sub * (desc / 100) + acre + kmTotal;
-  const sinalPct = parseFloat(document.getElementById('orc-sinal-pct')?.value) || 30;
-  const sinal   = total * sinalPct / 100;
+  // total respeita fornecimento
+  const matEfetivo = orcFornecimento === 'eletricista' ? matTotal : 0;
+  const { desc, acre, km, kmVal, kmTotal, sub, total, sinalPct, sinal } =
+    calcOrcTotais(servTotal, matEfetivo);
   const dataBr  = data ? new Date(data + 'T12:00:00').toLocaleDateString('pt-BR') : '—';
 
   const pagLabels = {pix:'💠 Pix',dinheiro:'💵 Dinheiro',credito:'💳 Cartão de Crédito',debito:'💳 Cartão de Débito',boleto:'📄 Boleto'};
@@ -2325,30 +2629,32 @@ function gerarPDF() {
     *{margin:0;padding:0;box-sizing:border-box}
     body{font-family:Arial,sans-serif;font-size:13px;color:#1a1a1a;background:#fff}
     .pdf-wrap{max-width:700px;margin:0 auto;padding:32px 24px}
-    .pdf-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;padding-bottom:20px;border-bottom:3px solid #f59e0b}
+    .pdf-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;padding-bottom:20px;border-bottom:3px solid ${cor}}
     .pdf-empresa{font-size:22px;font-weight:900;color:#1a1a1a;margin-bottom:4px}
     .pdf-sub{font-size:11px;color:#888}
-    .pdf-badge{background:#f59e0b;color:#000;font-size:11px;font-weight:800;border-radius:8px;padding:6px 14px;letter-spacing:.5px}
+    .pdf-badge{background:${cor};color:#fff;font-size:11px;font-weight:800;border-radius:8px;padding:6px 14px;letter-spacing:.5px;display:inline-block}
     .pdf-info{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:22px;background:#fafafa;border:1px solid #eee;border-radius:10px;padding:14px}
-    .pdf-info-item{font-size:12px}
     .pdf-info-lbl{font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#999;margin-bottom:2px}
-    .pdf-info-val{font-weight:700;color:#1a1a1a}
-    .pdf-sec{font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:#f59e0b;margin-bottom:8px;margin-top:20px;display:flex;align-items:center;gap:8px}
-    .pdf-sec::after{content:'';flex:1;height:1px;background:#f59e0b33}
+    .pdf-info-val{font-weight:700;color:#1a1a1a;font-size:13px}
+    .pdf-sec{font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:${cor};margin-bottom:8px;margin-top:20px;display:flex;align-items:center;gap:8px}
+    .pdf-sec::after{content:'';flex:1;height:1px;background:${cor}44}
     table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:8px}
-    thead tr{background:#f59e0b}
-    thead th{padding:9px 10px;text-align:left;font-size:10px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:#000}
+    thead tr{background:${cor}}
+    thead th{padding:9px 10px;text-align:left;font-size:10px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:#fff}
     thead th:not(:first-child){text-align:center}
     thead th:last-child{text-align:right}
-    .pdf-totals{display:flex;flex-direction:column;align-items:flex-end;gap:4px;margin-top:10px}
+    tbody tr:nth-child(even){background:#fafafa}
+    .pdf-totals{display:flex;flex-direction:column;align-items:flex-end;gap:5px;margin-top:12px}
     .pdf-tot-row{display:flex;gap:24px;font-size:12px}
-    .pdf-tot-lbl{color:#888;min-width:140px;text-align:right}
+    .pdf-tot-lbl{color:#888;min-width:180px;text-align:right}
     .pdf-tot-val{font-weight:700;min-width:90px;text-align:right}
-    .pdf-grand{display:flex;justify-content:space-between;align-items:center;background:#f59e0b;border-radius:10px;padding:12px 16px;margin:14px 0}
-    .pdf-grand-lbl{font-size:13px;font-weight:900;color:#000}
-    .pdf-grand-val{font-size:22px;font-weight:900;color:#000}
-    .pdf-pag{background:#fafafa;border:1px solid #eee;border-radius:10px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;font-size:12px}
-    .pdf-foot{margin-top:28px;padding-top:16px;border-top:1px solid #eee;display:flex;justify-content:space-between;font-size:10px;color:#aaa}
+    .pdf-grand{display:flex;justify-content:space-between;align-items:center;background:${cor};border-radius:10px;padding:14px 18px;margin:16px 0}
+    .pdf-grand-lbl{font-size:14px;font-weight:900;color:#fff}
+    .pdf-grand-val{font-size:26px;font-weight:900;color:#fff;font-family:monospace}
+    .pdf-pag{background:#fafafa;border:1px solid #eee;border-radius:10px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;font-size:12px}
+    .pdf-msg{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:12px 14px;font-size:12px;color:#555;margin-bottom:14px;font-style:italic}
+    .pdf-ass{border-top:1px dashed #ccc;margin-top:40px;padding-top:8px;font-size:10px;color:#aaa;display:flex;justify-content:space-between}
+    .pdf-foot{margin-top:20px;padding-top:14px;border-top:1px solid #eee;display:flex;justify-content:space-between;font-size:10px;color:#aaa}
     .pdf-obs{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:10px 12px;font-size:11px;color:#555;margin-top:8px}
     @media print{.no-print{display:none}body{padding:0}@page{margin:12mm}}
   </style>
@@ -2356,68 +2662,103 @@ function gerarPDF() {
     <div class="no-print" style="background:#1e40af;color:#fff;padding:10px 16px;border-radius:10px;display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
       <span style="font-weight:700;font-size:13px">📄 Pré-visualização do Orçamento</span>
       <div style="display:flex;gap:8px">
-        <button onclick="window.print()" style="background:#f59e0b;color:#000;border:none;border-radius:8px;padding:8px 16px;font-weight:800;cursor:pointer;font-size:12px">🖨️ Imprimir / PDF</button>
+        <button onclick="window.print()" style="background:${cor};color:#fff;border:none;border-radius:8px;padding:8px 16px;font-weight:800;cursor:pointer;font-size:12px">🖨️ Imprimir / PDF</button>
         <button onclick="document.getElementById('print-area').style.display='none'" style="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:8px 14px;font-weight:700;cursor:pointer;font-size:12px">✕ Fechar</button>
       </div>
     </div>
+
+    ${S.cabecalho !== false ? `
     <div class="pdf-hdr">
       <div>
         <div class="pdf-empresa">⚡ ${empresa}</div>
-        <div class="pdf-sub">Serviços Elétricos Profissionais</div>
+        <div class="pdf-sub">${subtitulo}</div>
       </div>
       <div style="text-align:right">
         <div class="pdf-badge">ORÇAMENTO</div>
-        <div style="font-size:11px;color:#888;margin-top:4px;font-family:monospace;font-weight:700">${numero}</div>
+        <div style="font-size:12px;color:#555;margin-top:6px;font-family:monospace;font-weight:700">${numero}</div>
         <div style="font-size:11px;color:#888;margin-top:2px">${dataBr}</div>
       </div>
-    </div>
+    </div>` : ''}
+
+    ${S.cliente !== false ? `
     <div class="pdf-info">
-      <div class="pdf-info-item"><div class="pdf-info-lbl">Cliente</div><div class="pdf-info-val">${cliente}</div></div>
-      <div class="pdf-info-item"><div class="pdf-info-lbl">Telefone</div><div class="pdf-info-val">${tel || '—'}</div></div>
-      <div class="pdf-info-item" style="grid-column:1/-1"><div class="pdf-info-lbl">Endereço</div><div class="pdf-info-val">${endereco || '—'}</div></div>
-    </div>
-    ${srvRows ? `
+      <div><div class="pdf-info-lbl">Cliente</div><div class="pdf-info-val">${cliente}</div></div>
+      <div><div class="pdf-info-lbl">Telefone</div><div class="pdf-info-val">${tel || '—'}</div></div>
+      <div style="grid-column:1/-1"><div class="pdf-info-lbl">Endereço</div><div class="pdf-info-val">${endereco || '—'}</div></div>
+    </div>` : ''}
+
+    ${S.servicos !== false && srvRows ? `
     <div class="pdf-sec">⚡ Mão de Obra / Serviços</div>
     <table>
       <thead><tr><th>Descrição</th><th>Qtd</th><th>Unit.</th><th>Total</th></tr></thead>
       <tbody>${srvRows}</tbody>
     </table>
-    ${obsServ ? `<div class="pdf-obs">📝 ${obsServ}</div>` : ''}` : ''}
-    ${matRows ? `
-    <div class="pdf-sec">📦 Materiais</div>
+    ${S.obs !== false && obsServ ? `<div class="pdf-obs">📝 ${obsServ}</div>` : ''}` : ''}
+
+    ${S.materiais !== false && orcFornecimento !== 'nao_incluir' && (matRows || matRowsSemPreco) ? `
+    <div class="pdf-sec">📦 Materiais${orcFornecimento === 'cliente' ? ' <span style="font-size:9px;font-weight:700;background:#fef3c7;color:#92400e;border-radius:4px;padding:2px 7px;margin-left:6px">FORNECIDOS PELO CLIENTE</span>' : ''}</div>
     <table>
-      <thead><tr><th>Descrição</th><th>Qtd</th><th>Unit.</th><th>Total</th></tr></thead>
-      <tbody>${matRows}</tbody>
+      ${orcFornecimento === 'eletricista'
+        ? `<thead><tr><th>Descrição</th><th>Qtd</th><th>Unit.</th><th>Total</th></tr></thead><tbody>${matRows}</tbody>`
+        : `<thead><tr><th style="text-align:left;padding:9px 10px;font-size:10px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:#fff">Descrição</th><th style="text-align:center;padding:9px 10px;font-size:10px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:#fff">Quantidade</th></tr></thead><tbody>${matRowsSemPreco}</tbody>`
+      }
     </table>
-    ${obsMat ? `<div class="pdf-obs">📝 ${obsMat}</div>` : ''}` : ''}
+    ${orcFornecimento === 'cliente' ? `<div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:8px 12px;font-size:11px;color:#92400e;margin-top:6px">🛒 Materiais a serem adquiridos pelo cliente — não incluídos no valor cobrado.</div>` : ''}
+    ${S.obs !== false && obsMat ? `<div class="pdf-obs">📝 ${obsMat}</div>` : ''}` : ''}
+
+    ${S.materiais !== false && orcFornecimento === 'nao_incluir' && S.obs !== false && obsMat ? `<div class="pdf-obs">📝 ${obsMat}</div>` : ''}
+
+    ${S.subtotais !== false ? `
     <div class="pdf-totals">
       <div class="pdf-tot-row"><span class="pdf-tot-lbl">Mão de obra</span><span class="pdf-tot-val">R$ ${scpFmtBRL(servTotal)}</span></div>
-      <div class="pdf-tot-row"><span class="pdf-tot-lbl">Materiais</span><span class="pdf-tot-val">R$ ${scpFmtBRL(matTotal)}</span></div>
+      ${orcFornecimento === 'eletricista' && matTotal > 0 ? `<div class="pdf-tot-row"><span class="pdf-tot-lbl">Materiais</span><span class="pdf-tot-val">R$ ${scpFmtBRL(matTotal)}</span></div>` : ''}
+      ${orcFornecimento === 'cliente' && matTotal > 0 ? `<div class="pdf-tot-row"><span class="pdf-tot-lbl">Materiais (cliente)</span><span class="pdf-tot-val" style="color:#888">—</span></div>` : ''}
       ${kmTotal > 0 ? `<div class="pdf-tot-row"><span class="pdf-tot-lbl">Deslocamento (${km}km)</span><span class="pdf-tot-val">R$ ${scpFmtBRL(kmTotal)}</span></div>` : ''}
       ${desc > 0 ? `<div class="pdf-tot-row"><span class="pdf-tot-lbl">Desconto (${desc}%)</span><span class="pdf-tot-val" style="color:#dc2626">−R$ ${scpFmtBRL(sub * desc / 100)}</span></div>` : ''}
       ${acre > 0 ? `<div class="pdf-tot-row"><span class="pdf-tot-lbl">Acréscimo</span><span class="pdf-tot-val">R$ ${scpFmtBRL(acre)}</span></div>` : ''}
-    </div>
+    </div>` : ''}
+
     <div class="pdf-grand">
       <span class="pdf-grand-lbl">TOTAL DO ORÇAMENTO</span>
       <span class="pdf-grand-val">R$ ${scpFmtBRL(total)}</span>
     </div>
+
+    ${S.pagamento !== false ? `
     <div class="pdf-pag">
       <div>
         <div style="font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#999;margin-bottom:3px">Forma de Pagamento</div>
-        <div style="font-weight:700">${pagLabel}${parcelaInfo}</div>
+        <div style="font-weight:700;font-size:14px">${pagLabel}${parcelaInfo}</div>
       </div>
       <div style="text-align:right">
         <div style="font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#999;margin-bottom:3px">Sinal / Entrada (${sinalPct}%)</div>
-        <div style="font-weight:700;color:#d97706">R$ ${scpFmtBRL(sinal)}</div>
+        <div style="font-weight:800;font-size:18px;color:${cor}">R$ ${scpFmtBRL(sinal)}</div>
       </div>
-    </div>
-    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:10px 14px;font-size:11px;color:#166534">
-      🛡️ <strong>Garantia:</strong> ${garantia || 90} dias para todos os serviços &nbsp;·&nbsp; ⏳ <strong>Validade desta proposta:</strong> ${validade || 15} dias a partir de ${dataBr}
-    </div>
+    </div>` : ''}
+
+    ${S.garantia !== false ? `
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:10px 14px;font-size:11px;color:#166534;margin-bottom:14px">
+      🛡️ <strong>Garantia:</strong> ${garantia || 90} dias &nbsp;·&nbsp; ⏳ <strong>Validade:</strong> ${validade || 15} dias a partir de ${dataBr}
+    </div>` : ''}
+
+    ${msgCliente ? `<div class="pdf-msg">💬 ${msgCliente}</div>` : ''}
+
+    ${pdfCfg.assinatura ? `
+    <div class="pdf-ass">
+      <div style="text-align:center;min-width:200px">
+        <div style="border-top:1px solid #999;padding-top:6px;margin-top:48px">${cliente}</div>
+        <div style="font-size:9px;color:#aaa">Assinatura do Cliente</div>
+      </div>
+      <div style="text-align:center;min-width:200px">
+        <div style="border-top:1px solid #999;padding-top:6px;margin-top:48px">${empresa}</div>
+        <div style="font-size:9px;color:#aaa">Assinatura do Prestador</div>
+      </div>
+    </div>` : ''}
+
+    ${S.rodape !== false ? `
     <div class="pdf-foot">
       <span>Gerado por Eletricista Power PRO</span>
       <span>${dataBr}</span>
-    </div>
+    </div>` : ''}
   </div>`;
 
   const area = document.getElementById('print-area');
@@ -2427,16 +2768,14 @@ function gerarPDF() {
 }
 
 function compartilharOrc() {
-  const cliente = document.getElementById('orc-cliente')?.value || 'Cliente';
+  const cliente  = document.getElementById('orc-cliente')?.value  || 'Cliente';
+  const empresa  = document.getElementById('orc-empresa')?.value  || 'Eletricista Power PRO';
+  const garantia = document.getElementById('orc-garantia')?.value || '90';
+  const validade = document.getElementById('orc-validade')?.value || '15';
+  const numero   = document.getElementById('orc-numero')?.value   || '';
   const { total: srvTotal } = collectServices();
   const { total: matTotal } = collectMaterials();
-  const desc  = parseFloat(document.getElementById('orc-desc').value) || 0;
-  const acre  = parseFloat(document.getElementById('orc-acre').value) || 0;
-  const km    = parseFloat(document.getElementById('orc-km').value) || 0;
-  const kmVal = parseFloat(document.getElementById('orc-km-val').value) || 2;
-  const sub   = srvTotal + matTotal;
-  const grand = sub - sub * (desc / 100) + acre + km * kmVal;
-  const empresa = document.getElementById('orc-empresa')?.value || 'Eletricista Power PRO';
+  const { total: grand, sinalPct, sinal } = calcOrcTotais(srvTotal, matTotal);
 
   let srv = '';
   document.querySelectorAll('#srv-container .srv-row').forEach(row => {
@@ -2453,10 +2792,10 @@ function compartilharOrc() {
     matTxt += `  • ${n} × ${qt} — R$ ${scpFmtBRL(parseFloat(qt) * p)}\n`;
   });
 
-  const texto = `*ORÇAMENTO — ${empresa.toUpperCase()}*\nCliente: ${cliente}\n\n` +
+  const texto = `*ORÇAMENTO ${numero} — ${empresa.toUpperCase()}*\nCliente: ${cliente}\n\n` +
     (srv ? `*Serviços:*\n${srv}\n` : '') +
     (matTxt ? `*Materiais:*\n${matTxt}\n` : '') +
-    `*TOTAL: R$ ${scpFmtBRL(grand)}*\n\nSinal (30%): R$ ${scpFmtBRL(grand * 0.30)}\nGarantia: 90 dias · Válido por 15 dias`;
+    `*TOTAL: R$ ${scpFmtBRL(grand)}*\n\nSinal (${sinalPct}%): R$ ${scpFmtBRL(sinal)}\nGarantia: ${garantia} dias · Válido por ${validade} dias`;
 
   if (navigator.share) {
     navigator.share({ title: `Orçamento — ${cliente}`, text: texto }).catch(() => {});
@@ -2555,7 +2894,7 @@ function abrirCatalogo(tipo) {
 // ══════════════════════════════════════════════════════════════
 // NAVEGAÇÃO & MODAIS
 // ══════════════════════════════════════════════════════════════
-const telas = {home:'tela-home', orcamento:'tela-orcamento', agenda:'tela-agenda'};
+const telas = {home:'tela-home', orcamento:'tela-orcamento', resultado:'tela-resultado', agenda:'tela-agenda'};
 function navTo(id) {
   Object.values(telas).forEach(t => document.getElementById(t).classList.remove('ativa'));
   document.getElementById(telas[id]).classList.add('ativa');
@@ -2770,9 +3109,149 @@ function resetCheck(){const key=document.getElementById('check-sel').value;check
 // ══════════════════════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
+// CONFIG PDF
+// ══════════════════════════════════════════════════════════════
+const PDF_SECOES = [
+  { k:'cabecalho',  lbl:'Cabeçalho da empresa',   ico:'🏢', def:true  },
+  { k:'cliente',   lbl:'Dados do cliente',         ico:'👤', def:true  },
+  { k:'servicos',  lbl:'Tabela de serviços',        ico:'⚡', def:true  },
+  { k:'materiais', lbl:'Tabela de materiais',       ico:'📦', def:true  },
+  { k:'subtotais', lbl:'Subtotais discriminados',   ico:'📊', def:true  },
+  { k:'pagamento', lbl:'Forma de pagamento / sinal',ico:'💳', def:true  },
+  { k:'garantia',  lbl:'Garantia e validade',       ico:'🛡️', def:true  },
+  { k:'obs',       lbl:'Observações técnicas',      ico:'📝', def:true  },
+  { k:'rodape',    lbl:'Rodapé (gerado por...)',    ico:'📄', def:true  },
+];
+
+let pdfCfg = {
+  cor: '#f59e0b',
+  secoes: Object.fromEntries(PDF_SECOES.map(s => [s.k, s.def])),
+  assinatura: false,
+  msgCliente: '',
+  subtitulo: 'Serviços Elétricos Profissionais',
+};
+
+function abrirConfigPDF() {
+  // renderizar toggles de seções
+  document.getElementById('cfg-secoes').innerHTML = PDF_SECOES.map(s => `
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:13px;color:var(--text2)">${s.ico} ${s.lbl}</span>
+      <div id="cfg-sw-${s.k}" class="scp-toggle-sw${pdfCfg.secoes[s.k]?' on':''}"
+        onclick="cfgToggleSecao('${s.k}',this)"></div>
+    </div>`).join('').replace(/border-bottom:1px solid var\(--border\)(?=<\/div>\s*$)/,'border:none');
+
+  // preencher campos
+  document.getElementById('cfg-msg-cliente').value = pdfCfg.msgCliente;
+  document.getElementById('cfg-subtitulo').value   = pdfCfg.subtitulo;
+
+  const sw = document.getElementById('cfg-sw-assinatura');
+  sw.classList.toggle('on', pdfCfg.assinatura);
+
+  // cor selecionada
+  document.querySelectorAll('.cfg-cor').forEach(el => {
+    const sel = el.dataset.cor === pdfCfg.cor;
+    el.style.border = sel ? `3px solid ${el.dataset.cor}` : '3px solid transparent';
+    el.style.boxShadow = sel ? `0 0 0 2px var(--bg-card),0 0 0 4px ${el.dataset.cor}` : 'none';
+  });
+
+  document.getElementById('modal-cfg-pdf').style.display = 'flex';
+}
+
+function fecharConfigPDF() {
+  // salvar campos antes de fechar
+  pdfCfg.msgCliente = document.getElementById('cfg-msg-cliente').value;
+  pdfCfg.subtitulo  = document.getElementById('cfg-subtitulo').value;
+  document.getElementById('modal-cfg-pdf').style.display = 'none';
+}
+
+function selecionarCorPDF(el) {
+  pdfCfg.cor = el.dataset.cor;
+  document.querySelectorAll('.cfg-cor').forEach(c => {
+    const sel = c.dataset.cor === pdfCfg.cor;
+    c.style.border = sel ? `3px solid ${c.dataset.cor}` : '3px solid transparent';
+    c.style.boxShadow = sel ? `0 0 0 2px var(--bg-card),0 0 0 4px ${c.dataset.cor}` : 'none';
+  });
+}
+
+function cfgToggleSecao(k, el) {
+  pdfCfg.secoes[k] = !pdfCfg.secoes[k];
+  el.classList.toggle('on', pdfCfg.secoes[k]);
+}
+
+function cfgToggle(el, k) {
+  pdfCfg[k] = !pdfCfg[k];
+  el.classList.toggle('on', pdfCfg[k]);
+}
+
 renderNBR();
 renderCheck();
 demRenderGrid();
 </script>
+<!-- ══ MODAL CONFIG PDF ══ -->
+<div id="modal-cfg-pdf" onclick="if(event.target===this)fecharConfigPDF()"
+  style="display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.6);align-items:flex-end">
+  <div style="background:var(--bg-card);border-radius:20px 20px 0 0;width:100%;max-height:90vh;display:flex;flex-direction:column;overflow:hidden">
+
+    <!-- header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);flex-shrink:0">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:36px;height:36px;border-radius:10px;background:rgba(59,130,246,.15);border:1px solid rgba(59,130,246,.3);display:flex;align-items:center;justify-content:center;font-size:18px">📄</div>
+        <div>
+          <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--text)">Configurar PDF</div>
+          <div style="font-size:10px;color:var(--text3);margin-top:1px">Personalize o orçamento enviado ao cliente</div>
+        </div>
+      </div>
+      <button onclick="fecharConfigPDF()" style="width:32px;height:32px;background:var(--bg-input);border:1px solid var(--border-input);border-radius:9px;color:var(--text2);cursor:pointer;font-size:14px">✕</button>
+    </div>
+
+    <!-- body -->
+    <div style="overflow-y:auto;padding:16px;flex:1;-webkit-overflow-scrolling:touch">
+
+      <!-- Cor de destaque -->
+      <div style="font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:10px">🎨 Cor de Destaque</div>
+      <div style="display:flex;gap:8px;margin-bottom:20px" id="cfg-cores">
+        <div class="cfg-cor on" data-cor="#f59e0b" onclick="selecionarCorPDF(this)" style="width:32px;height:32px;border-radius:50%;background:#f59e0b;cursor:pointer;border:3px solid #f59e0b;box-shadow:0 0 0 2px #000"></div>
+        <div class="cfg-cor" data-cor="#3b82f6" onclick="selecionarCorPDF(this)" style="width:32px;height:32px;border-radius:50%;background:#3b82f6;cursor:pointer;border:3px solid transparent"></div>
+        <div class="cfg-cor" data-cor="#22c55e" onclick="selecionarCorPDF(this)" style="width:32px;height:32px;border-radius:50%;background:#22c55e;cursor:pointer;border:3px solid transparent"></div>
+        <div class="cfg-cor" data-cor="#8b5cf6" onclick="selecionarCorPDF(this)" style="width:32px;height:32px;border-radius:50%;background:#8b5cf6;cursor:pointer;border:3px solid transparent"></div>
+        <div class="cfg-cor" data-cor="#ef4444" onclick="selecionarCorPDF(this)" style="width:32px;height:32px;border-radius:50%;background:#ef4444;cursor:pointer;border:3px solid transparent"></div>
+        <div class="cfg-cor" data-cor="#0f172a" onclick="selecionarCorPDF(this)" style="width:32px;height:32px;border-radius:50%;background:#0f172a;cursor:pointer;border:3px solid transparent;border:1px solid var(--border-input)"></div>
+      </div>
+
+      <!-- Seções visíveis -->
+      <div style="font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:10px">📋 Seções do PDF</div>
+      <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:13px;padding:0 14px;margin-bottom:20px">
+        <div id="cfg-secoes"></div>
+      </div>
+
+      <!-- Mensagem personalizada -->
+      <div style="font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:8px">✍️ Mensagem ao Cliente</div>
+      <textarea id="cfg-msg-cliente" class="inp" placeholder="Ex: Obrigado pela confiança! Qualquer dúvida estou à disposição. 😊" style="min-height:72px;margin-bottom:20px"></textarea>
+
+      <!-- Assinatura -->
+      <div style="font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:10px">✏️ Linha de Assinatura</div>
+      <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:13px;padding:0 14px;margin-bottom:20px">
+        <div class="cfg-toggle-row" style="display:flex;align-items:center;justify-content:space-between;padding:13px 0">
+          <span style="font-size:13px;color:var(--text2)">Incluir campo de assinatura do cliente</span>
+          <div id="cfg-sw-assinatura" class="scp-toggle-sw" onclick="cfgToggle(this,'assinatura')"></div>
+        </div>
+      </div>
+
+      <!-- Subtítulo da empresa -->
+      <div style="font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:8px">🏢 Subtítulo da Empresa</div>
+      <input class="inp" id="cfg-subtitulo" type="text" placeholder="Ex: CREA-PE 123456 · (81) 99999-0000" style="margin-bottom:4px">
+      <div class="sh" style="margin-bottom:20px">Aparece abaixo do nome da empresa no cabeçalho</div>
+
+    </div>
+
+    <!-- footer -->
+    <div style="padding:12px 16px 24px;border-top:1px solid var(--border);flex-shrink:0;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <button onclick="fecharConfigPDF()" style="padding:13px;background:var(--bg-input);border:1px solid var(--border-input);border-radius:12px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--text2);cursor:pointer">Cancelar</button>
+      <button onclick="fecharConfigPDF();gerarPDF()" style="padding:13px;background:#3b82f6;border:none;border-radius:12px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:#fff;cursor:pointer">📄 Gerar PDF</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
