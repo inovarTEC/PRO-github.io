@@ -763,59 +763,157 @@ input[type=range]{width:100%;accent-color:var(--acc)}
         </table>
       </div>
     </div>
-    <!-- ABA 1: DEMANDA (resumida) -->
-    <div id="ferr-1" class="ferr-panel" style="padding:14px">
-      <div style="display:flex;border-bottom:1px solid var(--border);margin-bottom:14px">
+    <!-- ABA 1: DEMANDA -->
+    <div id="ferr-1" class="ferr-panel" style="padding:0">
+      <!-- SUB-ABAS -->
+      <div style="display:flex;border-bottom:1px solid var(--border);background:var(--bg-hdr);flex-shrink:0">
         <div class="dem-stab on" onclick="demSubAba(0,this)">📐 NBR 5410</div>
         <div class="dem-stab" onclick="demSubAba(1,this)">🏢 MUC</div>
       </div>
-      <div id="dem-s0" class="dem-spanel on">
+
+      <!-- ══ SUB-ABA 0: NBR 5410 ══ -->
+      <div id="dem-s0" class="dem-spanel on" style="padding:14px">
+        <!-- SISTEMA -->
         <div class="ilbl">Sistema Elétrico</div>
         <div style="display:flex;gap:8px;margin:6px 0 14px">
           <button class="ferr-pill on" onclick="demSistema(this,'mono')">Monofásico</button>
           <button class="ferr-pill" onclick="demSistema(this,'bi')">Bifásico</button>
           <button class="ferr-pill" onclick="demSistema(this,'tri')">Trifásico</button>
         </div>
-        <div class="ilbl">Tensão</div>
+        <!-- TENSÃO -->
+        <div class="ilbl">Tensão da Rede</div>
         <div id="dem-tensoes" style="display:flex;gap:8px;margin:6px 0 14px">
           <button class="ferr-pill on" onclick="demTensao(this)">127V</button>
           <button class="ferr-pill" onclick="demTensao(this)">220V</button>
         </div>
-        <div class="ilbl">Fator de Demanda</div>
-        <select class="inp" id="dem-tipo" style="margin:6px 0 14px">
-          <option value="1.00">Residencial simples — fd 1,00</option>
-          <option value="0.80">Residencial médio — fd 0,80</option>
-          <option value="0.60">Residencial grande — fd 0,60</option>
+        <!-- TIPO -->
+        <div class="ilbl">Tipo de Instalação (Fator de Demanda)</div>
+        <select class="inp" id="dem-tipo" style="margin-top:6px;margin-bottom:14px">
+          <option value="1.00">Residencial simples (1 pavimento) — fd 1,00</option>
+          <option value="0.80">Residencial médio (2~3 pavimentos) — fd 0,80</option>
+          <option value="0.60">Residencial grande / condomínio — fd 0,60</option>
           <option value="0.90">Comercial pequeno — fd 0,90</option>
           <option value="0.70">Comercial médio — fd 0,70</option>
           <option value="0.60">Industrial — fd 0,60</option>
         </select>
+        <!-- CÔMODOS -->
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-          <div class="ilbl" style="margin:0">Cômodos</div>
+          <div class="ilbl" style="margin:0">Planta — NBR 5410</div>
           <button class="tag tag-green" onclick="demTipica()">+ Residência típica</button>
         </div>
         <div id="dem-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:10px"></div>
+
+        <!-- CÔMODOS SELECIONADOS (acordeão) -->
         <div id="dem-sel-wrap" style="display:none;margin-bottom:10px">
-          <div id="dem-sel-lista"></div>
-        </div>
-        <div id="dem-nbr-res" style="display:none;margin-bottom:12px">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
-            <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:10px;text-align:center"><div style="font-size:9px;color:var(--text3);margin-bottom:4px">Carga Demandada</div><div id="nbr-r-cd" style="font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:600;color:var(--acc)">—</div></div>
-            <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:10px;text-align:center"><div style="font-size:9px;color:var(--text3);margin-bottom:4px">Disjuntor Geral</div><div id="nbr-r-disj" style="font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:600;color:#4ade80">—</div></div>
-            <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:10px;text-align:center"><div style="font-size:9px;color:var(--text3);margin-bottom:4px">Corrente</div><div id="nbr-r-cor" style="font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:600;color:#60a5fa">—</div></div>
-            <div style="background:var(--acc-bg);border:1px solid var(--acc-border);border-radius:10px;padding:10px;text-align:center"><div style="font-size:9px;color:var(--text3);margin-bottom:4px">Bitola Mínima</div><div id="nbr-r-bit" style="font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:600;color:var(--acc)">—</div></div>
+          <div onclick="demToggleAcord('dem-sel-body','dem-sel-arrow','dem-sel-status')" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;background:var(--bg-input);border:1px solid var(--border-input);border-radius:10px;padding:10px 12px;margin-bottom:6px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--acc)">Cômodos Selecionados</span>
+              <span id="dem-sel-status" style="font-size:10px;color:var(--text3)"></span>
+            </div>
+            <span id="dem-sel-arrow" style="font-size:12px;color:var(--text3);transition:transform .2s">▼</span>
+          </div>
+          <div id="dem-sel-body">
+            <div id="dem-sel-lista"></div>
           </div>
         </div>
-        <button class="btn-salvar-full" style="margin-top:4px" onclick="demCalcNBR()">⚡ CALCULAR DEMANDA</button>
+
+        <!-- TABELA MÍNIMO NBR (acordeão) -->
+        <div id="dem-tab-wrap" style="display:none;margin-bottom:10px">
+          <div onclick="demToggleAcord('dem-tab-body','dem-tab-arrow','dem-tab-status')" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;background:var(--bg-input);border:1px solid var(--border-input);border-radius:10px;padding:10px 12px;margin-bottom:6px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--text2)">📋 Planta — Mínimo NBR 5410</span>
+              <span id="dem-tab-status" style="font-size:10px;color:var(--text3)"></span>
+            </div>
+            <span id="dem-tab-arrow" style="font-size:12px;color:var(--text3);transition:transform .2s">▼</span>
+          </div>
+          <div id="dem-tab-body">
+            <div style="overflow-x:auto;border-radius:10px;border:1px solid var(--border-card)">
+              <table style="width:100%;border-collapse:collapse;font-size:11px">
+                <thead>
+                  <tr style="background:var(--bg-input)">
+                    <th style="padding:8px 10px;text-align:left;color:var(--text3);font-size:9px;letter-spacing:.8px;text-transform:uppercase;font-weight:700">Cômodo</th>
+                    <th style="padding:8px 6px;text-align:center;color:var(--text3);font-size:9px;letter-spacing:.8px;text-transform:uppercase;font-weight:700">Área</th>
+                    <th style="padding:8px 6px;text-align:center;color:var(--text3);font-size:9px;letter-spacing:.8px;text-transform:uppercase;font-weight:700">Pts I</th>
+                    <th style="padding:8px 6px;text-align:center;color:var(--text3);font-size:9px;letter-spacing:.8px;text-transform:uppercase;font-weight:700">Pts T</th>
+                    <th style="padding:8px 6px;text-align:center;color:var(--text3);font-size:9px;letter-spacing:.8px;text-transform:uppercase;font-weight:700">Equip.</th>
+                    <th style="padding:8px 6px;text-align:center;color:var(--acc);font-size:9px;letter-spacing:.8px;text-transform:uppercase;font-weight:700">VA</th>
+                    <th style="padding:8px 6px;text-align:center;color:var(--text3);font-size:9px;letter-spacing:.8px;text-transform:uppercase;font-weight:700">✏️</th>
+                  </tr>
+                </thead>
+                <tbody id="dem-tab-tbody"></tbody>
+              </table>
+            </div>
+            <div id="dem-tab-total" style="display:flex;align-items:center;justify-content:space-between;background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:10px 12px;margin-top:8px">
+              <div style="font-size:11px;font-weight:800;color:var(--text2)">TOTAL</div>
+              <div style="display:flex;gap:16px">
+                <div style="text-align:center"><div style="font-size:9px;color:var(--text3)">m²</div><div id="dem-tab-tot-area" style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;color:var(--text)">—</div></div>
+                <div style="text-align:center"><div style="font-size:9px;color:var(--text3)">Pts I</div><div id="dem-tab-tot-i" style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;color:var(--text)">—</div></div>
+                <div style="text-align:center"><div style="font-size:9px;color:var(--text3)">Pts T</div><div id="dem-tab-tot-t" style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;color:var(--text)">—</div></div>
+                <div style="text-align:center"><div style="font-size:9px;color:var(--acc)">VA</div><div id="dem-tab-tot-va" style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;color:var(--acc)">—</div></div>
+              </div>
+            </div>
+            <button class="btn-salvar-full" style="margin-top:8px;background:var(--bg-input);border:1px solid var(--border-input);color:var(--text);font-size:12px;padding:11px" onclick="demRenderTabela()">↺ RECALCULAR</button>
+          </div>
+        </div>
+
+        <!-- BOTÃO CALCULAR MÍNIMO -->
+        <button id="dem-btn-minimo" class="btn-salvar-full" style="display:none;margin-bottom:8px;background:var(--bg-input);border:1px solid var(--border-input);color:var(--text);font-size:12px;padding:11px" onclick="demCalcMinimo()">📋 CALCULAR MÍNIMO NBR →</button>
+
+        <!-- RESULTADO NBR (acordeão) -->
+        <div id="dem-nbr-res" style="display:none;margin-bottom:12px">
+          <div onclick="demToggleAcord('dem-nbr-body','dem-nbr-arrow','dem-nbr-status')" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;background:var(--acc-bg);border:1px solid var(--acc-border);border-radius:10px;padding:10px 12px;margin-bottom:6px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--acc)">⚡ Resultado NBR 5410</span>
+              <span id="dem-nbr-status" style="font-size:10px;color:var(--acc);opacity:.8"></span>
+            </div>
+            <span id="dem-nbr-arrow" style="font-size:12px;color:var(--acc);transition:transform .2s">▼</span>
+          </div>
+          <div id="dem-nbr-body">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+              <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:10px;text-align:center">
+                <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">Carga Instalada</div>
+                <div id="nbr-r-ci" style="font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:600;color:var(--text)">—</div>
+              </div>
+              <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:10px;text-align:center">
+                <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">Carga Demandada</div>
+                <div id="nbr-r-cd" style="font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:600;color:var(--acc)">—</div>
+              </div>
+              <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:10px;text-align:center">
+                <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">Corrente</div>
+                <div id="nbr-r-cor" style="font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:600;color:#60a5fa">—</div>
+              </div>
+              <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:10px;text-align:center">
+                <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">Disjuntor Geral</div>
+                <div id="nbr-r-disj" style="font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:600;color:#4ade80">—</div>
+              </div>
+            </div>
+            <div style="background:var(--acc-bg);border:1px solid var(--acc-border);border-radius:10px;padding:12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+              <div><div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">Bitola Mínima</div><div id="nbr-r-bit" style="font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;color:var(--acc)">—</div></div>
+              <div><div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">Proteção DR</div><div style="font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;color:var(--acc)">30 mA</div></div>
+            </div>
+            <div id="nbr-r-alertas" style="margin-bottom:8px"></div>
+            <div id="nbr-r-circs" style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:12px">
+              <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Circuitos Sugeridos</div>
+              <div id="nbr-r-circs-lista"></div>
+            </div>
+            <button class="btn-salvar-full" style="margin-top:10px;background:#1d4ed8;color:#fff;font-size:12px;padding:12px" onclick="demLevarMUC()">🏢 Levar resultado para MUC</button>
+            <button class="btn-salvar-full" style="margin-top:6px;background:rgba(99,102,241,.15);color:#818cf8;border:1px solid rgba(99,102,241,.25);font-size:12px;padding:12px" onclick="demLevarQuedaV()">📉 Verificar Queda de Tensão</button>
+            <button class="btn-salvar-full" style="margin-top:6px;background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.25);font-size:12px;padding:12px" onclick="demExportarPDF()">📄 COMPARTILHAR / EXPORTAR PDF</button>
+          </div>
+        </div>
+
+        <button class="btn-salvar-full" style="margin-top:4px" onclick="demCalcNBR()">⚡ CALCULAR DEMANDA ELÉTRICA</button>
       </div>
-      <div id="dem-s1" class="dem-spanel" style="padding-top:8px">
+
+      <!-- ══ SUB-ABA 1: MUC ══ -->
+      <div id="dem-s1" class="dem-spanel" style="padding:14px">
         <div class="ilbl">Distribuidora</div>
         <select class="inp" id="muc-dist" style="margin:6px 0 14px">
-          <option value="pe">Neoenergia PE / Cosern / Brasília</option>
+          <option value="pe">Neoenergia Pernambuco / Cosern / Brasília</option>
           <option value="ba">Neoenergia Coelba</option>
           <option value="ek">Neoenergia Elektro</option>
         </select>
-        <div class="ilbl">Tensão</div>
+        <div class="ilbl">Tensão de Fornecimento</div>
         <div style="display:flex;gap:8px;margin:6px 0 14px">
           <button class="ferr-pill on" onclick="ferrPill(this,'muc-v')">380/220V</button>
           <button class="ferr-pill" onclick="ferrPill(this,'muc-v')">220/127V</button>
@@ -825,16 +923,51 @@ input[type=range]{width:100%;accent-color:var(--acc)}
           <button class="tag tag-blue" onclick="mucAddTipo()">+ Tipo</button>
         </div>
         <div id="muc-tipos" style="margin-bottom:10px"></div>
-        <input class="inp" id="muc-ds" type="number" placeholder="Demanda serviço condomínio (kW)">
-        <input class="inp" id="muc-dc" type="number" placeholder="Demanda comercial (kW)">
+        <div class="ilbl" style="margin-top:4px">Demanda de Serviço — condomínio (kW)</div>
+        <input class="inp" id="muc-ds" type="number" placeholder="Ex: 15" style="margin-top:6px">
+        <div class="ilbl" style="margin-top:4px">Demanda Comercial (kW) — se houver</div>
+        <input class="inp" id="muc-dc" type="number" placeholder="Ex: 0" style="margin-top:6px;margin-bottom:14px">
+
+        <!-- RESULTADO MUC (acordeão) -->
         <div id="muc-resultado" style="display:none;margin-bottom:12px">
-          <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:12px;padding:14px">
-            <div style="font-size:9px;color:var(--text3);margin-bottom:6px">RESULTADO MUC</div>
-            <div id="muc-r-cat" style="font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:700;color:#60a5fa">—</div>
-            <div id="muc-r-total" style="font-size:12px;color:var(--text2);margin-top:4px">—</div>
+          <div onclick="demToggleAcord('muc-res-body','muc-res-arrow','muc-res-status')" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.25);border-radius:10px;padding:10px 12px;margin-bottom:6px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:#60a5fa">🏢 Resultado MUC</span>
+              <span id="muc-res-status" style="font-size:10px;color:#60a5fa;opacity:.8"></span>
+            </div>
+            <span id="muc-res-arrow" style="font-size:12px;color:#60a5fa;transition:transform .2s">▼</span>
+          </div>
+          <div id="muc-res-body">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+              <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:10px;text-align:center">
+                <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">Dem. Residencial</div>
+                <div id="muc-r-drf" style="font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:600;color:#60a5fa">—</div>
+              </div>
+              <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:10px;text-align:center">
+                <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">Fc Aplicado</div>
+                <div id="muc-r-fc" style="font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:600;color:#4ade80">—</div>
+              </div>
+              <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:10px;text-align:center">
+                <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">Fr Aplicado</div>
+                <div id="muc-r-fr" style="font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:600;color:#fb923c">—</div>
+              </div>
+              <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:10px;text-align:center">
+                <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">Demanda Total</div>
+                <div id="muc-r-total" style="font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:600;color:var(--acc)">—</div>
+              </div>
+            </div>
+            <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:12px;padding:14px;margin-bottom:8px">
+              <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px">Categoria / Padrão de Entrada</div>
+              <div id="muc-r-cat" style="font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:700;color:#60a5fa">—</div>
+              <div id="muc-r-disj" style="font-size:12px;color:var(--text2);margin-top:4px">—</div>
+              <div id="muc-r-cabo" style="font-size:11px;color:var(--text3);margin-top:3px">—</div>
+            </div>
+            <div id="muc-r-tensao" style="border-radius:10px;padding:10px;text-align:center;font-size:12px;font-weight:700;margin-bottom:8px"></div>
+            <button class="btn-salvar-full" style="background:rgba(99,102,241,.15);color:#818cf8;border:1px solid rgba(99,102,241,.25);font-size:12px;padding:12px" onclick="demLevarQuedaV()">📉 Levar para Queda de Tensão</button>
           </div>
         </div>
-        <button class="btn-salvar-full" style="background:#1d4ed8;color:#fff" onclick="demCalcMUC()">🏢 CALCULAR MUC</button>
+
+        <button class="btn-salvar-full" style="margin-top:4px;background:#1d4ed8;color:#fff" onclick="demCalcMUC()">🏢 CALCULAR DEMANDA MUC</button>
       </div>
     </div>
     <!-- ABA 2: QUEDA V -->
@@ -3213,38 +3346,113 @@ function renderNBR() {
 }
 
 // ══════════════════════════════════════════════════════════════
-// DEMANDA ELÉTRICA (simplificada)
+// DEMANDA ELÉTRICA — NBR 5410 + MUC (DIS-NOR-053 REV06)
 // ══════════════════════════════════════════════════════════════
 let demSisAtual='mono', demTensaoAtual=127, demComodos={};
+
 const DEM_COMODOS=[
-  {n:'Quarto simples',tp:'seco',ico:'🛏',area:9},{n:'Quarto casal',tp:'seco',ico:'🛏',area:12},
-  {n:'Sala de estar',tp:'seco',ico:'🛋',area:16},{n:'Sala de jantar',tp:'seco',ico:'🍽',area:12},
-  {n:'Cozinha',tp:'molhado',ico:'🍳',area:8},{n:'Banheiro',tp:'molhado',ico:'🚿',area:4},
-  {n:'Banheiro social',tp:'molhado',ico:'🚿',area:5},{n:'Lavanderia',tp:'molhado',ico:'🧺',area:6},
-  {n:'Hall/Circulação',tp:'seco',ico:'🚪',area:10},{n:'Garagem simples',tp:'seco',ico:'🚗',area:18},
-  {n:'Garagem dupla',tp:'seco',ico:'🚗',area:36},{n:'Escritório',tp:'seco',ico:'💻',area:12},
-  {n:'Área de serviço',tp:'molhado',ico:'🪣',area:6},{n:'Área externa',tp:'seco',ico:'🌿',area:20},
-  {n:'Depósito',tp:'seco',ico:'📦',area:6},{n:'Suíte',tp:'seco',ico:'🛏',area:14},
-  {n:'Copa',tp:'molhado',ico:'☕',area:6},{n:'Varanda',tp:'seco',ico:'🌅',area:8}
+  {n:'Quarto simples',tp:'seco',ico:'🛏',area:9},
+  {n:'Quarto casal',tp:'seco',ico:'🛏',area:12},
+  {n:'Sala de estar',tp:'seco',ico:'🛋',area:16},
+  {n:'Sala de jantar',tp:'seco',ico:'🍽',area:12},
+  {n:'Cozinha',tp:'molhado',ico:'🍳',area:8},
+  {n:'Banheiro',tp:'molhado',ico:'🚿',area:4},
+  {n:'Banheiro social',tp:'molhado',ico:'🚿',area:5},
+  {n:'Lavanderia',tp:'molhado',ico:'🧺',area:6},
+  {n:'Hall/Circulação',tp:'seco',ico:'🚪',area:10},
+  {n:'Garagem simples',tp:'seco',ico:'🚗',area:18},
+  {n:'Garagem dupla',tp:'seco',ico:'🚗',area:36},
+  {n:'Escritório',tp:'seco',ico:'💻',area:12},
+  {n:'Área de serviço',tp:'molhado',ico:'🪣',area:6},
+  {n:'Área externa',tp:'seco',ico:'🌿',area:20},
+  {n:'Depósito',tp:'seco',ico:'📦',area:6},
+  {n:'Suíte',tp:'seco',ico:'🛏',area:14},
+  {n:'Copa',tp:'molhado',ico:'☕',area:6},
+  {n:'Varanda',tp:'seco',ico:'🌅',area:8}
 ];
 const DEM_TIPICA=[0,1,2,3,4,5,7,8,9,11,15,17];
+
+const DEM_EQUIPAMENTOS=[
+  {n:'Chuveiro elétrico',w:5500,circ:true},
+  {n:'Ar-cond. 9000 BTU',w:1050,circ:false},
+  {n:'Ar-cond. 12000 BTU',w:1350,circ:false},
+  {n:'Ar-cond. 18000 BTU',w:1760,circ:false},
+  {n:'Forno elétrico',w:2000,circ:true},
+  {n:'Micro-ondas',w:1200,circ:false},
+  {n:'Máquina de lavar',w:1000,circ:false},
+  {n:'Secadora de roupas',w:3000,circ:true},
+  {n:'Geladeira',w:150,circ:false},
+  {n:'Freezer',w:200,circ:false},
+  {n:'Bomba d\'água',w:750,circ:false},
+  {n:'TV 55"',w:150,circ:false},
+  {n:'Computador',w:300,circ:false},
+  {n:'Aspirador',w:1000,circ:false},
+  {n:'Aquecedor elétrico',w:1500,circ:true},
+  {n:'Portão elétrico',w:750,circ:false}
+];
+
+// ── Cálculos NBR 5410 ──
 function demCalcIlum(area){return area<=6?100:100+Math.floor((area-6)/4)*60;}
-function demCalcPtsTom(tp,area){const p=Math.ceil(4*Math.sqrt(area));return tp==='molhado'?Math.max(1,Math.ceil(p/3.5)):Math.max(1,Math.ceil(p/5));}
-function demCalcVaTom(tp,pts){return tp==='molhado'?(pts<=3?pts*600:3*600+(pts-3)*100):pts*100;}
-function demCalcTom(tp,area){return demCalcVaTom(tp,demCalcPtsTom(tp,area));}
-function demSubAba(idx,el){
-  document.querySelectorAll('.dem-stab').forEach(t=>t.classList.remove('on'));el.classList.add('on');
-  document.querySelectorAll('.dem-spanel').forEach((p,i)=>p.classList.toggle('on',i===idx));
+function demCalcPtsTom(tp,area){
+  const perim=Math.ceil(4*Math.sqrt(area));
+  return tp==='molhado'?Math.max(1,Math.ceil(perim/3.5)):Math.max(1,Math.ceil(perim/5));
 }
+function demCalcVaTom(tp,pts){
+  return tp==='molhado'?(pts<=3?pts*600:3*600+(pts-3)*100):pts*100;
+}
+function demCalcTom(tp,area){return demCalcVaTom(tp,demCalcPtsTom(tp,area));}
+
+// ── Acordeão genérico ──
+function demToggleAcord(bodyId,arrowId,statusId){
+  const body=document.getElementById(bodyId);
+  const arrow=document.getElementById(arrowId);
+  const aberto=body.style.display!=='none';
+  body.style.display=aberto?'none':'block';
+  arrow.style.transform=aberto?'rotate(-90deg)':'rotate(0deg)';
+}
+
+function demAtualizaStatusSel(){
+  const keys=Object.keys(demComodos);
+  const totalArea=keys.reduce((s,i)=>s+demComodos[i].area,0);
+  const el=document.getElementById('dem-sel-status');
+  if(el) el.textContent=keys.length?`${keys.length} cômodo${keys.length>1?'s':''} • ${totalArea}m²`:'';
+}
+
+function demAtualizaStatusNBR(disj,bit){
+  const el=document.getElementById('dem-nbr-status');
+  if(el) el.textContent=`${disj} • ${bit}`;
+}
+
+function demAtualizaStatusMUC(total,cat){
+  const el=document.getElementById('muc-res-status');
+  if(el) el.textContent=`${total.toFixed(1)} kVA • Cat. ${cat}`;
+}
+
+// ── Sub-abas ──
+function demSubAba(idx,el){
+  document.querySelectorAll('.dem-stab').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+  document.querySelectorAll('.dem-spanel').forEach((p,i)=>p.classList.toggle('on',i===idx));
+  setTimeout(()=>document.getElementById('dem-s'+idx)?.scrollIntoView({behavior:'smooth',block:'start'}),50);
+}
+
+// ── Sistema e tensão ──
 function demSistema(el,tipo){
-  el.parentElement.querySelectorAll('.ferr-pill').forEach(b=>b.classList.remove('on'));
-  el.classList.add('on');demSisAtual=tipo;
+  el.closest('[style]').querySelectorAll('.ferr-pill').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  demSisAtual=tipo;
   const t=document.getElementById('dem-tensoes');
   if(tipo==='mono'){t.innerHTML='<button class="ferr-pill on" onclick="demTensao(this)">127V</button><button class="ferr-pill" onclick="demTensao(this)">220V</button>';demTensaoAtual=127;}
   else if(tipo==='bi'){t.innerHTML='<button class="ferr-pill on" onclick="demTensao(this)">220V</button>';demTensaoAtual=220;}
   else{t.innerHTML='<button class="ferr-pill on" onclick="demTensao(this)">220V</button><button class="ferr-pill" onclick="demTensao(this)">380V</button>';demTensaoAtual=220;}
 }
-function demTensao(el){el.parentElement.querySelectorAll('.ferr-pill').forEach(b=>b.classList.remove('on'));el.classList.add('on');demTensaoAtual=parseInt(el.textContent);}
+function demTensao(el){
+  el.closest('#dem-tensoes').querySelectorAll('.ferr-pill').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  demTensaoAtual=parseInt(el.textContent);
+}
+
+// ── Grid de cômodos ──
 function demRenderGrid(){
   document.getElementById('dem-grid').innerHTML=DEM_COMODOS.map((c,i)=>`
     <div class="dem-card${demComodos[i]?' sel':''}" onclick="demToggleComodo(${i})">
@@ -3254,48 +3462,350 @@ function demRenderGrid(){
       <div class="dem-card-area">${demComodos[i]?demComodos[i].area:c.area}m²</div>
     </div>`).join('');
 }
-function demToggleComodo(i){if(demComodos[i])delete demComodos[i];else demComodos[i]={...DEM_COMODOS[i],equips:[]};demRenderGrid();}
-function demTipica(){demComodos={};DEM_TIPICA.forEach(i=>demComodos[i]={...DEM_COMODOS[i],equips:[]});demRenderGrid();}
+
+function demToggleComodo(i){
+  if(demComodos[i]) delete demComodos[i];
+  else demComodos[i]={...DEM_COMODOS[i],equips:[]};
+  demRenderGrid();
+  demRenderSelecionados();
+}
+
+function demTipica(){
+  demComodos={};
+  DEM_TIPICA.forEach(i=>demComodos[i]={...DEM_COMODOS[i],equips:[]});
+  demRenderGrid();
+  demRenderSelecionados();
+}
+
+function demRenderSelecionados(){
+  const keys=Object.keys(demComodos);
+  const wrap=document.getElementById('dem-sel-wrap');
+  wrap.style.display=keys.length?'block':'none';
+  document.getElementById('dem-btn-minimo').style.display=keys.length?'block':'none';
+  document.getElementById('dem-tab-wrap').style.display='none';
+  demAtualizaStatusSel();
+  document.getElementById('dem-sel-lista').innerHTML=keys.map(i=>{
+    const c=demComodos[i];
+    const ilum=demCalcIlum(c.area);
+    const tom=demCalcTom(c.tp,c.area);
+    const equipW=c.equips.reduce((s,e)=>s+e.w,0);
+    const total=ilum+tom+equipW;
+    return `<div class="dem-comodo-item">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:18px">${c.ico}</span>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--text)">${c.n}</div>
+            <div style="font-size:10px;color:var(--text3)">${c.tp==='molhado'?'⚡ Área molhada':'Área seca'} — ${total} VA</div>
+          </div>
+        </div>
+        <button onclick="demRemComodo(${i})" style="width:26px;height:26px;border-radius:7px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#f87171;cursor:pointer;font-size:12px">✕</button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px">
+        <div style="background:var(--bg-input);border-radius:8px;padding:6px;text-align:center">
+          <div style="font-size:9px;color:var(--text3);margin-bottom:3px">ÁREA (m²)</div>
+          <input type="number" value="${c.area}" min="1" onchange="demEditArea(${i},this.value)" style="width:100%;background:transparent;border:none;outline:none;text-align:center;font-size:13px;font-weight:700;color:var(--text);font-family:'IBM Plex Mono',monospace">
+        </div>
+        <div style="background:var(--bg-input);border-radius:8px;padding:6px;text-align:center">
+          <div style="font-size:9px;color:var(--text3);margin-bottom:3px">ILUM (VA)</div>
+          <div style="font-size:13px;font-weight:700;color:var(--acc);font-family:'IBM Plex Mono',monospace">${ilum}</div>
+        </div>
+        <div style="background:var(--bg-input);border-radius:8px;padding:6px;text-align:center">
+          <div style="font-size:9px;color:var(--text3);margin-bottom:3px">TOM (VA)</div>
+          <div style="font-size:13px;font-weight:700;color:#60a5fa;font-family:'IBM Plex Mono',monospace">${tom}</div>
+        </div>
+      </div>
+      ${c.equips.length?`<div style="margin-bottom:6px">${c.equips.map((e,j)=>`
+        <div class="dem-equip-item">
+          <span style="flex:1">${e.n}</span>
+          <span style="font-family:'IBM Plex Mono',monospace;color:var(--acc)">${e.w}W</span>
+          ${e.circ?'<span class="tag-circ-ind">Circ. indep.</span>':''}
+          <button onclick="demRemEquip(${i},${j})" style="width:20px;height:20px;border-radius:5px;background:rgba(239,68,68,.1);border:none;color:#f87171;cursor:pointer;font-size:10px">✕</button>
+        </div>`).join('')}</div>`:''}
+      <button onclick="demAddEquip(${i})" style="width:100%;padding:7px;background:var(--bg-input);border:1px dashed var(--border-input);border-radius:8px;font-size:11px;font-weight:700;color:var(--text3);cursor:pointer">+ Equipamento</button>
+    </div>`;
+  }).join('');
+}
+
+function demRemComodo(i){delete demComodos[i];demRenderGrid();demRenderSelecionados();}
+function demEditArea(i,v){demComodos[i].area=parseFloat(v)||demComodos[i].area;demRenderSelecionados();}
+
+function demAddEquip(idx){
+  const html=DEM_EQUIPAMENTOS.map((e,j)=>`<div class="cat-drop-item" onclick="demSelEquip(${idx},${j})">${e.n} — ${e.w}W${e.circ?' ⚡':''}</div>`).join('');
+  const popup=document.createElement('div');
+  popup.style.cssText='position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.6);display:flex;align-items:flex-end';
+  popup.innerHTML=`<div style="background:var(--bg-card);border-radius:20px 20px 0 0;width:100%;max-height:70vh;overflow-y:auto;padding:16px">
+    <div style="font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:12px">Equipamento — ${demComodos[idx].n}</div>
+    ${html}
+    <button onclick="this.closest('[style*=fixed]').remove()" style="width:100%;margin-top:12px;background:var(--bg-input);border:1px solid var(--border-input);border-radius:12px;padding:14px;font-size:14px;font-weight:700;color:var(--text);cursor:pointer">Cancelar</button>
+  </div>`;
+  document.body.appendChild(popup);
+}
+function demSelEquip(idx,j){
+  document.querySelector('[style*="fixed"][style*="inset:0"]')?.remove();
+  demComodos[idx].equips.push({...DEM_EQUIPAMENTOS[j]});
+  demRenderSelecionados();
+}
+function demRemEquip(idx,j){demComodos[idx].equips.splice(j,1);demRenderSelecionados();}
+
+function demCalcMinimo(){
+  const keys=Object.keys(demComodos);
+  if(!keys.length) return;
+  keys.forEach(i=>{
+    const c=demComodos[i];
+    if(!c.pts_ilum_editado) c.pts_ilum=Math.max(1,Math.ceil(demCalcIlum(c.area)/100));
+    if(!c.pts_tom_editado) c.pts_tom=demCalcPtsTom(c.tp,c.area);
+  });
+  demRenderTabela();
+  document.getElementById('dem-tab-wrap').style.display='block';
+  setTimeout(()=>document.getElementById('dem-tab-wrap').scrollIntoView({behavior:'smooth',block:'start'}),50);
+}
+
+function demRenderTabela(){
+  const keys=Object.keys(demComodos);
+  let totArea=0,totI=0,totT=0,totVA=0;
+  document.getElementById('dem-tab-tbody').innerHTML=keys.map((i,idx)=>{
+    const c=demComodos[i];
+    const ilumVA=demCalcIlum(c.area);
+    const tomVA=demCalcTom(c.tp,c.area);
+    const equipW=c.equips.reduce((s,e)=>s+e.w,0);
+    const va=ilumVA+tomVA+equipW;
+    totArea+=c.area; totI+=c.pts_ilum||1; totT+=c.pts_tom||1; totVA+=va;
+    return `<tr style="border-top:1px solid var(--border);background:${idx%2?'var(--bg-input)':'transparent'}">
+      <td style="padding:8px 10px;color:var(--text);font-weight:600">${c.ico} ${c.n}</td>
+      <td style="padding:8px 6px;text-align:center;color:var(--text2)">${c.area}m²</td>
+      <td style="padding:8px 6px;text-align:center;color:var(--text2)">${c.pts_ilum||1}</td>
+      <td style="padding:8px 6px;text-align:center;color:var(--text2)">${c.pts_tom||1}</td>
+      <td style="padding:8px 6px;text-align:center;color:var(--text2)">${c.equips.length?'✅':'—'}</td>
+      <td style="padding:8px 6px;text-align:center;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--acc)">${va}</td>
+      <td style="padding:8px 6px;text-align:center"><button onclick="demEditarLinha(${i})" style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:7px;width:28px;height:28px;cursor:pointer;font-size:13px;color:var(--text2)">✏️</button></td>
+    </tr>`;
+  }).join('');
+  document.getElementById('dem-tab-tot-area').textContent=totArea+'m²';
+  document.getElementById('dem-tab-tot-i').textContent=totI;
+  document.getElementById('dem-tab-tot-t').textContent=totT;
+  document.getElementById('dem-tab-tot-va').textContent=totVA+' VA';
+  document.getElementById('dem-tab-status').textContent=`${keys.length} cômodos • ${totVA} VA`;
+}
+
+function demEditarLinha(i){
+  const c=demComodos[i];
+  const popup=document.createElement('div');
+  popup.style.cssText='position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.6);display:flex;align-items:flex-end';
+  popup.innerHTML=`<div style="background:var(--bg-card);border-radius:20px 20px 0 0;width:100%;padding:16px">
+    <div style="font-size:14px;font-weight:800;color:var(--text);margin-bottom:14px">${c.ico} ${c.n}</div>
+    <div class="ilbl">Área (m²)</div>
+    <input class="inp" type="number" id="edit-area" value="${c.area}" min="1" style="margin-bottom:10px">
+    <div class="ilbl">Pontos de Iluminação</div>
+    <input class="inp" type="number" id="edit-ilum" value="${c.pts_ilum||1}" min="1" style="margin-bottom:10px">
+    <div class="ilbl">Pontos de Tomada</div>
+    <input class="inp" type="number" id="edit-tom" value="${c.pts_tom||1}" min="1" style="margin-bottom:14px">
+    <div style="font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--text3);margin-bottom:8px">Equipamentos</div>
+    <div id="edit-equips-lista">${c.equips.map((e,j)=>`<div class="dem-equip-item"><span style="flex:1">${e.n}</span><span style="font-family:'IBM Plex Mono',monospace;color:var(--acc);font-size:12px">${e.w}W</span>${e.circ?'<span class="tag-circ-ind">Circ. indep.</span>':''}<button onclick="demRemEquipEdit(${i},${j},this)" style="width:20px;height:20px;border-radius:5px;background:rgba(239,68,68,.1);border:none;color:#f87171;cursor:pointer;font-size:10px">✕</button></div>`).join('')}</div>
+    <button onclick="demAddEquip(${i})" style="width:100%;padding:8px;background:var(--bg-input);border:1px dashed var(--border-input);border-radius:8px;font-size:11px;font-weight:700;color:var(--text3);cursor:pointer;margin-top:8px;margin-bottom:14px">+ Equipamento</button>
+    <div style="display:flex;gap:8px">
+      <button onclick="this.closest('[style*=fixed]').remove()" style="flex:1;padding:12px;background:var(--bg-input);border:1px solid var(--border-input);border-radius:12px;font-size:13px;font-weight:700;color:var(--text);cursor:pointer">Cancelar</button>
+      <button onclick="demSalvarEdicao(${i},this)" style="flex:1;padding:12px;background:var(--acc);border:none;border-radius:12px;font-size:13px;font-weight:800;color:#000;cursor:pointer">Salvar</button>
+    </div>
+  </div>`;
+  document.body.appendChild(popup);
+}
+
+function demRemEquipEdit(idx,j,btn){
+  demComodos[idx].equips.splice(j,1);
+  btn.closest('.dem-equip-item').remove();
+}
+
+function demSalvarEdicao(i,btn){
+  const popup=btn.closest('[style*="fixed"]');
+  demComodos[i].area=parseFloat(document.getElementById('edit-area').value)||demComodos[i].area;
+  demComodos[i].pts_ilum=parseInt(document.getElementById('edit-ilum').value)||1;
+  demComodos[i].pts_tom=parseInt(document.getElementById('edit-tom').value)||1;
+  demComodos[i].pts_ilum_editado=true;
+  demComodos[i].pts_tom_editado=true;
+  popup.remove();
+  demRenderTabela();
+  demRenderSelecionados();
+}
+
 function demCalcNBR(){
-  const keys=Object.keys(demComodos);if(!keys.length){alert('Selecione ao menos um cômodo!');return;}
+  const keys=Object.keys(demComodos);
+  if(!keys.length){alert('Selecione ao menos um cômodo!');return;}
   const fd=parseFloat(document.getElementById('dem-tipo').value);
-  let totalVA=0;
-  keys.forEach(i=>{const c=demComodos[i];totalVA+=demCalcIlum(c.area)+demCalcTom(c.tp,c.area)+(c.equips||[]).reduce((s,e)=>s+e.w,0);});
-  const demandada=totalVA*fd,corrente=demandada/demTensaoAtual;
+  let totalVA=0,totalIlumVA=0,totalTomVA=0,circsIndep=[];
+  keys.forEach(i=>{
+    const c=demComodos[i];
+    const ilumVA=demCalcIlum(c.area);
+    const pts_tom=c.pts_tom||demCalcPtsTom(c.tp,c.area);
+    const tomVA=demCalcVaTom(c.tp,pts_tom);
+    const equipW=c.equips.reduce((s,e)=>s+e.w,0);
+    totalIlumVA+=ilumVA; totalTomVA+=tomVA; totalVA+=ilumVA+tomVA+equipW;
+    c.equips.filter(e=>e.circ||(e.w/demTensaoAtual)>10).forEach(e=>circsIndep.push(`${c.n} — ${e.n} (${e.w}W / ${(e.w/demTensaoAtual).toFixed(1)}A)`));
+  });
+  const demandada=totalVA*fd;
+  const corrente=demandada/demTensaoAtual;
   const disj=[10,16,20,25,32,40,50,63,80,100].find(d=>d>=corrente*1.25)||100;
   const bit=[{a:15,b:'1,5mm²'},{a:21,b:'2,5mm²'},{a:28,b:'4mm²'},{a:36,b:'6mm²'},{a:50,b:'10mm²'},{a:66,b:'16mm²'},{a:84,b:'25mm²'},{a:104,b:'35mm²'}].find(b=>b.a>=corrente)?.b||'+35mm²';
+  document.getElementById('nbr-r-ci').textContent=totalVA+' VA';
   document.getElementById('nbr-r-cd').textContent=Math.round(demandada)+' VA';
-  document.getElementById('nbr-r-disj').textContent=disj+' A';
   document.getElementById('nbr-r-cor').textContent=corrente.toFixed(1)+' A';
+  document.getElementById('nbr-r-disj').textContent=disj+' A';
   document.getElementById('nbr-r-bit').textContent=bit;
+  document.getElementById('nbr-r-alertas').innerHTML=circsIndep.length?
+    circsIndep.map(c=>`<div style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:7px 10px;font-size:11px;color:#f87171;margin-bottom:6px">⚡ Circ. independente (>10A): ${c}</div>`).join(''):'';
+  const nIlum=Math.max(1,Math.ceil(totalIlumVA/1000));
+  const nTom=Math.max(1,Math.ceil(totalTomVA/1500));
+  const temMolhado=Object.values(demComodos).some(c=>c.tp==='molhado');
+  document.getElementById('nbr-r-circs-lista').innerHTML=`
+    <div style="display:flex;flex-wrap:wrap;gap:6px">
+      <span style="background:rgba(59,130,246,.15);color:#60a5fa;font-size:10px;font-weight:700;border-radius:6px;padding:4px 10px">${nIlum}x Iluminação — 1,5mm²/10A</span>
+      <span style="background:rgba(59,130,246,.15);color:#60a5fa;font-size:10px;font-weight:700;border-radius:6px;padding:4px 10px">${nTom}x Tomadas TUG — 2,5mm²/16A</span>
+      ${temMolhado?`<span style="background:rgba(245,158,11,.15);color:var(--acc);font-size:10px;font-weight:700;border-radius:6px;padding:4px 10px">1x Cozinha/Serviço — 2,5mm²/20A</span>`:''}
+      ${circsIndep.length?`<span style="background:rgba(239,68,68,.12);color:#f87171;font-size:10px;font-weight:700;border-radius:6px;padding:4px 10px">${circsIndep.length}x Circ. independente</span>`:''}
+    </div>`;
   document.getElementById('dem-nbr-res').style.display='block';
+  demAtualizaStatusNBR(disj+' A',bit);
+  setTimeout(()=>document.getElementById('dem-nbr-res').scrollIntoView({behavior:'smooth',block:'start'}),50);
+  window._demResultadoNBR={totalVA,demandada,corrente,disj,bit,fd,tensao:demTensaoAtual};
 }
-// MUC (minimal)
+
+function demLevarMUC(){
+  if(!window._demResultadoNBR){alert('Calcule a demanda NBR 5410 primeiro!');return;}
+  demSubAba(1,document.querySelectorAll('.dem-stab')[1]);
+  const kva=(window._demResultadoNBR.demandada/1000).toFixed(2);
+  setTimeout(()=>{
+    if(!mucTipos.length) mucTipos.push({area:0,qt:1,dem:parseFloat(kva),custom:true});
+    renderMucTipos();
+    alert(`Demanda de ${kva} kVA carregada no MUC.\nInforme a quantidade de unidades e calcule.`);
+  },300);
+}
+
+function demLevarQuedaV(){
+  if(!window._demResultadoNBR){alert('Calcule a demanda NBR 5410 primeiro!');return;}
+  const r=window._demResultadoNBR;
+  ferrAba(2);
+  setTimeout(()=>{
+    const sel=document.getElementById('qv-tensao');
+    sel.value=r.tensao===127?'127':r.tensao===380?'380':'220';
+    document.getElementById('qv-corrente').value=r.corrente.toFixed(1);
+    const bitMap={'1,5mm²':'1.5','2,5mm²':'2.5','4mm²':'4','6mm²':'6','10mm²':'10','16mm²':'16','25mm²':'25','35mm²':'35'};
+    document.getElementById('qv-bitola').value=bitMap[r.bit]||'2.5';
+    document.getElementById('ferr-2').scrollIntoView({behavior:'smooth',block:'start'});
+  },200);
+}
+
+function demExportarPDF(){
+  if(!window._demResultadoNBR){alert('Calcule a demanda primeiro!');return;}
+  const r=window._demResultadoNBR;
+  const data=new Date().toLocaleDateString('pt-BR');
+  const keys=Object.keys(demComodos);
+  const tabelaComodos=keys.map(i=>{
+    const c=demComodos[i];
+    const ilumVA=demCalcIlum(c.area);
+    const pts_tom=c.pts_tom||demCalcPtsTom(c.tp,c.area);
+    const tomVA=demCalcVaTom(c.tp,pts_tom);
+    const equipW=c.equips.reduce((s,e)=>s+e.w,0);
+    return `<tr>
+      <td>${c.ico} ${c.n}</td>
+      <td style="text-align:center">${c.area}m²</td>
+      <td style="text-align:center">${c.pts_ilum||1}</td>
+      <td style="text-align:center">${pts_tom}</td>
+      <td style="text-align:center">${c.equips.length?c.equips.map(e=>e.n).join(', '):'—'}</td>
+      <td style="text-align:center;font-weight:700">${ilumVA+tomVA+equipW} VA</td>
+    </tr>`;
+  }).join('');
+  const alertas=keys.flatMap(i=>demComodos[i].equips.filter(e=>e.circ).map(e=>`<div class="alerta">⚡ Circ. independente: ${demComodos[i].n} — ${e.n} (${e.w}W)</div>`)).join('');
+  document.getElementById('print-area').innerHTML=`
+    <h1>⚡ Laudo de Demanda Elétrica</h1>
+    <div style="font-size:11px;color:#666;margin-bottom:16px">Calculado em ${data} — NBR 5410:2004</div>
+    <h2>Planta da Residência</h2>
+    <table>
+      <thead><tr><th>Cômodo</th><th>Área</th><th>Pts Ilum.</th><th>Pts Tom.</th><th>Equipamentos</th><th>VA Total</th></tr></thead>
+      <tbody>${tabelaComodos}</tbody>
+    </table>
+    ${alertas}
+    <h2>Resultado da Demanda</h2>
+    <div class="res-box">
+      <div class="res-item"><div class="res-lbl">Carga Instalada</div><div class="res-val">${r.totalVA} VA</div></div>
+      <div class="res-item"><div class="res-lbl">Carga Demandada</div><div class="res-val">${Math.round(r.demandada)} VA</div></div>
+      <div class="res-item"><div class="res-lbl">Corrente</div><div class="res-val">${r.corrente.toFixed(1)} A</div></div>
+      <div class="res-item"><div class="res-lbl">Disjuntor Geral</div><div class="res-val">${r.disj} A</div></div>
+    </div>
+    <div class="res-box">
+      <div class="res-item"><div class="res-lbl">Bitola Mínima</div><div class="res-val">${r.bit}</div></div>
+      <div class="res-item"><div class="res-lbl">Proteção DR</div><div class="res-val">30 mA</div></div>
+    </div>
+    <h2>Circuitos Sugeridos</h2>
+    <div>${document.getElementById('nbr-r-circs-lista').innerHTML}</div>
+    <div class="rodape">Eletricista Power PRO — Gerado automaticamente com base na NBR 5410:2004. Este laudo é uma estimativa e deve ser validado por profissional habilitado.</div>`;
+  window.print();
+}
+
+// ── MUC — DIS-NOR-053 REV06 ──
 let mucTipos=[];
-const Q35=[{max:40,d:1.00},{max:50,d:1.16},{max:60,d:1.36},{max:80,d:1.76},{max:100,d:2.16},{max:150,d:3.06},{max:200,d:4.01},{max:300,d:5.76},{max:500,d:9.10},{max:999,d:9.91}];
+const Q35=[
+  {max:40,d:1.00},{max:45,d:1.05},{max:50,d:1.16},{max:55,d:1.26},{max:60,d:1.36},
+  {max:65,d:1.47},{max:70,d:1.57},{max:75,d:1.67},{max:80,d:1.76},{max:85,d:1.86},
+  {max:90,d:1.96},{max:95,d:2.06},{max:100,d:2.16},{max:110,d:2.35},{max:120,d:2.54},
+  {max:130,d:2.73},{max:140,d:2.91},{max:150,d:3.06},{max:160,d:3.28},{max:170,d:3.47},
+  {max:180,d:3.65},{max:190,d:3.83},{max:200,d:4.01},{max:220,d:4.36},{max:240,d:4.72},
+  {max:260,d:5.07},{max:280,d:5.42},{max:300,d:5.76},{max:350,d:6.61},{max:400,d:7.45},
+  {max:450,d:8.28},{max:500,d:9.10},{max:999,d:9.91}
+];
+const Q36=[100,98,97.3,97,96.8,96.6,96.57,96.5,96.45,96.4,94.73,93.33,92.15,91.14,90.27,89.5,88.82,88.22,87.68,87.2,85.9,84.77,83.7,82.75,81.84,81,80.26,79.54,78.9,78.27,77.68,77.16,76.64,76.18,75.71,75.28,74.89,74.45,74.11,73.8,73.46,73.17,72.89,72.6,72.31,71.96,71.62,71.29,70.98,70.68,70.39,70.17,69.85,69.6,69.35,69.11,68.88,68.66,68.44,68.23];
+function getFc(n){return n>=60?68.23:Q36[n-1]||68.23;}
 function getDemApto(area){return Q35.find(r=>area<=r.max)?.d||9.91;}
+const MUC_CATS={
+  '380':[{id:'T6',min:0,max:21,disj:32,cabo:'3x6/6mm² CU XLPE'},{id:'T7',min:21.1,max:26,disj:40,cabo:'3x6/6mm² CU XLPE'},{id:'T8',min:26.1,max:33,disj:50,cabo:'3x10/10mm² CU XLPE'},{id:'T9',min:33.1,max:40,disj:63,cabo:'3x16/16mm² CU XLPE'},{id:'T10',min:40.1,max:52,disj:80,cabo:'3x16/16mm² CU XLPE'},{id:'T11',min:52.1,max:66,disj:100,cabo:'3x25/25mm² CU XLPE'},{id:'T12',min:66.1,max:75,disj:125,cabo:'3x50/50mm² CU XLPE'}],
+  '220':[{id:'M0',min:0,max:5,disj:40,cabo:'6/6mm² CU XLPE'},{id:'M1',min:5.1,max:10,disj:63,cabo:'10/10mm² CU XLPE'},{id:'B0',min:0,max:11,disj:50,cabo:'2x10/10mm² CU XLPE'},{id:'B1',min:11.1,max:18,disj:70,cabo:'2x16/16mm² CU XLPE'},{id:'T0',min:0,max:19,disj:50,cabo:'3x10/10mm² CU XLPE'},{id:'T1',min:19.1,max:24,disj:63,cabo:'3x16/16mm² CU XLPE'},{id:'T2',min:24.1,max:38,disj:100,cabo:'3x25/25mm² CU XLPE'},{id:'T3',min:38.1,max:47,disj:125,cabo:'3x35/35mm² CU XLPE'},{id:'T4',min:47.1,max:57,disj:150,cabo:'3x50/50mm² CU XLPE'},{id:'T5',min:57.1,max:75,disj:200,cabo:'3x70/70mm² CU XLPE'}]
+};
+
 function mucAddTipo(){
-  const area=parseFloat(prompt('Área útil do apto (m²):'));
-  const qt=parseInt(prompt('Quantidade:'));
+  const area=parseFloat(prompt('Área útil do apartamento (m²):')||0);
+  const qt=parseInt(prompt('Quantidade de apartamentos desse tipo:')||0);
   if(area>0&&qt>0){mucTipos.push({area,qt,dem:getDemApto(area)});renderMucTipos();}
 }
 function mucRemTipo(i){mucTipos.splice(i,1);renderMucTipos();}
 function renderMucTipos(){
-  document.getElementById('muc-tipos').innerHTML=mucTipos.map((t,i)=>
-    `<div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;margin-bottom:6px">
-      <div style="flex:1;font-size:12px;color:var(--text2)">Apto ${t.area}m² × ${t.qt} = ${(t.dem*t.qt).toFixed(2)} kVA</div>
-      <button onclick="mucRemTipo(${i})" style="width:24px;height:24px;border-radius:6px;background:rgba(239,68,68,.1);border:none;color:#f87171;cursor:pointer;font-size:10px">✕</button>
-    </div>`).join('');
+  document.getElementById('muc-tipos').innerHTML=mucTipos.length?
+    `<div style="border:1px solid var(--border-card);border-radius:12px;overflow:hidden;margin-bottom:8px">`+
+    mucTipos.map((t,i)=>`<div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--border)">
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:700;color:var(--text)">${t.custom?'Unidade NBR':'Apto '+t.area+'m²'} × ${t.qt} unid.</div>
+        <div style="font-size:10px;color:var(--text3)">Dem. unit.: ${t.dem.toFixed(2)} kVA — Sub: ${(t.dem*t.qt).toFixed(2)} kVA</div>
+      </div>
+      <button onclick="mucRemTipo(${i})" style="width:26px;height:26px;border-radius:7px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#f87171;cursor:pointer;font-size:12px">✕</button>
+    </div>`).join('')+`</div>`:'';
 }
+
 function demCalcMUC(){
-  if(!mucTipos.length){alert('Adicione tipos de apartamento!');return;}
-  const Dtr=mucTipos.reduce((s,t)=>s+(t.dem*t.qt),0)*0.8;
+  if(!mucTipos.length){alert('Adicione ao menos um tipo de apartamento!');return;}
+  const Dr=mucTipos.reduce((s,t)=>s+(t.dem*t.qt),0);
+  const totalAptos=mucTipos.reduce((s,t)=>s+t.qt,0);
+  const fc=getFc(totalAptos)/100;
+  const Dtr=Dr*fc;
+  const fr=Dtr<=25?1.5:Dtr<=50?1.3:Dtr<=100?1.2:1.1;
+  const Drf=Dtr*fr;
   const Ds=parseFloat(document.getElementById('muc-ds').value)||0;
   const Dc=parseFloat(document.getElementById('muc-dc').value)||0;
-  const Ded=Dtr+Ds+Dc;
-  document.getElementById('muc-r-cat').textContent=`Demanda Total: ${Ded.toFixed(2)} kVA`;
-  document.getElementById('muc-r-total').textContent=Ded<=300?'✅ Tensão Secundária (BT)':'⚠️ Tensão Primária (MT) — acima de 300 kVA';
+  const Ded=Drf+Ds+Dc;
+  const tensaoKey=document.querySelector('#dem-s1 .ferr-pill.on')?.textContent.includes('380')?'380':'220';
+  const cats=MUC_CATS[tensaoKey];
+  const cat=cats.find(c=>Ded>=c.min&&Ded<=c.max)||cats[cats.length-1];
+  document.getElementById('muc-r-drf').textContent=Drf.toFixed(2)+' kVA';
+  document.getElementById('muc-r-fc').textContent=(fc*100).toFixed(2)+'%';
+  document.getElementById('muc-r-fr').textContent='×'+fr.toFixed(1);
+  document.getElementById('muc-r-total').textContent=Ded.toFixed(2)+' kVA';
+  document.getElementById('muc-r-cat').textContent='Categoria '+cat.id;
+  document.getElementById('muc-r-disj').textContent='Disjuntor: '+cat.disj+'A';
+  document.getElementById('muc-r-cabo').textContent='Cabo: '+cat.cabo;
+  const box=document.getElementById('muc-r-tensao');
+  if(Ded<=300){box.style.cssText='border-radius:10px;padding:10px;text-align:center;font-size:12px;font-weight:700;background:rgba(34,197,94,.1);color:#4ade80;border:1px solid rgba(34,197,94,.3)';box.textContent='✅ Tensão Secundária (BT) — até 300 kVA';}
+  else{box.style.cssText='border-radius:10px;padding:10px;text-align:center;font-size:12px;font-weight:700;background:rgba(245,158,11,.1);color:var(--acc);border:1px solid rgba(245,158,11,.3)';box.textContent='⚠️ Demanda >300 kVA — Tensão Primária (MT) obrigatória';}
   document.getElementById('muc-resultado').style.display='block';
+  demAtualizaStatusMUC(Ded,cat.id);
+  setTimeout(()=>document.getElementById('muc-resultado').scrollIntoView({behavior:'smooth',block:'start'}),50);
+  window._demResultadoMUC={Ded,cat,tensaoKey};
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -3426,6 +3936,7 @@ function cfgToggle(el, k) {
 renderNBR();
 renderCheck();
 demRenderGrid();
+demRenderSelecionados();
 </script>
 <!-- ══ MODAL CONFIG PDF ══ -->
 <div id="modal-cfg-pdf" onclick="if(event.target===this)fecharConfigPDF()"
