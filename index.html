@@ -555,31 +555,77 @@ table { min-width: 0; }
   background: var(--bg-card);
   border: 1px solid var(--border-card);
   border-radius: 16px;
-  padding: 16px 12px 14px;
+  padding: 14px 10px 13px;
   cursor: pointer;
-  transition: border-color .2s;
+  transition: border-color .2s, transform .1s;
   -webkit-tap-highlight-color: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: 116px;
+  position: relative;
+  overflow: hidden;
 }
-.home-gestao-btn:active { opacity: .7; }
+.home-gestao-btn:active { transform: scale(.97); opacity: .85; }
+.hg-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 8px;
+  width: 100%;
+  position: relative;
+}
 .home-gestao-ico {
-  width: 48px;
-  height: 48px;
-  border-radius: 13px;
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
-  margin-bottom: 10px;
+  font-size: 19px;
+  flex-shrink: 0;
+}
+.hg-badge {
+  position: absolute;
+  top: -4px;
+  right: 0;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+.hg-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 4px;
+  letter-spacing: -1px;
 }
 .home-gestao-lbl {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: .3px;
-  margin-bottom: 2px;
+  margin-bottom: 3px;
 }
 .home-gestao-sub {
   font-size: 10px;
   color: var(--text3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  margin-top: auto;
 }
 
 /* Responsive: em telas < 360px, ferramentas em 2x2 */
@@ -834,26 +880,59 @@ table { min-width: 0; }
     <!-- ── GESTÃO ── -->
     <div class="sec">Gestão</div>
     <div class="home-gestao-grid">
-      <div class="home-gestao-btn" onclick="abrirModal('modal-agenda')">
-        <div class="home-gestao-ico" style="background:rgba(59,130,246,.15);border:1px solid rgba(59,130,246,.25)">📅</div>
+
+      <!-- Card: Esta Semana -->
+      <div class="home-gestao-btn" onclick="abrirModal('modal-agenda')"
+        style="border-color:rgba(59,130,246,.2)">
+        <div class="hg-top">
+          <div class="home-gestao-ico"
+            style="background:rgba(59,130,246,.15);border:1px solid rgba(59,130,246,.25)">📅</div>
+          <div class="hg-badge" id="gestao-agenda-badge" style="display:none">0</div>
+        </div>
+        <div class="hg-num" id="gestao-agenda-num" style="color:#60a5fa">—</div>
         <div class="home-gestao-lbl" style="color:#60a5fa">Esta Semana</div>
-        <div class="home-gestao-sub">Agendamentos</div>
+        <div class="home-gestao-sub" id="gestao-agenda-sub">Agendamentos</div>
       </div>
-      <div class="home-gestao-btn" onclick="abrirModal('modal-clientes')">
-        <div class="home-gestao-ico" style="background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.25)">👥</div>
-        <div class="home-gestao-lbl" style="color:#a78bfa">Clientes</div>
-        <div class="home-gestao-sub">Cadastro</div>
+
+      <!-- Card: Orçamentos -->
+      <div class="home-gestao-btn" onclick="navTo('orcamento')"
+        style="border-color:rgba(34,197,94,.2)">
+        <div class="hg-top">
+          <div class="home-gestao-ico"
+            style="background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.25)">🧾</div>
+          <div class="hg-badge" id="gestao-orc-badge" style="display:none">!</div>
+        </div>
+        <div class="hg-num" id="gestao-orc-num" style="color:#4ade80">—</div>
+        <div class="home-gestao-lbl" style="color:#4ade80">Orçamentos</div>
+        <div class="home-gestao-sub" id="gestao-orc-sub">Total gerados</div>
       </div>
-      <div class="home-gestao-btn" onclick="abrirModal('modal-relatorio')">
-        <div class="home-gestao-ico" style="background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.25)">📊</div>
-        <div class="home-gestao-lbl" style="color:#4ade80">Relatório</div>
-        <div class="home-gestao-sub">Financeiro</div>
+
+      <!-- Card: Relatório -->
+      <div class="home-gestao-btn" onclick="abrirModal('modal-relatorio')"
+        style="border-color:rgba(245,158,11,.2)">
+        <div class="hg-top">
+          <div class="home-gestao-ico"
+            style="background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.25)">📊</div>
+          <div class="hg-badge" id="gestao-rel-badge" style="display:none">0</div>
+        </div>
+        <div class="hg-num" id="gestao-rel-num" style="color:var(--acc)">—</div>
+        <div class="home-gestao-lbl" style="color:var(--acc)">Relatório</div>
+        <div class="home-gestao-sub" id="gestao-rel-sub">Financeiro</div>
       </div>
-      <div class="home-gestao-btn" onclick="abrirModal('modal-garantias')">
-        <div class="home-gestao-ico" style="background:rgba(167,139,250,.15);border:1px solid rgba(167,139,250,.25)">🕘</div>
-        <div class="home-gestao-lbl" style="color:#c4b5fd">Histórico</div>
-        <div class="home-gestao-sub">Garantias</div>
+
+      <!-- Card: Garantias -->
+      <div class="home-gestao-btn" onclick="abrirModal('modal-garantias')"
+        style="border-color:rgba(167,139,250,.2)">
+        <div class="hg-top">
+          <div class="home-gestao-ico"
+            style="background:rgba(167,139,250,.15);border:1px solid rgba(167,139,250,.25)">🛡️</div>
+          <div class="hg-badge" id="gestao-gar-badge" style="display:none">0</div>
+        </div>
+        <div class="hg-num" id="gestao-gar-num" style="color:#c4b5fd">—</div>
+        <div class="home-gestao-lbl" style="color:#c4b5fd">Garantias</div>
+        <div class="home-gestao-sub" id="gestao-gar-sub">Histórico</div>
       </div>
+
     </div>
 
   </div><!-- /home-body -->
@@ -4457,9 +4536,9 @@ const DEM_EQUIPAMENTOS = [
   {n:'Frigobar',                  cat:'Cozinha', ico:'🧃', w:80,   fp:0.75, fd:0.70, tensao:127, circ:false, obs:'Compressor cíclico'},
 
   // ── MOTORES / BOMBAS ─────────────────────────────────────────
-  {n:'Bomba de água 0,5 CV',      cat:'Motores/Bombas', ico:'💧', w:370,  fp:0.85, fd:0.75, tensao:127, circ:false, obs:'fd 0,75 — ciclagem'},
-  {n:'Bomba de água 1 CV',        cat:'Motores/Bombas', ico:'💧', w:750,  fp:0.85, fd:0.75, tensao:220, circ:false, obs:'fd 0,75'},
-  {n:'Bomba de água 2 CV',        cat:'Motores/Bombas', ico:'💧', w:1500, fp:0.85, fd:0.75, tensao:220, circ:true,  obs:'Circ. exclusivo recomendado'},
+  {n:'Bomba de agua 0,5 CV',      cat:'Motores/Bombas', ico:'💧', w:370,  fp:0.85, fd:0.75, tensao:127, circ:false, obs:'fd 0,75 — ciclagem'},
+  {n:'Bomba de agua 1 CV',        cat:'Motores/Bombas', ico:'💧', w:750,  fp:0.85, fd:0.75, tensao:220, circ:false, obs:'fd 0,75'},
+  {n:'Bomba de agua 2 CV',        cat:'Motores/Bombas', ico:'💧', w:1500, fp:0.85, fd:0.75, tensao:220, circ:true,  obs:'Circ. exclusivo recomendado'},
   {n:'Bomba de piscina 1 CV',     cat:'Motores/Bombas', ico:'🏊', w:750,  fp:0.85, fd:0.85, tensao:220, circ:false, obs:'fd 0,85 — uso contínuo'},
   {n:'Bomba de piscina 2 CV',     cat:'Motores/Bombas', ico:'🏊', w:1500, fp:0.85, fd:0.85, tensao:220, circ:true,  obs:'Circ. exclusivo'},
   {n:'Portão automático',         cat:'Motores/Bombas', ico:'🚗', w:500,  fp:0.85, fd:0.20, tensao:127, circ:false, obs:'fd 0,2 — uso esporádico'},
@@ -5635,26 +5714,17 @@ function cfgToggle(el, k) {
 // HOME — ATUALIZAR DADOS DINÂMICOS
 // ══════════════════════════════════════════════════════════════
 function homeAtualizar() {
+  // ── Perfil ──────────────────────────────────────────────────
   try {
-    // Ler configurações salvas nos ajustes
     const cfg = JSON.parse(localStorage.getItem('ajustes_config') || '{}');
     const nome = cfg.nome || cfg.empresa || '';
-    const subtitulo = cfg.subtitulo || '';
-
-    // Header nome
+    const sub  = cfg.subtitulo || '';
     const hdrNome = document.getElementById('home-hdr-nome');
     if (hdrNome && nome) hdrNome.textContent = nome.length > 16 ? nome.slice(0,14) + '…' : nome;
-
-    // Saudação
     const homeNome = document.getElementById('home-nome');
     if (homeNome && nome) homeNome.textContent = nome.split(' ')[0];
-
-    // Sub saudação
     const homeSub = document.getElementById('home-sub');
-    if (homeSub && subtitulo) homeSub.textContent = subtitulo;
-    else if (homeSub && nome) homeSub.textContent = 'Eletricista Power PRO';
-
-    // Logo
+    if (homeSub) homeSub.textContent = sub || (nome ? 'Eletricista Power PRO' : 'Toque em ⚙️ para configurar');
     const logoImg = localStorage.getItem('logo_b64');
     const logoWrap = document.getElementById('greet-logo-wrap');
     if (logoImg && logoWrap) {
@@ -5665,13 +5735,127 @@ function homeAtualizar() {
     }
   } catch(e) {}
 
-  // Contador de orçamentos
+  // ── Contador de orçamentos (pill topo) ───────────────────────
   try {
     const n = parseInt(localStorage.getItem('orcCounter') || '0');
     const el = document.getElementById('home-orc-count');
     if (el) el.textContent = n;
   } catch(e) {}
-  // Atualizar ndot notificações
+
+  // ── Helper: setar card ───────────────────────────────────────
+  function setCard(numId, subId, badgeId, num, sub, badge) {
+    const ne = document.getElementById(numId);
+    const se = document.getElementById(subId);
+    const be = document.getElementById(badgeId);
+    if (ne) ne.textContent = num;
+    if (se) se.textContent = sub;
+    if (be) {
+      if (badge > 0) { be.style.display = 'flex'; be.textContent = badge > 9 ? '9+' : badge; }
+      else { be.style.display = 'none'; }
+    }
+  }
+
+  // ── Card: Esta Semana (agenda) ────────────────────────────────
+  try {
+    const agenda = JSON.parse(localStorage.getItem('agenda_data') || '[]');
+    const agora  = new Date();
+    const diaSem = agora.getDay(); // 0=dom
+    const inicioSem = new Date(agora); inicioSem.setDate(agora.getDate() - diaSem); inicioSem.setHours(0,0,0,0);
+    const fimSem = new Date(inicioSem); fimSem.setDate(inicioSem.getDate() + 7);
+    const daSemana = agenda.filter(a => {
+      if (!a.data) return false;
+      const d = new Date(a.data + 'T12:00:00');
+      return d >= inicioSem && d < fimSem;
+    });
+    // próxima visita futura
+    const futuras = agenda
+      .filter(a => a.data && new Date(a.data + 'T' + (a.hora||'23:59') + ':00') >= agora)
+      .sort((a,b) => new Date(a.data+'T'+(a.hora||'00:00')) - new Date(b.data+'T'+(b.hora||'00:00')));
+    let subAgenda = 'Nenhuma visita';
+    if (futuras.length) {
+      const prox = futuras[0];
+      const dProx = new Date(prox.data + 'T12:00:00');
+      const hoje = agora.toDateString();
+      const amanha = new Date(agora.getTime() + 86400000).toDateString();
+      const quando = dProx.toDateString() === hoje ? 'Hoje'
+        : dProx.toDateString() === amanha ? 'Amanhã'
+        : dProx.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'});
+      subAgenda = (prox.hora ? quando + ' · ' + prox.hora : quando)
+        + (prox.cliente ? ' · ' + prox.cliente.split(' ')[0] : '');
+    }
+    setCard('gestao-agenda-num','gestao-agenda-sub','gestao-agenda-badge',
+      daSemana.length || '0', subAgenda, daSemana.length);
+  } catch(e) {
+    setCard('gestao-agenda-num','gestao-agenda-sub','gestao-agenda-badge','—','Agenda',0);
+  }
+
+  // ── Card: Orçamentos ──────────────────────────────────────────
+  try {
+    const total = parseInt(localStorage.getItem('orcCounter') || '0');
+    const last  = localStorage.getItem('lastOrcamento');
+    let subOrc  = total === 0 ? 'Nenhum gerado' : total + ' gerado' + (total > 1 ? 's' : '');
+    if (last) {
+      const d = new Date(last);
+      const mins = Math.round((new Date() - d) / 60000);
+      const quandoSalvo = mins < 1 ? 'agora' : mins < 60 ? mins + 'min atrás'
+        : mins < 1440 ? Math.round(mins/60) + 'h atrás'
+        : 'em ' + d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'});
+      subOrc = 'Salvo ' + quandoSalvo;
+    }
+    // badge: novo = salvo há menos de 30min
+    const isNovo = last && (new Date() - new Date(last)) < 1800000;
+    setCard('gestao-orc-num','gestao-orc-sub','gestao-orc-badge',
+      total || '0', subOrc, isNovo ? 1 : 0);
+    if (isNovo) { const b = document.getElementById('gestao-orc-badge'); if(b) b.textContent = 'NEW'; }
+  } catch(e) {
+    setCard('gestao-orc-num','gestao-orc-sub','gestao-orc-badge','—','Orçamentos',0);
+  }
+
+  // ── Card: Relatório (este mês) ────────────────────────────────
+  try {
+    const agenda = JSON.parse(localStorage.getItem('agenda_data') || '[]');
+    const agora  = new Date();
+    const mesAtual = agora.getMonth(); const anoAtual = agora.getFullYear();
+    const doMes = agenda.filter(a => {
+      if (!a.data) return false;
+      const d = new Date(a.data + 'T12:00:00');
+      return d.getMonth() === mesAtual && d.getFullYear() === anoAtual;
+    });
+    const totalOrc = parseInt(localStorage.getItem('orcCounter') || '0');
+    const meses = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+    const subRel = doMes.length
+      ? doMes.length + ' visit' + (doMes.length>1?'as':'a') + ' em ' + meses[mesAtual]
+      : totalOrc > 0 ? totalOrc + ' orç.' + (totalOrc>1?'':'') + ' no total'
+      : 'Sem registros';
+    setCard('gestao-rel-num','gestao-rel-sub','gestao-rel-badge',
+      doMes.length || totalOrc || '0', subRel, 0);
+  } catch(e) {
+    setCard('gestao-rel-num','gestao-rel-sub','gestao-rel-badge','—','Financeiro',0);
+  }
+
+  // ── Card: Garantias ───────────────────────────────────────────
+  try {
+    const garantias = JSON.parse(localStorage.getItem('garantias_data') || '[]');
+    const agora     = new Date();
+    const ativas    = garantias.filter(g => g.vencimento && new Date(g.vencimento) >= agora);
+    const urgentes  = ativas.filter(g => {
+      const dias = Math.ceil((new Date(g.vencimento) - agora) / 86400000);
+      return dias <= 30;
+    });
+    let subGar = ativas.length === 0 ? 'Nenhuma ativa'
+      : ativas.length + ' ativa' + (ativas.length>1?'s':'');
+    if (urgentes.length) {
+      const d = Math.ceil((new Date(urgentes[0].vencimento) - agora) / 86400000);
+      subGar = '⚠️ ' + urgentes.length + ' vence' + (urgentes.length>1?'m':'')
+        + ' em ' + d + 'd';
+    }
+    setCard('gestao-gar-num','gestao-gar-sub','gestao-gar-badge',
+      ativas.length || '0', subGar, urgentes.length);
+  } catch(e) {
+    setCard('gestao-gar-num','gestao-gar-sub','gestao-gar-badge','—','Garantias',0);
+  }
+
+  // ── Notificações ndot ────────────────────────────────────────
   try { atualizarContadorNotif(); } catch(e) {}
 }
 
