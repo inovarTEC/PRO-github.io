@@ -694,6 +694,40 @@ table { min-width: 0; }
   }
 }
 
+
+/* ── Queda V: botões de bitola ── */
+.qv-bit-btn {
+  padding: 9px 4px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-input);
+  border-radius: 10px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text2);
+  cursor: pointer;
+  transition: all .15s;
+  text-align: center;
+  -webkit-tap-highlight-color: transparent;
+}
+.qv-bit-btn:active { opacity: .7; }
+.qv-bit-btn.on {
+  background: var(--acc-bg);
+  border-color: var(--acc);
+  color: var(--acc);
+  box-shadow: 0 0 0 1px var(--acc-border);
+}
+.qv-bit-btn.sugerida {
+  background: rgba(59,130,246,.12);
+  border-color: rgba(59,130,246,.4);
+  color: #60a5fa;
+  animation: pulseBit .8s ease infinite alternate;
+}
+@keyframes pulseBit {
+  from { box-shadow: 0 0 0 0 rgba(59,130,246,.3); }
+  to   { box-shadow: 0 0 0 4px rgba(59,130,246,.0); }
+}
+
 @media print{
   body>*{display:none!important}
   #print-area{display:block!important;position:fixed;inset:0;background:#fff;color:#000;padding:20px;font-family:Arial,sans-serif;font-size:12px;z-index:9999;overflow:auto}
@@ -1371,7 +1405,7 @@ table { min-width: 0; }
               <button class="btn-salvar-full" style="margin-top:0;background:#1d4ed8;color:#fff;font-size:11px;padding:11px" onclick="demLevarMUC()">🏢 Levar para MUC</button>
               <button class="btn-salvar-full" style="margin-top:0;background:rgba(99,102,241,.15);color:#818cf8;border:1px solid rgba(99,102,241,.25);font-size:11px;padding:11px" onclick="demLevarQuedaV()">📉 Queda de Tensão</button>
             </div>
-            <button class="btn-salvar-full" style="margin-top:0;background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.25);font-size:12px;padding:12px" onclick="demExportarPDF()">📄 Exportar / Compartilhar PDF</button>
+            <button class="btn-salvar-full" style="margin-top:0;background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.25);font-size:12px;padding:12px" onclick="demExportarPDF()">📄 Gerar Laudo PDF / Compartilhar</button>
           </div>
         </div>
 
@@ -1445,42 +1479,186 @@ table { min-width: 0; }
     </div>
     <!-- ABA 2: QUEDA V -->
     <div id="ferr-2" class="ferr-panel" style="padding:14px">
-      <div class="ilbl">Sistema</div>
-      <div style="display:flex;gap:8px;margin:6px 0 14px">
-        <button class="ferr-pill on" onclick="ferrPill(this,'qv-sistema')">Monofásico</button>
-        <button class="ferr-pill" onclick="ferrPill(this,'qv-sistema')">Trifásico</button>
-      </div>
-      <div class="ilbl">Tipo de Circuito</div>
-      <div style="display:flex;gap:8px;margin:6px 0 14px">
-        <button class="ferr-pill on" onclick="ferrPill(this,'qv-tipo')">Terminal (4%)</button>
-        <button class="ferr-pill" onclick="ferrPill(this,'qv-tipo')">Alimentador (7%)</button>
-      </div>
-      <div class="ilbl">Tensão (V)</div>
-      <select class="inp" id="qv-tensao" style="margin-top:6px"><option value="127">127V</option><option value="220">220V</option><option value="220t">220V trifásico</option><option value="380">380V</option></select>
-      <div class="ilbl" style="margin-top:10px">Corrente (A)</div>
-      <input class="inp" id="qv-corrente" type="number" placeholder="Ex: 20" style="margin-top:6px">
-      <div class="ilbl">Fator de Potência</div>
-      <select class="inp" id="qv-fp" style="margin-top:6px">
-        <option value="1.00">1,00 — Resistivo</option><option value="0.92">0,92 — Indutivo leve</option>
-        <option value="0.85">0,85 — Indutivo médio</option><option value="0.80">0,80 — Indutivo pesado</option>
-      </select>
-      <div class="ilbl">Comprimento (m)</div>
-      <input class="inp" id="qv-comp" type="number" placeholder="Ex: 15" style="margin-top:6px">
-      <div class="ilbl">Bitola</div>
-      <select class="inp" id="qv-bitola" style="margin-top:6px">
-        <option value="1.5">1,5mm²</option><option value="2.5">2,5mm²</option><option value="4">4mm²</option>
-        <option value="6">6mm²</option><option value="10">10mm²</option><option value="16">16mm²</option>
-        <option value="25">25mm²</option><option value="35">35mm²</option>
-      </select>
-      <div id="qv-resultado" style="display:none;margin-top:14px;border-radius:13px;padding:16px;border:1px solid">
-        <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px" id="qv-res-title">Resultado</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-          <div style="background:var(--bg-card);border-radius:10px;padding:10px;text-align:center"><div style="font-size:9px;color:var(--text3);margin-bottom:4px">QUEDA</div><div id="qv-res-pct" style="font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600">0%</div></div>
-          <div style="background:var(--bg-card);border-radius:10px;padding:10px;text-align:center"><div style="font-size:9px;color:var(--text3);margin-bottom:4px">ΔV</div><div id="qv-res-v" style="font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600">0V</div></div>
+
+      <!-- Badge contexto -->
+
+      <!-- ── LIMITE + TENSÃO ── -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+        <div>
+          <div class="ilbl" style="margin-bottom:5px">Limite NBR</div>
+          <div style="display:flex;gap:5px">
+            <button class="ferr-pill on" onclick="ferrPill(this,'qv-tipo');calcQuedaVLive()" style="font-size:10px;flex:1">Terminal 4%</button>
+            <button class="ferr-pill" onclick="ferrPill(this,'qv-tipo');calcQuedaVLive()" style="font-size:10px;flex:1">Aliment. 7%</button>
+          </div>
         </div>
-        <div id="qv-res-status" style="margin-top:10px;text-align:center;font-size:12px;font-weight:700;border-radius:8px;padding:8px"></div>
+        <div>
+          <div class="ilbl" style="margin-bottom:5px">Tensão (V)</div>
+          <select class="inp" id="qv-tensao" style="margin-bottom:0" onchange="calcQuedaVLive()">
+            <option value="127">127V (monofásico)</option>
+            <option value="220">220V (monofásico)</option>
+            <option value="220t">220V (trifásico)</option>
+            <option value="380">380V (trifásico)</option>
+          </select>
+        </div>
       </div>
-      <button class="btn-salvar-full" style="margin-top:14px" onclick="calcQuedaV()">📉 CALCULAR QUEDA DE TENSÃO</button>
+      <!-- ── CORRENTE + COMPRIMENTO ── -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+        <div>
+          <div class="ilbl" style="margin-bottom:5px">Corrente (A)</div>
+          <div style="position:relative">
+            <input class="inp" id="qv-corrente" type="number" placeholder="Ex: 20" style="margin-bottom:0;padding-right:28px" oninput="qvRenderCapacidade();calcQuedaVLive()">
+            <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--text3);font-weight:700;pointer-events:none">A</span>
+          </div>
+        </div>
+        <div>
+          <div class="ilbl" style="margin-bottom:5px">Comprimento (m)</div>
+          <div style="position:relative">
+            <input class="inp" id="qv-comp" type="number" placeholder="Ex: 15" style="margin-bottom:0;padding-right:28px" oninput="calcQuedaVLive()">
+            <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--text3);font-weight:700;pointer-events:none">m</span>
+          </div>
+        </div>
+      </div>
+      <!-- ── FP + MATERIAL ── -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+        <div>
+          <div class="ilbl" style="margin-bottom:5px">Fator de Potência (cos φ)</div>
+          <select class="inp" id="qv-fp" style="margin-bottom:0" onchange="calcQuedaVLive()">
+            <option value="1.00">1,00 — Resistivo (iluminação, chuveiro)</option>
+            <option value="0.92">0,92 — Indutivo leve</option>
+            <option value="0.85">0,85 — Indutivo médio</option>
+            <option value="0.80">0,80 — Indutivo pesado</option>
+          </select>
+        </div>
+        <div>
+          <div class="ilbl" style="margin-bottom:5px">Material do Condutor</div>
+          <div style="display:flex;gap:5px">
+            <button class="ferr-pill on" id="qv-mat-cu" onclick="qvSetMaterial('cu',this)" style="flex:1;font-size:10px">🟤 Cobre (Cu)</button>
+            <button class="ferr-pill" id="qv-mat-al" onclick="qvSetMaterial('al',this)" style="flex:1;font-size:10px">⚪ Alumínio (Al)</button>
+          </div>
+        </div>
+      </div>
+      <!-- ── BITOLA ── -->
+      <div style="margin-bottom:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
+          <div class="ilbl" style="margin:0">Bitola do Cabo (mm²)</div>
+          <span id="qv-bitola-hint" style="font-size:10px;color:var(--text3)"></span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px" id="qv-bitola-grid">
+          <button class="qv-bit-btn" data-val="1.5" onclick="qvSelectBitola(this)">1,5</button>
+          <button class="qv-bit-btn on" data-val="2.5" onclick="qvSelectBitola(this)">2,5</button>
+          <button class="qv-bit-btn" data-val="4"  onclick="qvSelectBitola(this)">4</button>
+          <button class="qv-bit-btn" data-val="6"  onclick="qvSelectBitola(this)">6</button>
+          <button class="qv-bit-btn" data-val="10" onclick="qvSelectBitola(this)">10</button>
+          <button class="qv-bit-btn" data-val="16" onclick="qvSelectBitola(this)">16</button>
+          <button class="qv-bit-btn" data-val="25" onclick="qvSelectBitola(this)">25</button>
+          <button class="qv-bit-btn" data-val="35" onclick="qvSelectBitola(this)">35</button>
+        </div>
+        <input type="hidden" id="qv-bitola" value="2.5">
+      </div>
+      <!-- ── ISOLAMENTO + TEMPERATURA ── -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+        <div>
+          <div class="ilbl" style="margin-bottom:5px">Isolamento do Cabo</div>
+          <div style="display:flex;gap:5px">
+            <button class="ferr-pill on" id="qv-iso-pvc" onclick="qvSetIsolamento('pvc',this)" style="flex:1;font-size:10px">PVC (70°C)</button>
+            <button class="ferr-pill" id="qv-iso-epr" onclick="qvSetIsolamento('epr',this)" style="flex:1;font-size:10px">EPR/XLPE (90°C)</button>
+          </div>
+        </div>
+        <div>
+          <div class="ilbl" style="margin-bottom:5px">Temperatura Ambiente</div>
+          <select class="inp" id="qv-temp" style="margin-bottom:0" onchange="if(typeof qvState!=='undefined')qvState.temp=parseInt(this.value);qvRenderCapacidade();calcQuedaVLive()">
+            <option value="25">25°C</option>
+            <option value="30" selected>30°C (referência)</option>
+            <option value="35">35°C</option>
+            <option value="40">40°C</option>
+            <option value="45">45°C</option>
+            <option value="50">50°C</option>
+          </select>
+        </div>
+      </div>
+      <!-- ── CAPACIDADE DA BITOLA ── -->
+      <div style="margin-bottom:12px">
+        <div class="ilbl" style="margin-bottom:8px;display:flex;align-items:center;gap:6px">
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--acc)"></div>CAPACIDADE DA BITOLA SELECIONADA
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+          <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:12px;padding:12px 8px;text-align:center">
+            <div style="font-size:8px;color:var(--text3);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">Corrente Base</div>
+            <div id="qv-cap-base" style="font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:700;color:var(--text)">—</div>
+            <div id="qv-cap-base-lbl" style="font-size:9px;color:var(--text3);margin-top:3px">método</div>
+          </div>
+          <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:12px;padding:12px 8px;text-align:center">
+            <div style="font-size:8px;color:var(--text3);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">Corrente Corrigida</div>
+            <div id="qv-cap-corr" style="font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:700;color:#4ade80">—</div>
+            <div id="qv-cap-corr-lbl" style="font-size:9px;color:var(--text3);margin-top:3px">sem correção</div>
+          </div>
+          <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:12px;padding:12px 8px;text-align:center">
+            <div style="font-size:8px;color:var(--text3);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">Disjuntor</div>
+            <div id="qv-cap-disj" style="font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:700;color:#4ade80">—</div>
+            <div style="font-size:9px;color:var(--text3);margin-top:3px">recomendado</div>
+          </div>
+        </div>
+        <div id="qv-sobrecarga" style="display:none;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);border-radius:10px;padding:10px 12px;margin-top:8px;font-size:11px;font-weight:700;color:#f87171">⚠️ Corrente supera capacidade corrigida do cabo!</div>
+      </div>
+      <!-- ── CIRCUITOS + MÉTODO ── -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
+        <div>
+          <div class="ilbl" style="margin-bottom:5px">Circuitos Agrupados</div>
+          <select class="inp" id="qv-grupo" style="margin-bottom:0" onchange="if(typeof qvState!=='undefined')qvState.grupo=this.selectedIndex;qvRenderCapacidade();calcQuedaVLive()"></select>
+        </div>
+        <div>
+          <div class="ilbl" style="margin-bottom:5px">Método de Instalação</div>
+          <select class="inp" id="qv-metodo" style="margin-bottom:0" onchange="if(typeof qvState!=='undefined')qvState.metodo=this.value;qvRenderCapacidade();calcQuedaVLive()"></select>
+        </div>
+      </div>
+
+      <!-- ── RESULTADO AO VIVO ── -->
+      <div id="qv-resultado" style="display:none;margin-bottom:14px">
+
+        <!-- Status grande -->
+        <div id="qv-res-hero" style="border-radius:16px;padding:16px;text-align:center;margin-bottom:10px">
+          <div id="qv-res-title" style="font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Resultado</div>
+          <div id="qv-res-pct" style="font-family:'IBM Plex Mono',monospace;font-size:44px;font-weight:700;line-height:1;letter-spacing:-1px">0%</div>
+          <div id="qv-res-status" style="margin-top:8px;font-size:12px;font-weight:700;border-radius:8px;padding:6px 14px;display:inline-block"></div>
+        </div>
+
+        <!-- Cards de detalhe -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px">
+          <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:11px;padding:10px 8px;text-align:center">
+            <div style="font-size:8px;color:var(--text3);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:4px">ΔV</div>
+            <div id="qv-res-v" style="font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:700;color:var(--text)">0V</div>
+          </div>
+          <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:11px;padding:10px 8px;text-align:center">
+            <div style="font-size:8px;color:var(--text3);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:4px">V chegada</div>
+            <div id="qv-res-vcheg" style="font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:700;color:var(--text)">—V</div>
+          </div>
+          <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:11px;padding:10px 8px;text-align:center">
+            <div style="font-size:8px;color:var(--text3);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:4px">Limite</div>
+            <div id="qv-res-lim" style="font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:700;color:var(--text)">4%</div>
+          </div>
+        </div>
+
+        <!-- Sugestão de bitola (quando reprovar) -->
+        <div id="qv-sugestao" style="display:none;background:rgba(59,130,246,.10);border:1px solid rgba(59,130,246,.25);border-radius:12px;padding:12px 14px;margin-bottom:10px">
+          <div style="font-size:10px;font-weight:800;color:#60a5fa;margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">💡 Bitola sugerida para aprovação</div>
+          <div id="qv-sugestao-val" style="font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:700;color:#60a5fa"></div>
+          <button id="qv-sugestao-btn" onclick="qvAplicarSugestao()" style="margin-top:8px;width:100%;padding:8px;background:rgba(59,130,246,.15);border:1px solid rgba(59,130,246,.3);border-radius:9px;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;color:#60a5fa;cursor:pointer">↑ Aplicar esta bitola</button>
+        </div>
+
+        <!-- Histórico de cálculos -->
+        <div id="qv-historico-wrap" style="display:none">
+          <div style="font-size:9px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--text3);margin-bottom:8px">Últimos cálculos</div>
+          <div id="qv-historico-lista"></div>
+        </div>
+
+      </div>
+
+      <!-- Botão calcular + limpar -->
+      <div style="display:grid;grid-template-columns:1fr auto;gap:8px">
+        <button class="btn-salvar-full" style="margin-top:0" onclick="calcQuedaV()">📉 CALCULAR QUEDA</button>
+        <button onclick="qvLimpar()" style="margin-top:0;padding:0 16px;background:var(--bg-input);border:1px solid var(--border-input);border-radius:13px;font-size:20px;cursor:pointer" title="Limpar campos">↺</button>
+      </div>
+
     </div>
     <!-- ABA 3: CHECKLIST -->
     <div id="ferr-3" class="ferr-panel" style="padding:14px">
@@ -3929,6 +4107,101 @@ function demTipoChanged() {
   demRenderSelecionados();
 }
 
+
+// ══════════════════════════════════════════════════════════════
+// QUEDA DE TENSÃO — PRÉ-CONFIGURAÇÃO POR TIPO DE INSTALAÇÃO
+// ══════════════════════════════════════════════════════════════
+const QV_TIPO_CFG = {
+  'htc-res': { sistema:'mono', tensao:'127',  fp:'1.00', limite:'Terminal (4%)',    limIdx:0, label:'Residencial' },
+  'htc-pred':{ sistema:'tri',  tensao:'220t', fp:'0.92', limite:'Alimentador (7%)', limIdx:1, label:'Predial'     },
+  'htc-com': { sistema:'mono', tensao:'220',  fp:'0.92', limite:'Terminal (4%)',    limIdx:0, label:'Comercial'   },
+  'htc-ind': { sistema:'tri',  tensao:'380',  fp:'0.85', limite:'Alimentador (7%)', limIdx:1, label:'Industrial'  },
+  'htc-6ap': { sistema:'tri',  tensao:'380',  fp:'0.92', limite:'Alimentador (7%)', limIdx:1, label:'+6 Casas'   },
+  'htc-out': { sistema:'mono', tensao:'220',  fp:'1.00', limite:'Terminal (4%)',    limIdx:0, label:'Geral'       },
+};
+
+function qvAplicarConfig(tipoKey) {
+  const cfg = QV_TIPO_CFG[tipoKey] || QV_TIPO_CFG['htc-res'];
+
+  // Sistema pills: Monofásico / Trifásico
+  const sisPills = document.querySelectorAll('#ferr-2 .ferr-pill[onclick*="qv-sistema"]');
+  sisPills.forEach((p, i) => {
+    const isTri = (i === 1);
+    p.classList.toggle('on', cfg.sistema === 'tri' ? isTri : !isTri);
+  });
+
+  // Tipo de circuito: Terminal / Alimentador
+  const limPills = document.querySelectorAll('#ferr-2 .ferr-pill[onclick*="qv-tipo"]');
+  limPills.forEach((p, i) => p.classList.toggle('on', i === cfg.limIdx));
+
+  // Tensão select
+  const tensaoSel = document.getElementById('qv-tensao');
+  if (tensaoSel) tensaoSel.value = cfg.tensao;
+
+  // Fator de potência
+  const fpSel = document.getElementById('qv-fp');
+  if (fpSel) fpSel.value = cfg.fp;
+
+  // Limpar resultado anterior
+  const res = document.getElementById('qv-resultado');
+  if (res) res.style.display = 'none';
+
+  // Inicializar selects dinâmicos NBR
+  if (typeof qvInicializarSelects === 'function') qvInicializarSelects();
+
+  // Resetar qvState
+  if (typeof qvState !== 'undefined') {
+    qvState.isolamento = 'pvc';
+    qvState.temp = 30;
+    qvState.grupo = 0;
+    // Método por tipo
+    const metMap={'htc-res':'B1','htc-com':'B2','htc-ind':'C','htc-pred':'C','htc-6ap':'C','htc-out':'B1'};
+    qvState.metodo = metMap[tipoKey]||'B1';
+    // Material por tipo
+    const matMap={'htc-ind':'al','htc-pred':'al','htc-6ap':'al'};
+    qvState.material = matMap[tipoKey]||'cu';
+    // Aplicar aos selects
+    const metSel=document.getElementById('qv-metodo');if(metSel)metSel.value=qvState.metodo;
+    const grpSel=document.getElementById('qv-grupo');if(grpSel)grpSel.selectedIndex=0;
+    const tmpSel=document.getElementById('qv-temp');if(tmpSel)tmpSel.value='30';
+    // Aplicar aos pills material
+    document.getElementById('qv-mat-cu')?.classList.toggle('on',qvState.material==='cu');
+    document.getElementById('qv-mat-al')?.classList.toggle('on',qvState.material==='al');
+    // Atualizar capacidade
+    if (typeof qvRenderCapacidade === 'function') qvRenderCapacidade();
+  }
+
+  // Mostrar badge de contexto
+  let badge = document.getElementById('qv-contexto-badge');
+  if (!badge) {
+    badge = document.createElement('div');
+    badge.id = 'qv-contexto-badge';
+    badge.style.cssText = 'display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--acc-bg);border:1px solid var(--acc-border);border-radius:11px;margin-bottom:14px;font-size:11px;font-weight:700;color:var(--acc)';
+    const painel = document.getElementById('ferr-2');
+    if (painel) painel.insertBefore(badge, painel.firstChild);
+  }
+  badge.innerHTML = '⚡ Configurado para: <strong style="margin-left:4px">' + cfg.label + '</strong>'
+    + ' <span style="margin-left:auto;font-size:9px;opacity:.7;font-weight:400">Ajuste se necessário</span>';
+
+  // Se vier resultado da Demanda, popular corrente e bitola
+  if (window._demResultadoNBR) {
+    const r = window._demResultadoNBR;
+    const corrEl = document.getElementById('qv-corrente');
+    if (corrEl && !corrEl.value) corrEl.value = r.corrente.toFixed(1);
+    const bitMap = {'1,5mm²':'1.5','2,5mm²':'2.5','4mm²':'4','6mm²':'6',
+                    '10mm²':'10','16mm²':'16','25mm²':'25','35mm²':'35'};
+    if (r.bit && bitMap[r.bit]) {
+      const bitVal = parseFloat(bitMap[r.bit]);
+      qvBitolaAtual = bitVal;
+      document.getElementById('qv-bitola').value = bitVal;
+      document.querySelectorAll('.qv-bit-btn').forEach(b => {
+        b.classList.remove('on','sugerida');
+        if (parseFloat(b.dataset.val) === bitVal) b.classList.add('on');
+      });
+    }
+  }
+}
+
 const TIPO_MAP = {
   'htc-res':  { label:'RESIDENCIAL', fd:'1.00', idx:0, isMUC:false },
   'htc-pred': { label:'PREDIAL',     fd:'0.60', idx:2, isMUC:false },
@@ -4013,9 +4286,10 @@ function togglePw(id, btn) { const i=document.getElementById(id); i.type=i.type=
 function ferrAba(idx) {
   document.querySelectorAll('.ferr-tab').forEach((t,i) => t.classList.toggle('on',i===idx));
   document.querySelectorAll('.ferr-panel').forEach((p,i) => p.classList.toggle('on',i===idx));
-  // Ao abrir aba Demanda: sincronizar select com tipo do home se grid vazio
+  const tipoKey = window._tipoSelecionado || 'htc-res';
+
+  // Aba Demanda — sincronizar tipo
   if (idx === 1) {
-    const tipoKey = window._tipoSelecionado || 'htc-res';
     const cfg = TIPO_MAP[tipoKey];
     if (cfg && cfg.idx !== null && !cfg.isMUC) {
       const sel = document.getElementById('dem-tipo');
@@ -4024,6 +4298,11 @@ function ferrAba(idx) {
         if (Object.keys(demComodos).length === 0) demAplicarConfig(cfg.idx);
       }
     }
+  }
+
+  // Aba Queda V — inicializar selects e aplicar config
+  if (idx === 2) {
+    setTimeout(() => { if(typeof qvInicializarSelects==='function') qvInicializarSelects(); qvAplicarConfig(tipoKey); qvRenderCapacidade(); }, 80);
   }
 }
 function ferrPill(el, grupo) {
@@ -4113,23 +4392,113 @@ const DEM_TIPICA_IND=[26,27,28,29,30,31,32,11];
 // Predial — vai para MUC (sem cômodos)
 const DEM_TIPICA_PRED=null;
 
-const DEM_EQUIPAMENTOS=[
-  {n:'Chuveiro elétrico',w:5500,circ:true},
-  {n:'Ar-cond. 9000 BTU',w:1050,circ:false},
-  {n:'Ar-cond. 12000 BTU',w:1350,circ:false},
-  {n:'Ar-cond. 18000 BTU',w:1760,circ:false},
-  {n:'Forno elétrico',w:2000,circ:true},
-  {n:'Micro-ondas',w:1200,circ:false},
-  {n:'Máquina de lavar',w:1000,circ:false},
-  {n:'Secadora de roupas',w:3000,circ:true},
-  {n:'Geladeira',w:150,circ:false},
-  {n:'Freezer',w:200,circ:false},
-  {n:'Bomba d\'água',w:750,circ:false},
-  {n:'TV 55"',w:150,circ:false},
-  {n:'Computador',w:300,circ:false},
-  {n:'Aspirador',w:1000,circ:false},
-  {n:'Aquecedor elétrico',w:1500,circ:true},
-  {n:'Portão elétrico',w:750,circ:false}
+// ══════════════════════════════════════════════════════════════
+// CATÁLOGO DE EQUIPAMENTOS — NBR 5410 + PROCEL/Inmetro
+// Campos: n=nome, cat=categoria, ico=emoji, w=watts nominais,
+//   fp=fator de potência, fd=fator de demanda,
+//   tensao=tensão (127|220|380), circ=circ.independente, obs=nota
+// VA = (w/fp)*fd  |  corrente = VA/tensao
+// ══════════════════════════════════════════════════════════════
+const DEM_EQUIP_CATS = [
+  'Aquecimento','Refrigeração','Lavanderia','Cozinha',
+  'Motores/Bombas','Ar-condicionado','Iluminação',
+  'TI/Eletrônicos','Segurança/Automação','Industrial'
+];
+
+const DEM_EQUIPAMENTOS = [
+  // ── AQUECIMENTO ─────────────────────────────────────────────
+  {n:'Chuveiro elétrico 5500W',   cat:'Aquecimento', ico:'🚿', w:5500, fp:1.00, fd:1.00, tensao:220, circ:true,  obs:'Circ. exclusivo — NBR 5410'},
+  {n:'Chuveiro elétrico 7500W',   cat:'Aquecimento', ico:'🚿', w:7500, fp:1.00, fd:1.00, tensao:220, circ:true,  obs:'Circ. exclusivo — NBR 5410'},
+  {n:'Torneira elétrica',         cat:'Aquecimento', ico:'🚰', w:3800, fp:1.00, fd:0.50, tensao:220, circ:true,  obs:'fd 0,5 — uso não simultâneo'},
+  {n:'Aquecedor de ambiente',     cat:'Aquecimento', ico:'🔥', w:1500, fp:1.00, fd:1.00, tensao:127, circ:true,  obs:'Resistivo — circ. exclusivo >1,5kW'},
+  {n:'Aquecedor central (boiler)',cat:'Aquecimento', ico:'🌡️', w:3000, fp:1.00, fd:0.60, tensao:220, circ:true,  obs:'fd 0,6 — ciclo intermitente'},
+  {n:'Secador de cabelo',         cat:'Aquecimento', ico:'💇', w:2000, fp:1.00, fd:0.30, tensao:127, circ:false, obs:'fd 0,3 — uso breve'},
+  {n:'Ferro de passar',           cat:'Aquecimento', ico:'👔', w:1200, fp:1.00, fd:0.50, tensao:127, circ:false, obs:'fd 0,5 — uso intermitente'},
+  {n:'Forno elétrico embutido',   cat:'Aquecimento', ico:'🟫', w:3000, fp:1.00, fd:1.00, tensao:220, circ:true,  obs:'Circ. exclusivo obrigatório'},
+  {n:'Forno de micro-ondas',      cat:'Aquecimento', ico:'📦', w:1200, fp:0.95, fd:0.60, tensao:127, circ:false, obs:'fd 0,6 — uso intermitente'},
+  {n:'Torradeira',                cat:'Aquecimento', ico:'🍞', w:900,  fp:1.00, fd:0.20, tensao:127, circ:false, obs:'fd 0,2 — uso esporádico'},
+  {n:'Cafeteira elétrica',        cat:'Aquecimento', ico:'☕', w:800,  fp:1.00, fd:0.25, tensao:127, circ:false, obs:'fd 0,25 — uso esporádico'},
+  {n:'Sanduicheira/Waffle',       cat:'Aquecimento', ico:'🥪', w:750,  fp:1.00, fd:0.20, tensao:127, circ:false, obs:'fd 0,2 — uso esporádico'},
+  {n:'Aquecedor de piscina',      cat:'Aquecimento', ico:'🏊', w:9000, fp:1.00, fd:0.80, tensao:220, circ:true,  obs:'Circ. exclusivo — alta potência'},
+
+  // ── REFRIGERAÇÃO ─────────────────────────────────────────────
+  {n:'Geladeira frost-free 400L', cat:'Refrigeração', ico:'🧊', w:150,  fp:0.75, fd:0.70, tensao:127, circ:false, obs:'fd 0,7 — compressor cíclico'},
+  {n:'Geladeira side-by-side',    cat:'Refrigeração', ico:'🧊', w:200,  fp:0.75, fd:0.70, tensao:127, circ:false, obs:'fd 0,7 — compressor cíclico'},
+  {n:'Freezer vertical 300L',     cat:'Refrigeração', ico:'🧊', w:180,  fp:0.75, fd:0.75, tensao:127, circ:false, obs:'fd 0,75 — ciclo intermitente'},
+  {n:'Freezer horizontal',        cat:'Refrigeração', ico:'🧊', w:200,  fp:0.75, fd:0.75, tensao:127, circ:false, obs:'fd 0,75'},
+  {n:'Câmara fria comercial',     cat:'Refrigeração', ico:'🧊', w:2000, fp:0.80, fd:0.80, tensao:220, circ:true,  obs:'Circ. exclusivo recomendado'},
+  {n:'Adega climatizada',         cat:'Refrigeração', ico:'🍷', w:120,  fp:0.75, fd:0.70, tensao:127, circ:false, obs:'Compressor cíclico'},
+
+  // ── AR-CONDICIONADO ───────────────────────────────────────────
+  {n:'Ar-cond. Split 7.500 BTU',  cat:'Ar-condicionado', ico:'❄️', w:750,  fp:0.82, fd:0.75, tensao:127, circ:false, obs:'NBR 5410 — verificar tensão'},
+  {n:'Ar-cond. Split 9.000 BTU',  cat:'Ar-condicionado', ico:'❄️', w:1050, fp:0.82, fd:0.75, tensao:220, circ:false, obs:'fd 0,75 — uso não simultâneo'},
+  {n:'Ar-cond. Split 12.000 BTU', cat:'Ar-condicionado', ico:'❄️', w:1350, fp:0.82, fd:0.75, tensao:220, circ:false, obs:'fd 0,75'},
+  {n:'Ar-cond. Split 18.000 BTU', cat:'Ar-condicionado', ico:'❄️', w:1760, fp:0.82, fd:0.75, tensao:220, circ:true,  obs:'Circ. exclusivo ≥18.000 BTU'},
+  {n:'Ar-cond. Split 24.000 BTU', cat:'Ar-condicionado', ico:'❄️', w:2200, fp:0.82, fd:0.75, tensao:220, circ:true,  obs:'Circ. exclusivo'},
+  {n:'Ar-cond. Split 30.000 BTU', cat:'Ar-condicionado', ico:'❄️', w:2800, fp:0.82, fd:0.75, tensao:220, circ:true,  obs:'Circ. exclusivo'},
+  {n:'Ar-cond. Janela 10.000 BTU',cat:'Ar-condicionado', ico:'❄️', w:1200, fp:0.80, fd:0.75, tensao:127, circ:false, obs:'fd 0,75'},
+  {n:'VRF / Fan Coil (por kW)',   cat:'Ar-condicionado', ico:'❄️', w:1000, fp:0.85, fd:0.75, tensao:220, circ:true,  obs:'Circ. exclusivo — sistema central'},
+
+  // ── LAVANDERIA ───────────────────────────────────────────────
+  {n:'Máquina de lavar 10kg',     cat:'Lavanderia', ico:'🫧', w:1000, fp:0.85, fd:0.50, tensao:127, circ:false, obs:'fd 0,5 — uso intermitente'},
+  {n:'Máquina de lavar 15kg',     cat:'Lavanderia', ico:'🫧', w:1200, fp:0.85, fd:0.50, tensao:127, circ:false, obs:'fd 0,5'},
+  {n:'Secadora de roupas elét.',  cat:'Lavanderia', ico:'💨', w:3000, fp:1.00, fd:1.00, tensao:220, circ:true,  obs:'Circ. exclusivo — resistivo'},
+  {n:'Lava e seca',               cat:'Lavanderia', ico:'🫧', w:1500, fp:0.85, fd:0.60, tensao:127, circ:false, obs:'fd 0,6'},
+  {n:'Lava-louças',               cat:'Lavanderia', ico:'🍽️', w:1800, fp:0.95, fd:0.50, tensao:127, circ:false, obs:'fd 0,5 — uso intermitente'},
+  {n:'Aspirador de pó',           cat:'Lavanderia', ico:'🌀', w:1200, fp:0.85, fd:0.20, tensao:127, circ:false, obs:'fd 0,2 — uso esporádico'},
+
+  // ── COZINHA ─────────────────────────────────────────────────
+  {n:'Fogão de indução 2 bocas',  cat:'Cozinha', ico:'🍳', w:3500, fp:0.95, fd:0.60, tensao:220, circ:true,  obs:'Circ. exclusivo'},
+  {n:'Fogão de indução 4 bocas',  cat:'Cozinha', ico:'🍳', w:7000, fp:0.95, fd:0.60, tensao:220, circ:true,  obs:'Circ. exclusivo — alta potência'},
+  {n:'Coifa/Exaustor',            cat:'Cozinha', ico:'🍴', w:200,  fp:0.85, fd:0.40, tensao:127, circ:false, obs:'fd 0,4 — uso parcial'},
+  {n:'Liquidificador',            cat:'Cozinha', ico:'🥤', w:700,  fp:0.85, fd:0.15, tensao:127, circ:false, obs:'fd 0,15 — uso esporádico'},
+  {n:'Batedeira',                 cat:'Cozinha', ico:'🥣', w:500,  fp:0.85, fd:0.15, tensao:127, circ:false, obs:'fd 0,15'},
+  {n:'Processador de alimentos',  cat:'Cozinha', ico:'🥗', w:600,  fp:0.85, fd:0.15, tensao:127, circ:false, obs:'fd 0,15'},
+  {n:'Frigobar',                  cat:'Cozinha', ico:'🧃', w:80,   fp:0.75, fd:0.70, tensao:127, circ:false, obs:'Compressor cíclico'},
+
+  // ── MOTORES / BOMBAS ─────────────────────────────────────────
+  {n:'Bomba de água 0,5 CV',      cat:'Motores/Bombas', ico:'💧', w:370,  fp:0.85, fd:0.75, tensao:127, circ:false, obs:'fd 0,75 — ciclagem'},
+  {n:'Bomba de água 1 CV',        cat:'Motores/Bombas', ico:'💧', w:750,  fp:0.85, fd:0.75, tensao:220, circ:false, obs:'fd 0,75'},
+  {n:'Bomba de água 2 CV',        cat:'Motores/Bombas', ico:'💧', w:1500, fp:0.85, fd:0.75, tensao:220, circ:true,  obs:'Circ. exclusivo recomendado'},
+  {n:'Bomba de piscina 1 CV',     cat:'Motores/Bombas', ico:'🏊', w:750,  fp:0.85, fd:0.85, tensao:220, circ:false, obs:'fd 0,85 — uso contínuo'},
+  {n:'Bomba de piscina 2 CV',     cat:'Motores/Bombas', ico:'🏊', w:1500, fp:0.85, fd:0.85, tensao:220, circ:true,  obs:'Circ. exclusivo'},
+  {n:'Portão automático',         cat:'Motores/Bombas', ico:'🚗', w:500,  fp:0.85, fd:0.20, tensao:127, circ:false, obs:'fd 0,2 — uso esporádico'},
+  {n:'Elevador residencial',      cat:'Motores/Bombas', ico:'🛗', w:2200, fp:0.85, fd:0.50, tensao:220, circ:true,  obs:'Circ. exclusivo — NBR 5410'},
+  {n:'Motor bomba de calor',      cat:'Motores/Bombas', ico:'🌡️', w:1800, fp:0.85, fd:0.80, tensao:220, circ:true,  obs:'Circ. exclusivo'},
+
+  // ── TI / ELETRÔNICOS ─────────────────────────────────────────
+  {n:'TV LED 32"',                cat:'TI/Eletrônicos', ico:'📺', w:60,   fp:0.70, fd:0.80, tensao:127, circ:false, obs:'fp 0,7 — fonte chaveada'},
+  {n:'TV LED 55"',                cat:'TI/Eletrônicos', ico:'📺', w:130,  fp:0.70, fd:0.80, tensao:127, circ:false, obs:'fp 0,7'},
+  {n:'TV LED 75"',                cat:'TI/Eletrônicos', ico:'📺', w:200,  fp:0.70, fd:0.80, tensao:127, circ:false, obs:'fp 0,7'},
+  {n:'Computador desktop',        cat:'TI/Eletrônicos', ico:'🖥️', w:300,  fp:0.75, fd:0.70, tensao:127, circ:false, obs:'fp 0,75 — fonte ATX'},
+  {n:'Notebook',                  cat:'TI/Eletrônicos', ico:'💻', w:90,   fp:0.75, fd:0.70, tensao:127, circ:false, obs:'fp 0,75'},
+  {n:'Impressora laser',          cat:'TI/Eletrônicos', ico:'🖨️', w:800,  fp:0.75, fd:0.30, tensao:127, circ:false, obs:'fd 0,3 — pico no warm-up'},
+  {n:'Servidor de rede (rack)',   cat:'TI/Eletrônicos', ico:'🗄️', w:500,  fp:0.75, fd:0.90, tensao:127, circ:false, obs:'fd 0,9 — uso contínuo'},
+  {n:'Nobreak / UPS',             cat:'TI/Eletrônicos', ico:'🔋', w:1000, fp:0.80, fd:0.80, tensao:127, circ:false, obs:'fd 0,8'},
+  {n:'Home theater',              cat:'TI/Eletrônicos', ico:'🔊', w:400,  fp:0.70, fd:0.50, tensao:127, circ:false, obs:'fd 0,5'},
+  {n:'Video-game console',        cat:'TI/Eletrônicos', ico:'🎮', w:200,  fp:0.75, fd:0.60, tensao:127, circ:false, obs:'fd 0,6'},
+
+  // ── ILUMINAÇÃO ───────────────────────────────────────────────
+  {n:'Luminária LED (por ponto)', cat:'Iluminação', ico:'💡', w:15,   fp:0.92, fd:1.00, tensao:127, circ:false, obs:'LED moderno — fp 0,92'},
+  {n:'Arandela externa LED',      cat:'Iluminação', ico:'💡', w:20,   fp:0.92, fd:1.00, tensao:127, circ:false, obs:'fd 1,0 — ilum. segurança'},
+  {n:'Projetor externo LED',      cat:'Iluminação', ico:'🔦', w:100,  fp:0.90, fd:0.80, tensao:127, circ:false, obs:'fd 0,8 — uso parcial'},
+  {n:'Painel LED comercial',      cat:'Iluminação', ico:'💡', w:40,   fp:0.92, fd:1.00, tensao:127, circ:false, obs:'fd 1,0 — iluminação contínua'},
+
+  // ── SEGURANÇA / AUTOMAÇÃO ─────────────────────────────────────
+  {n:'Central de alarme',         cat:'Segurança/Automação', ico:'🚨', w:60,   fp:0.80, fd:1.00, tensao:127, circ:false, obs:'Alimentação contínua'},
+  {n:'DVR / NVR (câmeras)',       cat:'Segurança/Automação', ico:'📷', w:40,   fp:0.80, fd:1.00, tensao:127, circ:false, obs:'24h ligado'},
+  {n:'Interfone/Videoporteiro',   cat:'Segurança/Automação', ico:'📞', w:30,   fp:0.80, fd:0.50, tensao:127, circ:false, obs:'fd 0,5'},
+  {n:'Cerca elétrica',            cat:'Segurança/Automação', ico:'⚡', w:100,  fp:1.00, fd:1.00, tensao:127, circ:false, obs:'Resistivo — contínuo'},
+  {n:'Hub automação residencial', cat:'Segurança/Automação', ico:'🏠', w:30,   fp:0.80, fd:1.00, tensao:127, circ:false, obs:'24h ligado'},
+
+  // ── INDUSTRIAL ───────────────────────────────────────────────
+  {n:'Compressor de ar 2 CV',     cat:'Industrial', ico:'🔧', w:1500, fp:0.85, fd:0.75, tensao:220, circ:true,  obs:'Circ. exclusivo — motor'},
+  {n:'Compressor de ar 5 CV',     cat:'Industrial', ico:'🔧', w:3700, fp:0.85, fd:0.75, tensao:220, circ:true,  obs:'Circ. exclusivo'},
+  {n:'Serra elétrica',            cat:'Industrial', ico:'🪚', w:1800, fp:0.85, fd:0.50, tensao:220, circ:true,  obs:'fd 0,5 — uso intermitente'},
+  {n:'Furadeira industrial',      cat:'Industrial', ico:'🔩', w:1200, fp:0.85, fd:0.40, tensao:127, circ:false, obs:'fd 0,4'},
+  {n:'Solda elétrica 150A',       cat:'Industrial', ico:'⚡', w:5000, fp:0.60, fd:0.60, tensao:220, circ:true,  obs:'fp 0,6 — transformador'},
+  {n:'Solda MIG/MAG',             cat:'Industrial', ico:'⚡', w:7000, fp:0.65, fd:0.60, tensao:220, circ:true,  obs:'Circ. exclusivo'},
+  {n:'Torno elétrico 3 CV',       cat:'Industrial', ico:'⚙️', w:2200, fp:0.85, fd:0.75, tensao:220, circ:true,  obs:'Circ. exclusivo — motor'},
 ];
 
 // ── Cálculos NBR 5410 ──
@@ -4256,7 +4625,7 @@ function demRenderSelecionados(){
     const c=demComodos[i];
     const ilum=demCalcIlum(c.area);
     const tom=demCalcTom(c.tp,c.area);
-    const equipW=c.equips.reduce((s,e)=>s+e.w,0);
+    const equipW=c.equips.reduce((s,e)=>s+Math.round((e.w/(e.fp||1))*(e.fd||1)),0);
     const total=ilum+tom+equipW;
     return `<div class="dem-comodo-item">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
@@ -4299,15 +4668,165 @@ function demRemComodo(i){delete demComodos[i];demRenderGrid();demRenderSeleciona
 function demEditArea(i,v){demComodos[i].area=parseFloat(v)||demComodos[i].area;demRenderSelecionados();}
 
 function demAddEquip(idx){
-  const html=DEM_EQUIPAMENTOS.map((e,j)=>`<div class="cat-drop-item" onclick="demSelEquip(${idx},${j})">${e.n} — ${e.w}W${e.circ?' ⚡':''}</div>`).join('');
-  const popup=document.createElement('div');
-  popup.style.cssText='position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.6);display:flex;align-items:flex-end';
-  popup.innerHTML=`<div style="background:var(--bg-card);border-radius:20px 20px 0 0;width:100%;max-height:70vh;overflow-y:auto;padding:16px">
-    <div style="font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:12px">Equipamento — ${demComodos[idx].n}</div>
-    ${html}
-    <button onclick="this.closest('[style*=fixed]').remove()" style="width:100%;margin-top:12px;background:var(--bg-input);border:1px solid var(--border-input);border-radius:12px;padding:14px;font-size:14px;font-weight:700;color:var(--text);cursor:pointer">Cancelar</button>
-  </div>`;
+  const comodo = demComodos[idx];
+  const tensaoRef = demTensaoAtual || 127;
+
+  // Construir HTML de categorias + itens
+  function renderEquipList(filtro) {
+    const cats = DEM_EQUIP_CATS;
+    return cats.map(cat => {
+      const itens = DEM_EQUIPAMENTOS.filter(e =>
+        e.cat === cat &&
+        (!filtro || e.n.toLowerCase().includes(filtro.toLowerCase()))
+      );
+      if (!itens.length) return '';
+      return `<div style="margin-bottom:12px">
+        <div style="font-size:9px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--text3);padding:6px 0;margin-bottom:6px;border-bottom:1px solid var(--border)">${cat}</div>
+        ${itens.map(e => {
+          const j = DEM_EQUIPAMENTOS.indexOf(e);
+          const va = Math.round((e.w / e.fp) * e.fd);
+          const amp = (va / e.tensao).toFixed(1);
+          return `<div onclick="demPreviewEquip(${idx},${j},this)"
+            style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer;-webkit-tap-highlight-color:transparent">
+            <div style="font-size:22px;flex-shrink:0">${e.ico}</div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:13px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${e.n}</div>
+              <div style="font-size:10px;color:var(--text3);margin-top:2px">${e.w}W · fp ${e.fp} · fd ${e.fd} · ${e.tensao}V</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:var(--acc)">${va} VA</div>
+              <div style="font-size:10px;color:var(--text3)">${amp}A</div>
+            </div>
+            ${e.circ ? '<span style="font-size:9px;font-weight:700;background:rgba(239,68,68,.15);color:#f87171;border-radius:5px;padding:2px 6px;flex-shrink:0">⚡ Excl.</span>' : ''}
+          </div>`;
+        }).join('')}
+      </div>`;
+    }).join('');
+  }
+
+  const popup = document.createElement('div');
+  popup.style.cssText = 'position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.65);display:flex;align-items:flex-end;backdrop-filter:blur(4px)';
+  popup.innerHTML = `
+    <div style="background:var(--bg-card);border-radius:22px 22px 0 0;width:100%;max-height:88vh;display:flex;flex-direction:column;overflow:hidden">
+      <!-- Header -->
+      <div style="padding:16px 16px 10px;flex-shrink:0">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <div>
+            <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--text)">Adicionar Equipamento</div>
+            <div style="font-size:10px;color:var(--text3);margin-top:2px">${comodo.ico} ${comodo.n}</div>
+          </div>
+          <button onclick="this.closest('[style*=fixed]').remove()"
+            style="width:30px;height:30px;background:var(--bg-input);border:1px solid var(--border-input);border-radius:8px;color:var(--text2);cursor:pointer;font-size:13px">✕</button>
+        </div>
+        <!-- Busca -->
+        <div style="position:relative">
+          <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none">🔍</span>
+          <input id="equip-search-${idx}" type="text" placeholder="Buscar equipamento..."
+            style="width:100%;background:var(--bg-input);border:1px solid var(--border-input);border-radius:11px;padding:10px 12px 10px 36px;font-size:16px;color:var(--text);outline:none"
+            oninput="document.getElementById('equip-list-${idx}').innerHTML=equip_renderFn_${idx}(this.value)"
+            autocomplete="off">
+        </div>
+      </div>
+      <!-- Preview seleção -->
+      <div id="equip-preview-${idx}" style="display:none;margin:0 16px 10px;background:var(--acc-bg);border:1px solid var(--acc-border);border-radius:13px;padding:12px 14px;flex-shrink:0">
+        <div style="font-size:9px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--acc);margin-bottom:8px">Equipamento Selecionado</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span id="eprev-ico-${idx}" style="font-size:24px"></span>
+          <div style="flex:1;min-width:0">
+            <div id="eprev-nome-${idx}" style="font-size:13px;font-weight:700;color:var(--text)"></div>
+            <div id="eprev-info-${idx}" style="font-size:10px;color:var(--text3);margin-top:2px"></div>
+          </div>
+          <div style="text-align:center">
+            <div style="font-size:9px;color:var(--text3);margin-bottom:4px">Qtd</div>
+            <div style="display:flex;align-items:center;gap:6px">
+              <button onclick="equip_changeQty_${idx}(-1)" style="width:26px;height:26px;border-radius:7px;background:var(--bg-card);border:1px solid var(--border-input);color:var(--text2);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">−</button>
+              <span id="eprev-qty-${idx}" style="font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:700;color:var(--text);min-width:20px;text-align:center">1</span>
+              <button onclick="equip_changeQty_${idx}(1)" style="width:26px;height:26px;border-radius:7px;background:var(--bg-card);border:1px solid var(--border-input);color:var(--text2);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">+</button>
+            </div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin-top:10px">
+          <div style="background:var(--bg-card);border-radius:8px;padding:6px;text-align:center">
+            <div style="font-size:8px;color:var(--text3);margin-bottom:2px">POTÊNCIA</div>
+            <div id="eprev-w-${idx}" style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:var(--text)">—W</div>
+          </div>
+          <div style="background:var(--bg-card);border-radius:8px;padding:6px;text-align:center">
+            <div style="font-size:8px;color:var(--text3);margin-bottom:2px">VA EFETIVO</div>
+            <div id="eprev-va-${idx}" style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:var(--acc)">—</div>
+          </div>
+          <div style="background:var(--bg-card);border-radius:8px;padding:6px;text-align:center">
+            <div style="font-size:8px;color:var(--text3);margin-bottom:2px">CORRENTE</div>
+            <div id="eprev-amp-${idx}" style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#60a5fa">—A</div>
+          </div>
+          <div style="background:var(--bg-card);border-radius:8px;padding:6px;text-align:center">
+            <div style="font-size:8px;color:var(--text3);margin-bottom:2px">TENSÃO</div>
+            <div id="eprev-v-${idx}" style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:var(--text)">—V</div>
+          </div>
+        </div>
+        <div id="eprev-obs-${idx}" style="font-size:10px;color:var(--text3);margin-top:8px;font-style:italic"></div>
+        <button id="eprev-add-${idx}" onclick="demConfirmarEquip(${idx})"
+          style="width:100%;margin-top:10px;padding:12px;background:var(--acc);border:none;border-radius:11px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:#000;cursor:pointer">✅ Adicionar ao Cômodo</button>
+      </div>
+      <!-- Lista scrollável -->
+      <div id="equip-list-${idx}" style="overflow-y:auto;padding:0 16px 24px;flex:1;-webkit-overflow-scrolling:touch">
+        ${renderEquipList('')}
+      </div>
+    </div>`;
+
+  // Estado da seleção
+  let _selJ = null, _selQty = 1;
+
+  // Funções acessíveis globalmente por idx
+  window['equip_renderFn_' + idx] = (filtro) => renderEquipList(filtro);
+  window['equip_changeQty_' + idx] = (delta) => {
+    _selQty = Math.max(1, _selQty + delta);
+    document.getElementById('eprev-qty-' + idx).textContent = _selQty;
+    if (_selJ !== null) _atualizarPreviewEquip(idx, _selJ, _selQty);
+  };
+  window['_equipState_' + idx] = () => ({ j: _selJ, qty: _selQty });
+
+  function _atualizarPreviewEquip(comIdx, j, qty) {
+    const e = DEM_EQUIPAMENTOS[j];
+    const va = Math.round((e.w / e.fp) * e.fd * qty);
+    const amp = (va / e.tensao).toFixed(1);
+    document.getElementById('eprev-ico-' + comIdx).textContent = e.ico;
+    document.getElementById('eprev-nome-' + comIdx).textContent = e.n + (qty > 1 ? ' × ' + qty : '');
+    document.getElementById('eprev-info-' + comIdx).textContent =
+      'fp ' + e.fp + ' · fd ' + e.fd + (e.circ ? ' · ⚡ Circ. exclusivo' : '');
+    document.getElementById('eprev-w-' + comIdx).textContent   = (e.w * qty) + 'W';
+    document.getElementById('eprev-va-' + comIdx).textContent  = va + ' VA';
+    document.getElementById('eprev-amp-' + comIdx).textContent = amp + 'A';
+    document.getElementById('eprev-v-' + comIdx).textContent   = e.tensao + 'V';
+    document.getElementById('eprev-obs-' + comIdx).textContent = e.obs || '';
+    const prev = document.getElementById('eprev-preview-' + comIdx) ||
+                 document.getElementById('equip-preview-' + comIdx);
+    if (prev) prev.style.display = 'block';
+  }
+
+  window['demPreviewEquip'] = (comIdx, j, el) => {
+    _selJ = j; _selQty = 1;
+    document.getElementById('eprev-qty-' + comIdx).textContent = 1;
+    document.getElementById('equip-preview-' + comIdx).style.display = 'block';
+    _atualizarPreviewEquip(comIdx, j, 1);
+  };
+
+  window['demConfirmarEquip'] = (comIdx) => {
+    const state = window['_equipState_' + comIdx]?.();
+    if (!state || state.j === null) return;
+    const e = DEM_EQUIPAMENTOS[state.j];
+    for (let i = 0; i < state.qty; i++) {
+      demComodos[comIdx].equips.push({
+        n: e.n, w: e.w, fp: e.fp, fd: e.fd,
+        tensao: e.tensao, circ: e.circ, ico: e.ico
+      });
+    }
+    popup.remove();
+    demRenderSelecionados();
+    demRenderGrid();
+  };
+
   document.body.appendChild(popup);
+  setTimeout(() => document.getElementById('equip-search-' + idx)?.focus(), 100);
 }
 function demSelEquip(idx,j){
   document.querySelector('[style*="fixed"][style*="inset:0"]')?.remove();
@@ -4336,7 +4855,7 @@ function demRenderTabela(){
     const c=demComodos[i];
     const ilumVA=demCalcIlum(c.area);
     const tomVA=demCalcTom(c.tp,c.area);
-    const equipW=c.equips.reduce((s,e)=>s+e.w,0);
+    const equipW=c.equips.reduce((s,e)=>s+Math.round((e.w/(e.fp||1))*(e.fd||1)),0);
     const va=ilumVA+tomVA+equipW;
     totArea+=c.area; totI+=c.pts_ilum||1; totT+=c.pts_tom||1; totVA+=va;
     return `<tr style="border-top:1px solid var(--border);background:${idx%2?'var(--bg-input)':'transparent'}">
@@ -4369,7 +4888,7 @@ function demEditarLinha(i){
     <div class="ilbl">Pontos de Tomada</div>
     <input class="inp" type="number" id="edit-tom" value="${c.pts_tom||1}" min="1" style="margin-bottom:14px">
     <div style="font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--text3);margin-bottom:8px">Equipamentos</div>
-    <div id="edit-equips-lista">${c.equips.map((e,j)=>`<div class="dem-equip-item"><span style="flex:1">${e.n}</span><span style="font-family:'IBM Plex Mono',monospace;color:var(--acc);font-size:12px">${e.w}W</span>${e.circ?'<span class="tag-circ-ind">Circ. indep.</span>':''}<button onclick="demRemEquipEdit(${i},${j},this)" style="width:20px;height:20px;border-radius:5px;background:rgba(239,68,68,.1);border:none;color:#f87171;cursor:pointer;font-size:10px">✕</button></div>`).join('')}</div>
+    <div id="edit-equips-lista">${c.equips.map((e,j)=>`<div class="dem-equip-item"><span style="flex:1">${e.n}</span><span style="font-family:'IBM Plex Mono',monospace;color:var(--acc);font-size:11px">${e.w}W · ${Math.round((e.w/(e.fp||1))*(e.fd||1))}VA</span>${e.circ?'<span class="tag-circ-ind">Circ. indep.</span>':''}<button onclick="demRemEquipEdit(${i},${j},this)" style="width:20px;height:20px;border-radius:5px;background:rgba(239,68,68,.1);border:none;color:#f87171;cursor:pointer;font-size:10px">✕</button></div>`).join('')}</div>
     <button onclick="demAddEquip(${i})" style="width:100%;padding:8px;background:var(--bg-input);border:1px dashed var(--border-input);border-radius:8px;font-size:11px;font-weight:700;color:var(--text3);cursor:pointer;margin-top:8px;margin-bottom:14px">+ Equipamento</button>
     <div style="display:flex;gap:8px">
       <button onclick="this.closest('[style*=fixed]').remove()" style="flex:1;padding:12px;background:var(--bg-input);border:1px solid var(--border-input);border-radius:12px;font-size:13px;font-weight:700;color:var(--text);cursor:pointer">Cancelar</button>
@@ -4406,9 +4925,9 @@ function demCalcNBR(){
     const ilumVA=demCalcIlum(c.area);
     const pts_tom=c.pts_tom||demCalcPtsTom(c.tp,c.area);
     const tomVA=demCalcVaTom(c.tp,pts_tom);
-    const equipW=c.equips.reduce((s,e)=>s+e.w,0);
+    const equipW=c.equips.reduce((s,e)=>s+Math.round((e.w/(e.fp||1))*(e.fd||1)),0);
     totalIlumVA+=ilumVA; totalTomVA+=tomVA; totalVA+=ilumVA+tomVA+equipW;
-    c.equips.filter(e=>e.circ||(e.w/demTensaoAtual)>10).forEach(e=>circsIndep.push(`${c.n} — ${e.n} (${e.w}W / ${(e.w/demTensaoAtual).toFixed(1)}A)`));
+    c.equips.filter(e=>e.circ||(Math.round((e.w/(e.fp||1))*(e.fd||1))/e.tensao)>10).forEach(e=>{const va=Math.round((e.w/(e.fp||1))*(e.fd||1));circsIndep.push(`${c.n} — ${e.n} (${e.w}W / fp${e.fp||1} / ${va}VA / ${(va/e.tensao).toFixed(1)}A@${e.tensao}V)`)});
   });
   const demandada=totalVA*fd;
   const corrente=demandada/demTensaoAtual;
@@ -4435,7 +4954,7 @@ function demCalcNBR(){
   document.getElementById('dem-nbr-res').style.display='block';
   demAtualizaStatusNBR(disj+' A',bit);
   setTimeout(()=>document.getElementById('dem-nbr-res').scrollIntoView({behavior:'smooth',block:'start'}),50);
-  window._demResultadoNBR={totalVA,demandada,corrente,disj,bit,fd,tensao:demTensaoAtual};
+  window._demResultadoNBR={totalVA,demandada,corrente,disj,bit,fd,tensao:demTensaoAtual,sistema:demSisAtual,tipoKey:window._tipoSelecionado||'htc-res',nIlum:Math.max(1,Math.ceil(totalIlumVA/1000)),nTom:Math.max(1,Math.ceil(totalTomVA/1500)),temMolhado:Object.values(demComodos).some(c=>c.tp==='molhado'),circsIndep:[...circsIndep],comodos:JSON.parse(JSON.stringify(demComodos))};
 }
 
 function demLevarMUC(){
@@ -4454,60 +4973,205 @@ function demLevarQuedaV(){
   const r=window._demResultadoNBR;
   ferrAba(2);
   setTimeout(()=>{
-    const sel=document.getElementById('qv-tensao');
-    sel.value=r.tensao===127?'127':r.tensao===380?'380':'220';
-    document.getElementById('qv-corrente').value=r.corrente.toFixed(1);
+    // Aplicar config do tipo primeiro
+    qvAplicarConfig(window._tipoSelecionado || 'htc-res');
+    // Sobrescrever com dados exatos da demanda calculada
+    const tensaoSel=document.getElementById('qv-tensao');
+    if(tensaoSel) tensaoSel.value=r.tensao===127?'127':r.tensao===380?'380':'220';
+    const corrEl=document.getElementById('qv-corrente');
+    if(corrEl) corrEl.value=r.corrente.toFixed(1);
     const bitMap={'1,5mm²':'1.5','2,5mm²':'2.5','4mm²':'4','6mm²':'6','10mm²':'10','16mm²':'16','25mm²':'25','35mm²':'35'};
-    document.getElementById('qv-bitola').value=bitMap[r.bit]||'2.5';
+    const bitVal = parseFloat(bitMap[r.bit]||'2.5');
+    qvBitolaAtual = bitVal;
+    document.getElementById('qv-bitola').value = bitVal;
+    document.querySelectorAll('.qv-bit-btn').forEach(b => {
+      b.classList.remove('on','sugerida');
+      if (parseFloat(b.dataset.val) === bitVal) b.classList.add('on');
+    });
     document.getElementById('ferr-2').scrollIntoView({behavior:'smooth',block:'start'});
   },200);
 }
 
 function demExportarPDF(){
   if(!window._demResultadoNBR){alert('Calcule a demanda primeiro!');return;}
-  const r=window._demResultadoNBR;
-  const data=new Date().toLocaleDateString('pt-BR');
-  const keys=Object.keys(demComodos);
-  const tabelaComodos=keys.map(i=>{
-    const c=demComodos[i];
-    const ilumVA=demCalcIlum(c.area);
-    const pts_tom=c.pts_tom||demCalcPtsTom(c.tp,c.area);
-    const tomVA=demCalcVaTom(c.tp,pts_tom);
-    const equipW=c.equips.reduce((s,e)=>s+e.w,0);
+  const r   = window._demResultadoNBR;
+  const data = new Date().toLocaleDateString('pt-BR');
+
+  // Dados da empresa (localStorage)
+  let empresa = 'Eletricista Power PRO', subtitulo = 'Serviços Elétricos Profissionais';
+  try {
+    const cfg = JSON.parse(localStorage.getItem('ajustes_config')||'{}');
+    if (cfg.nome||cfg.empresa) empresa = cfg.nome||cfg.empresa;
+    if (cfg.subtitulo) subtitulo = cfg.subtitulo;
+  } catch(e){}
+
+  // Tipo de instalação — label
+  const tipoLabels = {
+    'htc-res':'Residencial','htc-pred':'Predial',
+    'htc-com':'Comercial','htc-ind':'Industrial',
+    'htc-6ap':'+6 Unidades','htc-out':'Geral'
+  };
+  const tipoLabel  = tipoLabels[r.tipoKey] || 'Residencial';
+  const plantaLabel= r.tipoKey==='htc-com'?'Ambientes Comerciais':
+                     r.tipoKey==='htc-ind'?'Ambientes Industriais':'Planta da Residência';
+
+  // Sistema
+  const sisLabel = {mono:'Monofásico',bi:'Bifásico',tri:'Trifásico'}[r.sistema]||'Monofásico';
+
+  // Tabela de cômodos
+  const keys = Object.keys(r.comodos||demComodos);
+  const src  = r.comodos||demComodos;
+  let totalVAcheck = 0;
+  const rowsComodos = keys.map(i=>{
+    const c = src[i];
+    const ilumVA = demCalcIlum(c.area);
+    const pts_tom = c.pts_tom||demCalcPtsTom(c.tp,c.area);
+    const tomVA   = demCalcVaTom(c.tp,pts_tom);
+    const equipW  = (c.equips||[]).reduce((s,e)=>s+e.w,0);
+    const vaTotal = ilumVA+tomVA+equipW;
+    totalVAcheck += vaTotal;
     return `<tr>
-      <td>${c.ico} ${c.n}</td>
-      <td style="text-align:center">${c.area}m²</td>
-      <td style="text-align:center">${c.pts_ilum||1}</td>
-      <td style="text-align:center">${pts_tom}</td>
-      <td style="text-align:center">${c.equips.length?c.equips.map(e=>e.n).join(', '):'—'}</td>
-      <td style="text-align:center;font-weight:700">${ilumVA+tomVA+equipW} VA</td>
+      <td>${c.ico||''} ${c.n}</td>
+      <td class="c">${c.area}m²</td>
+      <td class="c">${c.pts_ilum||1}</td>
+      <td class="c">${pts_tom}</td>
+      <td class="c">${(c.equips||[]).length?(c.equips.map(e=>e.n).join(', ')):'—'}</td>
+      <td class="c acc">${vaTotal} VA</td>
     </tr>`;
   }).join('');
-  const alertas=keys.flatMap(i=>demComodos[i].equips.filter(e=>e.circ).map(e=>`<div class="alerta">⚡ Circ. independente: ${demComodos[i].n} — ${e.n} (${e.w}W)</div>`)).join('');
-  document.getElementById('print-area').innerHTML=`
-    <h1>⚡ Laudo de Demanda Elétrica</h1>
-    <div style="font-size:11px;color:#666;margin-bottom:16px">Calculado em ${data} — NBR 5410:2004</div>
-    <h2>Planta da Residência</h2>
-    <table>
-      <thead><tr><th>Cômodo</th><th>Área</th><th>Pts Ilum.</th><th>Pts Tom.</th><th>Equipamentos</th><th>VA Total</th></tr></thead>
-      <tbody>${tabelaComodos}</tbody>
-    </table>
-    ${alertas}
-    <h2>Resultado da Demanda</h2>
-    <div class="res-box">
-      <div class="res-item"><div class="res-lbl">Carga Instalada</div><div class="res-val">${r.totalVA} VA</div></div>
-      <div class="res-item"><div class="res-lbl">Carga Demandada</div><div class="res-val">${Math.round(r.demandada)} VA</div></div>
-      <div class="res-item"><div class="res-lbl">Corrente</div><div class="res-val">${r.corrente.toFixed(1)} A</div></div>
-      <div class="res-item"><div class="res-lbl">Disjuntor Geral</div><div class="res-val">${r.disj} A</div></div>
+
+  // Circuitos sugeridos
+  const nIlum = r.nIlum||Math.max(1,Math.ceil(r.totalVA*0.3/1000));
+  const nTom  = r.nTom ||Math.max(1,Math.ceil(r.totalVA*0.5/1500));
+  const circs = [
+    `${nIlum}× Iluminação — 1,5mm² / 10A`,
+    `${nTom}× Tomadas TUG — 2,5mm² / 16A`,
+    ...(r.temMolhado?['1× Cozinha/Área molhada — 2,5mm² / 20A']:[]),
+    ...(r.circsIndep||[]).map(c=>`⚡ Circ. independente: ${c}`),
+  ];
+
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;font-size:12px;color:#1a1a1a;background:#fff}
+.wrap{max-width:800px;margin:0 auto;padding:28px 32px}
+.hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:22px;padding-bottom:16px;border-bottom:3px solid #f59e0b}
+.hdr-e{font-size:20px;font-weight:900;color:#1a1a1a;margin-bottom:3px}
+.hdr-s{font-size:11px;color:#888}
+.badge{background:#f59e0b;color:#000;font-size:11px;font-weight:800;border-radius:6px;padding:5px 12px;display:inline-block;margin-bottom:6px}
+.info-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px;background:#fafafa;border:1px solid #eee;border-radius:8px;padding:12px}
+.info-lbl{font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#999;margin-bottom:3px}
+.info-val{font-weight:700;font-size:13px;color:#1a1a1a}
+.sec{font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:#f59e0b;margin-bottom:8px;margin-top:18px;display:flex;align-items:center;gap:8px}
+.sec::after{content:'';flex:1;height:1px;background:#f59e0b44}
+table{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:8px}
+thead tr{background:#f59e0b}
+thead th{padding:8px 10px;font-size:9px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#000;text-align:left}
+thead th.c{text-align:center}
+tbody td{padding:7px 10px;border-bottom:1px solid #f0f0f0}
+tbody td.c{text-align:center}
+tbody td.acc{font-weight:700;color:#d97706;text-align:center}
+tbody tr:nth-child(even){background:#fafafa}
+.res-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.res-card{background:#fafafa;border:1px solid #eee;border-radius:8px;padding:12px 14px}
+.res-lbl{font-size:9px;color:#999;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin-bottom:5px}
+.res-val{font-size:18px;font-weight:800;color:#1a1a1a;font-family:monospace}
+.res-val.acc{color:#d97706}
+.grand{display:flex;justify-content:space-between;align-items:center;background:#f59e0b;border-radius:8px;padding:14px 18px;margin:16px 0}
+.grand-lbl{font-size:14px;font-weight:900;color:#000}
+.grand-val{font-size:26px;font-weight:900;color:#000;font-family:monospace}
+.circ-list{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.circ-item{display:flex;align-items:center;gap:10px;padding:8px 12px;background:#fafafa;border:1px solid #eee;border-radius:6px;font-size:11px}
+.circ-dot{width:8px;height:8px;border-radius:50%;background:#f59e0b;flex-shrink:0}
+.circ-ind .circ-dot{background:#ef4444}
+.foot{margin-top:20px;padding-top:12px;border-top:1px solid #eee;display:flex;justify-content:space-between;font-size:10px;color:#aaa}
+.no-print{background:#1e40af;color:#fff;padding:10px 16px;border-radius:10px;display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+@media print{.no-print{display:none!important}@page{size:A4 portrait;margin:14mm 16mm}}
+</style></head><body>
+<div class="wrap">
+  <div class="no-print">
+    <span style="font-weight:700;font-size:13px">⚡ Laudo de Demanda Elétrica — Pré-visualização</span>
+    <div style="display:flex;gap:8px">
+      <button onclick="window.print()" style="background:#f59e0b;color:#000;border:none;border-radius:8px;padding:8px 16px;font-weight:800;cursor:pointer;font-size:12px">🖨️ Imprimir / PDF</button>
+      <button onclick="demCompartilharLaudo()" style="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:8px 14px;font-weight:700;cursor:pointer;font-size:12px">💬 Compartilhar</button>
+      <button onclick="document.getElementById('print-area').style.display='none'" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:8px 12px;font-weight:700;cursor:pointer;font-size:12px">✕ Fechar</button>
     </div>
-    <div class="res-box">
-      <div class="res-item"><div class="res-lbl">Bitola Mínima</div><div class="res-val">${r.bit}</div></div>
-      <div class="res-item"><div class="res-lbl">Proteção DR</div><div class="res-val">30 mA</div></div>
+  </div>
+
+  <div class="hdr">
+    <div>
+      <div class="hdr-e">⚡ ${empresa}</div>
+      <div class="hdr-s">${subtitulo}</div>
     </div>
-    <h2>Circuitos Sugeridos</h2>
-    <div>${document.getElementById('nbr-r-circs-lista').innerHTML}</div>
-    <div class="rodape">Eletricista Power PRO — Gerado automaticamente com base na NBR 5410:2004. Este laudo é uma estimativa e deve ser validado por profissional habilitado.</div>`;
-  window.print();
+    <div style="text-align:right">
+      <div class="badge">LAUDO DE DEMANDA</div>
+      <div style="font-size:11px;color:#888;margin-top:4px">${tipoLabel} · NBR 5410:2004</div>
+      <div style="font-size:11px;color:#888;margin-top:2px">${data}</div>
+    </div>
+  </div>
+
+  <div class="info-grid">
+    <div><div class="info-lbl">Sistema</div><div class="info-val">${sisLabel}</div></div>
+    <div><div class="info-lbl">Tensão da Rede</div><div class="info-val">${r.tensao}V</div></div>
+    <div><div class="info-lbl">Fator de Demanda</div><div class="info-val">fd ${r.fd}</div></div>
+    <div><div class="info-lbl">Tipo de Instalação</div><div class="info-val">${tipoLabel}</div></div>
+    <div><div class="info-lbl">Cômodos / Ambientes</div><div class="info-val">${keys.length}</div></div>
+    <div><div class="info-lbl">Referência</div><div class="info-val">NBR 5410:2004</div></div>
+  </div>
+
+  <div class="sec">${plantaLabel}</div>
+  <table>
+    <thead><tr>
+      <th>Ambiente</th><th class="c">Área</th><th class="c">Pts Ilum.</th>
+      <th class="c">Pts Tom.</th><th class="c">Equipamentos</th><th class="c">VA Total</th>
+    </tr></thead>
+    <tbody>${rowsComodos}</tbody>
+  </table>
+
+  <div class="sec">Resultado da Demanda</div>
+  <div class="res-grid">
+    <div class="res-card"><div class="res-lbl">Carga Instalada</div><div class="res-val">${r.totalVA} VA</div></div>
+    <div class="res-card"><div class="res-lbl">Carga Demandada (fd ${r.fd})</div><div class="res-val acc">${Math.round(r.demandada)} VA</div></div>
+    <div class="res-card"><div class="res-lbl">Corrente de Projeto</div><div class="res-val">${r.corrente.toFixed(1)} A</div></div>
+    <div class="res-card"><div class="res-lbl">Bitola Mínima</div><div class="res-val">${r.bit}</div></div>
+  </div>
+  <div class="grand">
+    <span class="grand-lbl">DISJUNTOR GERAL RECOMENDADO</span>
+    <span class="grand-val">${r.disj} A</span>
+  </div>
+
+  <div class="sec">Circuitos Sugeridos</div>
+  <div class="circ-list">
+    ${circs.map(c=>`<div class="circ-item${c.startsWith('⚡')?' circ-ind':''}"><div class="circ-dot"></div><span>${c}</span></div>`).join('')}
+    <div class="circ-item"><div class="circ-dot" style="background:#3b82f6"></div><span>1× Proteção DR 30mA — circuitos com ponto de água</span></div>
+  </div>
+
+  <div class="foot">
+    <span>⚡ ${empresa} — ${subtitulo}</span>
+    <span>Gerado com base na NBR 5410:2004 · ${data} · Este laudo é uma estimativa e deve ser validado por profissional habilitado.</span>
+  </div>
+</div>
+<script>
+function demCompartilharLaudo(){
+  const txt = "⚡ LAUDO DE DEMANDA ELÉTRICA\\n"
+    + "${tipoLabel} · ${sisLabel} · ${r.tensao}V\\n\\n"
+    + "Carga Instalada: ${r.totalVA} VA\\n"
+    + "Carga Demandada: ${Math.round(r.demandada)} VA (fd ${r.fd})\\n"
+    + "Corrente: ${r.corrente.toFixed(1)} A\\n"
+    + "Disjuntor Geral: ${r.disj} A\\n"
+    + "Bitola Mínima: ${r.bit}\\n\\n"
+    + "Circuitos sugeridos:\\n${circs.map(c=>'• '+c).join('\\n')}\\n\\n"
+    + "Gerado por ${empresa} — NBR 5410:2004";
+  if(navigator.share){navigator.share({title:'Laudo de Demanda',text:txt}).catch(()=>{});}
+  else{navigator.clipboard.writeText(txt).then(()=>alert('✅ Laudo copiado!')).catch(()=>prompt('Copie:',txt));}
+}
+<\/script>
+<\/body><\/html>`;
+
+  const area = document.getElementById('print-area');
+  area.innerHTML = html;
+  area.style.display = 'block';
+  area.scrollTop = 0;
 }
 
 // ── MUC — DIS-NOR-053 REV06 ──
@@ -4672,21 +5336,193 @@ function demCalcMUC(){
 // ══════════════════════════════════════════════════════════════
 // QUEDA DE TENSÃO
 // ══════════════════════════════════════════════════════════════
-function calcQuedaV(){
-  const tStr=document.getElementById('qv-tensao').value,tensao=tStr==='220t'?220:parseInt(tStr),trifasico=tStr==='220t'||tStr==='380';
-  const I=parseFloat(document.getElementById('qv-corrente').value),fp=parseFloat(document.getElementById('qv-fp').value),L=parseFloat(document.getElementById('qv-comp').value),S=parseFloat(document.getElementById('qv-bitola').value);
-  if(!I||!L){alert('Preencha corrente e comprimento!');return;}
-  const R=(0.0172*L)/S,dv=trifasico?(Math.sqrt(3)*I*R*fp*2):(2*I*R*fp),pct=(dv/tensao)*100;
-  const limite=document.querySelector('.ferr-pill.on[onclick*="qv-tipo"]')?.textContent.includes('4')?4:7;
-  const ok=pct<=limite,res=document.getElementById('qv-resultado');
-  res.style.display='block';res.style.borderColor=ok?'rgba(34,197,94,.3)':'rgba(239,68,68,.3)';res.style.background=ok?'rgba(34,197,94,.07)':'rgba(239,68,68,.07)';
-  document.getElementById('qv-res-title').style.color=ok?'#4ade80':'#f87171';
-  document.getElementById('qv-res-title').textContent=ok?'✅ Aprovado':'❌ Reprovado';
-  document.getElementById('qv-res-pct').textContent=pct.toFixed(2)+'%';document.getElementById('qv-res-pct').style.color=ok?'#4ade80':'#f87171';
-  document.getElementById('qv-res-v').textContent=dv.toFixed(1)+'V';document.getElementById('qv-res-v').style.color=ok?'#4ade80':'#f87171';
-  const st=ok?`Limite: ${limite}% — Queda: ${pct.toFixed(2)}%`:`Acima do limite (${limite}%)`;
-  document.getElementById('qv-res-status').textContent=st;document.getElementById('qv-res-status').style.background=ok?'rgba(34,197,94,.12)':'rgba(239,68,68,.12)';document.getElementById('qv-res-status').style.color=ok?'#4ade80':'#f87171';
+
+// ── Bitola: lista e seleção ──────────────────────────────────
+const QV_BITOLAS = [1.5, 2.5, 4, 6, 10, 16, 25, 35];
+const QV_BITOLA_LABELS = {'1.5':'1,5mm²','2.5':'2,5mm²','4':'4mm²','6':'6mm²','10':'10mm²','16':'16mm²','25':'25mm²','35':'35mm²'};
+let qvBitolaAtual = 2.5;
+
+function qvSelectBitola(btn) {
+  document.querySelectorAll('.qv-bit-btn').forEach(b => {
+    b.classList.remove('on','sugerida');
+  });
+  btn.classList.add('on');
+  qvBitolaAtual = parseFloat(btn.dataset.val);
+  document.getElementById('qv-bitola').value = qvBitolaAtual;
+  calcQuedaVLive();
 }
+
+function qvAplicarSugestao() {
+  const btn = document.querySelector('.qv-bit-btn.sugerida');
+  if (!btn) return;
+  document.querySelectorAll('.qv-bit-btn').forEach(b => b.classList.remove('on','sugerida'));
+  btn.classList.add('on');
+  qvBitolaAtual = parseFloat(btn.dataset.val);
+  document.getElementById('qv-bitola').value = qvBitolaAtual;
+  calcQuedaVLive();
+}
+
+function qvLimpar() {
+  document.getElementById('qv-corrente').value = '';
+  document.getElementById('qv-comp').value = '';
+  document.getElementById('qv-resultado').style.display = 'none';
+  document.querySelectorAll('.qv-bit-btn').forEach((b,i) => {
+    b.classList.remove('on','sugerida');
+    if (parseFloat(b.dataset.val) === 4) b.classList.add('on');
+  });
+  qvBitolaAtual = 4;
+  document.getElementById('qv-bitola').value = 4;
+  const hint = document.getElementById('qv-bitola-hint');
+  if (hint) hint.textContent = '';
+}
+
+// ── Core: cálculo ao vivo ─────────────────────────────────────
+function calcQuedaVLive() {
+  const I = parseFloat(document.getElementById('qv-corrente').value);
+  const L = parseFloat(document.getElementById('qv-comp').value);
+  if (!I || !L || I <= 0 || L <= 0) return; // silencioso se vazio
+  _executarCalcQV(I, L, false);
+}
+
+function calcQuedaV() {
+  const I = parseFloat(document.getElementById('qv-corrente').value);
+  const L = parseFloat(document.getElementById('qv-comp').value);
+  if (!I || !L || I <= 0 || L <= 0) {
+    // Destacar campos vazios em vez de alert
+    ['qv-corrente','qv-comp'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el && (!parseFloat(el.value) || parseFloat(el.value) <= 0)) {
+        el.style.borderColor = '#ef4444';
+        el.style.boxShadow = '0 0 0 2px rgba(239,68,68,.2)';
+        setTimeout(() => { el.style.borderColor=''; el.style.boxShadow=''; }, 2000);
+      }
+    });
+    return;
+  }
+  _executarCalcQV(I, L, true); // true = salvar no histórico
+}
+
+function _executarCalcQV(I, L, salvar) {
+  const tStr     = document.getElementById('qv-tensao').value;
+  const tensao   = tStr === '220t' ? 220 : parseInt(tStr);
+  const trifasico= tStr === '220t' || tStr === '380';
+  const fp       = parseFloat(document.getElementById('qv-fp').value);
+  const S        = qvBitolaAtual;
+  const limite   = document.querySelector('.ferr-pill.on[onclick*="qv-tipo"]')?.textContent.includes('4') ? 4 : 7;
+
+  // Resistividade real por material (NBR 5410)
+  const rho = (typeof QV_RHO !== 'undefined' ? QV_RHO[qvState?.material||'cu'] : null) || 0.0172;
+  const R   = (rho * L) / S;
+  const dv  = trifasico ? (Math.sqrt(3) * I * R * fp * 2) : (2 * I * R * fp);
+  const pct = (dv / tensao) * 100;
+  const ok  = pct <= limite;
+  const vCheg = tensao - dv;
+
+  // Capacidade + mostrar resultado
+  if (typeof qvRenderCapacidade === 'function') qvRenderCapacidade();
+  const res = document.getElementById('qv-resultado');
+  res.style.display = 'block';
+
+  // Hero card
+  const hero = document.getElementById('qv-res-hero');
+  hero.style.background  = ok ? 'linear-gradient(135deg,rgba(34,197,94,.12),rgba(34,197,94,.05))' : 'linear-gradient(135deg,rgba(239,68,68,.12),rgba(239,68,68,.05))';
+  hero.style.border      = ok ? '1px solid rgba(34,197,94,.3)' : '1px solid rgba(239,68,68,.3)';
+
+  const titleEl = document.getElementById('qv-res-title');
+  titleEl.textContent = ok ? '✅ APROVADO — NBR 5410' : '❌ REPROVADO — NBR 5410';
+  titleEl.style.color = ok ? '#4ade80' : '#f87171';
+
+  const pctEl = document.getElementById('qv-res-pct');
+  pctEl.textContent = pct.toFixed(2) + '%';
+  pctEl.style.color = ok ? '#4ade80' : '#f87171';
+
+  const stEl = document.getElementById('qv-res-status');
+  stEl.textContent = ok
+    ? 'Dentro do limite de ' + limite + '%'
+    : 'Acima do limite de ' + limite + '% em ' + (pct - limite).toFixed(2) + '%';
+  stEl.style.background = ok ? 'rgba(34,197,94,.15)' : 'rgba(239,68,68,.15)';
+  stEl.style.color      = ok ? '#4ade80' : '#f87171';
+
+  // Cards de detalhe
+  document.getElementById('qv-res-v').textContent = dv.toFixed(2) + 'V';
+  document.getElementById('qv-res-vcheg').textContent = vCheg.toFixed(1) + 'V';
+  document.getElementById('qv-res-lim').textContent = limite + '%';
+
+  // Hint de bitola atual
+  const hint = document.getElementById('qv-bitola-hint');
+  if (hint) hint.textContent = QV_BITOLA_LABELS[String(S)] || S + 'mm²';
+
+  // Sugestão de bitola maior se reprovado
+  const sugWrap = document.getElementById('qv-sugestao');
+  document.querySelectorAll('.qv-bit-btn').forEach(b => b.classList.remove('sugerida'));
+
+  if (!ok) {
+    // Encontrar menor bitola que aprova
+    const bitSug = QV_BITOLAS.find(b => {
+      const Rb  = (0.0172 * L) / b;
+      const dvb = trifasico ? (Math.sqrt(3) * I * Rb * fp * 2) : (2 * I * Rb * fp);
+      return (dvb / tensao) * 100 <= limite;
+    });
+    if (bitSug) {
+      sugWrap.style.display = 'block';
+      document.getElementById('qv-sugestao-val').textContent = QV_BITOLA_LABELS[String(bitSug)] || bitSug + 'mm²';
+      // Destacar botão sugerido
+      document.querySelectorAll('.qv-bit-btn').forEach(b => {
+        if (parseFloat(b.dataset.val) === bitSug) b.classList.add('sugerida');
+      });
+    } else {
+      sugWrap.style.display = 'none';
+      document.getElementById('qv-sugestao-val').textContent = 'Bitola acima de 35mm² — consulte engenheiro';
+    }
+  } else {
+    sugWrap.style.display = 'none';
+  }
+
+  // Salvar histórico
+  if (salvar) qvSalvarHistorico({ I, L, S, tensao, trifasico, fp, pct, dv, ok, limite,
+    material:qvState?.material||'cu', metodo:qvState?.metodo||'B1' });
+}
+
+// ── Histórico de cálculos ──────────────────────────────────────
+let qvHistorico = [];
+function qvSalvarHistorico(r) {
+  qvHistorico.unshift({...r, ts: new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}) });
+  if (qvHistorico.length > 5) qvHistorico.pop();
+  qvRenderHistorico();
+}
+
+function qvRenderHistorico() {
+  const wrap = document.getElementById('qv-historico-wrap');
+  const lista = document.getElementById('qv-historico-lista');
+  if (!wrap || !lista || !qvHistorico.length) return;
+  wrap.style.display = 'block';
+  lista.innerHTML = qvHistorico.map((r, i) => `
+    <div onclick="qvRestaurar(${i})" style="display:flex;align-items:center;gap:10px;padding:9px 11px;background:var(--bg-input);border:1px solid ${r.ok?'rgba(34,197,94,.2)':'rgba(239,68,68,.2)'};border-radius:10px;margin-bottom:6px;cursor:pointer;-webkit-tap-highlight-color:transparent">
+      <span style="font-size:14px">${r.ok?'✅':'❌'}</span>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:11px;font-weight:700;color:var(--text)">${QV_BITOLA_LABELS[String(r.S)]||r.S+'mm²'} · ${r.I}A · ${r.L}m · ${r.tensao}V</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:1px">Queda: ${r.pct.toFixed(2)}% ${r.ok?'✓ OK':'✗ acima de '+r.limite+'%'}</div>
+      </div>
+      <span style="font-size:10px;color:var(--text4);flex-shrink:0">${r.ts}</span>
+    </div>`).join('');
+}
+
+function qvRestaurar(idx) {
+  const r = qvHistorico[idx];
+  if (!r) return;
+  document.getElementById('qv-corrente').value = r.I;
+  document.getElementById('qv-comp').value = r.L;
+  document.getElementById('qv-tensao').value = r.trifasico ? (r.tensao === 220 ? '220t' : '380') : String(r.tensao);
+  document.getElementById('qv-fp').value = String(r.fp);
+  document.querySelectorAll('.qv-bit-btn').forEach(b => {
+    b.classList.remove('on','sugerida');
+    if (parseFloat(b.dataset.val) === r.S) b.classList.add('on');
+  });
+  qvBitolaAtual = r.S;
+  document.getElementById('qv-bitola').value = r.S;
+  calcQuedaVLive();
+}
+
 
 // ══════════════════════════════════════════════════════════════
 // CHECKLIST
@@ -5184,6 +6020,45 @@ function removerGarantia(id, btn) {
     renderGarantias();
   } catch(e) {}
 }
+
+// ══════════════════════════════════════════════════════════════
+// NBR 5410 — TABELAS QUEDA DE TENSÃO COMPLETA
+// ══════════════════════════════════════════════════════════════
+const QV_CAP_CU_PVC={B1:[13,18,24,31,43,57,75,91],B2:[14,19,25,33,45,60,79,96],C:[15,21,28,36,50,66,84,104],E:[22,30,40,51,70,94,119,148],D:[22,29,37,46,61,79,101,122]};
+const QV_CAP_CU_EPR={B1:[15,21,27,36,50,66,86,104],B2:[16,22,30,39,54,72,95,115],C:[17,24,32,41,57,76,96,119],E:[26,35,47,60,82,110,140,173],D:[26,34,44,55,73,95,121,146]};
+const QV_CAP_AL_PVC=Object.fromEntries(Object.entries(QV_CAP_CU_PVC).map(([k,v])=>[k,v.map(a=>Math.round(a*.78))]));
+const QV_CAP_AL_EPR=Object.fromEntries(Object.entries(QV_CAP_CU_EPR).map(([k,v])=>[k,v.map(a=>Math.round(a*.78))]));
+const QV_FC_TEMP={pvc:{25:1.06,30:1.00,35:0.94,40:0.87,45:0.79,50:0.71},epr:{25:1.04,30:1.00,35:0.96,40:0.91,45:0.87,50:0.82}};
+const QV_FC_GRUPO=[{label:'1 circuito (fator 1,00)',f:1.00},{label:'2 circuitos (fator 0,80)',f:0.80},{label:'3 circuitos (fator 0,70)',f:0.70},{label:'4~5 circuitos (fator 0,65)',f:0.65},{label:'6~7 circuitos (fator 0,57)',f:0.57},{label:'8~9 circuitos (fator 0,52)',f:0.52},{label:'10~12 circuitos (fator 0,50)',f:0.50}];
+const QV_METODOS=[{val:'B1',label:'B1 — Eletroduto embutido em alvenaria'},{val:'B2',label:'B2 — Cabo multipolar embutido'},{val:'C',label:'C — Cabo aparente sobre parede'},{val:'E',label:'E — Bandeja aberta / ao ar livre'},{val:'D',label:'D — Cabo enterrado no solo'}];
+const QV_DISJ=[6,10,16,20,25,32,40,50,63,80,100];
+const QV_RHO={cu:0.0172,al:0.028};
+let qvState={isolamento:'pvc',temp:30,material:'cu',metodo:'B1',grupo:0};
+
+function qvCapBase(bitola,material,isolamento,metodo){const idx=[1.5,2.5,4,6,10,16,25,35].indexOf(bitola);if(idx<0)return 0;const tbl=material==='cu'?(isolamento==='pvc'?QV_CAP_CU_PVC:QV_CAP_CU_EPR):(isolamento==='pvc'?QV_CAP_AL_PVC:QV_CAP_AL_EPR);return tbl[metodo]?.[idx]||0;}
+function qvCapCorrigida(base,isolamento,temp,fGrupo){return base*(QV_FC_TEMP[isolamento][temp]||1)*fGrupo;}
+function qvRenderCapacidade(){
+  const base=qvCapBase(qvBitolaAtual,qvState.material,qvState.isolamento,qvState.metodo);
+  const fGrupo=QV_FC_GRUPO[qvState.grupo]?.f||1;
+  const fTemp=QV_FC_TEMP[qvState.isolamento][qvState.temp]||1;
+  const corr=base*fTemp*fGrupo;const fTotal=fTemp*fGrupo;
+  const disj=[...QV_DISJ].reverse().find(d=>d<=corr)||QV_DISJ[0];
+  const se=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+  se('qv-cap-base',base?base+'A':'—');se('qv-cap-disj',base?disj+'A':'—');
+  se('qv-cap-base-lbl',qvState.metodo);se('qv-cap-corr-lbl',fTotal===1?'sem correção':'fator '+fTotal.toFixed(2));
+  const corrEl=document.getElementById('qv-cap-corr');
+  if(corrEl){corrEl.textContent=base?Math.round(corr*10)/10+'A':'—';corrEl.style.color=fTotal<1?'#f59e0b':'#4ade80';}
+  const I=parseFloat(document.getElementById('qv-corrente')?.value)||0;
+  const sob=document.getElementById('qv-sobrecarga');if(sob)sob.style.display=(I>0&&corr>0&&I>corr)?'block':'none';
+}
+function qvInicializarSelects(){
+  const grp=document.getElementById('qv-grupo');
+  if(grp&&!grp.options.length){QV_FC_GRUPO.forEach((g,i)=>{const o=document.createElement('option');o.value=i;o.textContent=g.label;grp.appendChild(o);});}
+  const met=document.getElementById('qv-metodo');
+  if(met&&!met.options.length){QV_METODOS.forEach(m=>{const o=document.createElement('option');o.value=m.val;o.textContent=m.label;met.appendChild(o);});}
+}
+function qvSetMaterial(mat,btn){qvState.material=mat;document.querySelectorAll('#qv-mat-cu,#qv-mat-al').forEach(b=>b.classList.remove('on'));btn.classList.add('on');qvRenderCapacidade();calcQuedaVLive();}
+function qvSetIsolamento(iso,btn){qvState.isolamento=iso;document.querySelectorAll('#qv-iso-pvc,#qv-iso-epr').forEach(b=>b.classList.remove('on'));btn.classList.add('on');qvRenderCapacidade();calcQuedaVLive();}
 
 renderNBR();
 renderCheck();
