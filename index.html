@@ -98,7 +98,7 @@ select.inp{appearance:none;-webkit-appearance:none;background-image:url("data:im
 .hero{background:var(--bg-hero);border:1px solid var(--border-card);border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:var(--sh-hero)}
 .hero-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .hh-l{display:flex;align-items:center;gap:10px}
-.h-ico{width:38px;height:38px;border-radius:10px;background:var(--acc-bg);border:1px solid var(--acc-border);display:flex;align-items:center;justify-content:center;font-size:18px}
+.h-ico{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#2563eb,#1d4ed8);border:none;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 3px 10px rgba(37,99,235,.4)}
 .h-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--text)}
 .h-sub{font-size:11px;color:var(--text3);margin-top:2px}
 .h-nbr{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;color:var(--acc);background:var(--acc-bg);border:1px solid var(--acc-border);border-radius:8px;padding:5px 10px}
@@ -490,17 +490,24 @@ table { min-width: 0; }
   align-items: center;
   gap: 14px;
   padding: 16px 14px;
-  background: linear-gradient(135deg, rgba(245,158,11,.15) 0%, rgba(245,158,11,.08) 100%);
-  border: 1px solid rgba(245,158,11,.3);
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  border: 1px solid rgba(37,99,235,.6);
   border-radius: 16px;
   cursor: pointer;
-  margin-bottom: 18px;
+  margin-bottom: 0;
   text-align: left;
-  color: var(--text);
+  color: #fff;
   transition: opacity .15s, transform .1s;
   -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 4px 18px rgba(37,99,235,.35);
 }
-.home-novo-orc:active { opacity: .8; transform: scale(.98); }
+[data-theme="light"] .home-novo-orc {
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+  border-color: rgba(37,99,235,.4);
+  box-shadow: 0 4px 18px rgba(37,99,235,.25);
+  color: #fff;
+}
+.home-novo-orc:active { opacity: .85; transform: scale(.98); }
 
 /* Ferramentas técnicas — linha de 4 botões */
 .home-ferr-row {
@@ -552,12 +559,10 @@ table { min-width: 0; }
   margin-bottom: 14px;
 }
 .home-gestao-btn {
-  background: var(--bg-card);
-  border: 1px solid var(--border-card);
   border-radius: 16px;
   padding: 14px 10px 13px;
   cursor: pointer;
-  transition: border-color .2s, transform .1s;
+  transition: opacity .15s, transform .1s;
   -webkit-tap-highlight-color: transparent;
   display: flex;
   flex-direction: column;
@@ -566,8 +571,13 @@ table { min-width: 0; }
   min-height: 116px;
   position: relative;
   overflow: hidden;
+  color: #fff;
+  border: none;
 }
 .home-gestao-btn:active { transform: scale(.97); opacity: .85; }
+.home-gestao-lbl { color: rgba(255,255,255,.95) !important; }
+.home-gestao-sub { color: rgba(255,255,255,.7) !important; }
+.hg-num { color: #fff !important; }
 .hg-top {
   display: flex;
   flex-direction: column;
@@ -824,16 +834,6 @@ table { min-width: 0; }
       </div>
     </div>
 
-    <!-- ── AÇÃO RÁPIDA: NOVO ORÇAMENTO ── -->
-    <button class="home-novo-orc" onclick="novoOrcamento()">
-      <span style="font-size:22px">🧾</span>
-      <div style="flex:1;text-align:left">
-        <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:800;letter-spacing:.3px">Novo Orçamento</div>
-        <div style="font-size:11px;opacity:.7;margin-top:2px">Serviços + materiais + PDF</div>
-      </div>
-      <span style="font-size:20px;opacity:.5">›</span>
-    </button>
-
     <!-- ── FERRAMENTA PRINCIPAL: DEMANDA ── -->
     <div class="sec">Cálculo de Demanda</div>
     <div class="hero">
@@ -879,59 +879,69 @@ table { min-width: 0; }
       </div>
     </div>
 
+    <!-- ── AÇÃO RÁPIDA: NOVO ORÇAMENTO ── -->
+    <button class="home-novo-orc" onclick="novoOrcamento()" style="margin-top:14px;margin-bottom:14px">
+      <span style="font-size:22px">🧾</span>
+      <div style="flex:1;text-align:left">
+        <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:800;letter-spacing:.3px">Novo Orçamento</div>
+        <div style="font-size:11px;opacity:.75;margin-top:2px">Serviços + materiais + PDF</div>
+      </div>
+      <span style="font-size:22px;opacity:.8">›</span>
+    </button>
+
     <!-- ── GESTÃO ── -->
     <div class="sec">Gestão</div>
     <div class="home-gestao-grid">
 
       <!-- Card: Esta Semana -->
       <div class="home-gestao-btn" onclick="abrirModal('modal-agenda')"
-        style="border-color:rgba(59,130,246,.2)">
+        style="background:linear-gradient(135deg,#0891b2,#0e7490);box-shadow:0 4px 14px rgba(8,145,178,.35)">
         <div class="hg-top">
           <div class="home-gestao-ico"
-            style="background:rgba(59,130,246,.15);border:1px solid rgba(59,130,246,.25)">📅</div>
+            style="background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.25)">📅</div>
           <div class="hg-badge" id="gestao-agenda-badge" style="display:none">0</div>
         </div>
-        <div class="hg-num" id="gestao-agenda-num" style="color:#60a5fa">—</div>
-        <div class="home-gestao-lbl" style="color:#60a5fa">Esta Semana</div>
+        <div class="hg-num" id="gestao-agenda-num">—</div>
+        <div class="home-gestao-lbl">Esta Semana</div>
         <div class="home-gestao-sub" id="gestao-agenda-sub">Agendamentos</div>
       </div>
 
       <!-- Card: Orçamentos -->
       <div class="home-gestao-btn" onclick="navTo('orcamento')"
-        style="border-color:rgba(34,197,94,.2)">
+        style="background:linear-gradient(135deg,#16a34a,#15803d);box-shadow:0 4px 14px rgba(22,163,74,.35)">
         <div class="hg-top">
           <div class="home-gestao-ico"
-            style="background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.25)">🧾</div>
+            style="background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.25)">🧾</div>
           <div class="hg-badge" id="gestao-orc-badge" style="display:none">!</div>
         </div>
-        <div class="hg-num" id="gestao-orc-num" style="color:#4ade80">—</div>
-        <div class="home-gestao-lbl" style="color:#4ade80">Orçamentos</div>
+        <div class="hg-num" id="gestao-orc-num">—</div>
+        <div class="home-gestao-lbl">Orçamentos</div>
         <div class="home-gestao-sub" id="gestao-orc-sub">Total gerados</div>
       </div>
 
       <!-- Card: Relatório -->
       <div class="home-gestao-btn" onclick="abrirModal('modal-relatorio')"
-        style="border-color:rgba(245,158,11,.2)">
+        style="background:linear-gradient(135deg,#7c3aed,#6d28d9);box-shadow:0 4px 14px rgba(124,58,237,.35)">
         <div class="hg-top">
           <div class="home-gestao-ico"
-            style="background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.25)">📊</div>
+            style="background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.25)">📊</div>
           <div class="hg-badge" id="gestao-rel-badge" style="display:none">0</div>
         </div>
-        <div class="hg-num" id="gestao-rel-num" style="color:var(--acc)">—</div>
-        <div class="home-gestao-lbl" style="color:var(--acc)">Relatório</div>
+        <div class="hg-num" id="gestao-rel-num">—</div>
+        <div class="home-gestao-lbl">Relatório</div>
         <div class="home-gestao-sub" id="gestao-rel-sub">Financeiro</div>
       </div>
 
       <!-- Card: Garantias -->
       <div class="home-gestao-btn" onclick="abrirModal('modal-garantias')"
-        style="border-color:rgba(167,139,250,.2)">
+        style="background:linear-gradient(135deg,#dc2626,#b91c1c);box-shadow:0 4px 14px rgba(220,38,38,.35)">
         <div class="hg-top">
           <div class="home-gestao-ico"
-            style="background:rgba(167,139,250,.15);border:1px solid rgba(167,139,250,.25)">🛡️</div>
+            style="background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.25)">🛡️</div>
           <div class="hg-badge" id="gestao-gar-badge" style="display:none">0</div>
         </div>
-        <div class="hg-num" id="gestao-gar-num" style="color:#c4b5fd">—</div>
-        <div class="home-gestao-lbl" style="color:#c4b5fd">Garantias</div>
+        <div class="hg-num" id="gestao-gar-num">—</div>
+        <div class="home-gestao-lbl">Garantias</div>
         <div class="home-gestao-sub" id="gestao-gar-sub">Histórico</div>
       </div>
 
