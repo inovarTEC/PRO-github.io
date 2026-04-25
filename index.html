@@ -1009,7 +1009,7 @@ table { min-width: 0; }
           <input class="inp" id="srv-inline-search" type="text"
             placeholder="Buscar serviço para adicionar..."
             style="margin-bottom:0"
-            oninput="inlineSearch('srv',this.value)"
+            oninput="_inlineSearchDebounced('srv',this.value)"
             autocomplete="off">
         </div>
         <!-- dropdown resultados -->
@@ -1050,7 +1050,7 @@ table { min-width: 0; }
           <input class="inp" id="mat-inline-search" type="text"
             placeholder="Buscar material para adicionar..."
             style="margin-bottom:0"
-            oninput="inlineSearch('mat',this.value)"
+            oninput="_inlineSearchDebounced('mat',this.value)"
             autocomplete="off">
         </div>
         <!-- dropdown resultados -->
@@ -1309,7 +1309,7 @@ table { min-width: 0; }
         <div class="sw" style="margin-bottom:10px">
           <span class="sw-ico">🔍</span>
           <input class="inp" id="cli-search" type="text" placeholder="Buscar cliente..."
-            style="margin-bottom:0" oninput="renderClientes(this.value)">
+            style="margin-bottom:0" oninput="_renderClientesDebounced(this.value)">
         </div>
         <div id="cli-lista"></div>
       </div>
@@ -1638,14 +1638,14 @@ table { min-width: 0; }
         <div>
           <div class="ilbl" style="margin-bottom:5px">Corrente (A)</div>
           <div style="position:relative">
-            <input class="inp" id="qv-corrente" type="number" placeholder="Ex: 20" style="margin-bottom:0;padding-right:28px" oninput="qvRenderCapacidade();calcQuedaVLive()">
+            <input class="inp" id="qv-corrente" type="number" placeholder="Ex: 20" style="margin-bottom:0;padding-right:28px" oninput="qvRenderCapacidade();_calcQVDebounced()">
             <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--text3);font-weight:700;pointer-events:none">A</span>
           </div>
         </div>
         <div>
           <div class="ilbl" style="margin-bottom:5px">Comprimento (m)</div>
           <div style="position:relative">
-            <input class="inp" id="qv-comp" type="number" placeholder="Ex: 15" style="margin-bottom:0;padding-right:28px" oninput="calcQuedaVLive()">
+            <input class="inp" id="qv-comp" type="number" placeholder="Ex: 15" style="margin-bottom:0;padding-right:28px" oninput="_calcQVDebounced()">
             <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--text3);font-weight:700;pointer-events:none">m</span>
           </div>
         </div>
@@ -1967,6 +1967,31 @@ table { min-width: 0; }
 document.getElementById('orc-data').value = new Date().toISOString().split('T')[0];
 gerarNumeroOrc();
 _carregarCustomLocal();
+
+// ── UTILITÁRIOS DE PERFORMANCE ───────────────────────────────
+// Debounce: espera `ms` após última tecla antes de executar fn
+function _debounce(fn, ms) {
+  let t;
+  return function(...args) {
+    clearTimeout(t);
+    t = setTimeout(() => fn.apply(this, args), ms);
+  };
+}
+
+// Cache do ajustes_config — relido só quando salvo
+let _cfgCache = null;
+function _getCfg() {
+  if (_cfgCache) return _cfgCache;
+  try { _cfgCache = JSON.parse(localStorage.getItem('ajustes_config') || '{}'); }
+  catch(e) { _cfgCache = {}; }
+  return _cfgCache;
+}
+function _invalidarCfgCache() { _cfgCache = null; }
+
+// Versões com debounce das funções de busca (200ms)
+const _inlineSearchDebounced   = _debounce((type, val) => inlineSearch(type, val), 200);
+const _renderClientesDebounced = _debounce((val) => renderClientes(val), 200);
+const _calcQVDebounced         = _debounce(() => calcQuedaVLive(), 150);
 
 // ══════════════════════════════════════════════════════════════
 // BLOCO 1 — DADOS: SERVIÇOS
@@ -4531,6 +4556,7 @@ function salvarPerfil() {
     logoSize:  parseInt(document.getElementById('logo-size-slider')?.value || 64),
   };
   try { localStorage.setItem('ajustes_config', JSON.stringify(cfg)); } catch(e) {}
+  _invalidarCfgCache();
   const temaAtual = document.documentElement.getAttribute('data-theme') || 'dark';
   try { localStorage.setItem('tema', temaAtual); } catch(e) {}
   homeAtualizar();
@@ -4551,7 +4577,7 @@ function salvarPagamento() {
 function carregarAjustes() {
   // Perfil
   try {
-    const cfg = JSON.parse(localStorage.getItem('ajustes_config') || '{}');
+    const cfg = _getCfg();
     const set = (id, v) => { const el = document.getElementById(id); if (el && v) el.value = v; };
     set('aj-nome',      cfg.nome);
     set('aj-doc',       cfg.doc);
@@ -4562,7 +4588,7 @@ function carregarAjustes() {
   // Logo preview + forma + tamanho
   try {
     const logo  = localStorage.getItem('logo_b64') || '';
-    const cfg2  = JSON.parse(localStorage.getItem('ajustes_config') || '{}');
+    const cfg2  = _getCfg();
     const forma = cfg2.logoForma || 'quadrado';
     const size  = cfg2.logoSize  || 64;
     _logoFormaAtual = forma;
@@ -6169,7 +6195,7 @@ function cfgToggle(el, k) {
 function homeAtualizar() {
   // ── Perfil ──────────────────────────────────────────────────
   try {
-    const cfg = JSON.parse(localStorage.getItem('ajustes_config') || '{}');
+    const cfg = _getCfg();
     const nome = cfg.nome || cfg.empresa || '';
     const sub  = cfg.subtitulo || '';
     const homeNome = document.getElementById('home-nome');
@@ -6177,7 +6203,7 @@ function homeAtualizar() {
     const homeSub = document.getElementById('home-sub');
     if (homeSub) homeSub.textContent = sub || (nome ? 'Eletricista Power PRO' : 'Toque em ⚙️ para configurar');
     const logoImg  = localStorage.getItem('logo_b64') || '';
-    const cfg2     = JSON.parse(localStorage.getItem('ajustes_config') || '{}');
+    const cfg2     = _getCfg();
     const lForma   = cfg2.logoForma || 'quadrado';
     const lSize    = cfg2.logoSize  || 44;
     _aplicarLogoNaHome(logoImg, lForma, lSize);
