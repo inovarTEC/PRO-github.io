@@ -4771,13 +4771,27 @@ function demCompartilharLaudo(){
   setTimeout(function(){
     var h2=window._demLaudoHTML;
     if(!h2){alert("Calcule a demanda primeiro!");return;}
-  var blob=new Blob([h2],{type:'text/html;charset=utf-8'});
-  var url=URL.createObjectURL(blob);
-  var aba=window.open(url,'_blank');
-  if(!aba){var a=document.createElement('a');a.href=url;a.target='_blank';
-    document.body.appendChild(a);a.click();document.body.removeChild(a);}
-  setTimeout(function(){URL.revokeObjectURL(url);},30000);
+  _abrirLaudoPDF(h2);
   },h?0:400);
+}
+
+// ── Auxiliar PDF ────────────────────────────────────────
+function _laudoParaPDF(h) {
+  // Remove cabeçalho azul no-print do HTML
+  return h.replace(/<div class="no-print">[\s\S]*?<\/div>\s*/, '');
+}
+
+function _abrirLaudoPDF(h) {
+  var clean = _laudoParaPDF(h);
+  var blob  = new Blob([clean], {type:"text/html;charset=utf-8"});
+  var url   = URL.createObjectURL(blob);
+  var aba   = window.open(url, "_blank");
+  if (!aba) {
+    var a = document.createElement("a");
+    a.href = url; a.target = "_blank";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  }
+  setTimeout(function() { URL.revokeObjectURL(url); }, 30000);
 }
 
 function demImprimirLaudo(){
@@ -4786,12 +4800,7 @@ function demImprimirLaudo(){
   setTimeout(function(){
     var h2=window._demLaudoHTML;
     if(!h2){alert("Calcule a demanda primeiro!");return;}
-  var blob=new Blob([h2],{type:'text/html;charset=utf-8'});
-  var url=URL.createObjectURL(blob);
-  var aba=window.open(url,'_blank');
-  if(!aba){var a=document.createElement('a');a.href=url;a.target='_blank';
-    document.body.appendChild(a);a.click();document.body.removeChild(a);}
-  setTimeout(function(){URL.revokeObjectURL(url);},30000);
+  _abrirLaudoPDF(h2);
   },h?0:400);
 }
 
@@ -7683,12 +7692,7 @@ function mucImprimirLaudo(){
   setTimeout(function(){
     var h=_mucLaudoHTML;
     if(!h){alert("Gere o laudo MUC primeiro!");return;}
-  var blob=new Blob([h],{type:'text/html;charset=utf-8'});
-  var url=URL.createObjectURL(blob);
-  var aba=window.open(url,'_blank');
-  if(!aba){var a=document.createElement('a');a.href=url;a.target='_blank';
-    document.body.appendChild(a);a.click();document.body.removeChild(a);}
-  setTimeout(function(){URL.revokeObjectURL(url);},30000);
+  _abrirLaudoPDF(h);
   },_mucLaudoHTML?0:500);
 }
 
@@ -7697,12 +7701,7 @@ function mucCompartilhar(){
   setTimeout(function(){
     var h=_mucLaudoHTML;
     if(!h){alert("Gere o laudo MUC primeiro!");return;}
-  var blob=new Blob([h],{type:'text/html;charset=utf-8'});
-  var url=URL.createObjectURL(blob);
-  var aba=window.open(url,'_blank');
-  if(!aba){var a=document.createElement('a');a.href=url;a.target='_blank';
-    document.body.appendChild(a);a.click();document.body.removeChild(a);}
-  setTimeout(function(){URL.revokeObjectURL(url);},30000);
+  _abrirLaudoPDF(h);
   },_mucLaudoHTML?0:500);
 }
 
