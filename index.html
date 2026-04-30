@@ -2,6 +2,17 @@
 <html lang="pt-BR" data-theme="dark">
 <head>
 <meta charset="UTF-8">
+<!-- ══ PWA + ÍCONES ══ -->
+<meta name="theme-color" content="#f59e0b">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Power PRO">
+<meta name="application-name" content="Eletricista Power PRO">
+<meta name="description" content="Ferramenta profissional para eletricistas e engenheiros — cálculos NBR 5410 e DIS-NOR-030">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23f59e0b'/%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23fbbf24'/%3E%3Cstop offset='1' stop-color='%23d97706'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpolygon points='58,10 35,52 52,52 42,90 65,48 48,48' fill='white'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23f59e0b'/%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23fbbf24'/%3E%3Cstop offset='1' stop-color='%23d97706'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpolygon points='58,10 35,52 52,52 42,90 65,48 48,48' fill='white'/%3E%3C/svg%3E">
+<link rel="manifest" href="data:application/json,%7B%22name%22%3A%22Eletricista%20Power%20PRO%22%2C%22short_name%22%3A%22Power%20PRO%22%2C%22description%22%3A%22Ferramenta%20profissional%20para%20eletricistas%22%2C%22start_url%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23060810%22%2C%22theme_color%22%3A%22%23f59e0b%22%2C%22orientation%22%3A%22portrait%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23f59e0b'/%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23fbbf24'/%3E%3Cstop offset='1' stop-color='%23d97706'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpolygon points='58,10 35,52 52,52 42,90 65,48 48,48' fill='white'/%3E%3C/svg%3E%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Eletricista Power PRO</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -4754,85 +4765,34 @@ function gerarPDF() {
   area.scrollTop = 0;
 }
 
-function demCompartilharLaudo() {
-  var r = window._demResultadoNBR;
-  if (!r) { alert("Calcule a demanda primeiro!"); return; }
-  var sisLabel = r.sistema === 'tri' ? 'Trifásico' : r.sistema === 'bi' ? 'Bifásico' : 'Monofásico';
-  var tipoLabel = (typeof _TIPO_INFO !== 'undefined' && _demTipoInstalacao)
-    ? ((_TIPO_INFO[_demTipoInstalacao] || {}).label || 'Residencial') : 'Residencial';
-  var circs = [];
-  if (r.nIlum) circs.push(r.nIlum + 'x Iluminação 1,5mm²/10A');
-  if (r.nTom)  circs.push(r.nTom  + 'x Tomadas TUG 2,5mm²/16A');
-  if (r.temMolhado) circs.push('1x Cozinha/Molhado 2,5mm²/20A');
-  (r.circsIndep || []).forEach(function(c) { circs.push(c); });
-  var txt = "⚡ LAUDO DE DEMANDA ELÉTRICA\n"
-    + tipoLabel + " · " + sisLabel + " · " + r.tensao + "V\n\n"
-    + "CI: " + (r.totalVA/1000).toFixed(2) + " kW | CD: " + (r.demandada/1000).toFixed(2) + " kVA\n"
-    + "Corrente: " + r.corrente.toFixed(1) + "A | Disjuntor: " + r.disj + "A\n"
-    + "Bitola: " + r.bit + "\n\n"
-    + "Circuitos:\n" + circs.map(function(c){return "• "+c;}).join("\n") + "\n\n"
-    + "Eletricista Power PRO — NBR 5410:2004";
-  if (navigator.share) {
-    navigator.share({title:'Laudo de Demanda Elétrica', text:txt}).catch(function(){});
-  } else {
-    navigator.clipboard.writeText(txt)
-      .then(function(){ alert('✅ Laudo copiado!'); })
-      .catch(function(){ prompt('Copie:', txt); });
-  }
+function demCompartilharLaudo(){
+  var h=window._demLaudoHTML;
+  if(!h){try{demExportarPDF();}catch(e){}}
+  setTimeout(function(){
+    var h2=window._demLaudoHTML;
+    if(!h2){alert("Calcule a demanda primeiro!");return;}
+  var blob=new Blob([h2],{type:'text/html;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var aba=window.open(url,'_blank');
+  if(!aba){var a=document.createElement('a');a.href=url;a.target='_blank';
+    document.body.appendChild(a);a.click();document.body.removeChild(a);}
+  setTimeout(function(){URL.revokeObjectURL(url);},30000);
+  },h?0:400);
 }
 
-function demSalvarPDF() {
-  var h = window._demLaudoHTML;
-  if (!h) { try { demExportarPDF(); } catch(e) {} }
-  setTimeout(function() {
-    var html2 = window._demLaudoHTML;
-    if (!html2) { alert("Gere o laudo primeiro!"); return; }
-    var blob = new Blob([html2], {type: "text/html;charset=utf-8"});
-    var url  = URL.createObjectURL(blob);
-    var a    = document.createElement("a");
-    var r    = window._demResultadoNBR;
-    var data = new Date().toLocaleDateString("pt-BR").replace(/\//g, "-");
-    var nome = "Laudo-Demanda-" + (r ? r.tensao + "V-" + r.disj + "A" : "Eletrica") + "-" + data + ".html";
-    a.href     = url;
-    a.download = nome;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(function() { URL.revokeObjectURL(url); }, 5000);
-  }, h ? 0 : 400);
-}
-
-function demImprimirLaudo() {
-  var h = window._demLaudoHTML;
-  if (!h) {
-    // Laudo não gerado ainda — gerar automaticamente
-    try { demExportarPDF(); } catch(e) {}
-    // Tentar novamente após gerar
-    setTimeout(function() {
-      h = window._demLaudoHTML;
-      if (!h) { alert('Calcule a demanda primeiro!'); return; }
-      demImprimirLaudo();
-    }, 300);
-    return;
-  }
-  var old = document.getElementById("dem-print-iframe");
-  if (old) old.remove();
-  var fr = document.createElement("iframe");
-  fr.id = "dem-print-iframe";
-  fr.style.cssText = "position:fixed;width:0;height:0;border:none;top:-9999px";
-  document.body.appendChild(fr);
-  fr.contentDocument.open();
-  fr.contentDocument.write(h);
-  fr.contentDocument.close();
-  fr.onload = function() {
-    try { fr.contentWindow.focus(); fr.contentWindow.print(); }
-    catch(err) {
-      var blob = new Blob([h], {type:"text/html"});
-      var url = URL.createObjectURL(blob);
-      window.open(url, "_blank");
-      setTimeout(function(){ URL.revokeObjectURL(url); }, 5000);
-    }
-  };
+function demImprimirLaudo(){
+  var h=window._demLaudoHTML;
+  if(!h){try{demExportarPDF();}catch(e){}}
+  setTimeout(function(){
+    var h2=window._demLaudoHTML;
+    if(!h2){alert("Calcule a demanda primeiro!");return;}
+  var blob=new Blob([h2],{type:'text/html;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var aba=window.open(url,'_blank');
+  if(!aba){var a=document.createElement('a');a.href=url;a.target='_blank';
+    document.body.appendChild(a);a.click();document.body.removeChild(a);}
+  setTimeout(function(){URL.revokeObjectURL(url);},30000);
+  },h?0:400);
 }
 
 
@@ -7659,9 +7619,7 @@ function mucExportarPDF() {
     + '        <button id="muc-btn-retrato" onclick="mucSetOrientacao(\'portrait\')" style="background:rgba(255,255,255,.3);color:#fff;border:none;padding:6px 10px;font-size:10px;font-weight:800;cursor:pointer">📄 Retrato</button>\n'
     + '        <button id="muc-btn-paisagem" onclick="mucSetOrientacao(\'landscape\')" style="background:transparent;color:rgba(255,255,255,.7);border:none;padding:6px 10px;font-size:10px;font-weight:800;cursor:pointer">🖼️ Paisagem</button>\n'
     + '      </div>\n'
-    + '      <button onclick="mucImprimirLaudo()" style="background:#f59e0b;color:#000;border:none;border-radius:8px;padding:8px 14px;font-weight:800;cursor:pointer;font-size:11px">🖨️ Imprimir / PDF</button>\n'
-    + '      <button onclick="mucSalvarPDF()" style="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:8px 12px;font-weight:700;cursor:pointer;font-size:11px">⬇️ Salvar PDF</button>\n'
-    + '      <button onclick="mucCompartilhar()" style="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:8px 12px;font-weight:700;cursor:pointer;font-size:11px">💬 Compartilhar</button>\n'
+    + '      <button onclick="mucImprimirLaudo()" style="background:#f59e0b;color:#000;border:none;border-radius:8px;padding:8px 14px;font-weight:800;cursor:pointer;font-size:11px">🖨️ Imprimir / PDF</button>\n'    + '      <button onclick="mucCompartilhar()" style="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:8px 12px;font-weight:700;cursor:pointer;font-size:11px">💬 Compartilhar</button>\n'
     + '      <button onclick="document.getElementById(\'print-area\').style.display=\'none\'" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:8px 10px;font-weight:700;cursor:pointer;font-size:11px">✕ Fechar</button>\n'
     + '    </div>\n'
     + '  </div>\n\n'
@@ -7720,72 +7678,32 @@ function mucExportarPDF() {
   area.scrollTop = 0;
 }
 
-function mucImprimirLaudo() {
-  if (!_mucLaudoHTML) { try { mucExportarPDF(); } catch(e) {} }
-  setTimeout(function() {
-    var h = _mucLaudoHTML;
-    if (!h) { alert('Gere o laudo MUC primeiro!'); return; }
-    var old = document.getElementById('dem-print-iframe');
-    if (old) old.remove();
-    var fr = document.createElement('iframe');
-    fr.id = 'dem-print-iframe';
-    fr.style.cssText = 'position:fixed;width:0;height:0;border:none;top:-9999px';
-    document.body.appendChild(fr);
-    fr.contentDocument.open();
-    fr.contentDocument.write(h);
-    fr.contentDocument.close();
-    fr.onload = function() {
-      try { fr.contentWindow.focus(); fr.contentWindow.print(); }
-      catch(err) {
-        var blob = new Blob([h], {type:'text/html'});
-        var url = URL.createObjectURL(blob);
-        window.open(url, '_blank');
-        setTimeout(function(){ URL.revokeObjectURL(url); }, 5000);
-      }
-    };
-  }, _mucLaudoHTML ? 0 : 500);
+function mucImprimirLaudo(){
+  if(!_mucLaudoHTML){try{mucExportarPDF();}catch(e){}}
+  setTimeout(function(){
+    var h=_mucLaudoHTML;
+    if(!h){alert("Gere o laudo MUC primeiro!");return;}
+  var blob=new Blob([h],{type:'text/html;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var aba=window.open(url,'_blank');
+  if(!aba){var a=document.createElement('a');a.href=url;a.target='_blank';
+    document.body.appendChild(a);a.click();document.body.removeChild(a);}
+  setTimeout(function(){URL.revokeObjectURL(url);},30000);
+  },_mucLaudoHTML?0:500);
 }
 
-function mucSalvarPDF() {
-  if (!_mucLaudoHTML) { try { mucExportarPDF(); } catch(e) {} }
-  setTimeout(function() {
-    var h = _mucLaudoHTML;
-    if (!h) { alert('Gere o laudo MUC primeiro!'); return; }
-    var m    = window._demResultadoMUC;
-    var data = new Date().toLocaleDateString('pt-BR').replace(/\//g, '-');
-    var nome = 'Laudo-MUC-' + (m ? m.cat.id + '-' + m.Ded.toFixed(0) + 'kVA' : 'Eletrico') + '-' + data + '.html';
-    var blob = new Blob([h], {type:'text/html;charset=utf-8'});
-    var url  = URL.createObjectURL(blob);
-    var a    = document.createElement('a');
-    a.href = url; a.download = nome;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(function(){ URL.revokeObjectURL(url); }, 5000);
-  }, _mucLaudoHTML ? 0 : 500);
-}
-
-function mucCompartilhar() {
-  var m = window._demResultadoMUC;
-  if (!m) { alert('Calcule a demanda MUC primeiro!'); return; }
-  var txt = '🏢 LAUDO MUC — DEMANDA DE EDIFÍCIO\n\n'
-    + 'Tensão: ' + (m.tensaoKey==='380'?'380/220V':'220/127V') + '\n'
-    + 'Total Aptos: ' + m.totalAptos + ' unidades\n\n'
-    + 'Dem. Residencial: ' + m.Dr.toFixed(2) + ' kVA\n'
-    + 'FC (' + (m.fc*100).toFixed(0) + '%): ' + m.Dtr.toFixed(2) + ' kVA\n'
-    + 'FR (×' + m.fr.toFixed(1) + '): ' + m.Drf.toFixed(2) + ' kVA\n'
-    + 'Dem. Total (Ded): ' + m.Ded.toFixed(2) + ' kVA\n\n'
-    + '🔌 Categoria ' + m.cat.id + '\n'
-    + 'Disjuntor: ' + m.cat.disj + 'A\n'
-    + 'Cabo: ' + m.cat.cabo + '\n\n'
-    + 'Eletricista Power PRO — DIS-NOR-030 Rev.05';
-  if (navigator.share) {
-    navigator.share({title:'Laudo MUC', text:txt}).catch(function(){});
-  } else {
-    navigator.clipboard.writeText(txt)
-      .then(function(){ alert('✅ Laudo MUC copiado!'); })
-      .catch(function(){ prompt('Copie:', txt); });
-  }
+function mucCompartilhar(){
+  if(!_mucLaudoHTML){try{mucExportarPDF();}catch(e){}}
+  setTimeout(function(){
+    var h=_mucLaudoHTML;
+    if(!h){alert("Gere o laudo MUC primeiro!");return;}
+  var blob=new Blob([h],{type:'text/html;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var aba=window.open(url,'_blank');
+  if(!aba){var a=document.createElement('a');a.href=url;a.target='_blank';
+    document.body.appendChild(a);a.click();document.body.removeChild(a);}
+  setTimeout(function(){URL.revokeObjectURL(url);},30000);
+  },_mucLaudoHTML?0:500);
 }
 
 function mucSetOrientacao(ori) {
@@ -9302,8 +9220,7 @@ tbody tr:nth-child(even){background:#fafafa}
         <button id="btn-paisagem" onclick="demSetOrientacao('landscape')" style="background:transparent;color:rgba(255,255,255,.7);border:none;padding:6px 10px;font-size:10px;font-weight:800;cursor:pointer">🖼️ Paisagem</button>
       </div>
       <button onclick="demImprimirLaudo()" style="background:#f59e0b;color:#000;border:none;border-radius:8px;padding:8px 14px;font-weight:800;cursor:pointer;font-size:11px">🖨️ Imprimir / PDF</button>
-      <button onclick="demSalvarPDF()" style="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:8px 12px;font-weight:700;cursor:pointer;font-size:11px">⬇️ Salvar PDF</button>
-      <button onclick="demCompartilharLaudo()" style="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:8px 12px;font-weight:700;cursor:pointer;font-size:11px">💬 Compartilhar</button>
+      <button onclick="demCompartilharLaudo()" style="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:8px 12px;font-weight:700;cursor:pointer;font-size:11px">💬 Compartilhar PDF</button>
       <button onclick="document.getElementById('print-area').style.display='none'" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:8px 10px;font-weight:700;cursor:pointer;font-size:11px">✕ Fechar</button>
     </div>
   </div>
