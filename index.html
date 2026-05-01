@@ -7807,12 +7807,15 @@ function renderRelatorio() {
 // FERRAMENTAS
 // ══════════════════════════════════════════════════════════════
 function ferrAba(idx) {
-  if (idx === 4) try { renderNormas(); renderNBR5410(); } catch(e) {}
-  if (idx === 0) try { renderNBR_Normas(); } catch(e) {}
-  if (idx === 3) try { checkAtualizarSelect(); } catch(e) {}
   document.querySelectorAll('.ferr-tab').forEach((t,i) => t.classList.toggle('on',i===idx));
   document.querySelectorAll('.ferr-panel').forEach((p,i) => p.classList.toggle('on',i===idx));
   const tipoKey = window._tipoSelecionado || 'htc-res';
+
+  var ric = window.requestIdleCallback || function(fn){ setTimeout(fn, 50); };
+
+  if (idx === 0) ric(function(){ try { renderNBR_Normas(); } catch(e) {} });
+  if (idx === 4) ric(function(){ try { renderNormas(); renderNBR5410(); } catch(e) {} });
+  if (idx === 3) ric(function(){ try { checkAtualizarSelect(); } catch(e) {} });
 
   // Aba Demanda — sincronizar tipo
   if (idx === 1) {
@@ -7828,7 +7831,11 @@ function ferrAba(idx) {
 
   // Aba Queda V — inicializar selects e aplicar config
   if (idx === 2) {
-    setTimeout(() => { if(typeof qvInicializarSelects==='function') qvInicializarSelects(); qvAplicarConfig(tipoKey); qvRenderCapacidade(); }, 80);
+    ric(function(){ 
+      if(typeof qvInicializarSelects==='function') qvInicializarSelects(); 
+      qvAplicarConfig(tipoKey); 
+      qvRenderCapacidade(); 
+    });
   }
 }
 function ferrPill(el, grupo) {
