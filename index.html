@@ -68,7 +68,7 @@ select.inp{appearance:none;-webkit-appearance:none;background-image:url("data:im
 .tag{font-size:9px;font-weight:700;letter-spacing:.5px;border-radius:8px;padding:4px 10px;cursor:pointer;border:none;transition:opacity .15s}
 .tag-blue{background:rgba(59,130,246,.18);color:#60a5fa}
 .tag-green{background:rgba(34,197,94,.15);color:#4ade80}
-.bnav{background:var(--bg-bnav);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(4,1fr);padding:10px 4px calc(env(safe-area-inset-bottom) + 10px);flex-shrink:0;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.bnav{background:var(--bg-bnav);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(4,1fr);padding:10px 4px calc(env(safe-area-inset-bottom) + 10px);flex-shrink:0;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);position:fixed;bottom:0;left:0;right:0;z-index:20}
 .ni{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;padding:6px 2px;-webkit-tap-highlight-color:transparent;transition:opacity .15s}
 .ni-box{width:48px;height:42px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;transition:all .2s;line-height:1}
 .ni-lbl{font-size:9px;font-weight:700;letter-spacing:.3px;transition:color .15s}
@@ -110,7 +110,7 @@ select.inp{appearance:none;-webkit-appearance:none;background-image:url("data:im
 .hdr-right{display:flex;gap:8px;flex-shrink:0}
 .hbtn{width:36px;height:36px;border-radius:10px;border:1px solid var(--acc-border);background:var(--acc-bg);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;position:relative;transition:opacity .15s}.hbtn:active{opacity:.7}
 .ndot{position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:50%;background:#ef4444;border:1.5px solid var(--bg-home)}
-.home-body{flex:1;overflow-y:auto;padding:10px 12px 0;-webkit-overflow-scrolling:touch}
+.home-body{flex:1;overflow-y:auto;padding:10px 12px 80px;-webkit-overflow-scrolling:touch}
 .home-body::-webkit-scrollbar{display:none}
 .greet{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding:4px 2px}
 .greet-left{display:flex;align-items:flex-start;gap:12px}
