@@ -5553,13 +5553,32 @@ function parseCurrencySafe(v) {
 
 const telas = {home:'tela-home', orcamento:'tela-orcamento', resultado:'tela-resultado', agenda:'tela-agenda'};
 function navTo(id) {
+  // ── Limpar tela anterior antes de trocar ──
+  var prevTela = document.querySelector('.tela.ativa');
+  if (prevTela) {
+    var prevId = prevTela.id;
+    // Sair Agenda
+    if (prevId === 'tela-agenda') {
+      var ab = document.getElementById('agenda-body-wrap');
+      if (ab) ab.innerHTML = '';
+    }
+    // Sair Orçamento
+    if (prevId === 'tela-orcamento') {
+      var sc = document.getElementById('srv-container');
+      var mc = document.getElementById('mat-container');
+      if (sc) sc.innerHTML = '';
+      if (mc) mc.innerHTML = '';
+    }
+  }
+
   Object.values(telas).forEach(t => document.getElementById(t).classList.remove('ativa'));
   document.getElementById(telas[id]).classList.add('ativa');
   if (id === 'home') homeAtualizar();
   // Atualizar tab ativo na barra
   document.querySelectorAll('.ni').forEach(n => n.classList.remove('on'));
   const map = {home:'ni-home', agenda:'ni-agen', orcamento:'ni-ferr'};
-  if (id === 'agenda') try { renderAgenda(); } catch(e) {}
+  var ric = window.requestIdleCallback || function(fn){ setTimeout(fn, 50); };
+  if (id === 'agenda') ric(function(){ try { renderAgenda(); } catch(e) {} });
   if (map[id]) {
     const tab = document.querySelector('.ni.' + map[id]);
     if (tab) tab.classList.add('on');
@@ -5567,14 +5586,15 @@ function navTo(id) {
 }
 function abrirModal(id) {
   document.getElementById(id).classList.add('ativa');
-  if (id === 'modal-agenda')    { renderAgenda();     }
-  if (id === 'modal-garantias') { renderGarantias();  }
-  if (id === 'modal-ajustes')   { carregarAjustes();  }
-  if (id === 'modal-clientes')  { renderClientes();   }
+  var ric = window.requestIdleCallback || function(fn){ setTimeout(fn, 50); };
+  if (id === 'modal-agenda')    ric(function(){ try { renderAgenda();    } catch(e) {} });
+  if (id === 'modal-garantias') ric(function(){ try { renderGarantias(); } catch(e) {} });
+  if (id === 'modal-clientes')  ric(function(){ try { renderClientes();  } catch(e) {} });
+  if (id === 'modal-ajustes')   { carregarAjustes(); }
   if (id === 'modal-relatorio') {
     _relMes = new Date().getMonth();
     _relAno = new Date().getFullYear();
-    renderRelatorio();
+    ric(function(){ try { renderRelatorio(); } catch(e) {} });
   }
 }
 function fecharModal(id) { document.getElementById(id).classList.remove('ativa'); }
@@ -7807,6 +7827,33 @@ function renderRelatorio() {
 // FERRAMENTAS
 // ══════════════════════════════════════════════════════════════
 function ferrAba(idx) {
+  // ── Limpar aba anterior antes de trocar ──
+  var prevPanel = document.querySelector('.ferr-panel.on');
+  if (prevPanel) {
+    var prevIdx = Array.from(document.querySelectorAll('.ferr-panel')).indexOf(prevPanel);
+    if (prevIdx !== idx) {
+      // Sair NBR (0) ou Normas (4) — limpar normas renderizadas
+      if (prevIdx === 0 || prevIdx === 4) {
+        var nb = document.getElementById('normas-body');
+        if (nb) nb.innerHTML = '';
+      }
+      // Sair Demanda (1) — esconder tabela de cômodos
+      if (prevIdx === 1) {
+        var dtw = document.getElementById('dem-tab-wrap');
+        if (dtw) dtw.style.display = 'none';
+        var dtb = document.getElementById('dem-tab-tbody');
+        if (dtb) dtb.innerHTML = '';
+      }
+      // Sair Queda V (2) — esconder resultado e limpar histórico
+      if (prevIdx === 2) {
+        var qvr = document.getElementById('qv-resultado');
+        if (qvr) qvr.style.display = 'none';
+        var qvh = document.getElementById('qv-historico-lista');
+        if (qvh) qvh.innerHTML = '';
+      }
+    }
+  }
+
   document.querySelectorAll('.ferr-tab').forEach((t,i) => t.classList.toggle('on',i===idx));
   document.querySelectorAll('.ferr-panel').forEach((p,i) => p.classList.toggle('on',i===idx));
   const tipoKey = window._tipoSelecionado || 'htc-res';
