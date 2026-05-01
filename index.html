@@ -858,9 +858,110 @@ var LS = {
 var _appReady = false;
 </script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+  import { getAuth, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCUoVzr9_PIGZXe1DKBZaINNCVQVj14Iqk",
+    authDomain: "eletricista-pro.firebaseapp.com",
+    projectId: "eletricista-pro",
+    storageBucket: "eletricista-pro.firebasestorage.app",
+    messagingSenderId: "184661625796",
+    appId: "1:184661625796:web:18c38153a0a2621025b291"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // Expor funções globalmente
+  window._fbAuth = auth;
+  window._fbSignIn = (email, pass) => signInWithEmailAndPassword(auth, email, pass);
+  window._fbSignOut = () => signOut(auth);
+  window._fbResetPass = (email) => sendPasswordResetEmail(auth, email);
+  window._fbOnAuth = (cb) => onAuthStateChanged(auth, cb);
+
+  // Verificar autenticação ao carregar
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // Autenticado — mostrar app
+      document.getElementById('tela-login').style.display = 'none';
+      document.getElementById('app-root').style.display = 'block';
+      // Atualizar painel acesso
+      var elEmail = document.getElementById('acesso-email');
+      if (elEmail) elEmail.textContent = user.email;
+      var elStatus = document.getElementById('acesso-status');
+      if (elStatus) elStatus.innerHTML = '<div style="width:7px;height:7px;border-radius:50%;background:#4ade80;display:inline-block;margin-right:6px"></div><span style="color:#4ade80;font-weight:600">Autenticado</span>';
+    } else {
+      // Não autenticado — mostrar login
+      document.getElementById('tela-login').style.display = 'flex';
+      document.getElementById('app-root').style.display = 'none';
+    }
+  });
+</script>
+
+<!-- Chart.js assíncrono — não bloqueia app -->
+<script>
+(function(){
+  var s = document.createElement('script');
+  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js';
+  s.async = true;
+  s.onerror = function(){ console.warn('Chart.js offline'); };
+  document.head.appendChild(s);
+})();
+</script>
 </head>
 <body>
+
+<!-- ══ TELA LOGIN ══ -->
+<div id="tela-login" style="display:none;position:fixed;inset:0;z-index:9999;background:#0a0a12;flex-direction:column;align-items:center;justify-content:center;padding:24px">
+  <div style="width:100%;max-width:360px">
+    <!-- Logo -->
+    <div style="text-align:center;margin-bottom:28px">
+      <div style="width:72px;height:72px;border-radius:20px;background:linear-gradient(135deg,#f59e0b,#d97706);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 16px;box-shadow:0 8px 24px rgba(245,158,11,.4)">⚡</div>
+      <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:900;color:#fff">Eletricista Power<br>PRO</div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#475569;margin-top:6px">ÁREA RESTRITA</div>
+    </div>
+    <!-- Campos -->
+    <div style="margin-bottom:12px">
+      <input id="login-email" type="email" placeholder="Seu e-mail" autocomplete="email"
+        style="width:100%;background:#1e2235;border:1.5px solid #2d3555;border-radius:14px;padding:14px 16px;font-size:16px;color:#fff;outline:none;box-sizing:border-box;font-family:'Syne',sans-serif"
+        onfocus="this.style.borderColor='#f59e0b'" onblur="this.style.borderColor='#2d3555'">
+    </div>
+    <div style="margin-bottom:16px;position:relative">
+      <input id="login-senha" type="password" placeholder="Senha" autocomplete="current-password"
+        style="width:100%;background:#1e2235;border:1.5px solid #2d3555;border-radius:14px;padding:14px 46px 14px 16px;font-size:16px;color:#fff;outline:none;box-sizing:border-box;font-family:'Syne',sans-serif"
+        onfocus="this.style.borderColor='#f59e0b'" onblur="this.style.borderColor='#2d3555'"
+        onkeydown="if(event.key==='Enter')loginEntrar()">
+      <span onclick="var i=document.getElementById('login-senha');i.type=i.type==='password'?'text':'password'"
+        style="position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:18px;color:#475569">👁</span>
+    </div>
+    <!-- Erro -->
+    <div id="login-erro" style="display:none;margin-bottom:12px;color:#f87171;font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px">
+      <span>✕</span><span id="login-erro-msg">E-mail não cadastrado na plataforma.</span>
+    </div>
+    <!-- Botões Ver App + Comprar (só aparecem quando não cadastrado) -->
+    <div id="login-btns-extra" style="display:none;margin-bottom:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <a href="https://eletricistapro.com.br/" target="_blank"
+        style="background:#1e2235;border:1.5px solid #2d3555;border-radius:14px;padding:12px;text-align:center;color:#fff;font-size:13px;font-weight:700;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px">🌐 Ver App</a>
+      <a href="https://pay.cakto.com.br/94rb2jd_835329" target="_blank"
+        style="background:#f59e0b;border:none;border-radius:14px;padding:12px;text-align:center;color:#000;font-size:13px;font-weight:800;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px">🛒 Comprar</a>
+    </div>
+    <!-- Botão Entrar -->
+    <button onclick="loginEntrar()" id="login-btn"
+      style="width:100%;background:linear-gradient(135deg,#f59e0b,#d97706);border:none;border-radius:14px;padding:16px;font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#000;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:.5px;box-shadow:0 4px 16px rgba(245,158,11,.4)">
+      ⚡ ENTRAR
+    </button>
+    <!-- Esqueceu senha -->
+    <div style="text-align:center;margin-top:16px;font-size:13px;color:#475569">
+      Esqueceu a senha? <span onclick="loginRedefinir()" style="color:#f59e0b;font-weight:700;cursor:pointer">Redefinir</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ APP ROOT ══ -->
+<div id="app-root" style="display:none">
 
 <!-- ══ TELA HOME ══ -->
 <div id="tela-home" class="tela ativa">
@@ -2180,15 +2281,30 @@ var _appReady = false;
   </div>
   <div class="aj-panel" id="aj-3"><div class="aj-body">
     <div class="acesso-card">
-      <div class="acesso-sec">🔒 Acesso</div>
-      <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:13px;padding:14px;margin-bottom:12px">
-        <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px">MODO</div>
-        <div style="display:flex;align-items:center;gap:6px">
+      <div class="acesso-sec">🔒 CONTA</div>
+      <!-- E-mail -->
+      <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:13px;padding:14px;margin-bottom:10px">
+        <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px">E-MAIL</div>
+        <div id="acesso-email" style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:600;color:var(--acc)">—</div>
+      </div>
+      <!-- Status -->
+      <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:13px;padding:14px;margin-bottom:10px">
+        <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px">STATUS</div>
+        <div id="acesso-status" style="font-size:13px;display:flex;align-items:center;gap:6px">
           <div style="width:7px;height:7px;border-radius:50%;background:#4ade80"></div>
-          <span style="font-size:13px;color:#4ade80;font-weight:600">Modo Teste (sem Firebase)</span>
+          <span style="color:#4ade80;font-weight:600">Autenticado</span>
         </div>
       </div>
+      <!-- Senha -->
+      <div onclick="acessoRedefinirSenha()" style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:13px;padding:14px;cursor:pointer">
+        <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px">SENHA</div>
+        <div style="font-size:13px;color:var(--acc);font-weight:700;display:flex;align-items:center;gap:6px">🔑 Enviar link de redefinição</div>
+      </div>
     </div>
+    <!-- Sair -->
+    <button onclick="acessoSair()" style="width:100%;background:rgba(239,68,68,.12);border:1.5px solid rgba(239,68,68,.3);border-radius:13px;padding:16px;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#f87171;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px">
+      🚪 SAIR DA CONTA
+    </button>
   </div></div>
   <div class="aj-panel" id="aj-4"><div class="aj-body">
     <div class="aj-sec"><span>☁️</span> Backup &amp; Restauração</div>
@@ -11363,6 +11479,80 @@ try { _sincPdfCfg(); }            catch(e) {}
     style="background:var(--bg-card);border-radius:20px 20px 0 0;width:100%;max-width:520px;max-height:88vh;display:flex;flex-direction:column;overflow:hidden">
   </div>
 </div>
+
+</div><!-- /app-root -->
+
+<script>
+// ══ LOGIN ══
+function loginEntrar() {
+  var email = document.getElementById('login-email').value.trim();
+  var senha = document.getElementById('login-senha').value;
+  var btn = document.getElementById('login-btn');
+  var erro = document.getElementById('login-erro');
+  var btnsExtra = document.getElementById('login-btns-extra');
+
+  if (!email || !senha) {
+    _loginErro('Preencha e-mail e senha.');
+    return;
+  }
+
+  btn.textContent = 'Entrando...';
+  btn.disabled = true;
+  erro.style.display = 'none';
+  btnsExtra.style.display = 'none';
+
+  window._fbSignIn(email, senha)
+    .then(function() {
+      btn.textContent = '⚡ ENTRAR';
+      btn.disabled = false;
+    })
+    .catch(function(e) {
+      btn.textContent = '⚡ ENTRAR';
+      btn.disabled = false;
+      if (e.code === 'auth/user-not-found' || e.code === 'auth/invalid-credential') {
+        _loginErro('E-mail não cadastrado na plataforma.');
+        btnsExtra.style.display = 'grid';
+      } else if (e.code === 'auth/wrong-password') {
+        _loginErro('Senha incorreta.');
+      } else if (e.code === 'auth/invalid-email') {
+        _loginErro('E-mail inválido.');
+      } else if (e.code === 'auth/too-many-requests') {
+        _loginErro('Muitas tentativas. Tente mais tarde.');
+      } else {
+        _loginErro('Erro ao entrar. Tente novamente.');
+      }
+    });
+}
+
+function _loginErro(msg) {
+  var el = document.getElementById('login-erro');
+  var msg_el = document.getElementById('login-erro-msg');
+  if (msg_el) msg_el.textContent = msg;
+  el.style.display = 'flex';
+}
+
+function loginRedefinir() {
+  var email = document.getElementById('login-email').value.trim();
+  if (!email) { _loginErro('Digite seu e-mail para redefinir a senha.'); return; }
+  window._fbResetPass(email)
+    .then(function() { _loginErro('Link de redefinição enviado! Verifique seu e-mail.'); })
+    .catch(function() { _loginErro('Erro ao enviar. Verifique o e-mail.'); });
+}
+
+// ══ ACESSO (painel Ajustes) ══
+function acessoSair() {
+  if (!confirm('Deseja sair da conta?')) return;
+  window._fbSignOut().catch(function(){});
+}
+
+function acessoRedefinirSenha() {
+  var user = window._fbAuth ? window._fbAuth.currentUser : null;
+  if (!user) return;
+  window._fbResetPass(user.email)
+    .then(function() { alert('Link de redefinição enviado para ' + user.email); })
+    .catch(function() { alert('Erro ao enviar link.'); });
+}
+</script>
 
 </body>
 </html>
