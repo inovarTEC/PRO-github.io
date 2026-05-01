@@ -46,7 +46,9 @@ html,body{height:100%;overflow-x:hidden;background:var(--bg);color:var(--text);f
 .tela.ativa{display:flex}
 .modal{display:none;position:fixed;inset:0;z-index:50;flex-direction:column;background:var(--bg-home);overflow:hidden}
 .modal.ativa{display:flex}
-.hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--bg-hdr);border-bottom:1px solid var(--border);flex-shrink:0;backdrop-filter:blur(16px)}
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:calc(env(safe-area-inset-top) + 14px) 16px 14px;background:var(--bg-hdr);border-bottom:1px solid var(--border);flex-shrink:0;backdrop-filter:blur(16px);transition:transform .3s ease}
+.hdr--hidden{transform:translateY(-110%)}
+.hdr-home--hidden{transform:translateY(-110%)}
 .hdr-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--text)}
 .hbk{width:36px;height:36px;border-radius:10px;border:1px solid var(--border-input);background:var(--bg-card);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:opacity .15s}
 .hbk:active{opacity:.6}
@@ -67,7 +69,8 @@ select.inp{appearance:none;-webkit-appearance:none;background-image:url("data:im
 .tag{font-size:9px;font-weight:700;letter-spacing:.5px;border-radius:8px;padding:4px 10px;cursor:pointer;border:none;transition:opacity .15s}
 .tag-blue{background:rgba(59,130,246,.18);color:#60a5fa}
 .tag-green{background:rgba(34,197,94,.15);color:#4ade80}
-.bnav{background:var(--bg-bnav);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(4,1fr);padding:10px 4px calc(env(safe-area-inset-bottom) + 10px);flex-shrink:0;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.bnav{background:var(--bg-bnav);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(4,1fr);padding:10px 4px calc(env(safe-area-inset-bottom) + 10px);flex-shrink:0;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transition:transform .3s ease}
+.bnav--hidden{transform:translateY(110%)}
 .ni{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;padding:6px 2px;-webkit-tap-highlight-color:transparent;transition:opacity .15s}
 .ni-box{width:48px;height:42px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;transition:all .2s;line-height:1}
 .ni-lbl{font-size:9px;font-weight:700;letter-spacing:.3px;transition:color .15s}
@@ -102,7 +105,7 @@ select.inp{appearance:none;-webkit-appearance:none;background-image:url("data:im
 .tema-row{display:flex;gap:8px;margin-bottom:16px}
 .tema-btn{flex:1;padding:10px 6px;border-radius:11px;border:1px solid var(--border-input);background:var(--bg-input);font-size:12px;font-weight:700;color:var(--text2);cursor:pointer;transition:border-color .2s,background .2s,color .2s;text-align:center}
 .tema-btn.on{border-color:var(--acc);background:var(--acc-bg);color:var(--acc)}
-.hdr-home{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;padding:12px 14px;padding-top:calc(env(safe-area-inset-top) + 12px);background:var(--bg-hdr);border-bottom:1px solid var(--border);flex-shrink:0;backdrop-filter:blur(16px)}
+.hdr-home{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;padding:12px 14px;padding-top:calc(env(safe-area-inset-top) + 12px);background:var(--bg-hdr);border-bottom:1px solid var(--border);flex-shrink:0;backdrop-filter:blur(16px);transition:transform .3s ease}
 .hdr-logo{display:flex;align-items:center;gap:8px}
 .hdr-bolt{width:32px;height:32px;border-radius:9px;background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:16px}
 .hdr-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;letter-spacing:.5px;color:var(--text)}
@@ -11069,6 +11072,51 @@ try { demRenderGrid(); }          catch(e) {}
 try { demRenderSelecionados(); }  catch(e) {}
 // init local — Firebase não ativo
 try { _sincPdfCfg(); }            catch(e) {}
+
+// ══ HIDE ON SCROLL ══
+(function(){
+  var lastY = 0;
+  var THRESHOLD = 8; // px mínimo para reagir
+
+  function getHeaders(el) {
+    var tela = el.closest('.tela, .modal');
+    if (!tela) return { hdr: null, bnav: null };
+    var hdr  = tela.querySelector('.hdr-home, .hdr');
+    var bnav = document.querySelector('.bnav');
+    return { hdr: hdr, bnav: bnav };
+  }
+
+  function onScroll() {
+    var currentY = this.scrollTop;
+    var delta = currentY - lastY;
+
+    if (Math.abs(delta) < THRESHOLD) return;
+
+    var els = getHeaders(this);
+
+    if (delta > 0) {
+      // Scroll BAIXO — esconde rodapé, mostra header
+      if (els.bnav) els.bnav.classList.add('bnav--hidden');
+      if (els.hdr)  els.hdr.classList.remove('hdr--hidden', 'hdr-home--hidden');
+    } else {
+      // Scroll CIMA — esconde header, mostra rodapé
+      if (els.hdr)  els.hdr.classList.add(els.hdr.classList.contains('hdr-home') ? 'hdr-home--hidden' : 'hdr--hidden');
+      if (els.bnav) els.bnav.classList.remove('bnav--hidden');
+    }
+
+    // No topo: sempre mostra tudo
+    if (currentY <= 0) {
+      if (els.hdr)  els.hdr.classList.remove('hdr--hidden', 'hdr-home--hidden');
+      if (els.bnav) els.bnav.classList.remove('bnav--hidden');
+    }
+
+    lastY = currentY;
+  }
+
+  document.querySelectorAll('.scroll').forEach(function(el) {
+    el.addEventListener('scroll', onScroll.bind(el), { passive: true });
+  });
+})();
 </script>
 <!-- ══ MODAL CONFIG PDF ══ -->
 <div id="modal-cfg-pdf" onclick="if(event.target===this)fecharConfigPDF()"
