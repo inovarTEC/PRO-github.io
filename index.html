@@ -11113,7 +11113,8 @@ try { _sincPdfCfg(); }            catch(e) {}
     lastY = currentY;
   }
 
-  document.querySelectorAll('.scroll').forEach(function(el) {
+  var scrollSel = '.scroll, .home-body, .gest-body, .aj-body, .cat-body';
+  document.querySelectorAll(scrollSel).forEach(function(el) {
     el.addEventListener('scroll', onScroll.bind(el), { passive: true });
   });
 })();
