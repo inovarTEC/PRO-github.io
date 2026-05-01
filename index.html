@@ -68,7 +68,7 @@ select.inp{appearance:none;-webkit-appearance:none;background-image:url("data:im
 .sec-head-orc{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;cursor:pointer;user-select:none}
 .sec-lbl{display:flex;align-items:center;gap:7px;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text3)}
 .sec-arr{font-size:10px;color:var(--text3);transition:transform .3s;margin-left:4px}
-.card-body{overflow:hidden;transition:max-height .35s ease,opacity .35s ease;max-height:2000px;opacity:1}
+.card-body{overflow:hidden;transition:max-height .35s ease,opacity .35s ease;max-height:600px;opacity:1}
 .card-body.collapsed{max-height:0;opacity:0}
 .dot{width:7px;height:7px;border-radius:50%}
 .tag{font-size:9px;font-weight:700;letter-spacing:.5px;border-radius:8px;padding:4px 10px;cursor:pointer;border:none;transition:opacity .15s}
@@ -1038,7 +1038,7 @@ var _appReady = false;
     <div class="hbk" onclick="navTo('home')">←</div>
     <div style="display:flex;flex-direction:column;align-items:center">
       <div class="hdr-title" id="orc-titulo">Novo Orçamento</div>
-      <div id="orc-num-badge" style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;color:var(--acc);letter-spacing:.5px;margin-top:1px"></div>
+      <div id="orc-num-badge" style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;color:var(--acc);letter-spacing:.5px;margin-top:1px"><span id="orc-unsaved" style="display:none;color:#ef4444;font-size:14px;margin-right:3px">●</span></div>
     </div>
     <div style="width:36px"></div>
   </div>
@@ -1053,8 +1053,8 @@ var _appReady = false;
       <div class="card">
         <div class="sec-head-orc" onclick="orcToggle(this)"><div class="sec-lbl"><div class="dot" style="background:#f59e0b"></div>Dados do Orçamento</div><span class="sec-arr">▼</span></div>
         <div class="card-body">
-        <input class="inp" id="orc-empresa" type="text" placeholder="Seu Nome / Sua Empresa">
-        <input class="inp" id="orc-cliente" type="text" placeholder="Nome do Cliente">
+        <input class="inp" id="orc-empresa" type="text" placeholder="Seu Nome / Sua Empresa" oninput="marcarNaoSalvo()">
+        <input class="inp" id="orc-cliente" type="text" placeholder="Nome do Cliente" oninput="marcarNaoSalvo()">
         <input class="inp" id="orc-endereco" type="text" placeholder="Endereço (Rua, Nº, Bairro)">
         <input class="inp" id="orc-tel" type="tel" placeholder="(DD) 9XXXX-XXXX">
         <div class="row3" style="margin-bottom:7px">
@@ -1084,7 +1084,7 @@ var _appReady = false;
           </div>
         </div>
         <div class="card-body collapsed">
-        <select class="inp" id="orc-tipo-serv" style="margin-bottom:0"><option value="" disabled selected>— Selecione o tipo de serviço —</option><option>Instalação Elétrica Residencial</option><option>Instalação Elétrica Comercial</option><option>Instalação Elétrica Industrial</option><option>Manutenção Elétrica</option><option>Laudo Técnico</option><option>Projeto Elétrico</option><option>Outros</option></select>
+        <select class="inp" id="orc-tipo-serv" style="margin-bottom:0" onchange="marcarNaoSalvo()"><option value="" disabled selected>— Selecione o tipo de serviço —</option><option>Instalação Elétrica Residencial</option><option>Instalação Elétrica Comercial</option><option>Instalação Elétrica Industrial</option><option>Manutenção Elétrica</option><option>Laudo Técnico</option><option>Projeto Elétrico</option><option>Outros</option></select>
         <div class="orc-obs-extra" style="max-height:0;overflow:hidden;transition:max-height .25s ease">
           <textarea class="inp" placeholder="Observações gerais do serviço..." style="margin-top:8px"></textarea>
         </div>
@@ -5301,7 +5301,16 @@ function abrirCatalogo(tipo) {
 // SALVAR ORÇAMENTO (feedback visual)
 // ══════════════════════════════════════════════════════════════
 // ══ SALVAR ORÇAMENTO COMPLETO ════════════════════════════════
+function marcarNaoSalvo() {
+  var el = document.getElementById('orc-unsaved');
+  if (el) el.style.display = 'inline';
+}
+function marcarSalvo() {
+  var el = document.getElementById('orc-unsaved');
+  if (el) el.style.display = 'none';
+}
 function salvarOrcamento() {
+  try { marcarSalvo(); } catch(e) {}
   try {
     // Coletar dados do header
     var dados = {
@@ -7661,8 +7670,8 @@ function mucExportarPDF() {
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
     navigator.serviceWorker.register('./sw.js')
-      .then(function(reg) { console.log('SW registrado:', reg.scope); })
-      .catch(function(err) { console.log('SW erro:', err); });
+      .then(function(reg) { console.log('SW: OK', reg.scope); })
+      .catch(function(err) { console.log('SW: erro', err); });
   });
 }
 </script>
@@ -11396,8 +11405,8 @@ try { _sincPdfCfg(); }            catch(e) {}
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
     navigator.serviceWorker.register('./sw.js')
-      .then(function(reg) { console.log('SW registrado:', reg.scope); })
-      .catch(function(err) { console.log('SW erro:', err); });
+      .then(function(reg) { console.log('SW: OK', reg.scope); })
+      .catch(function(err) { console.log('SW: erro', err); });
   });
 }
 </script>
