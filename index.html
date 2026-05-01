@@ -1023,7 +1023,7 @@ var _appReady = false;
       <div class="ni-lbl">Ferramentas</div>
     </div>
     <div class="ni ni-agen" onclick="navTo('agenda')">
-      <div class="ni-box">📅</div>
+      <div class="ni-box" style="position:relative">📅<span id="badge-agenda" class="hg-badge" style="display:none;position:absolute;top:-6px;right:-6px;min-width:16px;height:16px;font-size:9px;padding:0 4px;line-height:16px;border-radius:8px"></span></div>
       <div class="ni-lbl">Agendar</div>
     </div>
     <div class="ni ni-aj" onclick="abrirModal('modal-ajustes')">
@@ -10378,7 +10378,24 @@ function cfgToggle(el, k) {
 // ══════════════════════════════════════════════════════════════
 // HOME — ATUALIZAR DADOS DINÂMICOS
 // ══════════════════════════════════════════════════════════════
+function atualizarBadgeAgenda() {
+  try {
+    var badge = document.getElementById('badge-agenda');
+    if (!badge) return;
+    var agenda = JSON.parse(LS.getItem('agenda_data') || '[]');
+    var hoje = new Date().toISOString().slice(0,10);
+    var futuras = agenda.filter(function(v){ return v.data >= hoje; }).length;
+    if (futuras > 0) {
+      badge.textContent = futuras > 9 ? '9+' : futuras;
+      badge.style.display = 'block';
+    } else {
+      badge.style.display = 'none';
+    }
+  } catch(e) {}
+}
+
 function homeAtualizar() {
+  try { atualizarBadgeAgenda(); } catch(e) {}
   // ── Perfil ──────────────────────────────────────────────────
   try {
     const cfg = _getCfg();
