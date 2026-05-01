@@ -858,7 +858,16 @@ var LS = {
 var _appReady = false;
 </script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+// Chart.js — assíncrono com fallback para não bloquear app
+(function(){
+  var s = document.createElement('script');
+  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js';
+  s.async = true;
+  s.onerror = function(){ window.Chart = undefined; };
+  document.head.appendChild(s);
+})();
+</script>
 </head>
 <body>
 
@@ -7670,8 +7679,8 @@ function mucExportarPDF() {
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
     navigator.serviceWorker.register('./sw.js')
-      .then(function(reg) { console.log('SW: OK', reg.scope); })
-      .catch(function(err) { console.log('SW: erro', err); });
+      .then(function(r){ console.log('SW OK:', r.scope); })
+      .catch(function(e){ console.log('SW erro:', e); });
   });
 }
 </script>
@@ -10402,7 +10411,6 @@ function atualizarBadgeAgenda() {
     }
   } catch(e) {}
 }
-
 function homeAtualizar() {
   try { atualizarBadgeAgenda(); } catch(e) {}
   // ── Perfil ──────────────────────────────────────────────────
@@ -11405,8 +11413,8 @@ try { _sincPdfCfg(); }            catch(e) {}
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
     navigator.serviceWorker.register('./sw.js')
-      .then(function(reg) { console.log('SW: OK', reg.scope); })
-      .catch(function(err) { console.log('SW: erro', err); });
+      .then(function(r){ console.log('SW OK:', r.scope); })
+      .catch(function(e){ console.log('SW erro:', e); });
   });
 }
 </script>
