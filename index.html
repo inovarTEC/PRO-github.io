@@ -11078,14 +11078,13 @@ try { _sincPdfCfg(); }            catch(e) {}
   var bnav = document.querySelector('.bnav');
   if (!el || !hdr || !bnav) return;
 
-  // Altura real do header no dispositivo
-  hdr.style.transition = 'transform .25s ease';
+  hdr.style.transition  = 'transform .25s ease';
   bnav.style.transition = 'transform .25s ease';
-  el.style.paddingTop = hdr.offsetHeight + 'px';
+  el.style.paddingTop   = hdr.offsetHeight + 'px';
 
   var lastY      = 0;
   var accumulated = 0;
-  var THRESHOLD  = 6;   // px — reage rápido e devagar
+  var THRESHOLD  = 6;
   var ticking    = false;
   var hdrHidden  = false;
   var bnavHidden = false;
@@ -11096,35 +11095,37 @@ try { _sincPdfCfg(); }            catch(e) {}
     var delta = y - lastY;
     lastY = y;
 
-    accumulated += delta;
-
-    if (Math.abs(accumulated) < THRESHOLD) return;
+    if (delta === 0) return;
 
     var maxY = el.scrollHeight - el.clientHeight;
 
+    // Ignora bounce iOS no topo e no fundo
+    if (y <= 0 && delta < 0) return;
+    if (y >= maxY - 20 && delta > 0) return;
+
+    // Resetar se mudou de direção
+    if ((delta > 0 && accumulated < 0) || (delta < 0 && accumulated > 0)) {
+      accumulated = 0;
+    }
+
+    accumulated += delta;
+    if (Math.abs(accumulated) < THRESHOLD) return;
+
     if (accumulated > 0) {
-      // Scroll BAIXO — esconde header apenas
-      if (!hdrHidden) { hdr.style.transform = 'translateY(-110%)'; hdrHidden = true; }
+      // Scroll BAIXO — header some, rodapé aparece
+      if (!hdrHidden)  { hdr.style.transform  = 'translateY(-110%)'; hdrHidden  = true; }
+      if (bnavHidden)  { bnav.style.transform = '';                   bnavHidden = false; }
     } else {
-      // Ignora bounce do iOS no fundo da página
-      if (y >= maxY - 10) { accumulated = 0; return; }
-      // Scroll CIMA — esconde rodapé, mostra header
-      if (!bnavHidden) { bnav.style.transform = 'translateY(110%)'; bnavHidden = true; }
-      if (hdrHidden)   { hdr.style.transform  = ''; hdrHidden  = false; }
-      // Só mostra tudo quando volta ao topo real
-      if (y <= 4) {
-        bnav.style.transform = ''; bnavHidden = false;
-      }
+      // Scroll CIMA — rodapé some, header aparece
+      if (!bnavHidden) { bnav.style.transform = 'translateY(110%)';   bnavHidden = true; }
+      if (hdrHidden)   { hdr.style.transform  = '';                   hdrHidden  = false; }
     }
 
     accumulated = 0;
   }
 
   el.addEventListener('scroll', function() {
-    if (!ticking) {
-      ticking = true;
-      requestAnimationFrame(update);
-    }
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
   }, { passive: true });
 })();
 
