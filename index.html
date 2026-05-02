@@ -45,13 +45,11 @@
 html,body{height:100%;overflow-x:hidden;background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
 .tela{display:none;position:fixed;inset:0;z-index:10;flex-direction:column;background:var(--bg-home);overflow:hidden;transition:background .3s}
 .tela.ativa{display:flex}
-.tela.ativa .bnav{position:fixed;bottom:0;left:0;right:0;z-index:20}
-.tela.ativa .hdr-home{position:fixed;top:0;left:0;right:0;z-index:20}
 .modal{display:none;position:fixed;inset:0;z-index:50;flex-direction:column;background:var(--bg-home);overflow:hidden}
 .modal.ativa{display:flex}
 .hdr{display:flex;align-items:center;justify-content:space-between;padding:calc(env(safe-area-inset-top) + 14px) 16px 14px;background:var(--bg-hdr);border-bottom:1px solid var(--border);flex-shrink:0;backdrop-filter:blur(16px)}
 .hdr-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--text)}
-.hbk{width:36px;height:36px;border-radius:10px;border:none;background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:opacity .15s;color:#fff;box-shadow:0 2px 8px var(--acc-glow)}
+.hbk{width:36px;height:36px;border-radius:10px;border:1px solid var(--border-input);background:var(--bg-card);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:opacity .15s}
 .hbk:active{opacity:.6}
 .hgear{width:36px;height:36px;border-radius:10px;border:1px solid var(--border-input);background:var(--bg-card);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer}
 .btn-acc{background:var(--acc);color:#fff;font-family:'Syne',sans-serif;font-size:12px;font-weight:800;letter-spacing:.8px;border:none;border-radius:10px;padding:9px 18px;cursor:pointer;transition:opacity .15s,transform .1s}
@@ -65,21 +63,17 @@ textarea.inp{resize:none;min-height:72px;font-family:inherit;line-height:1.5}
 select.inp{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23475569' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:36px;cursor:pointer}
 .card{background:var(--bg-card);border:1px solid var(--border-card);border-radius:16px;padding:14px 13px;transition:background .3s,border-color .3s;margin-bottom:12px}
 .sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.sec-head-orc{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;cursor:pointer;user-select:none}
 .sec-lbl{display:flex;align-items:center;gap:7px;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text3)}
-.sec-arr{font-size:10px;color:var(--text3);transition:transform .3s;margin-left:4px}
-.card-body{overflow:hidden;transition:max-height .35s ease,opacity .35s ease;max-height:2000px;opacity:1}
-.card-body.collapsed{max-height:0;opacity:0}
 .dot{width:7px;height:7px;border-radius:50%}
 .tag{font-size:9px;font-weight:700;letter-spacing:.5px;border-radius:8px;padding:4px 10px;cursor:pointer;border:none;transition:opacity .15s}
 .tag-blue{background:rgba(59,130,246,.18);color:#60a5fa}
 .tag-green{background:rgba(34,197,94,.15);color:#4ade80}
-.bnav{background:var(--bg-bnav);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(4,1fr);padding:10px 4px calc(env(safe-area-inset-bottom) + 10px);flex-shrink:0;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.bnav{background:var(--bg-bnav);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(4,1fr);padding:10px 4px calc(env(safe-area-inset-bottom) + 10px);flex-shrink:0;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);position:fixed;bottom:0;left:0;right:0;z-index:20}
 .ni{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;padding:6px 2px;-webkit-tap-highlight-color:transparent;transition:opacity .15s}
 .ni-box{width:48px;height:42px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;transition:all .2s;line-height:1}
 .ni-lbl{font-size:9px;font-weight:700;letter-spacing:.3px;transition:color .15s}
 .ni:active{opacity:.6}
-/* Nav — Home */
+/* Home — acc do tema */
 .ni.on.ni-home .ni-box{background:var(--ni1);box-shadow:0 4px 14px var(--ni1-glow)}
 .ni:not(.on).ni-home .ni-box{background:var(--ni1-off);border:none}
 .ni.on.ni-home .ni-lbl{color:var(--acc)}
@@ -109,14 +103,14 @@ select.inp{appearance:none;-webkit-appearance:none;background-image:url("data:im
 .tema-row{display:flex;gap:8px;margin-bottom:16px}
 .tema-btn{flex:1;padding:10px 6px;border-radius:11px;border:1px solid var(--border-input);background:var(--bg-input);font-size:12px;font-weight:700;color:var(--text2);cursor:pointer;transition:border-color .2s,background .2s,color .2s;text-align:center}
 .tema-btn.on{border-color:var(--acc);background:var(--acc-bg);color:var(--acc)}
-.hdr-home{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;padding:12px 14px;padding-top:calc(env(safe-area-inset-top) + 12px);background:var(--bg-hdr);border-bottom:1px solid var(--border);flex-shrink:0;backdrop-filter:blur(16px)}
+.hdr-home{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;padding:12px 14px;padding-top:calc(env(safe-area-inset-top) + 12px);background:var(--bg-hdr);border-bottom:1px solid var(--border);flex-shrink:0;backdrop-filter:blur(16px);position:fixed;top:0;left:0;right:0;z-index:20}
 .hdr-logo{display:flex;align-items:center;gap:8px}
 .hdr-bolt{width:32px;height:32px;border-radius:9px;background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:16px}
 .hdr-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;letter-spacing:.5px;color:var(--text)}
 .hdr-right{display:flex;gap:8px;flex-shrink:0}
 .hbtn{width:36px;height:36px;border-radius:10px;border:1px solid var(--acc-border);background:var(--acc-bg);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;position:relative;transition:opacity .15s}.hbtn:active{opacity:.7}
 .ndot{position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:50%;background:#ef4444;border:1.5px solid var(--bg-home)}
-.home-body{flex:1;overflow-y:auto;padding:10px 12px 0;-webkit-overflow-scrolling:touch}
+.home-body{flex:1;overflow-y:auto;padding:80px 12px 80px;-webkit-overflow-scrolling:touch}
 .home-body::-webkit-scrollbar{display:none}
 .greet{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding:4px 2px}
 .greet-left{display:flex;align-items:flex-start;gap:12px}
@@ -832,17 +826,17 @@ table { min-width: 0; }
 }
 
 /* ── TEMAS DE ACENTO ─────────────────────────────────── */
-[data-acc="ambar"]   {--ct-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ct-glow:rgba(37,99,235,.5);--ca-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ca-glow:rgba(124,58,237,.5);--co-bg:linear-gradient(135deg,#16a34a,#15803d);--co-glow:rgba(22,163,74,.5);--cg-bg:linear-gradient(135deg,#f59e0b,#d97706);--cg-glow:rgba(245,158,11,.5);--ct:#92400e;--cg:#b45309;--cf:#d97706; --acc-strong:rgba(245,158,11,.42); --acc:#f59e0b;--acc-glow:rgba(245,158,11,.4);--acc-bg:rgba(245,158,11,.10);--acc-border:rgba(245,158,11,.20);  --ni1:linear-gradient(135deg,#fbbf24,#d97706);--ni1-glow:rgba(245,158,11,.45);--ni1-off:#d97706;--ni2:linear-gradient(135deg,#2563eb,#1d4ed8);--ni2-glow:rgba(37,99,235,.45);--ni2-off:#1d4ed8;--ni3:linear-gradient(135deg,#16a34a,#15803d);--ni3-glow:rgba(22,163,74,.45);--ni3-off:#15803d;--ni4:linear-gradient(135deg,#ef4444,#dc2626);--ni4-glow:rgba(239,68,68,.45);--ni4-off:#dc2626}
-[data-acc="eletrico"]{--ct-bg:linear-gradient(135deg,#16a34a,#15803d);--ct-glow:rgba(22,163,74,.5);--ca-bg:linear-gradient(135deg,#f59e0b,#d97706);--ca-glow:rgba(245,158,11,.5);--co-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--co-glow:rgba(124,58,237,.5);--cg-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--cg-glow:rgba(37,99,235,.5);--ct:#1e3a8a;--cg:#1d4ed8;--cf:#2563eb; --acc-strong:rgba(59,130,246,.42);--acc:#3b82f6;--acc-glow:rgba(59,130,246,.4);--acc-bg:rgba(59,130,246,.10);--acc-border:rgba(59,130,246,.20);  --ni1:linear-gradient(135deg,#2563eb,#1d4ed8);--ni1-glow:rgba(37,99,235,.45);--ni1-off:#1d4ed8;--ni2:linear-gradient(135deg,#7c3aed,#6d28d9);--ni2-glow:rgba(124,58,237,.45);--ni2-off:#6d28d9;--ni3:linear-gradient(135deg,#0891b2,#0e7490);--ni3-glow:rgba(6,182,212,.45);--ni3-off:#0e7490;--ni4:linear-gradient(135deg,#fbbf24,#d97706);--ni4-glow:rgba(245,158,11,.45);--ni4-off:#d97706}
-[data-acc="neon"]    {--ct-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ct-glow:rgba(124,58,237,.5);--ca-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ca-glow:rgba(37,99,235,.5);--co-bg:linear-gradient(135deg,#f59e0b,#d97706);--co-glow:rgba(245,158,11,.5);--cg-bg:linear-gradient(135deg,#16a34a,#15803d);--cg-glow:rgba(22,163,74,.5);--ct:#14532d;--cg:#15803d;--cf:#16a34a; --acc-strong:rgba(34,197,94,.42);--acc:#22c55e;--acc-glow:rgba(34,197,94,.4);--acc-bg:rgba(34,197,94,.10);--acc-border:rgba(34,197,94,.20);  --ni1:linear-gradient(135deg,#16a34a,#15803d);--ni1-glow:rgba(22,163,74,.45);--ni1-off:#15803d;--ni2:linear-gradient(135deg,#2563eb,#1d4ed8);--ni2-glow:rgba(37,99,235,.45);--ni2-off:#1d4ed8;--ni3:linear-gradient(135deg,#eab308,#ca8a04);--ni3-glow:rgba(234,179,8,.45);--ni3-off:#ca8a04;--ni4:linear-gradient(135deg,#ec4899,#db2777);--ni4-glow:rgba(236,72,153,.45);--ni4-off:#db2777}
-[data-acc="voltagem"]{--ct-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ct-glow:rgba(37,99,235,.5);--ca-bg:linear-gradient(135deg,#16a34a,#15803d);--ca-glow:rgba(22,163,74,.5);--co-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--co-glow:rgba(124,58,237,.5);--cg-bg:linear-gradient(135deg,#f59e0b,#d97706);--cg-glow:rgba(245,158,11,.5);--ct:#7f1d1d;--cg:#b91c1c;--cf:#dc2626; --acc-strong:rgba(239,68,68,.42);--acc:#ef4444;--acc-glow:rgba(239,68,68,.4);--acc-bg:rgba(239,68,68,.10);--acc-border:rgba(239,68,68,.20);  --ni1:linear-gradient(135deg,#ef4444,#dc2626);--ni1-glow:rgba(239,68,68,.45);--ni1-off:#dc2626;--ni2:linear-gradient(135deg,#7c3aed,#6d28d9);--ni2-glow:rgba(124,58,237,.45);--ni2-off:#6d28d9;--ni3:linear-gradient(135deg,#16a34a,#15803d);--ni3-glow:rgba(22,163,74,.45);--ni3-off:#15803d;--ni4:linear-gradient(135deg,#2563eb,#1d4ed8);--ni4-glow:rgba(37,99,235,.45);--ni4-off:#1d4ed8}
-[data-acc="plasma"]  {--ct-bg:linear-gradient(135deg,#f59e0b,#d97706);--ct-glow:rgba(245,158,11,.5);--ca-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ca-glow:rgba(124,58,237,.5);--co-bg:linear-gradient(135deg,#16a34a,#15803d);--co-glow:rgba(22,163,74,.5);--cg-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--cg-glow:rgba(37,99,235,.5);--ct:#4a1d96;--cg:#7e22ce;--cf:#9333ea; --acc-strong:rgba(168,85,247,.42);--acc:#a855f7;--acc-glow:rgba(168,85,247,.4);--acc-bg:rgba(168,85,247,.10);--acc-border:rgba(168,85,247,.20);  --ni1:linear-gradient(135deg,#7c3aed,#6d28d9);--ni1-glow:rgba(124,58,237,.45);--ni1-off:#6d28d9;--ni2:linear-gradient(135deg,#2563eb,#1d4ed8);--ni2-glow:rgba(37,99,235,.45);--ni2-off:#1d4ed8;--ni3:linear-gradient(135deg,#16a34a,#15803d);--ni3-glow:rgba(22,163,74,.45);--ni3-off:#15803d;--ni4:linear-gradient(135deg,#fbbf24,#d97706);--ni4-glow:rgba(245,158,11,.45);--ni4-off:#d97706}
+[data-acc="ambar"]   {--ct-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ct-glow:rgba(37,99,235,.5);--ca-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ca-glow:rgba(124,58,237,.5);--co-bg:linear-gradient(135deg,#16a34a,#15803d);--co-glow:rgba(22,163,74,.5);--cg-bg:linear-gradient(135deg,#f59e0b,#d97706);--cg-glow:rgba(245,158,11,.5);--ct:#92400e;--cg:#b45309;--cf:#d97706; --acc-strong:rgba(245,158,11,.42); --acc:#f59e0b;--acc-glow:rgba(245,158,11,.4);--acc-bg:rgba(245,158,11,.10);--acc-border:rgba(245,158,11,.20); --ni1:linear-gradient(135deg,#fbbf24,#d97706);--ni1-glow:rgba(245,158,11,.45);--ni1-off:#b45309;--ni2:linear-gradient(135deg,#2563eb,#1d4ed8);--ni2-glow:rgba(37,99,235,.45);--ni2-off:#1d4ed8;--ni3:linear-gradient(135deg,#16a34a,#15803d);--ni3-glow:rgba(22,163,74,.45);--ni3-off:#15803d;--ni4:linear-gradient(135deg,#ef4444,#dc2626);--ni4-glow:rgba(239,68,68,.45);--ni4-off:#dc2626}
+[data-acc="eletrico"]{--ct-bg:linear-gradient(135deg,#16a34a,#15803d);--ct-glow:rgba(22,163,74,.5);--ca-bg:linear-gradient(135deg,#f59e0b,#d97706);--ca-glow:rgba(245,158,11,.5);--co-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--co-glow:rgba(124,58,237,.5);--cg-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--cg-glow:rgba(37,99,235,.5);--ct:#1e3a8a;--cg:#1d4ed8;--cf:#2563eb; --acc-strong:rgba(59,130,246,.42);--acc:#3b82f6;--acc-glow:rgba(59,130,246,.4);--acc-bg:rgba(59,130,246,.10);--acc-border:rgba(59,130,246,.20); --ni1:linear-gradient(135deg,#2563eb,#1d4ed8);--ni1-glow:rgba(37,99,235,.45);--ni1-off:#1d4ed8;--ni2:linear-gradient(135deg,#7c3aed,#6d28d9);--ni2-glow:rgba(124,58,237,.45);--ni2-off:#6d28d9;--ni3:linear-gradient(135deg,#0891b2,#0e7490);--ni3-glow:rgba(6,182,212,.45);--ni3-off:#0e7490;--ni4:linear-gradient(135deg,#fbbf24,#d97706);--ni4-glow:rgba(245,158,11,.45);--ni4-off:#d97706}
+[data-acc="neon"]    {--ct-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ct-glow:rgba(124,58,237,.5);--ca-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ca-glow:rgba(37,99,235,.5);--co-bg:linear-gradient(135deg,#f59e0b,#d97706);--co-glow:rgba(245,158,11,.5);--cg-bg:linear-gradient(135deg,#16a34a,#15803d);--cg-glow:rgba(22,163,74,.5);--ct:#14532d;--cg:#15803d;--cf:#16a34a; --acc-strong:rgba(34,197,94,.42);--acc:#22c55e;--acc-glow:rgba(34,197,94,.4);--acc-bg:rgba(34,197,94,.10);--acc-border:rgba(34,197,94,.20); --ni1:linear-gradient(135deg,#16a34a,#15803d);--ni1-glow:rgba(22,163,74,.45);--ni1-off:#15803d;--ni2:linear-gradient(135deg,#2563eb,#1d4ed8);--ni2-glow:rgba(37,99,235,.45);--ni2-off:#1d4ed8;--ni3:linear-gradient(135deg,#eab308,#ca8a04);--ni3-glow:rgba(234,179,8,.45);--ni3-off:#ca8a04;--ni4:linear-gradient(135deg,#ec4899,#db2777);--ni4-glow:rgba(236,72,153,.45);--ni4-off:#db2777}
+[data-acc="voltagem"]{--ct-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ct-glow:rgba(37,99,235,.5);--ca-bg:linear-gradient(135deg,#16a34a,#15803d);--ca-glow:rgba(22,163,74,.5);--co-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--co-glow:rgba(124,58,237,.5);--cg-bg:linear-gradient(135deg,#f59e0b,#d97706);--cg-glow:rgba(245,158,11,.5);--ct:#7f1d1d;--cg:#b91c1c;--cf:#dc2626; --acc-strong:rgba(239,68,68,.42);--acc:#ef4444;--acc-glow:rgba(239,68,68,.4);--acc-bg:rgba(239,68,68,.10);--acc-border:rgba(239,68,68,.20); --ni1:linear-gradient(135deg,#ef4444,#dc2626);--ni1-glow:rgba(239,68,68,.45);--ni1-off:#dc2626;--ni2:linear-gradient(135deg,#7c3aed,#6d28d9);--ni2-glow:rgba(124,58,237,.45);--ni2-off:#6d28d9;--ni3:linear-gradient(135deg,#16a34a,#15803d);--ni3-glow:rgba(22,163,74,.45);--ni3-off:#15803d;--ni4:linear-gradient(135deg,#2563eb,#1d4ed8);--ni4-glow:rgba(37,99,235,.45);--ni4-off:#1d4ed8}
+[data-acc="plasma"]  {--ct-bg:linear-gradient(135deg,#f59e0b,#d97706);--ct-glow:rgba(245,158,11,.5);--ca-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ca-glow:rgba(124,58,237,.5);--co-bg:linear-gradient(135deg,#16a34a,#15803d);--co-glow:rgba(22,163,74,.5);--cg-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--cg-glow:rgba(37,99,235,.5);--ct:#4a1d96;--cg:#7e22ce;--cf:#9333ea; --acc-strong:rgba(168,85,247,.42);--acc:#a855f7;--acc-glow:rgba(168,85,247,.4);--acc-bg:rgba(168,85,247,.10);--acc-border:rgba(168,85,247,.20); --ni1:linear-gradient(135deg,#7c3aed,#6d28d9);--ni1-glow:rgba(124,58,237,.45);--ni1-off:#6d28d9;--ni2:linear-gradient(135deg,#2563eb,#1d4ed8);--ni2-glow:rgba(37,99,235,.45);--ni2-off:#1d4ed8;--ni3:linear-gradient(135deg,#16a34a,#15803d);--ni3-glow:rgba(22,163,74,.45);--ni3-off:#15803d;--ni4:linear-gradient(135deg,#fbbf24,#d97706);--ni4-glow:rgba(245,158,11,.45);--ni4-off:#d97706}
 /* light overrides para temas de acento */
-[data-theme="light"][data-acc="ambar"]   {--ct-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ct-glow:rgba(37,99,235,.5);--ca-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ca-glow:rgba(124,58,237,.5);--co-bg:linear-gradient(135deg,#16a34a,#15803d);--co-glow:rgba(22,163,74,.5);--cg-bg:linear-gradient(135deg,#f59e0b,#d97706);--cg-glow:rgba(245,158,11,.5);--ct:#78350f;--cg:#b45309;--cf:#b45309; --acc-strong:rgba(217,119,6,.35); --acc:#d97706;--acc-glow:rgba(217,119,6,.3);--acc-bg:rgba(245,158,11,.12);--acc-border:rgba(217,119,6,.25);  --ni1:linear-gradient(135deg,#d97706,#b45309);--ni1-glow:rgba(217,119,6,.4);--ni1-off:#b45309;--ni2:linear-gradient(135deg,#1d4ed8,#1e3a8a);--ni2-glow:rgba(29,78,216,.4);--ni2-off:#1e3a8a;--ni3:linear-gradient(135deg,#15803d,#14532d);--ni3-glow:rgba(21,128,61,.4);--ni3-off:#14532d;--ni4:linear-gradient(135deg,#dc2626,#b91c1c);--ni4-glow:rgba(220,38,38,.4);--ni4-off:#b91c1c}
-[data-theme="light"][data-acc="eletrico"]{--ct-bg:linear-gradient(135deg,#16a34a,#15803d);--ct-glow:rgba(22,163,74,.5);--ca-bg:linear-gradient(135deg,#f59e0b,#d97706);--ca-glow:rgba(245,158,11,.5);--co-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--co-glow:rgba(124,58,237,.5);--cg-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--cg-glow:rgba(37,99,235,.5);--ct:#1e3a8a;--cg:#1e40af;--cf:#1d4ed8; --acc-strong:rgba(37,99,235,.35);--acc:#2563eb;--acc-glow:rgba(37,99,235,.3);--acc-bg:rgba(59,130,246,.12);--acc-border:rgba(37,99,235,.25);  --ni1:linear-gradient(135deg,#1d4ed8,#1e3a8a);--ni1-glow:rgba(29,78,216,.4);--ni1-off:#1e3a8a;--ni2:linear-gradient(135deg,#6d28d9,#4c1d95);--ni2-glow:rgba(109,40,217,.4);--ni2-off:#4c1d95;--ni3:linear-gradient(135deg,#0e7490,#155e75);--ni3-glow:rgba(14,116,144,.4);--ni3-off:#155e75;--ni4:linear-gradient(135deg,#d97706,#b45309);--ni4-glow:rgba(217,119,6,.4);--ni4-off:#b45309}
-[data-theme="light"][data-acc="neon"]    {--ct-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ct-glow:rgba(124,58,237,.5);--ca-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ca-glow:rgba(37,99,235,.5);--co-bg:linear-gradient(135deg,#f59e0b,#d97706);--co-glow:rgba(245,158,11,.5);--cg-bg:linear-gradient(135deg,#16a34a,#15803d);--cg-glow:rgba(22,163,74,.5);--ct:#14532d;--cg:#14532d;--cf:#15803d; --acc-strong:rgba(22,163,74,.35);--acc:#16a34a;--acc-glow:rgba(22,163,74,.3);--acc-bg:rgba(34,197,94,.12);--acc-border:rgba(22,163,74,.25);  --ni1:linear-gradient(135deg,#15803d,#14532d);--ni1-glow:rgba(21,128,61,.4);--ni1-off:#14532d;--ni2:linear-gradient(135deg,#1d4ed8,#1e3a8a);--ni2-glow:rgba(29,78,216,.4);--ni2-off:#1e3a8a;--ni3:linear-gradient(135deg,#ca8a04,#a16207);--ni3-glow:rgba(202,138,4,.4);--ni3-off:#a16207;--ni4:linear-gradient(135deg,#db2777,#be185d);--ni4-glow:rgba(219,39,119,.4);--ni4-off:#be185d}
-[data-theme="light"][data-acc="voltagem"]{--ct-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ct-glow:rgba(37,99,235,.5);--ca-bg:linear-gradient(135deg,#16a34a,#15803d);--ca-glow:rgba(22,163,74,.5);--co-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--co-glow:rgba(124,58,237,.5);--cg-bg:linear-gradient(135deg,#f59e0b,#d97706);--cg-glow:rgba(245,158,11,.5);--ct:#7f1d1d;--cg:#991b1b;--cf:#b91c1c; --acc-strong:rgba(220,38,38,.35);--acc:#dc2626;--acc-glow:rgba(220,38,38,.3);--acc-bg:rgba(239,68,68,.12);--acc-border:rgba(220,38,38,.25);  --ni1:linear-gradient(135deg,#dc2626,#b91c1c);--ni1-glow:rgba(220,38,38,.4);--ni1-off:#b91c1c;--ni2:linear-gradient(135deg,#6d28d9,#4c1d95);--ni2-glow:rgba(109,40,217,.4);--ni2-off:#4c1d95;--ni3:linear-gradient(135deg,#15803d,#14532d);--ni3-glow:rgba(21,128,61,.4);--ni3-off:#14532d;--ni4:linear-gradient(135deg,#1d4ed8,#1e3a8a);--ni4-glow:rgba(29,78,216,.4);--ni4-off:#1e3a8a}
-[data-theme="light"][data-acc="plasma"]  {--ct-bg:linear-gradient(135deg,#f59e0b,#d97706);--ct-glow:rgba(245,158,11,.5);--ca-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ca-glow:rgba(124,58,237,.5);--co-bg:linear-gradient(135deg,#16a34a,#15803d);--co-glow:rgba(22,163,74,.5);--cg-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--cg-glow:rgba(37,99,235,.5);--ct:#4a1d96;--cg:#6b21a8;--cf:#7c3aed; --acc-strong:rgba(147,51,234,.35);--acc:#9333ea;--acc-glow:rgba(147,51,234,.3);--acc-bg:rgba(168,85,247,.12);--acc-border:rgba(147,51,234,.25);  --ni1:linear-gradient(135deg,#6d28d9,#4c1d95);--ni1-glow:rgba(109,40,217,.4);--ni1-off:#4c1d95;--ni2:linear-gradient(135deg,#1d4ed8,#1e3a8a);--ni2-glow:rgba(29,78,216,.4);--ni2-off:#1e3a8a;--ni3:linear-gradient(135deg,#15803d,#14532d);--ni3-glow:rgba(21,128,61,.4);--ni3-off:#14532d;--ni4:linear-gradient(135deg,#d97706,#b45309);--ni4-glow:rgba(217,119,6,.4);--ni4-off:#b45309}
+[data-theme="light"][data-acc="ambar"]   {--ct-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ct-glow:rgba(37,99,235,.5);--ca-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ca-glow:rgba(124,58,237,.5);--co-bg:linear-gradient(135deg,#16a34a,#15803d);--co-glow:rgba(22,163,74,.5);--cg-bg:linear-gradient(135deg,#f59e0b,#d97706);--cg-glow:rgba(245,158,11,.5);--ct:#78350f;--cg:#b45309;--cf:#b45309; --acc-strong:rgba(217,119,6,.35); --acc:#d97706;--acc-glow:rgba(217,119,6,.3);--acc-bg:rgba(245,158,11,.12);--acc-border:rgba(217,119,6,.25); --ni1:linear-gradient(135deg,#d97706,#b45309);--ni1-glow:rgba(217,119,6,.4);--ni1-off:#b45309;--ni2:linear-gradient(135deg,#1d4ed8,#1e3a8a);--ni2-glow:rgba(29,78,216,.4);--ni2-off:#1e3a8a;--ni3:linear-gradient(135deg,#15803d,#14532d);--ni3-glow:rgba(21,128,61,.4);--ni3-off:#14532d;--ni4:linear-gradient(135deg,#dc2626,#b91c1c);--ni4-glow:rgba(220,38,38,.4);--ni4-off:#b91c1c}
+[data-theme="light"][data-acc="eletrico"]{--ct-bg:linear-gradient(135deg,#16a34a,#15803d);--ct-glow:rgba(22,163,74,.5);--ca-bg:linear-gradient(135deg,#f59e0b,#d97706);--ca-glow:rgba(245,158,11,.5);--co-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--co-glow:rgba(124,58,237,.5);--cg-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--cg-glow:rgba(37,99,235,.5);--ct:#1e3a8a;--cg:#1e40af;--cf:#1d4ed8; --acc-strong:rgba(37,99,235,.35);--acc:#2563eb;--acc-glow:rgba(37,99,235,.3);--acc-bg:rgba(59,130,246,.12);--acc-border:rgba(37,99,235,.25); --ni1:linear-gradient(135deg,#1d4ed8,#1e3a8a);--ni1-glow:rgba(29,78,216,.4);--ni1-off:#1e3a8a;--ni2:linear-gradient(135deg,#6d28d9,#4c1d95);--ni2-glow:rgba(109,40,217,.4);--ni2-off:#4c1d95;--ni3:linear-gradient(135deg,#0e7490,#155e75);--ni3-glow:rgba(14,116,144,.4);--ni3-off:#155e75;--ni4:linear-gradient(135deg,#d97706,#b45309);--ni4-glow:rgba(217,119,6,.4);--ni4-off:#b45309}
+[data-theme="light"][data-acc="neon"]    {--ct-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ct-glow:rgba(124,58,237,.5);--ca-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ca-glow:rgba(37,99,235,.5);--co-bg:linear-gradient(135deg,#f59e0b,#d97706);--co-glow:rgba(245,158,11,.5);--cg-bg:linear-gradient(135deg,#16a34a,#15803d);--cg-glow:rgba(22,163,74,.5);--ct:#14532d;--cg:#14532d;--cf:#15803d; --acc-strong:rgba(22,163,74,.35);--acc:#16a34a;--acc-glow:rgba(22,163,74,.3);--acc-bg:rgba(34,197,94,.12);--acc-border:rgba(22,163,74,.25); --ni1:linear-gradient(135deg,#15803d,#14532d);--ni1-glow:rgba(21,128,61,.4);--ni1-off:#14532d;--ni2:linear-gradient(135deg,#1d4ed8,#1e3a8a);--ni2-glow:rgba(29,78,216,.4);--ni2-off:#1e3a8a;--ni3:linear-gradient(135deg,#ca8a04,#a16207);--ni3-glow:rgba(202,138,4,.4);--ni3-off:#a16207;--ni4:linear-gradient(135deg,#db2777,#be185d);--ni4-glow:rgba(219,39,119,.4);--ni4-off:#be185d}
+[data-theme="light"][data-acc="voltagem"]{--ct-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ct-glow:rgba(37,99,235,.5);--ca-bg:linear-gradient(135deg,#16a34a,#15803d);--ca-glow:rgba(22,163,74,.5);--co-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--co-glow:rgba(124,58,237,.5);--cg-bg:linear-gradient(135deg,#f59e0b,#d97706);--cg-glow:rgba(245,158,11,.5);--ct:#7f1d1d;--cg:#991b1b;--cf:#b91c1c; --acc-strong:rgba(220,38,38,.35);--acc:#dc2626;--acc-glow:rgba(220,38,38,.3);--acc-bg:rgba(239,68,68,.12);--acc-border:rgba(220,38,38,.25); --ni1:linear-gradient(135deg,#dc2626,#b91c1c);--ni1-glow:rgba(220,38,38,.4);--ni1-off:#b91c1c;--ni2:linear-gradient(135deg,#6d28d9,#4c1d95);--ni2-glow:rgba(109,40,217,.4);--ni2-off:#4c1d95;--ni3:linear-gradient(135deg,#15803d,#14532d);--ni3-glow:rgba(21,128,61,.4);--ni3-off:#14532d;--ni4:linear-gradient(135deg,#1d4ed8,#1e3a8a);--ni4-glow:rgba(29,78,216,.4);--ni4-off:#1e3a8a}
+[data-theme="light"][data-acc="plasma"]  {--ct-bg:linear-gradient(135deg,#f59e0b,#d97706);--ct-glow:rgba(245,158,11,.5);--ca-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ca-glow:rgba(124,58,237,.5);--co-bg:linear-gradient(135deg,#16a34a,#15803d);--co-glow:rgba(22,163,74,.5);--cg-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--cg-glow:rgba(37,99,235,.5);--ct:#4a1d96;--cg:#6b21a8;--cf:#7c3aed; --acc-strong:rgba(147,51,234,.35);--acc:#9333ea;--acc-glow:rgba(147,51,234,.3);--acc-bg:rgba(168,85,247,.12);--acc-border:rgba(147,51,234,.25); --ni1:linear-gradient(135deg,#6d28d9,#4c1d95);--ni1-glow:rgba(109,40,217,.4);--ni1-off:#4c1d95;--ni2:linear-gradient(135deg,#1d4ed8,#1e3a8a);--ni2-glow:rgba(29,78,216,.4);--ni2-off:#1e3a8a;--ni3:linear-gradient(135deg,#15803d,#14532d);--ni3-glow:rgba(21,128,61,.4);--ni3-off:#14532d;--ni4:linear-gradient(135deg,#d97706,#b45309);--ni4-glow:rgba(217,119,6,.4);--ni4-off:#b45309}
 .acc-pills{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
 .acc-pill{width:40px;height:40px;border-radius:12px;border:3px solid transparent;cursor:pointer;transition:transform .1s,border-color .15s;-webkit-tap-highlight-color:transparent;flex-shrink:0}
 .acc-pill.on{border-color:#fff;transform:scale(1.12)}
@@ -858,110 +852,9 @@ var LS = {
 var _appReady = false;
 </script>
 
-<!-- Firebase SDK -->
-<script type="module">
-  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-  import { getAuth, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCUoVzr9_PIGZXe1DKBZaINNCVQVj14Iqk",
-    authDomain: "eletricista-pro.firebaseapp.com",
-    projectId: "eletricista-pro",
-    storageBucket: "eletricista-pro.firebasestorage.app",
-    messagingSenderId: "184661625796",
-    appId: "1:184661625796:web:18c38153a0a2621025b291"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
-  // Expor funções globalmente
-  window._fbAuth = auth;
-  window._fbSignIn = (email, pass) => signInWithEmailAndPassword(auth, email, pass);
-  window._fbSignOut = () => signOut(auth);
-  window._fbResetPass = (email) => sendPasswordResetEmail(auth, email);
-  window._fbOnAuth = (cb) => onAuthStateChanged(auth, cb);
-
-  // Verificar autenticação ao carregar
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      // Autenticado — mostrar app
-      document.getElementById('tela-login').style.display = 'none';
-      document.getElementById('app-root').style.display = 'block';
-      // Atualizar painel acesso
-      var elEmail = document.getElementById('acesso-email');
-      if (elEmail) elEmail.textContent = user.email;
-      var elStatus = document.getElementById('acesso-status');
-      if (elStatus) elStatus.innerHTML = '<div style="width:7px;height:7px;border-radius:50%;background:#4ade80;display:inline-block;margin-right:6px"></div><span style="color:#4ade80;font-weight:600">Autenticado</span>';
-    } else {
-      // Não autenticado — mostrar login
-      document.getElementById('tela-login').style.display = 'flex';
-      document.getElementById('app-root').style.display = 'none';
-    }
-  });
-</script>
-
-<!-- Chart.js assíncrono — não bloqueia app -->
-<script>
-(function(){
-  var s = document.createElement('script');
-  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js';
-  s.async = true;
-  s.onerror = function(){ console.warn('Chart.js offline'); };
-  document.head.appendChild(s);
-})();
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 </head>
 <body>
-
-<!-- ══ TELA LOGIN ══ -->
-<div id="tela-login" style="display:none;position:fixed;inset:0;z-index:9999;background:#0a0a12;flex-direction:column;align-items:center;justify-content:center;padding:24px">
-  <div style="width:100%;max-width:360px">
-    <!-- Logo -->
-    <div style="text-align:center;margin-bottom:28px">
-      <div style="width:72px;height:72px;border-radius:20px;background:linear-gradient(135deg,#f59e0b,#d97706);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 16px;box-shadow:0 8px 24px rgba(245,158,11,.4)">⚡</div>
-      <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:900;color:#fff">Eletricista Power<br>PRO</div>
-      <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#475569;margin-top:6px">ÁREA RESTRITA</div>
-    </div>
-    <!-- Campos -->
-    <div style="margin-bottom:12px">
-      <input id="login-email" type="email" placeholder="Seu e-mail" autocomplete="email"
-        style="width:100%;background:#1e2235;border:1.5px solid #2d3555;border-radius:14px;padding:14px 16px;font-size:16px;color:#fff;outline:none;box-sizing:border-box;font-family:'Syne',sans-serif"
-        onfocus="this.style.borderColor='#f59e0b'" onblur="this.style.borderColor='#2d3555'">
-    </div>
-    <div style="margin-bottom:16px;position:relative">
-      <input id="login-senha" type="password" placeholder="Senha" autocomplete="current-password"
-        style="width:100%;background:#1e2235;border:1.5px solid #2d3555;border-radius:14px;padding:14px 46px 14px 16px;font-size:16px;color:#fff;outline:none;box-sizing:border-box;font-family:'Syne',sans-serif"
-        onfocus="this.style.borderColor='#f59e0b'" onblur="this.style.borderColor='#2d3555'"
-        onkeydown="if(event.key==='Enter')loginEntrar()">
-      <span onclick="var i=document.getElementById('login-senha');i.type=i.type==='password'?'text':'password'"
-        style="position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:18px;color:#475569">👁</span>
-    </div>
-    <!-- Erro -->
-    <div id="login-erro" style="display:none;margin-bottom:12px;color:#f87171;font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px">
-      <span>✕</span><span id="login-erro-msg">E-mail não cadastrado na plataforma.</span>
-    </div>
-    <!-- Botões Ver App + Comprar (só aparecem quando não cadastrado) -->
-    <div id="login-btns-extra" style="display:none;margin-bottom:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
-      <a href="https://eletricistapro.com.br/" target="_blank"
-        style="background:#1e2235;border:1.5px solid #2d3555;border-radius:14px;padding:12px;text-align:center;color:#fff;font-size:13px;font-weight:700;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px">🌐 Ver App</a>
-      <a href="https://pay.cakto.com.br/94rb2jd_835329" target="_blank"
-        style="background:#f59e0b;border:none;border-radius:14px;padding:12px;text-align:center;color:#000;font-size:13px;font-weight:800;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px">🛒 Comprar</a>
-    </div>
-    <!-- Botão Entrar -->
-    <button onclick="loginEntrar()" id="login-btn"
-      style="width:100%;background:linear-gradient(135deg,#f59e0b,#d97706);border:none;border-radius:14px;padding:16px;font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#000;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:.5px;box-shadow:0 4px 16px rgba(245,158,11,.4)">
-      ⚡ ENTRAR
-    </button>
-    <!-- Esqueceu senha -->
-    <div style="text-align:center;margin-top:16px;font-size:13px;color:#475569">
-      Esqueceu a senha? <span onclick="loginRedefinir()" style="color:#f59e0b;font-weight:700;cursor:pointer">Redefinir</span>
-    </div>
-  </div>
-</div>
-
-<!-- ══ APP ROOT ══ -->
-<div id="app-root" style="display:none">
 
 <!-- ══ TELA HOME ══ -->
 <div id="tela-home" class="tela ativa">
@@ -1141,19 +1034,16 @@ var _appReady = false;
       <div class="hdr-title" id="orc-titulo">Novo Orçamento</div>
       <div id="orc-num-badge" style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;color:var(--acc);letter-spacing:.5px;margin-top:1px"></div>
     </div>
-    <div style="width:36px"></div>
-  </div>
-  <!-- Barra de ações -->
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:10px 14px;background:var(--bg-hdr);border-bottom:1px solid var(--border);flex-shrink:0">
-    <button onclick="abrirConfigPDF()" style="display:flex;align-items:center;justify-content:center;gap:5px;height:36px;border-radius:10px;border:1px solid #3b82f6;background:rgba(59,130,246,.12);color:#60a5fa;font-size:11px;font-family:'Syne',sans-serif;font-weight:800;cursor:pointer">📄 PDF</button>
-    <button onclick="abrirHistorico()" style="display:flex;align-items:center;justify-content:center;gap:4px;height:36px;border-radius:10px;border:1px solid var(--border-input);background:var(--bg-card);color:var(--text3);font-size:11px;font-family:'Syne',sans-serif;font-weight:800;cursor:pointer">📋 Histórico</button>
-    <button class="btn-acc" onclick="salvarOrcamento()" style="height:36px;font-size:11px">💾 Salvar</button>
+    <div style="display:flex;gap:6px;flex-shrink:0;align-items:center">
+      <button onclick="abrirConfigPDF()" style="display:flex;align-items:center;gap:5px;height:34px;padding:0 11px;border-radius:10px;border:1px solid #3b82f6;background:rgba(59,130,246,.12);color:#60a5fa;font-size:12px;font-family:'Syne',sans-serif;font-weight:800;cursor:pointer;white-space:nowrap">📄 PDF</button>
+      <button onclick="abrirHistorico()" style="display:flex;align-items:center;gap:4px;height:34px;padding:0 11px;border-radius:10px;border:1px solid var(--border-input);background:var(--bg-card);color:var(--text3);font-size:12px;font-family:'Syne',sans-serif;font-weight:800;cursor:pointer">📋</button>
+      <button class="btn-acc" onclick="salvarOrcamento()" style="padding:9px 16px;font-size:11px">SALVAR</button>
+    </div>
   </div>
   <div class="scroll">
     <div class="orc-pad">
       <div class="card">
-        <div class="sec-head-orc" onclick="orcToggle(this)"><div class="sec-lbl"><div class="dot" style="background:#f59e0b"></div>Dados do Orçamento</div><span class="sec-arr">▼</span></div>
-        <div class="card-body">
+        <div class="sec-head"><div class="sec-lbl"><div class="dot" style="background:#f59e0b"></div>Dados do Orçamento</div></div>
         <input class="inp" id="orc-empresa" type="text" placeholder="Seu Nome / Sua Empresa">
         <input class="inp" id="orc-cliente" type="text" placeholder="Nome do Cliente">
         <input class="inp" id="orc-endereco" type="text" placeholder="Endereço (Rua, Nº, Bairro)">
@@ -1174,35 +1064,27 @@ var _appReady = false;
               style="margin-bottom:0;margin-top:4px;font-family:'IBM Plex Mono',monospace;font-weight:700;color:var(--acc);background:var(--acc-bg);border-color:var(--acc-border);cursor:default">
           </div>
         </div>
-        </div>
       </div>
       <div class="card">
-        <div class="sec-head-orc" onclick="orcToggle(this)">
+        <div class="sec-head">
           <div class="sec-lbl"><div class="dot" style="background:#3b82f6"></div>Tipo de Serviço</div>
-          <div style="display:flex;align-items:center;gap:8px">
-            <button class="tag tag-blue" onclick="event.stopPropagation();this.closest('.card').querySelector('.orc-obs-extra').classList.toggle('open');this.textContent=this.closest('.card').querySelector('.orc-obs-extra').classList.contains('open')?'− obs':'+ obs'">+ obs</button>
-            <span class="sec-arr" style="transform:rotate(-90deg)">▼</span>
-          </div>
+          <button class="tag tag-blue" onclick="this.closest('.card').querySelector('.orc-obs-extra').classList.toggle('open');this.textContent=this.closest('.card').querySelector('.orc-obs-extra').classList.contains('open')?'− obs':'+ obs'">+ obs</button>
         </div>
-        <div class="card-body collapsed">
         <select class="inp" id="orc-tipo-serv" style="margin-bottom:0"><option value="" disabled selected>— Selecione o tipo de serviço —</option><option>Instalação Elétrica Residencial</option><option>Instalação Elétrica Comercial</option><option>Instalação Elétrica Industrial</option><option>Manutenção Elétrica</option><option>Laudo Técnico</option><option>Projeto Elétrico</option><option>Outros</option></select>
         <div class="orc-obs-extra" style="max-height:0;overflow:hidden;transition:max-height .25s ease">
           <textarea class="inp" placeholder="Observações gerais do serviço..." style="margin-top:8px"></textarea>
-        </div>
         </div>
       </div>
 
       <!-- ══ SERVIÇOS ══ -->
       <div class="card" style="border-color:rgba(34,197,94,.2)">
-        <div class="sec-head-orc" onclick="orcToggle(this)">
+        <div class="sec-head">
           <div class="sec-lbl"><div class="dot" style="background:#22c55e"></div>Serviços Elétricos</div>
           <div style="display:flex;align-items:center;gap:8px">
-            <button onclick="event.stopPropagation();abrirCatalogo('srv')" style="display:flex;align-items:center;gap:5px;padding:5px 10px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25);border-radius:8px;font-size:10px;font-weight:800;color:#4ade80;cursor:pointer;letter-spacing:.4px">📋 Catálogo</button>
+            <button onclick="abrirCatalogo('srv')" style="display:flex;align-items:center;gap:5px;padding:5px 10px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25);border-radius:8px;font-size:10px;font-weight:800;color:#4ade80;cursor:pointer;letter-spacing:.4px">📋 Catálogo</button>
             <span id="orc-serv-count" style="font-size:10px;color:var(--text3)">0 itens</span>
-            <span class="sec-arr" style="transform:rotate(-90deg)">▼</span>
           </div>
         </div>
-        <div class="card-body collapsed">
         <div class="sw">
           <span class="sw-ico">🔍</span>
           <input class="inp" id="srv-inline-search" type="text"
@@ -1233,20 +1115,17 @@ var _appReady = false;
         <!-- container DOM-direto -->
         <div id="srv-container" style="margin-top:4px"></div>
         <textarea class="inp" id="orc-serv-obs" placeholder="Observações técnicas dos serviços..." style="margin-top:8px"></textarea>
-        </div>
       </div>
 
       <!-- ══ MATERIAIS ══ -->
       <div class="card" style="border-color:rgba(167,139,250,.2)">
-        <div class="sec-head-orc" onclick="orcToggle(this)">
+        <div class="sec-head">
           <div class="sec-lbl"><div class="dot" style="background:#a78bfa"></div>Materiais Elétricos</div>
           <div style="display:flex;align-items:center;gap:8px">
-            <button onclick="event.stopPropagation();abrirCatalogo('mat')" style="display:flex;align-items:center;gap:5px;padding:5px 10px;background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.25);border-radius:8px;font-size:10px;font-weight:800;color:#c4b5fd;cursor:pointer;letter-spacing:.4px">📦 Catálogo</button>
+            <button onclick="abrirCatalogo('mat')" style="display:flex;align-items:center;gap:5px;padding:5px 10px;background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.25);border-radius:8px;font-size:10px;font-weight:800;color:#c4b5fd;cursor:pointer;letter-spacing:.4px">📦 Catálogo</button>
             <span id="orc-mat-count" style="font-size:10px;color:var(--text3)">0 itens</span>
-            <span class="sec-arr" style="transform:rotate(-90deg)">▼</span>
           </div>
         </div>
-        <div class="card-body collapsed">
         <div class="sw">
           <span class="sw-ico">🔍</span>
           <input class="inp" id="mat-inline-search" type="text"
@@ -1277,12 +1156,10 @@ var _appReady = false;
         <!-- container DOM-direto -->
         <div id="mat-container" style="margin-top:4px"></div>
         <textarea class="inp" id="orc-mat-obs" placeholder="Observações sobre materiais (marca, especificações)..." style="margin-top:8px"></textarea>
-        </div>
       </div>
 
       <div class="card">
-        <div class="sec-head-orc" onclick="orcToggle(this)"><div class="sec-lbl"><div class="dot" style="background:#f97316"></div>Custos Operacionais</div><span class="sec-arr" style="transform:rotate(-90deg)">▼</span></div>
-        <div class="card-body collapsed">
+        <div class="sec-head"><div class="sec-lbl"><div class="dot" style="background:#f97316"></div>Custos Operacionais</div></div>
         <div class="custo-grid">
           <div class="custo-c"><div class="custo-top">Desconto %</div><div class="custo-row"><span>%</span><input class="custo-inp" id="orc-desc" type="number" value="0" min="0" max="100" onchange="orcCalcTotal()"></div></div>
           <div class="custo-c"><div class="custo-top">Acréscimo R$</div><div class="custo-row"><span>💰</span><input class="custo-inp" id="orc-acre" type="number" value="0" min="0" onchange="orcCalcTotal()"></div></div>
@@ -1398,8 +1275,6 @@ var _appReady = false;
         <div class="res-row">
           <span class="res-row-lbl">📦 Materiais</span>
           <span class="res-row-val" id="res-mat-val">R$ 0,00</span>
-        </div>
-      </div>
         </div>
       </div>
 
@@ -2281,30 +2156,15 @@ var _appReady = false;
   </div>
   <div class="aj-panel" id="aj-3"><div class="aj-body">
     <div class="acesso-card">
-      <div class="acesso-sec">🔒 CONTA</div>
-      <!-- E-mail -->
-      <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:13px;padding:14px;margin-bottom:10px">
-        <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px">E-MAIL</div>
-        <div id="acesso-email" style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:600;color:var(--acc)">—</div>
-      </div>
-      <!-- Status -->
-      <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:13px;padding:14px;margin-bottom:10px">
-        <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px">STATUS</div>
-        <div id="acesso-status" style="font-size:13px;display:flex;align-items:center;gap:6px">
+      <div class="acesso-sec">🔒 Acesso</div>
+      <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:13px;padding:14px;margin-bottom:12px">
+        <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px">MODO</div>
+        <div style="display:flex;align-items:center;gap:6px">
           <div style="width:7px;height:7px;border-radius:50%;background:#4ade80"></div>
-          <span style="color:#4ade80;font-weight:600">Autenticado</span>
+          <span style="font-size:13px;color:#4ade80;font-weight:600">Modo Teste (sem Firebase)</span>
         </div>
       </div>
-      <!-- Senha -->
-      <div onclick="acessoRedefinirSenha()" style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:13px;padding:14px;cursor:pointer">
-        <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px">SENHA</div>
-        <div style="font-size:13px;color:var(--acc);font-weight:700;display:flex;align-items:center;gap:6px">🔑 Enviar link de redefinição</div>
-      </div>
     </div>
-    <!-- Sair -->
-    <button onclick="acessoSair()" style="width:100%;background:rgba(239,68,68,.12);border:1.5px solid rgba(239,68,68,.3);border-radius:13px;padding:16px;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#f87171;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px">
-      🚪 SAIR DA CONTA
-    </button>
   </div></div>
   <div class="aj-panel" id="aj-4"><div class="aj-body">
     <div class="aj-sec"><span>☁️</span> Backup &amp; Restauração</div>
@@ -4547,16 +4407,6 @@ function copiarMsg(id) {
   }
 }
 
-function orcToggle(el) {
-  var card = el.closest('.card');
-  if (!card) return;
-  var body = card.querySelector('.card-body');
-  var arr  = card.querySelector('.sec-arr');
-  if (!body) return;
-  var collapsed = body.classList.toggle('collapsed');
-  if (arr) arr.style.transform = collapsed ? 'rotate(-90deg)' : 'rotate(0deg)';
-}
-
 function novoOrcamento() {
   // limpar containers
   document.getElementById('srv-container').innerHTML = '';
@@ -5703,25 +5553,13 @@ function parseCurrencySafe(v) {
 
 const telas = {home:'tela-home', orcamento:'tela-orcamento', resultado:'tela-resultado', agenda:'tela-agenda'};
 function navTo(id) {
-  // ── Limpar tela anterior antes de trocar ──
-  var prevTela = document.querySelector('.tela.ativa');
-  if (prevTela) {
-    var prevId = prevTela.id;
-    // Sair Agenda
-    if (prevId === 'tela-agenda') {
-      var ab = document.getElementById('agenda-body-wrap');
-      if (ab) ab.innerHTML = '';
-    }
-  }
-
   Object.values(telas).forEach(t => document.getElementById(t).classList.remove('ativa'));
   document.getElementById(telas[id]).classList.add('ativa');
   if (id === 'home') homeAtualizar();
   // Atualizar tab ativo na barra
   document.querySelectorAll('.ni').forEach(n => n.classList.remove('on'));
   const map = {home:'ni-home', agenda:'ni-agen', orcamento:'ni-ferr'};
-  var ric = window.requestIdleCallback || function(fn){ setTimeout(fn, 50); };
-  if (id === 'agenda') ric(function(){ try { renderAgenda(); } catch(e) {} });
+  if (id === 'agenda') try { renderAgenda(); } catch(e) {}
   if (map[id]) {
     const tab = document.querySelector('.ni.' + map[id]);
     if (tab) tab.classList.add('on');
@@ -5729,15 +5567,14 @@ function navTo(id) {
 }
 function abrirModal(id) {
   document.getElementById(id).classList.add('ativa');
-  var ric = window.requestIdleCallback || function(fn){ setTimeout(fn, 50); };
-  if (id === 'modal-agenda')    ric(function(){ try { renderAgenda();    } catch(e) {} });
-  if (id === 'modal-garantias') ric(function(){ try { renderGarantias(); } catch(e) {} });
-  if (id === 'modal-clientes')  ric(function(){ try { renderClientes();  } catch(e) {} });
-  if (id === 'modal-ajustes')   { carregarAjustes(); }
+  if (id === 'modal-agenda')    { renderAgenda();     }
+  if (id === 'modal-garantias') { renderGarantias();  }
+  if (id === 'modal-ajustes')   { carregarAjustes();  }
+  if (id === 'modal-clientes')  { renderClientes();   }
   if (id === 'modal-relatorio') {
     _relMes = new Date().getMonth();
     _relAno = new Date().getFullYear();
-    ric(function(){ try { renderRelatorio(); } catch(e) {} });
+    renderRelatorio();
   }
 }
 function fecharModal(id) { document.getElementById(id).classList.remove('ativa'); }
@@ -7970,42 +7807,12 @@ function renderRelatorio() {
 // FERRAMENTAS
 // ══════════════════════════════════════════════════════════════
 function ferrAba(idx) {
-  // ── Limpar aba anterior antes de trocar ──
-  var prevPanel = document.querySelector('.ferr-panel.on');
-  if (prevPanel) {
-    var prevIdx = Array.from(document.querySelectorAll('.ferr-panel')).indexOf(prevPanel);
-    if (prevIdx !== idx) {
-      // Sair NBR (0) ou Normas (4) — limpar normas renderizadas
-      if (prevIdx === 0 || prevIdx === 4) {
-        var nb = document.getElementById('normas-body');
-        if (nb) nb.innerHTML = '';
-      }
-      // Sair Demanda (1) — esconder tabela de cômodos
-      if (prevIdx === 1) {
-        var dtw = document.getElementById('dem-tab-wrap');
-        if (dtw) dtw.style.display = 'none';
-        var dtb = document.getElementById('dem-tab-tbody');
-        if (dtb) dtb.innerHTML = '';
-      }
-      // Sair Queda V (2) — esconder resultado e limpar histórico
-      if (prevIdx === 2) {
-        var qvr = document.getElementById('qv-resultado');
-        if (qvr) qvr.style.display = 'none';
-        var qvh = document.getElementById('qv-historico-lista');
-        if (qvh) qvh.innerHTML = '';
-      }
-    }
-  }
-
+  if (idx === 4) try { renderNormas(); renderNBR5410(); } catch(e) {}
+  if (idx === 0) try { renderNBR_Normas(); } catch(e) {}
+  if (idx === 3) try { checkAtualizarSelect(); } catch(e) {}
   document.querySelectorAll('.ferr-tab').forEach((t,i) => t.classList.toggle('on',i===idx));
   document.querySelectorAll('.ferr-panel').forEach((p,i) => p.classList.toggle('on',i===idx));
   const tipoKey = window._tipoSelecionado || 'htc-res';
-
-  var ric = window.requestIdleCallback || function(fn){ setTimeout(fn, 50); };
-
-  if (idx === 0) ric(function(){ try { renderNBR_Normas(); } catch(e) {} });
-  if (idx === 4) ric(function(){ try { renderNormas(); renderNBR5410(); } catch(e) {} });
-  if (idx === 3) ric(function(){ try { checkAtualizarSelect(); } catch(e) {} });
 
   // Aba Demanda — sincronizar tipo
   if (idx === 1) {
@@ -8021,11 +7828,7 @@ function ferrAba(idx) {
 
   // Aba Queda V — inicializar selects e aplicar config
   if (idx === 2) {
-    ric(function(){ 
-      if(typeof qvInicializarSelects==='function') qvInicializarSelects(); 
-      qvAplicarConfig(tipoKey); 
-      qvRenderCapacidade(); 
-    });
+    setTimeout(() => { if(typeof qvInicializarSelects==='function') qvInicializarSelects(); qvAplicarConfig(tipoKey); qvRenderCapacidade(); }, 80);
   }
 }
 function ferrPill(el, grupo) {
@@ -11271,46 +11074,53 @@ try { _sincPdfCfg(); }            catch(e) {}
 // ══ HIDE ON SCROLL — HOME ONLY ══
 (function(){
   var el   = document.querySelector('.home-body');
-  var hdr  = document.querySelector('#tela-home .hdr-home');
-  var bnav = document.querySelector('#tela-home .bnav');
+  var hdr  = document.querySelector('.hdr-home');
+  var bnav = document.querySelector('.bnav');
   if (!el || !hdr || !bnav) return;
-
-  // Padding real após fixed
-  function setPadding() {
-    el.style.paddingTop    = hdr.offsetHeight + 'px';
-    el.style.paddingBottom = bnav.offsetHeight + 'px';
-  }
-  setTimeout(setPadding, 100);
-  window.addEventListener('resize', setPadding);
 
   hdr.style.transition  = 'transform .25s ease';
   bnav.style.transition = 'transform .25s ease';
+  el.style.paddingTop   = hdr.offsetHeight + 'px';
 
-  var lastY = 0, accumulated = 0, THRESHOLD = 6;
-  var ticking = false, hdrHidden = false, bnavHidden = false;
+  var lastY      = 0;
+  var accumulated = 0;
+  var THRESHOLD  = 6;
+  var ticking    = false;
+  var hdrHidden  = false;
+  var bnavHidden = false;
 
   function update() {
     ticking = false;
     var y     = el.scrollTop;
     var delta = y - lastY;
     lastY = y;
+
     if (delta === 0) return;
 
     var maxY = el.scrollHeight - el.clientHeight;
+
+    // Ignora bounce iOS no topo e no fundo
     if (y <= 0 && delta < 0) return;
     if (y >= maxY - 20 && delta > 0) return;
 
-    if ((delta > 0 && accumulated < 0) || (delta < 0 && accumulated > 0)) accumulated = 0;
+    // Resetar se mudou de direção
+    if ((delta > 0 && accumulated < 0) || (delta < 0 && accumulated > 0)) {
+      accumulated = 0;
+    }
+
     accumulated += delta;
     if (Math.abs(accumulated) < THRESHOLD) return;
 
     if (accumulated > 0) {
-      if (!hdrHidden) { hdr.style.transform = 'translateY(-110%)'; hdrHidden = true; }
+      // Scroll BAIXO — header some, rodapé aparece
+      if (!hdrHidden)  { hdr.style.transform  = 'translateY(-110%)'; hdrHidden  = true; }
+      if (bnavHidden)  { bnav.style.transform = '';                   bnavHidden = false; }
     } else {
-      if (!bnavHidden) { bnav.style.transform = 'translateY(110%)'; bnavHidden = true; }
-      if (hdrHidden)   { hdr.style.transform  = ''; hdrHidden = false; }
-      if (y <= 4)      { bnav.style.transform  = ''; bnavHidden = false; }
+      // Scroll CIMA — rodapé some, header aparece
+      if (!bnavHidden) { bnav.style.transform = 'translateY(110%)';   bnavHidden = true; }
+      if (hdrHidden)   { hdr.style.transform  = '';                   hdrHidden  = false; }
     }
+
     accumulated = 0;
   }
 
@@ -11479,80 +11289,6 @@ try { _sincPdfCfg(); }            catch(e) {}
     style="background:var(--bg-card);border-radius:20px 20px 0 0;width:100%;max-width:520px;max-height:88vh;display:flex;flex-direction:column;overflow:hidden">
   </div>
 </div>
-
-</div><!-- /app-root -->
-
-<script>
-// ══ LOGIN ══
-function loginEntrar() {
-  var email = document.getElementById('login-email').value.trim();
-  var senha = document.getElementById('login-senha').value;
-  var btn = document.getElementById('login-btn');
-  var erro = document.getElementById('login-erro');
-  var btnsExtra = document.getElementById('login-btns-extra');
-
-  if (!email || !senha) {
-    _loginErro('Preencha e-mail e senha.');
-    return;
-  }
-
-  btn.textContent = 'Entrando...';
-  btn.disabled = true;
-  erro.style.display = 'none';
-  btnsExtra.style.display = 'none';
-
-  window._fbSignIn(email, senha)
-    .then(function() {
-      btn.textContent = '⚡ ENTRAR';
-      btn.disabled = false;
-    })
-    .catch(function(e) {
-      btn.textContent = '⚡ ENTRAR';
-      btn.disabled = false;
-      if (e.code === 'auth/user-not-found' || e.code === 'auth/invalid-credential') {
-        _loginErro('E-mail não cadastrado na plataforma.');
-        btnsExtra.style.display = 'grid';
-      } else if (e.code === 'auth/wrong-password') {
-        _loginErro('Senha incorreta.');
-      } else if (e.code === 'auth/invalid-email') {
-        _loginErro('E-mail inválido.');
-      } else if (e.code === 'auth/too-many-requests') {
-        _loginErro('Muitas tentativas. Tente mais tarde.');
-      } else {
-        _loginErro('Erro ao entrar. Tente novamente.');
-      }
-    });
-}
-
-function _loginErro(msg) {
-  var el = document.getElementById('login-erro');
-  var msg_el = document.getElementById('login-erro-msg');
-  if (msg_el) msg_el.textContent = msg;
-  el.style.display = 'flex';
-}
-
-function loginRedefinir() {
-  var email = document.getElementById('login-email').value.trim();
-  if (!email) { _loginErro('Digite seu e-mail para redefinir a senha.'); return; }
-  window._fbResetPass(email)
-    .then(function() { _loginErro('Link de redefinição enviado! Verifique seu e-mail.'); })
-    .catch(function() { _loginErro('Erro ao enviar. Verifique o e-mail.'); });
-}
-
-// ══ ACESSO (painel Ajustes) ══
-function acessoSair() {
-  if (!confirm('Deseja sair da conta?')) return;
-  window._fbSignOut().catch(function(){});
-}
-
-function acessoRedefinirSenha() {
-  var user = window._fbAuth ? window._fbAuth.currentUser : null;
-  if (!user) return;
-  window._fbResetPass(user.email)
-    .then(function() { alert('Link de redefinição enviado para ' + user.email); })
-    .catch(function() { alert('Erro ao enviar link.'); });
-}
-</script>
 
 </body>
 </html>
