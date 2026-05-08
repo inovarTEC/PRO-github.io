@@ -74,25 +74,25 @@ select.inp{appearance:none;-webkit-appearance:none;background-image:url("data:im
 .ni-lbl{font-size:9px;font-weight:700;letter-spacing:.3px;transition:color .15s}
 .ni:active{opacity:.6}
 /* Home — acc do tema */
-.ni.on.ni-home .ni-box{background:var(--ni1);box-shadow:0 4px 14px var(--ni1-glow)}
-.ni:not(.on).ni-home .ni-box{background:var(--ni1-off);border:none}
+.ni.on.ni-home .ni-box{background:linear-gradient(135deg,var(--acc),var(--cg));box-shadow:0 4px 14px var(--acc-glow)}
+.ni:not(.on).ni-home .ni-box{background:var(--cg);border:none}
 .ni.on.ni-home .ni-lbl{color:var(--acc)}
 .ni:not(.on).ni-home .ni-lbl{color:var(--textnav)}
-/* Nav — Ferramentas */
-.ni.on.ni-ferr .ni-box{background:var(--ni2);box-shadow:0 4px 14px var(--ni2-glow)}
-.ni:not(.on).ni-ferr .ni-box{background:var(--ni2-off);border:none}
-.ni.on.ni-ferr .ni-lbl{color:var(--acc)}
+/* Ferramentas — azul */
+.ni.on.ni-ferr .ni-box{background:linear-gradient(135deg,#2563eb,#1d4ed8);box-shadow:0 4px 14px rgba(37,99,235,.45)}
+.ni:not(.on).ni-ferr .ni-box{background:#1d4ed8;border:none}
+.ni.on.ni-ferr .ni-lbl{color:#60a5fa}
 .ni:not(.on).ni-ferr .ni-lbl{color:var(--textnav)}
-/* Nav — Agendar */
-.ni.on.ni-agen .ni-box{background:var(--ni3);box-shadow:0 4px 14px var(--ni3-glow)}
-.ni:not(.on).ni-agen .ni-box{background:var(--ni3-off);border:none}
-.ni.on.ni-agen .ni-lbl{color:var(--acc)}
+/* Agendar — verde */
+.ni.on.ni-agen .ni-box{background:linear-gradient(135deg,#16a34a,#15803d);box-shadow:0 4px 14px rgba(22,163,74,.45)}
+.ni:not(.on).ni-agen .ni-box{background:#15803d;border:none}
+.ni.on.ni-agen .ni-lbl{color:#4ade80}
 .ni:not(.on).ni-agen .ni-lbl{color:var(--textnav)}
-/* Nav — Ajustes */
-.ni.on.ni-aj .ni-box{background:var(--ni4);box-shadow:0 4px 14px var(--ni4-glow)}
-.ni:not(.on).ni-aj .ni-box{background:var(--ni4-off);border:none}
-.ni.on.ni-aj .ni-lbl{color:var(--acc)}
-.ni:not(.on).ni-aj .ni-lbl{color:var(--textnav)}
+/* Relatório — roxo */
+.ni.on.ni-rela .ni-box{background:linear-gradient(135deg,#7c3aed,#6d28d9);box-shadow:0 4px 14px rgba(124,58,237,.45)}
+.ni:not(.on).ni-rela .ni-box{background:#6d28d9;border:none}
+.ni.on.ni-rela .ni-lbl{color:#a78bfa}
+.ni:not(.on).ni-rela .ni-lbl{color:var(--textnav)}
 .ni.on .ni-bar{background:var(--acc);box-shadow:0 0 8px var(--acc-glow)}
 .sw{position:relative;margin-bottom:6px}
 .sw .inp{padding-left:36px;margin-bottom:0}
@@ -514,7 +514,6 @@ table { min-width: 0; }
   .home-body { padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px)); }
 }
 
-
 /* ══════════════════════════════════════════════════════
    HOME REDESIGN — novos componentes
 ══════════════════════════════════════════════════════ */
@@ -679,7 +678,6 @@ table { min-width: 0; }
   .home-ferr-row { grid-template-columns: repeat(2, 1fr); }
 }
 
-
 /* ── Orçamento: obs collapsível ── */
 .orc-obs-extra.open { max-height: 200px !important; }
 
@@ -786,7 +784,6 @@ table { min-width: 0; }
   }
 }
 
-
 /* ── Queda V: botões de bitola ── */
 .qv-bit-btn {
   padding: 9px 4px;
@@ -826,17 +823,17 @@ table { min-width: 0; }
 }
 
 /* ── TEMAS DE ACENTO ─────────────────────────────────── */
-[data-acc="ambar"]   {--ct-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ct-glow:rgba(37,99,235,.5);--ca-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ca-glow:rgba(124,58,237,.5);--co-bg:linear-gradient(135deg,#16a34a,#15803d);--co-glow:rgba(22,163,74,.5);--cg-bg:linear-gradient(135deg,#f59e0b,#d97706);--cg-glow:rgba(245,158,11,.5);--ct:#92400e;--cg:#b45309;--cf:#d97706; --acc-strong:rgba(245,158,11,.42); --acc:#f59e0b;--acc-glow:rgba(245,158,11,.4);--acc-bg:rgba(245,158,11,.10);--acc-border:rgba(245,158,11,.20); --ni1:linear-gradient(135deg,#fbbf24,#d97706);--ni1-glow:rgba(245,158,11,.45);--ni1-off:#b45309;--ni2:linear-gradient(135deg,#2563eb,#1d4ed8);--ni2-glow:rgba(37,99,235,.45);--ni2-off:#1d4ed8;--ni3:linear-gradient(135deg,#16a34a,#15803d);--ni3-glow:rgba(22,163,74,.45);--ni3-off:#15803d;--ni4:linear-gradient(135deg,#ef4444,#dc2626);--ni4-glow:rgba(239,68,68,.45);--ni4-off:#dc2626}
-[data-acc="eletrico"]{--ct-bg:linear-gradient(135deg,#16a34a,#15803d);--ct-glow:rgba(22,163,74,.5);--ca-bg:linear-gradient(135deg,#f59e0b,#d97706);--ca-glow:rgba(245,158,11,.5);--co-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--co-glow:rgba(124,58,237,.5);--cg-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--cg-glow:rgba(37,99,235,.5);--ct:#1e3a8a;--cg:#1d4ed8;--cf:#2563eb; --acc-strong:rgba(59,130,246,.42);--acc:#3b82f6;--acc-glow:rgba(59,130,246,.4);--acc-bg:rgba(59,130,246,.10);--acc-border:rgba(59,130,246,.20); --ni1:linear-gradient(135deg,#2563eb,#1d4ed8);--ni1-glow:rgba(37,99,235,.45);--ni1-off:#1d4ed8;--ni2:linear-gradient(135deg,#7c3aed,#6d28d9);--ni2-glow:rgba(124,58,237,.45);--ni2-off:#6d28d9;--ni3:linear-gradient(135deg,#0891b2,#0e7490);--ni3-glow:rgba(6,182,212,.45);--ni3-off:#0e7490;--ni4:linear-gradient(135deg,#fbbf24,#d97706);--ni4-glow:rgba(245,158,11,.45);--ni4-off:#d97706}
-[data-acc="neon"]    {--ct-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ct-glow:rgba(124,58,237,.5);--ca-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ca-glow:rgba(37,99,235,.5);--co-bg:linear-gradient(135deg,#f59e0b,#d97706);--co-glow:rgba(245,158,11,.5);--cg-bg:linear-gradient(135deg,#16a34a,#15803d);--cg-glow:rgba(22,163,74,.5);--ct:#14532d;--cg:#15803d;--cf:#16a34a; --acc-strong:rgba(34,197,94,.42);--acc:#22c55e;--acc-glow:rgba(34,197,94,.4);--acc-bg:rgba(34,197,94,.10);--acc-border:rgba(34,197,94,.20); --ni1:linear-gradient(135deg,#16a34a,#15803d);--ni1-glow:rgba(22,163,74,.45);--ni1-off:#15803d;--ni2:linear-gradient(135deg,#2563eb,#1d4ed8);--ni2-glow:rgba(37,99,235,.45);--ni2-off:#1d4ed8;--ni3:linear-gradient(135deg,#eab308,#ca8a04);--ni3-glow:rgba(234,179,8,.45);--ni3-off:#ca8a04;--ni4:linear-gradient(135deg,#ec4899,#db2777);--ni4-glow:rgba(236,72,153,.45);--ni4-off:#db2777}
-[data-acc="voltagem"]{--ct-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ct-glow:rgba(37,99,235,.5);--ca-bg:linear-gradient(135deg,#16a34a,#15803d);--ca-glow:rgba(22,163,74,.5);--co-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--co-glow:rgba(124,58,237,.5);--cg-bg:linear-gradient(135deg,#f59e0b,#d97706);--cg-glow:rgba(245,158,11,.5);--ct:#7f1d1d;--cg:#b91c1c;--cf:#dc2626; --acc-strong:rgba(239,68,68,.42);--acc:#ef4444;--acc-glow:rgba(239,68,68,.4);--acc-bg:rgba(239,68,68,.10);--acc-border:rgba(239,68,68,.20); --ni1:linear-gradient(135deg,#ef4444,#dc2626);--ni1-glow:rgba(239,68,68,.45);--ni1-off:#dc2626;--ni2:linear-gradient(135deg,#7c3aed,#6d28d9);--ni2-glow:rgba(124,58,237,.45);--ni2-off:#6d28d9;--ni3:linear-gradient(135deg,#16a34a,#15803d);--ni3-glow:rgba(22,163,74,.45);--ni3-off:#15803d;--ni4:linear-gradient(135deg,#2563eb,#1d4ed8);--ni4-glow:rgba(37,99,235,.45);--ni4-off:#1d4ed8}
-[data-acc="plasma"]  {--ct-bg:linear-gradient(135deg,#f59e0b,#d97706);--ct-glow:rgba(245,158,11,.5);--ca-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ca-glow:rgba(124,58,237,.5);--co-bg:linear-gradient(135deg,#16a34a,#15803d);--co-glow:rgba(22,163,74,.5);--cg-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--cg-glow:rgba(37,99,235,.5);--ct:#4a1d96;--cg:#7e22ce;--cf:#9333ea; --acc-strong:rgba(168,85,247,.42);--acc:#a855f7;--acc-glow:rgba(168,85,247,.4);--acc-bg:rgba(168,85,247,.10);--acc-border:rgba(168,85,247,.20); --ni1:linear-gradient(135deg,#7c3aed,#6d28d9);--ni1-glow:rgba(124,58,237,.45);--ni1-off:#6d28d9;--ni2:linear-gradient(135deg,#2563eb,#1d4ed8);--ni2-glow:rgba(37,99,235,.45);--ni2-off:#1d4ed8;--ni3:linear-gradient(135deg,#16a34a,#15803d);--ni3-glow:rgba(22,163,74,.45);--ni3-off:#15803d;--ni4:linear-gradient(135deg,#fbbf24,#d97706);--ni4-glow:rgba(245,158,11,.45);--ni4-off:#d97706}
+[data-acc="ambar"]   {--ct-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ct-glow:rgba(37,99,235,.5);--ca-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ca-glow:rgba(124,58,237,.5);--co-bg:linear-gradient(135deg,#16a34a,#15803d);--co-glow:rgba(22,163,74,.5);--cg-bg:linear-gradient(135deg,#f59e0b,#d97706);--cg-glow:rgba(245,158,11,.5);--ct:#92400e;--cg:#b45309;--cf:#d97706; --acc-strong:rgba(245,158,11,.42); --acc:#f59e0b;--acc-glow:rgba(245,158,11,.4);--acc-bg:rgba(245,158,11,.10);--acc-border:rgba(245,158,11,.20); }
+[data-acc="eletrico"]{--ct-bg:linear-gradient(135deg,#16a34a,#15803d);--ct-glow:rgba(22,163,74,.5);--ca-bg:linear-gradient(135deg,#f59e0b,#d97706);--ca-glow:rgba(245,158,11,.5);--co-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--co-glow:rgba(124,58,237,.5);--cg-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--cg-glow:rgba(37,99,235,.5);--ct:#1e3a8a;--cg:#1d4ed8;--cf:#2563eb; --acc-strong:rgba(59,130,246,.42);--acc:#3b82f6;--acc-glow:rgba(59,130,246,.4);--acc-bg:rgba(59,130,246,.10);--acc-border:rgba(59,130,246,.20); }
+[data-acc="neon"]    {--ct-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ct-glow:rgba(124,58,237,.5);--ca-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ca-glow:rgba(37,99,235,.5);--co-bg:linear-gradient(135deg,#f59e0b,#d97706);--co-glow:rgba(245,158,11,.5);--cg-bg:linear-gradient(135deg,#16a34a,#15803d);--cg-glow:rgba(22,163,74,.5);--ct:#14532d;--cg:#15803d;--cf:#16a34a; --acc-strong:rgba(34,197,94,.42);--acc:#22c55e;--acc-glow:rgba(34,197,94,.4);--acc-bg:rgba(34,197,94,.10);--acc-border:rgba(34,197,94,.20); }
+[data-acc="voltagem"]{--ct-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ct-glow:rgba(37,99,235,.5);--ca-bg:linear-gradient(135deg,#16a34a,#15803d);--ca-glow:rgba(22,163,74,.5);--co-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--co-glow:rgba(124,58,237,.5);--cg-bg:linear-gradient(135deg,#f59e0b,#d97706);--cg-glow:rgba(245,158,11,.5);--ct:#7f1d1d;--cg:#b91c1c;--cf:#dc2626; --acc-strong:rgba(239,68,68,.42);--acc:#ef4444;--acc-glow:rgba(239,68,68,.4);--acc-bg:rgba(239,68,68,.10);--acc-border:rgba(239,68,68,.20); }
+[data-acc="plasma"]  {--ct-bg:linear-gradient(135deg,#f59e0b,#d97706);--ct-glow:rgba(245,158,11,.5);--ca-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ca-glow:rgba(124,58,237,.5);--co-bg:linear-gradient(135deg,#16a34a,#15803d);--co-glow:rgba(22,163,74,.5);--cg-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--cg-glow:rgba(37,99,235,.5);--ct:#4a1d96;--cg:#7e22ce;--cf:#9333ea; --acc-strong:rgba(168,85,247,.42);--acc:#a855f7;--acc-glow:rgba(168,85,247,.4);--acc-bg:rgba(168,85,247,.10);--acc-border:rgba(168,85,247,.20); }
 /* light overrides para temas de acento */
-[data-theme="light"][data-acc="ambar"]   {--ct-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ct-glow:rgba(37,99,235,.5);--ca-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ca-glow:rgba(124,58,237,.5);--co-bg:linear-gradient(135deg,#16a34a,#15803d);--co-glow:rgba(22,163,74,.5);--cg-bg:linear-gradient(135deg,#f59e0b,#d97706);--cg-glow:rgba(245,158,11,.5);--ct:#78350f;--cg:#b45309;--cf:#b45309; --acc-strong:rgba(217,119,6,.35); --acc:#d97706;--acc-glow:rgba(217,119,6,.3);--acc-bg:rgba(245,158,11,.12);--acc-border:rgba(217,119,6,.25); --ni1:linear-gradient(135deg,#d97706,#b45309);--ni1-glow:rgba(217,119,6,.4);--ni1-off:#b45309;--ni2:linear-gradient(135deg,#1d4ed8,#1e3a8a);--ni2-glow:rgba(29,78,216,.4);--ni2-off:#1e3a8a;--ni3:linear-gradient(135deg,#15803d,#14532d);--ni3-glow:rgba(21,128,61,.4);--ni3-off:#14532d;--ni4:linear-gradient(135deg,#dc2626,#b91c1c);--ni4-glow:rgba(220,38,38,.4);--ni4-off:#b91c1c}
-[data-theme="light"][data-acc="eletrico"]{--ct-bg:linear-gradient(135deg,#16a34a,#15803d);--ct-glow:rgba(22,163,74,.5);--ca-bg:linear-gradient(135deg,#f59e0b,#d97706);--ca-glow:rgba(245,158,11,.5);--co-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--co-glow:rgba(124,58,237,.5);--cg-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--cg-glow:rgba(37,99,235,.5);--ct:#1e3a8a;--cg:#1e40af;--cf:#1d4ed8; --acc-strong:rgba(37,99,235,.35);--acc:#2563eb;--acc-glow:rgba(37,99,235,.3);--acc-bg:rgba(59,130,246,.12);--acc-border:rgba(37,99,235,.25); --ni1:linear-gradient(135deg,#1d4ed8,#1e3a8a);--ni1-glow:rgba(29,78,216,.4);--ni1-off:#1e3a8a;--ni2:linear-gradient(135deg,#6d28d9,#4c1d95);--ni2-glow:rgba(109,40,217,.4);--ni2-off:#4c1d95;--ni3:linear-gradient(135deg,#0e7490,#155e75);--ni3-glow:rgba(14,116,144,.4);--ni3-off:#155e75;--ni4:linear-gradient(135deg,#d97706,#b45309);--ni4-glow:rgba(217,119,6,.4);--ni4-off:#b45309}
-[data-theme="light"][data-acc="neon"]    {--ct-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ct-glow:rgba(124,58,237,.5);--ca-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ca-glow:rgba(37,99,235,.5);--co-bg:linear-gradient(135deg,#f59e0b,#d97706);--co-glow:rgba(245,158,11,.5);--cg-bg:linear-gradient(135deg,#16a34a,#15803d);--cg-glow:rgba(22,163,74,.5);--ct:#14532d;--cg:#14532d;--cf:#15803d; --acc-strong:rgba(22,163,74,.35);--acc:#16a34a;--acc-glow:rgba(22,163,74,.3);--acc-bg:rgba(34,197,94,.12);--acc-border:rgba(22,163,74,.25); --ni1:linear-gradient(135deg,#15803d,#14532d);--ni1-glow:rgba(21,128,61,.4);--ni1-off:#14532d;--ni2:linear-gradient(135deg,#1d4ed8,#1e3a8a);--ni2-glow:rgba(29,78,216,.4);--ni2-off:#1e3a8a;--ni3:linear-gradient(135deg,#ca8a04,#a16207);--ni3-glow:rgba(202,138,4,.4);--ni3-off:#a16207;--ni4:linear-gradient(135deg,#db2777,#be185d);--ni4-glow:rgba(219,39,119,.4);--ni4-off:#be185d}
-[data-theme="light"][data-acc="voltagem"]{--ct-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ct-glow:rgba(37,99,235,.5);--ca-bg:linear-gradient(135deg,#16a34a,#15803d);--ca-glow:rgba(22,163,74,.5);--co-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--co-glow:rgba(124,58,237,.5);--cg-bg:linear-gradient(135deg,#f59e0b,#d97706);--cg-glow:rgba(245,158,11,.5);--ct:#7f1d1d;--cg:#991b1b;--cf:#b91c1c; --acc-strong:rgba(220,38,38,.35);--acc:#dc2626;--acc-glow:rgba(220,38,38,.3);--acc-bg:rgba(239,68,68,.12);--acc-border:rgba(220,38,38,.25); --ni1:linear-gradient(135deg,#dc2626,#b91c1c);--ni1-glow:rgba(220,38,38,.4);--ni1-off:#b91c1c;--ni2:linear-gradient(135deg,#6d28d9,#4c1d95);--ni2-glow:rgba(109,40,217,.4);--ni2-off:#4c1d95;--ni3:linear-gradient(135deg,#15803d,#14532d);--ni3-glow:rgba(21,128,61,.4);--ni3-off:#14532d;--ni4:linear-gradient(135deg,#1d4ed8,#1e3a8a);--ni4-glow:rgba(29,78,216,.4);--ni4-off:#1e3a8a}
-[data-theme="light"][data-acc="plasma"]  {--ct-bg:linear-gradient(135deg,#f59e0b,#d97706);--ct-glow:rgba(245,158,11,.5);--ca-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ca-glow:rgba(124,58,237,.5);--co-bg:linear-gradient(135deg,#16a34a,#15803d);--co-glow:rgba(22,163,74,.5);--cg-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--cg-glow:rgba(37,99,235,.5);--ct:#4a1d96;--cg:#6b21a8;--cf:#7c3aed; --acc-strong:rgba(147,51,234,.35);--acc:#9333ea;--acc-glow:rgba(147,51,234,.3);--acc-bg:rgba(168,85,247,.12);--acc-border:rgba(147,51,234,.25); --ni1:linear-gradient(135deg,#6d28d9,#4c1d95);--ni1-glow:rgba(109,40,217,.4);--ni1-off:#4c1d95;--ni2:linear-gradient(135deg,#1d4ed8,#1e3a8a);--ni2-glow:rgba(29,78,216,.4);--ni2-off:#1e3a8a;--ni3:linear-gradient(135deg,#15803d,#14532d);--ni3-glow:rgba(21,128,61,.4);--ni3-off:#14532d;--ni4:linear-gradient(135deg,#d97706,#b45309);--ni4-glow:rgba(217,119,6,.4);--ni4-off:#b45309}
+[data-theme="light"][data-acc="ambar"]   {--ct-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ct-glow:rgba(37,99,235,.5);--ca-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ca-glow:rgba(124,58,237,.5);--co-bg:linear-gradient(135deg,#16a34a,#15803d);--co-glow:rgba(22,163,74,.5);--cg-bg:linear-gradient(135deg,#f59e0b,#d97706);--cg-glow:rgba(245,158,11,.5);--ct:#78350f;--cg:#b45309;--cf:#b45309; --acc-strong:rgba(217,119,6,.35); --acc:#d97706;--acc-glow:rgba(217,119,6,.3);--acc-bg:rgba(245,158,11,.12);--acc-border:rgba(217,119,6,.25); }
+[data-theme="light"][data-acc="eletrico"]{--ct-bg:linear-gradient(135deg,#16a34a,#15803d);--ct-glow:rgba(22,163,74,.5);--ca-bg:linear-gradient(135deg,#f59e0b,#d97706);--ca-glow:rgba(245,158,11,.5);--co-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--co-glow:rgba(124,58,237,.5);--cg-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--cg-glow:rgba(37,99,235,.5);--ct:#1e3a8a;--cg:#1e40af;--cf:#1d4ed8; --acc-strong:rgba(37,99,235,.35);--acc:#2563eb;--acc-glow:rgba(37,99,235,.3);--acc-bg:rgba(59,130,246,.12);--acc-border:rgba(37,99,235,.25); }
+[data-theme="light"][data-acc="neon"]    {--ct-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ct-glow:rgba(124,58,237,.5);--ca-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ca-glow:rgba(37,99,235,.5);--co-bg:linear-gradient(135deg,#f59e0b,#d97706);--co-glow:rgba(245,158,11,.5);--cg-bg:linear-gradient(135deg,#16a34a,#15803d);--cg-glow:rgba(22,163,74,.5);--ct:#14532d;--cg:#14532d;--cf:#15803d; --acc-strong:rgba(22,163,74,.35);--acc:#16a34a;--acc-glow:rgba(22,163,74,.3);--acc-bg:rgba(34,197,94,.12);--acc-border:rgba(22,163,74,.25); }
+[data-theme="light"][data-acc="voltagem"]{--ct-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ct-glow:rgba(37,99,235,.5);--ca-bg:linear-gradient(135deg,#16a34a,#15803d);--ca-glow:rgba(22,163,74,.5);--co-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--co-glow:rgba(124,58,237,.5);--cg-bg:linear-gradient(135deg,#f59e0b,#d97706);--cg-glow:rgba(245,158,11,.5);--ct:#7f1d1d;--cg:#991b1b;--cf:#b91c1c; --acc-strong:rgba(220,38,38,.35);--acc:#dc2626;--acc-glow:rgba(220,38,38,.3);--acc-bg:rgba(239,68,68,.12);--acc-border:rgba(220,38,38,.25); }
+[data-theme="light"][data-acc="plasma"]  {--ct-bg:linear-gradient(135deg,#f59e0b,#d97706);--ct-glow:rgba(245,158,11,.5);--ca-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ca-glow:rgba(124,58,237,.5);--co-bg:linear-gradient(135deg,#16a34a,#15803d);--co-glow:rgba(22,163,74,.5);--cg-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--cg-glow:rgba(37,99,235,.5);--ct:#4a1d96;--cg:#6b21a8;--cf:#7c3aed; --acc-strong:rgba(147,51,234,.35);--acc:#9333ea;--acc-glow:rgba(147,51,234,.3);--acc-bg:rgba(168,85,247,.12);--acc-border:rgba(147,51,234,.25); }
 .acc-pills{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
 .acc-pill{width:40px;height:40px;border-radius:12px;border:3px solid transparent;cursor:pointer;transition:transform .1s,border-color .15s;-webkit-tap-highlight-color:transparent;flex-shrink:0}
 .acc-pill.on{border-color:#fff;transform:scale(1.12)}
@@ -852,111 +849,9 @@ var LS = {
 var _appReady = false;
 </script>
 
-<script>
-// Chart.js — assíncrono, não bloqueia app
-(function(){
-  var s = document.createElement('script');
-  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js';
-  s.async = true;
-  s.onerror = function(){ console.warn('Chart.js offline'); };
-  document.head.appendChild(s);
-})();
-</script>
-
-<!-- Firebase SDK -->
-<script type="module">
-  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-  import { getAuth, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCUoVzr9_PIGZXe1DKBZaINNCVQVj14Iqk",
-    authDomain: "eletricista-pro.firebaseapp.com",
-    projectId: "eletricista-pro",
-    storageBucket: "eletricista-pro.firebasestorage.app",
-    messagingSenderId: "184661625796",
-    appId: "1:184661625796:web:18c38153a0a2621025b291"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
-  // Expor funções globais
-  window._fbAuth     = auth;
-  window._fbSignIn   = (e,p) => signInWithEmailAndPassword(auth,e,p);
-  window._fbSignOut  = ()    => signOut(auth);
-  window._fbReset    = (e)   => sendPasswordResetEmail(auth,e);
-
-  // Controlar acesso ao app
-  onAuthStateChanged(auth, function(user) {
-    var login  = document.getElementById('tela-login');
-    var appRoot = document.getElementById('app-root');
-    if (!login || !appRoot) return;
-    if (user) {
-      login.style.display  = 'none';
-      appRoot.style.display = 'block';
-      // Atualizar painel Acesso
-      var elEmail  = document.getElementById('acesso-email');
-      var elStatus = document.getElementById('acesso-status');
-      if (elEmail)  elEmail.textContent = user.email;
-      if (elStatus) elStatus.innerHTML  = '<div style="width:7px;height:7px;border-radius:50%;background:#4ade80;display:inline-block;margin-right:6px"></div><span style="color:#4ade80;font-weight:600">Autenticado</span>';
-    } else {
-      login.style.display  = 'flex';
-      appRoot.style.display = 'none';
-    }
-  });
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 </head>
 <body>
-
-<!-- ══ TELA LOGIN ══ -->
-<div id="tela-login" style="display:none;position:fixed;inset:0;z-index:9999;background:#0a0a12;flex-direction:column;align-items:center;justify-content:center;padding:24px">
-  <div style="width:100%;max-width:360px">
-    <!-- Logo -->
-    <div style="text-align:center;margin-bottom:28px">
-      <div style="width:72px;height:72px;border-radius:20px;background:linear-gradient(135deg,#f59e0b,#d97706);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 16px;box-shadow:0 8px 24px rgba(245,158,11,.4)">⚡</div>
-      <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:900;color:#fff;line-height:1.2">Eletricista Power<br>PRO</div>
-      <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#475569;margin-top:6px">ÁREA RESTRITA</div>
-    </div>
-    <!-- Campo e-mail -->
-    <div style="margin-bottom:12px">
-      <input id="login-email" type="email" placeholder="Seu e-mail" autocomplete="email"
-        style="width:100%;background:#1e2235;border:1.5px solid #2d3555;border-radius:14px;padding:14px 16px;font-size:16px;color:#fff;outline:none;box-sizing:border-box;font-family:'Syne',sans-serif"
-        onfocus="this.style.borderColor='#f59e0b'" onblur="this.style.borderColor='#2d3555'">
-    </div>
-    <!-- Campo senha -->
-    <div style="margin-bottom:16px;position:relative">
-      <input id="login-senha" type="password" placeholder="Senha" autocomplete="current-password"
-        style="width:100%;background:#1e2235;border:1.5px solid #2d3555;border-radius:14px;padding:14px 46px 14px 16px;font-size:16px;color:#fff;outline:none;box-sizing:border-box;font-family:'Syne',sans-serif"
-        onfocus="this.style.borderColor='#f59e0b'" onblur="this.style.borderColor='#2d3555'"
-        onkeydown="if(event.key==='Enter')loginEntrar()">
-      <span onclick="var i=document.getElementById('login-senha');i.type=i.type==='password'?'text':'password'"
-        style="position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:18px;color:#475569">👁</span>
-    </div>
-    <!-- Erro -->
-    <div id="login-erro" style="display:none;margin-bottom:12px;color:#f87171;font-size:13px;font-weight:600;align-items:center;gap:6px">
-      <span>✕</span><span id="login-erro-msg">Erro ao entrar.</span>
-    </div>
-    <!-- Botões Ver App + Comprar -->
-    <div id="login-btns-extra" style="display:none;margin-bottom:12px;grid-template-columns:1fr 1fr;gap:8px">
-      <a href="https://eletricistapro.com.br/" target="_blank"
-        style="background:#1e2235;border:1.5px solid #2d3555;border-radius:14px;padding:12px;text-align:center;color:#fff;font-size:13px;font-weight:700;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px">🌐 Ver App</a>
-      <a href="https://pay.cakto.com.br/94rb2jd_835329" target="_blank"
-        style="background:#f59e0b;border:none;border-radius:14px;padding:12px;text-align:center;color:#000;font-size:13px;font-weight:800;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px">🛒 Comprar</a>
-    </div>
-    <!-- Botão Entrar -->
-    <button onclick="loginEntrar()" id="login-btn"
-      style="width:100%;background:linear-gradient(135deg,#f59e0b,#d97706);border:none;border-radius:14px;padding:16px;font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#000;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:.5px;box-shadow:0 4px 16px rgba(245,158,11,.4)">
-      ⚡ ENTRAR
-    </button>
-    <!-- Esqueceu senha -->
-    <div style="text-align:center;margin-top:16px;font-size:13px;color:#475569">
-      Esqueceu a senha? <span onclick="loginRedefinir()" style="color:#f59e0b;font-weight:700;cursor:pointer">Redefinir</span>
-    </div>
-  </div>
-</div>
-
-<!-- ══ APP ROOT ══ -->
-<div id="app-root" style="display:none">
 
 <!-- ══ TELA HOME ══ -->
 <div id="tela-home" class="tela ativa">
@@ -1122,9 +1017,9 @@ var _appReady = false;
       <div class="ni-box">📅</div>
       <div class="ni-lbl">Agendar</div>
     </div>
-    <div class="ni ni-aj" onclick="abrirModal('modal-ajustes')">
-      <div class="ni-box">⚙️</div>
-      <div class="ni-lbl">Ajustes</div>
+    <div class="ni ni-rela" onclick="abrirModal('modal-relatorio')">
+      <div class="ni-box">📊</div>
+      <div class="ni-lbl">Relatório</div>
     </div>
   </div>
 </div>
@@ -1132,14 +1027,14 @@ var _appReady = false;
 <div id="tela-orcamento" class="tela">
   <div class="hdr">
     <div class="hbk" onclick="navTo('home')">←</div>
-    <div style="display:flex;flex-direction:column;align-items:center;min-width:0;flex:1;overflow:hidden">
+    <div style="display:flex;flex-direction:column;align-items:center">
       <div class="hdr-title" id="orc-titulo">Novo Orçamento</div>
       <div id="orc-num-badge" style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;color:var(--acc);letter-spacing:.5px;margin-top:1px"></div>
     </div>
-    <div style="display:flex;gap:3px;flex-shrink:0;align-items:center">
-      <button onclick="abrirConfigPDF()" style="display:flex;align-items:center;gap:2px;height:28px;padding:0 6px;border-radius:8px;border:1px solid #3b82f6;background:rgba(59,130,246,.12);color:#60a5fa;font-size:10px;font-family:'Syne',sans-serif;font-weight:800;cursor:pointer;white-space:nowrap">📄 PDF</button>
-      <button onclick="abrirHistorico()" style="display:flex;align-items:center;height:28px;padding:0 6px;border-radius:8px;border:1px solid var(--border-input);background:var(--bg-card);color:var(--text3);font-size:12px;cursor:pointer">📋</button>
-      <button class="btn-acc" onclick="salvarOrcamento()" style="height:28px;padding:0 6px;font-size:10px;white-space:nowrap;border-radius:8px">💾 SAL</button>
+    <div style="display:flex;gap:6px;flex-shrink:0;align-items:center">
+      <button onclick="abrirConfigPDF()" style="display:flex;align-items:center;gap:5px;height:34px;padding:0 11px;border-radius:10px;border:1px solid #3b82f6;background:rgba(59,130,246,.12);color:#60a5fa;font-size:12px;font-family:'Syne',sans-serif;font-weight:800;cursor:pointer;white-space:nowrap">📄 PDF</button>
+      <button onclick="abrirHistorico()" style="display:flex;align-items:center;gap:4px;height:34px;padding:0 11px;border-radius:10px;border:1px solid var(--border-input);background:var(--bg-card);color:var(--text3);font-size:12px;font-family:'Syne',sans-serif;font-weight:800;cursor:pointer">📋</button>
+      <button class="btn-acc" onclick="salvarOrcamento()" style="padding:9px 16px;font-size:11px">SALVAR</button>
     </div>
   </div>
   <div class="scroll">
@@ -1394,10 +1289,7 @@ var _appReady = false;
 
       <!-- AÇÕES -->
       <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-          <button onclick="gerarPDF()" style="padding:14px 6px;background:var(--acc);border:none;border-radius:13px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 4px 16px var(--acc-glow)">📄 Gerar PDF</button>
-          <button onclick="compartilharOrc()" style="padding:14px 6px;background:rgba(37,211,102,.15);border:1px solid rgba(37,211,102,.35);border-radius:13px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:#4ade80;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">💬 WhatsApp</button>
-        </div>
+        <button onclick="gerarPDF()" style="padding:14px 6px;background:var(--acc);border:none;border-radius:13px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 4px 16px var(--acc-glow);width:100%">📄 Gerar PDF</button>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
           <button onclick="navTo('orcamento')" style="padding:12px 6px;background:#3b82f6;border:none;border-radius:12px;font-family:'Syne',sans-serif;font-size:12px;font-weight:800;color:#fff;cursor:pointer">✏️ Editar</button>
           <button onclick="novoOrcamento()" style="padding:12px 6px;background:var(--bg-card);border:1px solid var(--border-card);border-radius:12px;font-family:'Syne',sans-serif;font-size:12px;font-weight:800;color:var(--text2);cursor:pointer">↺ Novo</button>
@@ -2258,30 +2150,15 @@ var _appReady = false;
   </div>
   <div class="aj-panel" id="aj-3"><div class="aj-body">
     <div class="acesso-card">
-      <div class="acesso-sec">🔒 CONTA</div>
-      <!-- E-mail -->
-      <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:13px;padding:14px;margin-bottom:10px">
-        <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px">E-MAIL</div>
-        <div id="acesso-email" style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:600;color:var(--acc)">—</div>
-      </div>
-      <!-- Status -->
-      <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:13px;padding:14px;margin-bottom:10px">
-        <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px">STATUS</div>
-        <div id="acesso-status" style="font-size:13px;display:flex;align-items:center;gap:6px">
+      <div class="acesso-sec">🔒 Acesso</div>
+      <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:13px;padding:14px;margin-bottom:12px">
+        <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px">MODO</div>
+        <div style="display:flex;align-items:center;gap:6px">
           <div style="width:7px;height:7px;border-radius:50%;background:#4ade80"></div>
-          <span style="color:#4ade80;font-weight:600">Autenticado</span>
+          <span style="font-size:13px;color:#4ade80;font-weight:600">Modo Teste (sem Firebase)</span>
         </div>
       </div>
-      <!-- Senha -->
-      <div onclick="acessoRedefinirSenha()" style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:13px;padding:14px;cursor:pointer">
-        <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px">SENHA</div>
-        <div style="font-size:13px;color:var(--acc);font-weight:700;display:flex;align-items:center;gap:6px">🔑 Enviar link de redefinição</div>
-      </div>
     </div>
-    <!-- Sair -->
-    <button onclick="acessoSair()" style="width:100%;background:rgba(239,68,68,.12);border:1.5px solid rgba(239,68,68,.3);border-radius:13px;padding:16px;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#f87171;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px">
-      🚪 SAIR DA CONTA
-    </button>
   </div></div>
   <div class="aj-panel" id="aj-4"><div class="aj-body">
     <div class="aj-sec"><span>☁️</span> Backup &amp; Restauração</div>
@@ -2566,7 +2443,6 @@ const SRV = [
   {id:'s094',ico:'📦',n:'Serviço personalizado',cat:'Outros',p:100,un:'un'},
 ];
 
-
 // ══════════════════════════════════════════════════════════════
 // BLOCO 1 — DADOS: MATERIAIS
 // ══════════════════════════════════════════════════════════════
@@ -2654,7 +2530,6 @@ const MAT = [
   {id:'m098',ico:'🔩',n:'Fita zebrada sinalização (rolo 200m)',cat:'Outros',p:32.00,un:'un'},
   {id:'m099',ico:'📦',n:'Material diverso / consumível',cat:'Outros',p:50.00,un:'un'},
 ];
-
 
 // ══════════════════════════════════════════════════════════════
 // BLOCO 2 — CONFIGURADORES DE SERVIÇO (SERVICOS_CFG)
@@ -3382,9 +3257,6 @@ function _renderChipsComPlus(mod) {
   return out;
 }
 
-function scpAddChipExtra(modKey, modLabel) { scpAbrirChipModal(modKey, modLabel); }
-
-
 // ══ ETAPA 2: Editar item já adicionado ══════════════════════
 // Armazena estado do configurador para reabrir
 var _scpEditRowId   = null; // null = novo, string = editar existente
@@ -3487,7 +3359,6 @@ function orcEditarMaterial(rowId) {
     if (priceEl) { priceEl.focus(); priceEl.select(); }
   }
 }
-
 
 function renderConfigurador() {
   const cfg = SERVICOS_CFG[scpAtivo];
@@ -4151,11 +4022,6 @@ function _salvarCustomLocal(type, item) {
   } catch(e) {}
 }
 
-
-
-
-
-
 function _carregarCustomLocal() {
   try { checkCarregarCustom(); } catch(e) {}
   try { _carregarOverrides(); } catch(e) {}
@@ -4702,10 +4568,11 @@ function gerarPDF() {
   </style>
   <div class="pdf-wrap">
     <div class="no-print" style="background:#1e40af;color:#fff;padding:10px 16px;border-radius:10px;display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
-      <span style="font-weight:700;font-size:13px">📄 Pré-visualização do Orçamento</span>
+      <span style="font-weight:700;font-size:13px">📄 Orçamento</span>
       <div style="display:flex;gap:8px">
-        <button onclick="window.print()" style="background:${cor};color:#fff;border:none;border-radius:8px;padding:8px 16px;font-weight:800;cursor:pointer;font-size:12px">🖨️ Imprimir / PDF</button>
-        <button onclick="document.getElementById('print-area').style.display='none'" style="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:8px 14px;font-weight:700;cursor:pointer;font-size:12px">✕ Fechar</button>
+        <button onclick="window.print()" style="background:${cor};color:#fff;border:none;border-radius:8px;padding:8px 14px;font-weight:800;cursor:pointer;font-size:12px">🖨️ Salvar PDF</button>
+        <button onclick="_compartilharPDF()" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:8px 14px;font-weight:800;cursor:pointer;font-size:12px">📤 Compartilhar</button>
+        <button onclick="document.getElementById('print-area').style.display='none'" style="background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:8px 12px;font-weight:700;cursor:pointer;font-size:12px">✕</button>
       </div>
     </div>
 
@@ -4852,45 +4719,14 @@ function demImprimirLaudo(){
   },h?0:400);
 }
 
-
-function compartilharOrc() {
-  const cliente  = document.getElementById('orc-cliente')?.value  || 'Cliente';
-  const empresa  = document.getElementById('orc-empresa')?.value  || 'Eletricista Power PRO';
-  const garantia = document.getElementById('orc-garantia')?.value || '90';
-  const validade = document.getElementById('orc-validade')?.value || '15';
-  const numero   = document.getElementById('orc-numero')?.value   || '';
-  const { total: srvTotal } = collectServices();
-  const { total: matTotal } = collectMaterials();
-  const { total: grand, sinalPct, sinal } = calcOrcTotais(srvTotal, matTotal);
-
-  let srv = '';
-  document.querySelectorAll('#srv-container .srv-row').forEach(row => {
-    const n = row.querySelector('.row-name')?.textContent || '';
-    const qt = row.querySelector('.qty-val')?.value || '1';
-    const p = parseCurrency(row.querySelector('.row-price-inp')?.value || '0');
-    srv += `  • ${n} × ${qt} — R$ ${scpFmtBRL(parseFloat(qt) * p)}\n`;
-  });
-  let matTxt = '';
-  document.querySelectorAll('#mat-container .mat-row').forEach(row => {
-    const n = row.querySelector('.row-name')?.textContent || '';
-    const qt = row.querySelector('.qty-val')?.value || '1';
-    const p = parseCurrency(row.querySelector('.row-price-inp')?.value || '0');
-    matTxt += `  • ${n} × ${qt} — R$ ${scpFmtBRL(parseFloat(qt) * p)}\n`;
-  });
-
-  const texto = `*ORÇAMENTO ${numero} — ${empresa.toUpperCase()}*\nCliente: ${cliente}\n\n` +
-    (srv ? `*Serviços:*\n${srv}\n` : '') +
-    (matTxt ? `*Materiais:*\n${matTxt}\n` : '') +
-    `*TOTAL: R$ ${scpFmtBRL(grand)}*\n\nSinal (${sinalPct}%): R$ ${scpFmtBRL(sinal)}\nGarantia: ${garantia} dias · Válido por ${validade} dias`;
-
+function _compartilharPDF() {
+  const cliente = document.getElementById('orc-cliente')?.value || 'Orçamento';
+  const numero  = document.getElementById('orc-numero')?.value  || '';
+  const titulo  = `Orçamento ${numero} — ${cliente}`;
   if (navigator.share) {
-    navigator.share({ title: `Orçamento — ${cliente}`, text: texto }).catch(() => {});
+    navigator.share({ title: titulo, text: titulo }).catch(() => window.print());
   } else {
-    navigator.clipboard.writeText(texto).then(() => {
-      alert('✅ Orçamento copiado! Cole no WhatsApp ou e-mail.');
-    }).catch(() => {
-      prompt('Copie o texto abaixo:', texto);
-    });
+    window.print();
   }
 }
 
@@ -5152,7 +4988,6 @@ function catAbrirEditorItem(tipo, id) {
 }
 
 // alias para compatibilidade
-function catEditarCustom(tipo, id) { catAbrirEditorItem(tipo, id); }
 
 function _catEditorRender(item) {
   var tipo  = _catEditorTipo;
@@ -5332,7 +5167,6 @@ function catRemoverItem(tipo, id, origem) {
 }
 
 // alias para compatibilidade
-function catRemoverCustom(tipo, id) { catRemoverItem(tipo, id, 'custom'); }
 
 function catRestaurarTodos() {
   if (!confirm('Restaurar todos os itens removidos ao catálogo original?')) return;
@@ -5348,11 +5182,6 @@ function catFecharEditor() {
 }
 
 // alias antigo
-function catSalvarCustom() { catSalvarItem(); }
-
-
-
-
 
 function abrirCatalogo(tipo) {
   abrirModal('modal-ajustes');
@@ -5450,7 +5279,6 @@ function salvarOrcamento() {
     else hist.unshift(dados);
     if (hist.length > 50) hist = hist.slice(0, 50);
     LS.setItem('orc_historico', JSON.stringify(hist));
-
 
     // Feedback visual
     var btn = document.querySelector('.btn-acc');
@@ -5662,11 +5490,9 @@ function excluirHistorico(idx) {
   _renderHistorico();
 }
 
-
 function parseCurrencySafe(v) {
   try { return parseCurrency(v); } catch(e) { return 0; }
 }
-
 
 const telas = {home:'tela-home', orcamento:'tela-orcamento', resultado:'tela-resultado', agenda:'tela-agenda'};
 function navTo(id) {
@@ -5817,14 +5643,6 @@ function demAplicarConfig(idx) {
 }
 
 // ── onchange do select #dem-tipo ──────────────────────────────
-function demTipoChanged() {
-  const sel = document.getElementById('dem-tipo');
-  if (!sel) return;
-  demComodos = {};
-  demAplicarConfig(sel.selectedIndex);
-  demRenderSelecionados();
-}
-
 
 // ══════════════════════════════════════════════════════════════
 // QUEDA DE TENSÃO — PRÉ-CONFIGURAÇÃO POR TIPO DE INSTALAÇÃO
@@ -6066,10 +5884,6 @@ function removerLogo() {
   _feedbackSalvo('Logo removida');
 }
 
-function togSocial(k, el) {
-  el.classList.toggle('on');
-}
-
 function salvarPerfil() {
   const cfg = {
     nome:      document.getElementById('aj-nome')?.value.trim()      || '',
@@ -6195,8 +6009,6 @@ function _feedbackSalvo(msg) {
   clearTimeout(el._t);
   el._t = setTimeout(() => { el.style.opacity = '0'; }, 1800);
 }
-
-function togglePw(id, btn) { const i=document.getElementById(id); i.type=i.type==='password'?'text':'password'; btn.textContent=i.type==='password'?'👁️':'🙈'; }
 
 // ══════════════════════════════════════════════════════════════
 // CLIENTES
@@ -6433,7 +6245,6 @@ function renderGraficos() {
   }
 }
 
-
 function togGraficos() {
   var wrap = document.getElementById('rel-graficos-wrap');
   var arr  = document.getElementById('tog-graf-arr');
@@ -6445,8 +6256,6 @@ function togGraficos() {
 }
 
 // Render dos 6 últimos orçamentos na home
-
-
 
 var _agendaTermo = '';
 
@@ -6553,7 +6362,6 @@ function _renderAgendaOverlay() {
   });
 }
 
-
 // Preview das 3 próximas visitas no card Esta Semana
 function homeRenderAgendaPreview(agenda) {
   var el = document.getElementById('agenda-preview');
@@ -6590,7 +6398,6 @@ function homeRenderAgendaPreview(agenda) {
     '</div>';
   }).join('');
 }
-
 
 // ══ ARMAZENAMENTO ════════════════════════════════════════════
 function backupCalcStorage() {
@@ -6729,7 +6536,6 @@ function backupCompartilhar() {
     backupExportar();
   }
 }
-
 
 function bkToggle(id, hdr) {
   var body = document.getElementById(id);
@@ -6884,7 +6690,6 @@ function backupFeedback(msg, tipo) {
   el.style.color = tipo === 'ok' ? '#4ade80' : '#f87171';
   setTimeout(function() { el.style.display = 'none'; }, 4000);
 }
-
 
 // ══ DADOS DIS-NOR-030 REV.05 ═════════════════════════════════
 
@@ -7147,7 +6952,6 @@ function norToggle(id, hdr) {
   if (arr) arr.style.transform = open ? '' : 'rotate(180deg)';
 }
 
-
 // ══ DADOS NBR 5410:2004 — OFICIAL ════════════════════════════
 
 // Tabela 36 — Capacidades de condução (A) — Cobre — PVC — 70°C
@@ -7311,7 +7115,6 @@ function nbrNorToggle(id, hdr) {
   body.style.display = open ? 'none' : 'block';
   if (arr) arr.style.transform = open ? '' : 'rotate(180deg)';
 }
-
 
 function norSubTab(idx, el) {
   document.querySelectorAll('#ferr-4 .ferr-tab').forEach(function(t){t.classList.remove('on');});
@@ -7500,7 +7303,6 @@ function nbr5Toggle(id, hdr) {
   if (arr) arr.style.transform = open ? '' : 'rotate(180deg)';
 }
 
-
 var _demTipoInstalacao = 'res';
 
 var _TIPO_INFO = {
@@ -7588,7 +7390,6 @@ function disnorFDACTipo(n, tipo) {
   }
   return disnorFDAC(n); // Coluna residencial Tab.12
 }
-
 
 // ══ MUC PDF ══════════════════════════════════════════════════
 var _mucLaudoHTML = null;
@@ -7777,7 +7578,6 @@ function mucSetOrientacao(ori) {
   if (btnP) { btnP.style.background = ori==='landscape'?'rgba(255,255,255,.3)':'transparent'; }
 }
 
-
 function relMudarMes(delta) {
   _relMes += delta;
   if (_relMes > 11) { _relMes = 0; _relAno++; }
@@ -7919,7 +7719,6 @@ function renderRelatorio() {
   // Gráficos ao clicar
 }
 
-
 // ══════════════════════════════════════════════════════════════
 // FERRAMENTAS
 // ══════════════════════════════════════════════════════════════
@@ -8055,8 +7854,6 @@ const NBR_FC_AGRUP = {
 // Capacidades nominais de disjuntores (IN comerciais)
 const NBR_DISJ_SERIE = [6,10,16,20,25,32,40,50,63,80,100,125,160,200,250,315,400];
 
-
-
 // ══════════════════════════════════════════════════════════════
 // DEMANDA ELÉTRICA — NBR 5410 + MUC (DIS-NOR-053 REV06)
 // ══════════════════════════════════════════════════════════════
@@ -8149,7 +7946,6 @@ const DEM_TIPICA_HOS=[46,40,41,42,43,44,45,22,23,25];  // Hospital
 const DEM_TIPICA_REST=[47,48,49,50,51,52,22,23,14];    // Restaurante
 const DEM_TIPICA_ESC_=[53,54,55,56,57,58,59,22,23,25]; // Escola
 const DEM_TIPICA_ESC=[18,20,19,11,16,22,23,24,14,25];  // Escritório
-
 
 // Predial — vai para MUC (sem cômodos)
 const DEM_TIPICA_PRED=null;
@@ -8359,7 +8155,6 @@ function demToggleComodo(i){
   demRenderGrid();
   demRenderSelecionados();
 }
-
 
 // ── demTipicaContexto: carrega planta típica do tipo selecionado ──
 function demTipicaContexto() {
@@ -8612,11 +8407,6 @@ function demAddEquip(idx){
 
   document.body.appendChild(popup);
   setTimeout(() => document.getElementById('equip-search-' + idx)?.focus(), 100);
-}
-function demSelEquip(idx,j){
-  document.querySelector('[style*="fixed"][style*="inset:0"]')?.remove();
-  demComodos[idx].equips.push({...DEM_EQUIPAMENTOS[j]});
-  demRenderSelecionados();
 }
 function demRemEquip(idx,j){demComodos[idx].equips.splice(j,1);demRenderSelecionados();}
 
@@ -9091,7 +8881,6 @@ function mucIrCalcularDemanda(btn) {
     if (banner) banner.style.display = 'flex';
   }, 300);
 }
-
 
 function demLevarQuedaV(){
   if(!window._demResultadoNBR){alert('Calcule a demanda NBR 5410 primeiro!');return;}
@@ -9697,7 +9486,6 @@ function qvRestaurar(idx) {
   calcQuedaVLive();
 }
 
-
 // ══════════════════════════════════════════════════════════════
 // CHECKLIST
 // ══════════════════════════════════════════════════════════════
@@ -10238,7 +10026,6 @@ function _checkIsCustom(key) {
   } catch(e) { return false; }
 }
 
-
 function checkToggleAc(hdr) {
   var body = document.getElementById('check-lista');
   var arr  = document.getElementById('check-ac-arr');
@@ -10270,8 +10057,6 @@ function checkLimpar(sel) {
   LS.removeItem('check_' + sel);
   renderCheck();
 }
-
-
 
 // ══════════════════════════════════════════════════════════════
 // INIT
@@ -10399,7 +10184,6 @@ function cfgToggle(el, k) {
   pdfCfg[k] = !pdfCfg[k];
   el.classList.toggle('on', pdfCfg[k]);
 }
-
 
 // ══════════════════════════════════════════════════════════════
 // HOME — ATUALIZAR DADOS DINÂMICOS
@@ -10549,7 +10333,6 @@ function homeAtualizar() {
   // ── Notificações ndot ────────────────────────────────────────
   try { atualizarContadorNotif(); } catch(e) {}
 }
-
 
 // ══════════════════════════════════════════════════════════════
 // SISTEMA DE NOTIFICAÇÕES
@@ -10744,11 +10527,7 @@ function registrarGarantiaOrcamento() {
 
 // ── Adicionar visita na agenda ─────────────────────────────────
 
-
-
-
 // ── Renderizar agenda no modal ─────────────────────────────────
-
 
 function renderAgenda() {
   var body = document.getElementById('agenda-body-wrap') ||
@@ -10924,7 +10703,6 @@ function removerVisita(id, btn) {
   } catch(e) {}
 }
 
-
 // ── Renderizar garantias no modal ──────────────────────────────
 function renderGarantias() {
   const body = document.querySelector('#modal-garantias .gest-body');
@@ -10989,7 +10767,7 @@ const QV_RHO={cu:0.0172,al:0.028};
 let qvState={isolamento:'pvc',temp:30,material:'cu',metodo:'B1',grupo:0};
 
 function qvCapBase(bitola,material,isolamento,metodo){const idx=[1.5,2.5,4,6,10,16,25,35].indexOf(bitola);if(idx<0)return 0;const tbl=material==='cu'?(isolamento==='pvc'?QV_CAP_CU_PVC:QV_CAP_CU_EPR):(isolamento==='pvc'?QV_CAP_AL_PVC:QV_CAP_AL_EPR);return tbl[metodo]?.[idx]||0;}
-function qvCapCorrigida(base,isolamento,temp,fGrupo){return base*(QV_FC_TEMP[isolamento][temp]||1)*fGrupo;}
+
 function qvRenderCapacidade(){
   const base=qvCapBase(qvBitolaAtual,qvState.material,qvState.isolamento,qvState.metodo);
   const fGrupo=QV_FC_GRUPO[qvState.grupo]?.f||1;
@@ -11163,7 +10941,6 @@ function qvConvPot() {
   }
 }
 
-
 function qvSetMaterial(mat,btn){qvState.material=mat;document.querySelectorAll('#qv-mat-cu,#qv-mat-al').forEach(b=>b.classList.remove('on'));btn.classList.add('on');qvRenderCapacidade();calcQuedaVLive();}
 function qvSetIsolamento(iso,btn){qvState.isolamento=iso;document.querySelectorAll('#qv-iso-pvc,#qv-iso-epr').forEach(b=>b.classList.remove('on'));btn.classList.add('on');qvRenderCapacidade();calcQuedaVLive();}
 
@@ -11318,7 +11095,6 @@ try { _sincPdfCfg(); }            catch(e) {}
   </div>
 </div>
 
-
 <!-- ══ PAINEL DE NOTIFICAÇÕES ══ -->
 <div id="notif-overlay" onclick="if(event.target===this)fecharNotificacoes()">
   <div id="notif-panel">
@@ -11343,9 +11119,6 @@ try { _sincPdfCfg(); }            catch(e) {}
 
   </div>
 </div>
-
-
-
 
 <!-- ══ AGENDA OVERLAY ══ -->
 <div id="agenda-overlay" onclick="if(event.target===this)fecharAgendaOverlay()" style="position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.7);display:none;align-items:flex-end;justify-content:center">
@@ -11406,77 +11179,6 @@ try { _sincPdfCfg(); }            catch(e) {}
     style="background:var(--bg-card);border-radius:20px 20px 0 0;width:100%;max-width:520px;max-height:88vh;display:flex;flex-direction:column;overflow:hidden">
   </div>
 </div>
-
-</div><!-- /app-root -->
-
-<script>
-// ══ FUNÇÕES DE LOGIN ══
-function loginEntrar() {
-  var email = document.getElementById('login-email').value.trim();
-  var senha = document.getElementById('login-senha').value;
-  var btn   = document.getElementById('login-btn');
-  var erro  = document.getElementById('login-erro');
-  var extra = document.getElementById('login-btns-extra');
-
-  if (!email || !senha) { _loginErro('Preencha e-mail e senha.'); return; }
-
-  btn.innerHTML = 'Entrando...';
-  btn.disabled  = true;
-  erro.style.display  = 'none';
-  extra.style.display = 'none';
-
-  window._fbSignIn(email, senha)
-    .then(function() {
-      btn.innerHTML = '⚡ ENTRAR';
-      btn.disabled  = false;
-    })
-    .catch(function(e) {
-      btn.innerHTML = '⚡ ENTRAR';
-      btn.disabled  = false;
-      if (e.code === 'auth/user-not-found' || e.code === 'auth/invalid-credential') {
-        _loginErro('E-mail não cadastrado na plataforma.');
-        extra.style.display = 'grid';
-      } else if (e.code === 'auth/wrong-password') {
-        _loginErro('Senha incorreta.');
-      } else if (e.code === 'auth/invalid-email') {
-        _loginErro('E-mail inválido.');
-      } else if (e.code === 'auth/too-many-requests') {
-        _loginErro('Muitas tentativas. Tente mais tarde.');
-      } else {
-        _loginErro('Erro ao entrar. Tente novamente.');
-      }
-    });
-}
-
-function _loginErro(msg) {
-  var el  = document.getElementById('login-erro');
-  var msg_el = document.getElementById('login-erro-msg');
-  if (msg_el) msg_el.textContent = msg;
-  el.style.display = 'flex';
-}
-
-function loginRedefinir() {
-  var email = document.getElementById('login-email').value.trim();
-  if (!email) { _loginErro('Digite seu e-mail para redefinir a senha.'); return; }
-  window._fbReset(email)
-    .then(function() { _loginErro('Link enviado! Verifique seu e-mail.'); })
-    .catch(function() { _loginErro('Erro ao enviar. Verifique o e-mail.'); });
-}
-
-// ══ FUNÇÕES DO PAINEL ACESSO ══
-function acessoSair() {
-  if (!confirm('Deseja sair da conta?')) return;
-  window._fbSignOut().catch(function(){});
-}
-
-function acessoRedefinirSenha() {
-  var user = window._fbAuth ? window._fbAuth.currentUser : null;
-  if (!user) return;
-  window._fbReset(user.email)
-    .then(function() { alert('Link enviado para ' + user.email); })
-    .catch(function() { alert('Erro ao enviar link.'); });
-}
-</script>
 
 </body>
 </html>
