@@ -4851,8 +4851,10 @@ function _abrirLaudoPDF(h){
 }
 
 function demImprimirLaudo(){
-  // Feedback visual
-  var btn = document.querySelector('#print-area button[onclick*="demImprimirLaudo"]');
+  // Feedback visual — busca pelo texto do botão
+  var btns = document.querySelectorAll('#print-area button');
+  var btn = null;
+  btns.forEach(function(b){ if(b.textContent.indexOf('Salvar') !== -1) btn = b; });
   if (btn) { btn.textContent = '⏳ Gerando...'; btn.disabled = true; }
   var h=window._demLaudoHTML;
   if(!h){try{demExportarPDF();}catch(e){}}
