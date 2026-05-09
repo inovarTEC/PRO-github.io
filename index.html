@@ -4523,10 +4523,13 @@ function gerarPDF() {
     ? ` — ${parcelas}× de R$ ${scpFmtBRL(total / parcelas)}` : '';
 
   const toolbar = `
-  <div id="pdf-toolbar" style="flex-shrink:0;background:#1e40af;color:#fff;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px">
-    <span style="font-weight:800;font-size:13px;font-family:'Syne',sans-serif">📄 ${numero}</span>
+  <div id="pdf-toolbar" style="flex-shrink:0;background:#1e40af;color:#fff;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
+    <div style="display:flex;gap:6px">
+      <button id="orc-ori-portrait" onclick="_orcSetOri('portrait')" style="background:rgba(255,255,255,.3);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:7px 12px;font-weight:700;cursor:pointer;font-size:12px">📄 Retrato</button>
+      <button id="orc-ori-landscape" onclick="_orcSetOri('landscape')" style="background:transparent;color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:7px 12px;font-weight:700;cursor:pointer;font-size:12px">🔄 Paisagem</button>
+    </div>
     <div style="display:flex;gap:8px">
-      <button onclick="window.print()" style="background:${cor};color:#fff;border:none;border-radius:10px;padding:9px 16px;font-weight:800;cursor:pointer;font-size:13px;font-family:'Syne',sans-serif">📤 Salvar e Compartilhar</button>
+      <button onclick="window.print()" style="background:${cor};color:#fff;border:none;border-radius:10px;padding:9px 16px;font-weight:800;cursor:pointer;font-size:13px;font-family:'Syne',sans-serif">📤 Salvar</button>
       <button onclick="document.getElementById('print-area').style.display='none'" style="background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:9px 13px;font-weight:700;cursor:pointer;font-size:13px">✕</button>
     </div>
   </div>`;
@@ -4688,6 +4691,24 @@ function gerarPDF() {
     conteudo + '</div>';
   area.style.display = 'flex';
   document.getElementById('pdf-scroll').scrollTop = 0;
+}
+
+function _orcSetOri(ori) {
+  var scroll = document.getElementById('pdf-scroll');
+  if (scroll) {
+    scroll.querySelectorAll('style').forEach(function(st) {
+      if (st.textContent.indexOf('@page') !== -1) {
+        st.textContent = st.textContent.replace(
+          /@page\{size:A4 (portrait|landscape)/,
+          '@page{size:A4 ' + ori
+        );
+      }
+    });
+  }
+  var btnP = document.getElementById('orc-ori-portrait');
+  var btnL = document.getElementById('orc-ori-landscape');
+  if (btnP) { btnP.style.background = ori === 'portrait' ? 'rgba(255,255,255,.3)' : 'transparent'; btnP.style.color = ori === 'portrait' ? '#fff' : 'rgba(255,255,255,.7)'; }
+  if (btnL) { btnL.style.background = ori === 'landscape' ? 'rgba(255,255,255,.3)' : 'transparent'; btnL.style.color = ori === 'landscape' ? '#fff' : 'rgba(255,255,255,.7)'; }
 }
 
 function demCompartilharLaudo(){
