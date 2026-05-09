@@ -4460,6 +4460,11 @@ function gerarPDF() {
   const numero   = document.getElementById('orc-numero')?.value || gerarNumeroOrc();
   const obsServ  = document.getElementById('orc-serv-obs')?.value || '';
   const obsMat   = document.getElementById('orc-mat-obs')?.value || '';
+  const logoB64  = LS.getItem('logo_b64') || '';
+  const logoCfg  = _getCfg ? _getCfg() : {};
+  const logoForma = logoCfg.logoForma || 'quadrado';
+  const logoRadius = logoForma === 'redondo' ? '50%' : logoForma === 'arredondado' ? '14px' : '6px';
+  const logoSize  = Math.min(logoCfg.logoSize || 64, 80);
 
   // coletar serviços
   let srvRows = '';
@@ -4572,11 +4577,14 @@ function gerarPDF() {
 
     ${S.cabecalho !== false ? `
     <div class="pdf-hdr">
-      <div>
-        <div class="pdf-empresa">⚡ ${empresa}</div>
-        <div class="pdf-sub">${subtitulo}</div>
+      <div style="display:flex;align-items:center;gap:12px">
+        ${logoB64 ? `<img src="${logoB64}" style="width:${logoSize}px;height:${logoSize}px;object-fit:cover;border-radius:${logoRadius};flex-shrink:0">` : ''}
+        <div>
+          <div class="pdf-empresa">${logoB64 ? '' : '⚡ '}${empresa}</div>
+          <div class="pdf-sub">${subtitulo}</div>
+        </div>
       </div>
-      <div style="text-align:right">
+      <div style="text-align:right;flex-shrink:0">
         <div class="pdf-badge">ORÇAMENTO</div>
         <div style="font-size:12px;color:#555;margin-top:6px;font-family:monospace;font-weight:700">${numero}</div>
         <div style="font-size:11px;color:#888;margin-top:2px">${dataBr}</div>
@@ -10073,6 +10081,14 @@ let pdfCfg = {
 // Sincroniza pdfCfg com ajustes_config + acc salvos
 function _sincPdfCfg() {
   try {
+    var saved = JSON.parse(LS.getItem('pdf_config') || '{}');
+    if (saved.secoes)     Object.assign(pdfCfg.secoes, saved.secoes);
+    if (saved.assinatura !== undefined) pdfCfg.assinatura = saved.assinatura;
+    if (saved.msgCliente) pdfCfg.msgCliente = saved.msgCliente;
+    if (saved.subtitulo)  pdfCfg.subtitulo  = saved.subtitulo;
+    if (saved.socialPdf)  pdfCfg.socialPdf  = saved.socialPdf;
+  } catch(e) {}
+  try {
     var cfg = _getCfg();
     if (cfg.subtitulo) pdfCfg.subtitulo = cfg.subtitulo;
   } catch(e) {}
@@ -10146,9 +10162,9 @@ function pdfTogSocial(el) {
 }
 
 function fecharConfigPDF() {
-  // salvar campos antes de fechar
   pdfCfg.msgCliente = document.getElementById('cfg-msg-cliente').value;
   pdfCfg.subtitulo  = document.getElementById('cfg-subtitulo').value;
+  try { LS.setItem('pdf_config', JSON.stringify(pdfCfg)); } catch(e) {}
   document.getElementById('modal-cfg-pdf').style.display = 'none';
 }
 
