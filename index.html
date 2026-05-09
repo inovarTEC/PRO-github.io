@@ -4589,8 +4589,8 @@ function gerarPDF() {
     <span style="font-weight:800;font-size:13px;font-family:'Syne',sans-serif">📄 ${numero}</span>
     <div style="display:flex;gap:8px">
       <button onclick="_abrirConfigNoPDF()" style="background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:9px 13px;font-weight:800;cursor:pointer;font-size:12px;font-family:'Syne',sans-serif;white-space:nowrap">🎨 Ajustar PDF</button>
-      <button onclick="window.print()" style="background:${cor};color:#fff;border:none;border-radius:10px;padding:9px 16px;font-weight:800;cursor:pointer;font-size:13px;font-family:'Syne',sans-serif">📤 Salvar</button>
-      <button onclick="window.onbeforeprint=null;window.onafterprint=null;document.getElementById('print-area').style.cssText='display:none'" style="background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:9px 13px;font-weight:700;cursor:pointer;font-size:13px">✕</button>
+      <button onclick="_salvarPDF()" style="background:${cor};color:#fff;border:none;border-radius:10px;padding:9px 16px;font-weight:800;cursor:pointer;font-size:13px;font-family:'Syne',sans-serif">📤 Salvar</button>
+      <button onclick="document.getElementById('print-area').style.cssText='display:none'" style="background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:9px 13px;font-weight:700;cursor:pointer;font-size:13px">✕</button>
     </div>
   </div>`;
 
@@ -4745,18 +4745,27 @@ function gerarPDF() {
     '<div id="pdf-scroll" style="display:block;overflow:visible;background:#fff">' +
     conteudo + '</div>';
   area.style.cssText = 'display:flex;flex-direction:column;position:fixed;inset:0;z-index:9999;background:#fff;overflow:hidden;-webkit-overflow-scrolling:touch';
+}
 
-  // iOS fix: antes de imprimir, torna o conteúdo estático para paginar corretamente
-  window.onbeforeprint = function() {
-    area.style.cssText = 'display:block;position:static;width:100%;height:auto;overflow:visible;background:#fff';
-    var scroll = document.getElementById('pdf-scroll');
-    if (scroll) scroll.style.cssText = 'display:block;overflow:visible;height:auto';
-  };
-  window.onafterprint = function() {
-    area.style.cssText = 'display:flex;flex-direction:column;position:fixed;inset:0;z-index:9999;background:#fff;overflow:hidden;-webkit-overflow-scrolling:touch';
-    var scroll = document.getElementById('pdf-scroll');
-    if (scroll) scroll.style.cssText = 'display:block;overflow:visible;background:#fff';
-  };
+function _salvarPDF() {
+  const area   = document.getElementById('print-area');
+  const scroll = document.getElementById('pdf-scroll');
+  if (!area || !scroll) { window.print(); return; }
+
+  const origArea   = area.style.cssText;
+  const origScroll = scroll.style.cssText;
+
+  // Muda estilos antes de imprimir — resolve iOS Safari
+  area.style.cssText   = 'display:block;position:static;width:100%;height:auto;overflow:visible;background:#fff';
+  scroll.style.cssText = 'display:block;overflow:visible;height:auto;width:100%';
+
+  setTimeout(function() {
+    window.print();
+    setTimeout(function() {
+      area.style.cssText   = origArea;
+      scroll.style.cssText = origScroll;
+    }, 500);
+  }, 100);
 }
 
 function _pdfSocialLinks() {
@@ -4764,10 +4773,33 @@ function _pdfSocialLinks() {
     const cfg = _getCfg ? _getCfg() : {};
     const sp  = pdfCfg.socialPdf || {};
     const links = [];
-    if (sp.insta    && cfg.insta)    links.push('<a href="https://instagram.com/' + cfg.insta.replace('@','') + '" style="display:inline-flex;align-items:center;gap:5px;color:#e1306c;text-decoration:none;font-size:11px;font-weight:700;padding:5px 10px;background:#fff0f5;border-radius:8px;border:1px solid #fbc8d4">📸 ' + cfg.insta + '</a>');
-    if (sp.whatsapp && cfg.whatsapp) links.push('<a href="https://wa.me/55' + cfg.whatsapp.replace(/\D/g,'') + '" style="display:inline-flex;align-items:center;gap:5px;color:#25d366;text-decoration:none;font-size:11px;font-weight:700;padding:5px 10px;background:#f0fff4;border-radius:8px;border:1px solid #b7ebc8">💬 ' + cfg.whatsapp + '</a>');
-    if (sp.site     && cfg.site)     links.push('<a href="https://' + cfg.site.replace(/^https?:\/\//,'') + '" style="display:inline-flex;align-items:center;gap:5px;color:#3b82f6;text-decoration:none;font-size:11px;font-weight:700;padding:5px 10px;background:#eff6ff;border-radius:8px;border:1px solid #bfdbfe">🌐 ' + cfg.site + '</a>');
-    if (sp.youtube  && cfg.youtube)  links.push('<a href="https://youtube.com/' + cfg.youtube + '" style="display:inline-flex;align-items:center;gap:5px;color:#ff0000;text-decoration:none;font-size:11px;font-weight:700;padding:5px 10px;background:#fff5f5;border-radius:8px;border:1px solid #fecaca">▶️ ' + cfg.youtube + '</a>');
+
+    if (sp.insta && cfg.insta) {
+      // Extrai só o @usuario da URL ou campo direto
+      let insta = cfg.insta.replace(/^https?:\/\/(www\.)?instagram\.com\//,'').replace(/\?.*$/,'').replace(/\/$/,'');
+      if (!insta.startsWith('@')) insta = '@' + insta;
+      links.push('<a href="https://instagram.com/' + insta.replace('@','') + '" style="display:inline-flex;align-items:center;gap:5px;color:#e1306c;text-decoration:none;font-size:11px;font-weight:700;padding:5px 10px;background:#fff0f5;border-radius:8px;border:1px solid #fbc8d4">📸 ' + insta + '</a>');
+    }
+
+    if (sp.whatsapp && cfg.whatsapp) {
+      const nums = cfg.whatsapp.replace(/\D/g,'');
+      const fmt  = nums.length === 11
+        ? '(' + nums.slice(0,2) + ') ' + nums.slice(2,7) + '-' + nums.slice(7)
+        : cfg.whatsapp;
+      links.push('<a href="https://wa.me/55' + nums + '" style="display:inline-flex;align-items:center;gap:5px;color:#25d366;text-decoration:none;font-size:11px;font-weight:700;padding:5px 10px;background:#f0fff4;border-radius:8px;border:1px solid #b7ebc8">💬 ' + fmt + '</a>');
+    }
+
+    if (sp.site && cfg.site) {
+      const site = cfg.site.replace(/^https?:\/\//,'').replace(/\/$/,'');
+      links.push('<a href="https://' + site + '" style="display:inline-flex;align-items:center;gap:5px;color:#3b82f6;text-decoration:none;font-size:11px;font-weight:700;padding:5px 10px;background:#eff6ff;border-radius:8px;border:1px solid #bfdbfe">🌐 ' + site + '</a>');
+    }
+
+    if (sp.youtube && cfg.youtube) {
+      let yt = cfg.youtube.replace(/^https?:\/\/(www\.)?youtube\.com\//,'').replace(/\?.*$/,'').replace(/\/$/,'');
+      if (!yt.startsWith('@')) yt = '@' + yt;
+      links.push('<a href="https://youtube.com/' + yt + '" style="display:inline-flex;align-items:center;gap:5px;color:#ff0000;text-decoration:none;font-size:11px;font-weight:700;padding:5px 10px;background:#fff5f5;border-radius:8px;border:1px solid #fecaca">▶️ ' + yt + '</a>');
+    }
+
     if (!links.length) return '';
     return '<div style="margin:12px 0 0;padding:12px;background:#f8f9fa;border-radius:10px;border:1px solid #e5e7eb;text-align:center"><div style="font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#6b7280;margin-bottom:8px">SIGA-NOS / ENTRE EM CONTATO</div><div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center">' + links.join('') + '</div></div>';
   } catch(e) { return ''; }
