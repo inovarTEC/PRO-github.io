@@ -165,7 +165,8 @@ select.inp{appearance:none;-webkit-appearance:none;background-image:url("data:im
 .total-lbl{font-family:'Syne',sans-serif;font-size:11px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--acc);margin-bottom:3px}
 .total-sub{font-size:10px;color:var(--text3)}
 .total-val{font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:600;color:var(--acc)}
-.btn-calc{width:100%;background:var(--acc-bg);border:1px solid var(--acc-border);border-radius:11px;padding:14px;font-family:'Syne',sans-serif;font-size:12px;font-weight:800;letter-spacing:1px;color:var(--acc);cursor:pointer;transition:background .2s}
+.btn-calc{width:100%;background:var(--bg-input);border:1px solid var(--border-input);border-radius:11px;padding:14px;font-family:'Syne',sans-serif;font-size:12px;font-weight:800;letter-spacing:1px;color:var(--text3);cursor:pointer;transition:all .3s;opacity:.5}
+.btn-calc.ativo{background:var(--acc);border-color:var(--acc);color:#fff;opacity:1;box-shadow:0 4px 16px var(--acc-glow)}
 .gest-body{flex:1;overflow-y:auto;padding:16px 14px 30px;-webkit-overflow-scrolling:touch}
 .gest-body::-webkit-scrollbar{display:none}
 .gest-sec{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text3);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px}
@@ -1040,26 +1041,34 @@ var _appReady = false;
   </div>
   <div class="scroll">
     <div class="orc-pad">
-      <div class="card">
-        <div class="sec-head"><div class="sec-lbl"><div class="dot" style="background:#f59e0b"></div>Dados do Orçamento</div></div>
-        <input class="inp" id="orc-empresa" type="text" placeholder="Seu Nome / Sua Empresa">
-        <input class="inp" id="orc-cliente" type="text" placeholder="Nome do Cliente">
-        <input class="inp" id="orc-endereco" type="text" placeholder="Endereço (Rua, Nº, Bairro)">
-        <input class="inp" id="orc-tel" type="tel" placeholder="(DD) 9XXXX-XXXX">
-        <div class="row3" style="margin-bottom:7px">
-          <div><div class="ilbl">Data</div><input class="inp" type="date" id="orc-data" style="margin-bottom:0"></div>
-          <div><div class="ilbl">Hora</div><input class="inp" type="time" id="orc-hora" value="09:00" style="margin-bottom:0"></div>
-          <div><div class="ilbl">Garantia (d)</div><input class="inp" id="orc-garantia" type="number" placeholder="90" style="margin-bottom:0"></div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:0">
-          <div>
-            <div class="ilbl">Validade da proposta (dias)</div>
-            <input class="inp" id="orc-validade" type="number" placeholder="15" value="15" style="margin-bottom:0;margin-top:4px">
+      <div class="card" style="padding:0;overflow:hidden">
+        <div onclick="orcDadosToggle(this)" style="display:flex;align-items:center;justify-content:space-between;padding:13px 14px;cursor:pointer;user-select:none">
+          <div class="sec-lbl"><div class="dot" style="background:#f59e0b"></div>Dados do Orçamento</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span id="orc-dados-resumo" style="font-size:11px;color:var(--text3);font-weight:600;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
+            <span id="orc-dados-arrow" style="font-size:12px;color:var(--text3);transition:transform .2s">▼</span>
           </div>
-          <div>
-            <div class="ilbl">Nº do Orçamento</div>
-            <input class="inp" id="orc-numero" type="text" readonly
-              style="margin-bottom:0;margin-top:4px;font-family:'IBM Plex Mono',monospace;font-weight:700;color:var(--acc);background:var(--acc-bg);border-color:var(--acc-border);cursor:default">
+        </div>
+        <div id="orc-dados-body" style="display:none;padding:0 14px 14px">
+          <input class="inp" id="orc-empresa" type="text" placeholder="Seu Nome / Sua Empresa" oninput="orcDadosResumo()">
+          <input class="inp" id="orc-cliente" type="text" placeholder="Nome do Cliente" oninput="orcDadosResumo()">
+          <input class="inp" id="orc-endereco" type="text" placeholder="Endereço (Rua, Nº, Bairro)">
+          <input class="inp" id="orc-tel" type="tel" placeholder="(DD) 9XXXX-XXXX">
+          <div class="row3" style="margin-bottom:7px">
+            <div><div class="ilbl">Data</div><input class="inp" type="date" id="orc-data" style="margin-bottom:0"></div>
+            <div><div class="ilbl">Hora</div><input class="inp" type="time" id="orc-hora" value="09:00" style="margin-bottom:0"></div>
+            <div><div class="ilbl">Garantia (d)</div><input class="inp" id="orc-garantia" type="number" placeholder="90" style="margin-bottom:0"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:0">
+            <div>
+              <div class="ilbl">Validade da proposta (dias)</div>
+              <input class="inp" id="orc-validade" type="number" placeholder="15" value="15" style="margin-bottom:0;margin-top:4px">
+            </div>
+            <div>
+              <div class="ilbl">Nº do Orçamento</div>
+              <input class="inp" id="orc-numero" type="text" readonly
+                style="margin-bottom:0;margin-top:4px;font-family:'IBM Plex Mono',monospace;font-weight:700;color:var(--acc);background:var(--acc-bg);border-color:var(--acc-border);cursor:default">
+            </div>
           </div>
         </div>
       </div>
@@ -4127,11 +4136,42 @@ function changeQty(btn, delta) {
 function updateServiceBadge() {
   const n = document.querySelectorAll('#srv-container .srv-row').length;
   document.getElementById('orc-serv-count').textContent = n ? `${n} serviço${n>1?'s':''}` : '0 itens';
+  _atualizarBtnCalc();
 }
 
 function updateMaterialBadge() {
   const n = document.querySelectorAll('#mat-container .mat-row').length;
   document.getElementById('orc-mat-count').textContent = n ? `${n} item${n>1?'s':''}` : '0 itens';
+  _atualizarBtnCalc();
+}
+
+function _atualizarBtnCalc() {
+  const srv = document.querySelectorAll('#srv-container .srv-row').length;
+  const mat = document.querySelectorAll('#mat-container .mat-row').length;
+  const btn = document.querySelector('.btn-calc');
+  if (!btn) return;
+  if (srv > 0 || mat > 0) {
+    btn.classList.add('ativo');
+  } else {
+    btn.classList.remove('ativo');
+    btn.textContent = '⚡ CALCULAR TOTAL';
+  }
+}
+
+function orcDadosToggle(hdr) {
+  const body  = document.getElementById('orc-dados-body');
+  const arrow = document.getElementById('orc-dados-arrow');
+  const aberto = body.style.display !== 'none';
+  body.style.display  = aberto ? 'none' : 'block';
+  arrow.style.transform = aberto ? '' : 'rotate(180deg)';
+}
+
+function orcDadosResumo() {
+  const emp = document.getElementById('orc-empresa')?.value.trim() || '';
+  const cli = document.getElementById('orc-cliente')?.value.trim() || '';
+  const resumo = document.getElementById('orc-dados-resumo');
+  if (!resumo) return;
+  resumo.textContent = [emp, cli].filter(Boolean).join(' · ') || '';
 }
 
 function flashButton(btn) {
@@ -4436,12 +4476,16 @@ function novoOrcamento() {
   orcFornecimento = 'eletricista';
   // novo número
   gerarNumeroOrc();
-  // badges
+  // badges + btn-calc
   updateServiceBadge(); updateMaterialBadge();
   // esconder sticky
   const sw = document.getElementById('orc-sticky-wrap'); if(sw) sw.style.display = 'none';
-  // btn-calc label
+  // btn-calc label reset
   const bc = document.querySelector('.btn-calc'); if(bc) bc.textContent = '⚡ CALCULAR TOTAL';
+  // acordeão: fechar body, atualizar resumo
+  const db = document.getElementById('orc-dados-body'); if(db) db.style.display = 'none';
+  const da = document.getElementById('orc-dados-arrow'); if(da) da.style.transform = '';
+  orcDadosResumo();
   navTo('orcamento');
 }
 
@@ -5392,6 +5436,15 @@ function carregarOrcamento(dados) {
     try { orcCalcTotal(); }        catch(e) {}
     try { updateServiceBadge(); }  catch(e) {}
     try { updateMaterialBadge(); } catch(e) {}
+    try { orcDadosResumo(); }      catch(e) {}
+    // acordeão: abrir se cliente vazio, fechar se preenchido
+    try {
+      const cli = document.getElementById('orc-cliente')?.value.trim();
+      const db  = document.getElementById('orc-dados-body');
+      const da  = document.getElementById('orc-dados-arrow');
+      if (db) db.style.display = cli ? 'none' : 'block';
+      if (da) da.style.transform = cli ? '' : 'rotate(180deg)';
+    } catch(e) {}
 
     navTo('orcamento');
   } catch(err) {
@@ -10978,6 +11031,8 @@ try { renderNBR(); }              catch(e) {}
 try { renderCheck(); }            catch(e) {}
 try { demRenderGrid(); }          catch(e) {}
 try { demRenderSelecionados(); }  catch(e) {}
+try { orcDadosResumo(); }         catch(e) {}
+try { _atualizarBtnCalc(); }      catch(e) {}
 // init local — Firebase não ativo
 try { _sincPdfCfg(); }            catch(e) {}
 
