@@ -9175,21 +9175,15 @@ function demLevarQuedaV(){
 }
 
 function demSetOrientacao(ori) {
-  // Atualizar orientação no HTML guardado
   if (window._demLaudoHTML) {
     window._demLaudoHTML = window._demLaudoHTML.replace(
       /@page\{size:A4 (portrait|landscape)/g,
       '@page{size:A4 ' + ori
     );
   }
-  // Atualizar no print-area visível também
   var area = document.getElementById('print-area');
-  var btnR = document.getElementById("btn-retrato");
-  var btnP = document.getElementById("btn-paisagem");
-  // Atualizar o @page dentro do print-area
   if (area) {
-    var styles = area.querySelectorAll("style");
-    styles.forEach(function(st) {
+    area.querySelectorAll("style").forEach(function(st) {
       if (st.textContent.indexOf("@page") !== -1) {
         st.textContent = st.textContent.replace(
           /@page\{size:A4 (portrait|landscape)/,
@@ -9198,10 +9192,6 @@ function demSetOrientacao(ori) {
       }
     });
   }
-  if (btnR) { btnR.style.background = ori === "portrait" ? "rgba(255,255,255,.3)" : "transparent";
-    btnR.style.color = ori === "portrait" ? "#fff" : "rgba(255,255,255,.7)"; }
-  if (btnP) { btnP.style.background = ori === "landscape" ? "rgba(255,255,255,.3)" : "transparent";
-    btnP.style.color = ori === "landscape" ? "#fff" : "rgba(255,255,255,.7)"; }
 }
 
 function demExportarPDF(){
@@ -9330,10 +9320,6 @@ tbody tr:nth-child(even) td{background:#fafafa}
   <div class="no-print" style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
     <span style="font-weight:800;font-size:13px;font-family:'Syne',sans-serif">⚡ Laudo de Demanda</span>
     <div style="display:flex;gap:8px;align-items:center">
-      <div style="display:flex;border:1px solid rgba(255,255,255,.3);border-radius:8px;overflow:hidden">
-        <button id="btn-retrato" style="background:rgba(255,255,255,.3);color:#fff;border:none;padding:6px 12px;font-size:10px;font-weight:800;cursor:pointer">📄 Retrato</button>
-        <button id="btn-paisagem" style="background:transparent;color:rgba(255,255,255,.7);border:none;padding:6px 12px;font-size:10px;font-weight:800;cursor:pointer">🖼️ Paisagem</button>
-      </div>
       <button onclick="_abrirConfigDemNoPDF()" style="background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:9px 13px;font-weight:800;cursor:pointer;font-size:12px;font-family:'Syne',sans-serif;white-space:nowrap">🎨 Ajustar PDF</button>
       <button onclick="demImprimirLaudo()" style="background:#f59e0b;color:#000;border:none;border-radius:10px;padding:9px 16px;font-weight:800;cursor:pointer;font-size:13px;font-family:'Syne',sans-serif">📤 Salvar</button>
       <button onclick="_fecharLaudoDem()" style="background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:9px 13px;font-weight:700;cursor:pointer;font-size:13px">✕</button>
