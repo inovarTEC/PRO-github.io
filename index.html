@@ -4742,30 +4742,26 @@ function gerarPDF() {
 
   const area = document.getElementById('print-area');
   area.innerHTML = toolbar +
-    '<div id="pdf-scroll" style="display:block;overflow:visible;background:#fff">' +
+    '<div id="pdf-scroll" style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#fff">' +
     conteudo + '</div>';
   area.style.cssText = 'display:flex;flex-direction:column;position:fixed;inset:0;z-index:9999;background:#fff;overflow:hidden;-webkit-overflow-scrolling:touch';
 }
 
 function _salvarPDF() {
-  const area   = document.getElementById('print-area');
   const scroll = document.getElementById('pdf-scroll');
-  if (!area || !scroll) { window.print(); return; }
+  if (!scroll) { window.print(); return; }
 
-  const origArea   = area.style.cssText;
-  const origScroll = scroll.style.cssText;
+  const html = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">' +
+    '<meta name="viewport" content="width=device-width,initial-scale=1">' +
+    '<title>Orçamento</title></head><body style="margin:0;padding:0">' +
+    scroll.innerHTML + '</body></html>';
 
-  // Muda estilos antes de imprimir — resolve iOS Safari
-  area.style.cssText   = 'display:block;position:static;width:100%;height:auto;overflow:visible;background:#fff';
-  scroll.style.cssText = 'display:block;overflow:visible;height:auto;width:100%';
+  const win = window.open('', '_blank');
+  if (!win) { window.print(); return; }
 
-  setTimeout(function() {
-    window.print();
-    setTimeout(function() {
-      area.style.cssText   = origArea;
-      scroll.style.cssText = origScroll;
-    }, 500);
-  }, 100);
+  win.document.write(html);
+  win.document.close();
+  setTimeout(function() { win.print(); }, 300);
 }
 
 function _pdfSocialLinks() {
