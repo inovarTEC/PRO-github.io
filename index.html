@@ -62,8 +62,18 @@ html,body{height:100%;overflow-x:hidden;background:var(--bg);color:var(--text);f
 textarea.inp{resize:none;min-height:72px;font-family:inherit;line-height:1.5}
 select.inp{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23475569' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:36px;cursor:pointer}
 .card{background:var(--bg-card);border:1px solid var(--border-card);border-radius:16px;padding:14px 13px;transition:background .3s,border-color .3s;margin-bottom:12px}
+.card-orc-amber{background:rgba(245,158,11,.07)!important;border-color:rgba(245,158,11,.2)!important}
+.card-orc-blue{background:rgba(59,130,246,.07)!important;border-color:rgba(59,130,246,.2)!important}
+.card-orc-green{background:rgba(34,197,94,.07)!important;border-color:rgba(34,197,94,.2)!important}
+.card-orc-purple{background:rgba(167,139,250,.07)!important;border-color:rgba(167,139,250,.2)!important}
+.card-orc-orange{background:rgba(249,115,22,.07)!important;border-color:rgba(249,115,22,.2)!important}
+[data-theme="light"] .card-orc-amber{background:rgba(245,158,11,.09)!important}
+[data-theme="light"] .card-orc-blue{background:rgba(59,130,246,.09)!important}
+[data-theme="light"] .card-orc-green{background:rgba(34,197,94,.09)!important}
+[data-theme="light"] .card-orc-purple{background:rgba(167,139,250,.09)!important}
+[data-theme="light"] .card-orc-orange{background:rgba(249,115,22,.09)!important}
 .sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.sec-lbl{display:flex;align-items:center;gap:7px;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text3)}
+.sec-lbl{display:flex;align-items:center;gap:7px;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text)}
 .dot{width:7px;height:7px;border-radius:50%}
 .tag{font-size:9px;font-weight:700;letter-spacing:.5px;border-radius:8px;padding:4px 10px;cursor:pointer;border:none;transition:opacity .15s}
 .tag-blue{background:rgba(59,130,246,.18);color:#60a5fa}
@@ -384,9 +394,9 @@ textarea.inp { font-size: 15px; }
 .home-body {
   padding-bottom: calc(76px + env(safe-area-inset-bottom, 16px));
 }
-.orc-pad { padding-bottom: calc(108px + env(safe-area-inset-bottom, 0px)); }
+.orc-pad { padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px)); }
 .tela-resultado .scroll > div {
-  padding-bottom: calc(108px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
 }
 
 /* ── Valor total responsivo — evita overflow em telas estreitas ── */
@@ -1036,14 +1046,14 @@ var _appReady = false;
       <div id="orc-num-badge" style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;color:var(--acc);letter-spacing:.5px;margin-top:1px"></div>
     </div>
     <div style="display:flex;gap:3px;flex-shrink:0;align-items:center">
-      <button onclick="abrirHistorico()" style="display:flex;align-items:center;height:28px;padding:0 6px;border-radius:8px;border:1px solid var(--border-input);background:var(--bg-card);color:var(--text3);font-size:12px;cursor:pointer">📋</button>
+      <button onclick="abrirHistorico()" style="display:flex;align-items:center;gap:5px;height:34px;padding:0 12px;border-radius:10px;border:1px solid var(--acc-border);background:var(--acc-bg);color:var(--acc);font-size:12px;font-family:'Syne',sans-serif;font-weight:800;cursor:pointer;white-space:nowrap">📋 Histórico</button>
     </div>
   </div>
   <div class="scroll">
     <div class="orc-pad">
-      <div class="card" style="padding:0;overflow:hidden">
+      <div class="card card-orc-amber" style="padding:0;overflow:hidden">
         <div onclick="orcDadosToggle(this)" style="display:flex;align-items:center;justify-content:space-between;padding:13px 14px;cursor:pointer;user-select:none">
-          <div class="sec-lbl"><div class="dot" style="background:#f59e0b"></div>Dados do Orçamento</div>
+          <div class="sec-lbl"><div class="dot"></div>Dados do Orçamento</div>
           <div style="display:flex;align-items:center;gap:8px">
             <span id="orc-dados-resumo" style="font-size:11px;color:var(--text3);font-weight:600;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
             <span id="orc-dados-arrow" style="font-size:12px;color:var(--text3);transition:transform .2s">▼</span>
@@ -1072,9 +1082,9 @@ var _appReady = false;
           </div>
         </div>
       </div>
-      <div class="card">
+      <div class="card card-orc-blue">
         <div class="sec-head">
-          <div class="sec-lbl"><div class="dot" style="background:#3b82f6"></div>Tipo de Serviço</div>
+          <div class="sec-lbl"><div class="dot"></div>Tipo de Serviço</div>
           <button class="tag tag-blue" onclick="this.closest('.card').querySelector('.orc-obs-extra').classList.toggle('open');this.textContent=this.closest('.card').querySelector('.orc-obs-extra').classList.contains('open')?'− obs':'+ obs'">+ obs</button>
         </div>
         <select class="inp" id="orc-tipo-serv" style="margin-bottom:0"><option value="" disabled selected>— Selecione o tipo de serviço —</option><option>Instalação Elétrica Residencial</option><option>Instalação Elétrica Comercial</option><option>Instalação Elétrica Industrial</option><option>Manutenção Elétrica</option><option>Laudo Técnico</option><option>Projeto Elétrico</option><option>Outros</option></select>
@@ -1084,9 +1094,9 @@ var _appReady = false;
       </div>
 
       <!-- ══ SERVIÇOS ══ -->
-      <div class="card" style="border-color:rgba(34,197,94,.2)">
+      <div class="card card-orc-green">
         <div class="sec-head">
-          <div class="sec-lbl"><div class="dot" style="background:#22c55e"></div>Serviços Elétricos</div>
+          <div class="sec-lbl"><div class="dot"></div>Serviços Elétricos</div>
           <div style="display:flex;align-items:center;gap:8px">
             <button onclick="abrirCatalogo('srv')" style="display:flex;align-items:center;gap:5px;padding:5px 10px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25);border-radius:8px;font-size:10px;font-weight:800;color:#4ade80;cursor:pointer;letter-spacing:.4px">📋 Catálogo</button>
             <span id="orc-serv-count" style="font-size:10px;color:var(--text3)">0 itens</span>
@@ -1125,9 +1135,9 @@ var _appReady = false;
       </div>
 
       <!-- ══ MATERIAIS ══ -->
-      <div class="card" style="border-color:rgba(167,139,250,.2)">
+      <div class="card card-orc-purple">
         <div class="sec-head">
-          <div class="sec-lbl"><div class="dot" style="background:#a78bfa"></div>Materiais Elétricos</div>
+          <div class="sec-lbl"><div class="dot"></div>Materiais Elétricos</div>
           <div style="display:flex;align-items:center;gap:8px">
             <button onclick="abrirCatalogo('mat')" style="display:flex;align-items:center;gap:5px;padding:5px 10px;background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.25);border-radius:8px;font-size:10px;font-weight:800;color:#c4b5fd;cursor:pointer;letter-spacing:.4px">📦 Catálogo</button>
             <span id="orc-mat-count" style="font-size:10px;color:var(--text3)">0 itens</span>
@@ -1165,51 +1175,56 @@ var _appReady = false;
         <textarea class="inp" id="orc-mat-obs" placeholder="Observações sobre materiais (marca, especificações)..." style="margin-top:8px"></textarea>
       </div>
 
-      <div class="card">
-        <div class="sec-head"><div class="sec-lbl"><div class="dot" style="background:#f97316"></div>Custos Operacionais</div></div>
-        <div class="custo-grid">
-          <div class="custo-c"><div class="custo-top">Desconto %</div><div class="custo-row"><span>%</span><input class="custo-inp" id="orc-desc" type="number" value="0" min="0" max="100" onchange="orcCalcTotal()"></div></div>
-          <div class="custo-c"><div class="custo-top">Acréscimo R$</div><div class="custo-row"><span>💰</span><input class="custo-inp" id="orc-acre" type="number" value="0" min="0" onchange="orcCalcTotal()"></div></div>
-          <div class="custo-c"><div class="custo-top">Km Total</div><div class="custo-row"><span>📍</span><input class="custo-inp" id="orc-km" type="number" value="0" min="0" onchange="orcCalcTotal()"></div></div>
-          <div class="custo-c"><div class="custo-top">R$/km</div><div class="custo-row"><span>💲</span><input class="custo-inp" id="orc-km-val" type="number" value="2" min="0" onchange="orcCalcTotal()"></div></div>
+      <div class="card card-orc-orange" style="padding:0;overflow:hidden">
+        <div onclick="orcCustosToggle()" style="display:flex;align-items:center;justify-content:space-between;padding:13px 14px;cursor:pointer;user-select:none">
+          <div class="sec-lbl"><div class="dot"></div>Custos Operacionais</div>
+          <span id="orc-custos-arrow" style="font-size:12px;color:var(--text3);transition:transform .2s">▼</span>
         </div>
-        <!-- ── FORMA DE PAGAMENTO ── -->
-        <div style="margin-bottom:12px">
-          <div class="ilbl" style="margin-bottom:8px">Forma de Pagamento</div>
-          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
-            <button class="pagbtn on" onclick="selPagamento(this,'pix')">💠 Pix</button>
-            <button class="pagbtn" onclick="selPagamento(this,'dinheiro')">💵 Dinheiro</button>
-            <button class="pagbtn" onclick="selPagamento(this,'credito')">💳 Crédito</button>
-            <button class="pagbtn" onclick="selPagamento(this,'debito')">💳 Débito</button>
-            <button class="pagbtn" onclick="selPagamento(this,'boleto')">📄 Boleto</button>
+        <div id="orc-custos-body" style="display:none;padding:0 14px 14px">
+          <div class="custo-grid">
+            <div class="custo-c"><div class="custo-top">Desconto %</div><div class="custo-row"><span>%</span><input class="custo-inp" id="orc-desc" type="number" value="0" min="0" max="100" onchange="orcCalcTotal()"></div></div>
+            <div class="custo-c"><div class="custo-top">Acréscimo R$</div><div class="custo-row"><span>💰</span><input class="custo-inp" id="orc-acre" type="number" value="0" min="0" onchange="orcCalcTotal()"></div></div>
+            <div class="custo-c"><div class="custo-top">Km Total</div><div class="custo-row"><span>📍</span><input class="custo-inp" id="orc-km" type="number" value="0" min="0" onchange="orcCalcTotal()"></div></div>
+            <div class="custo-c"><div class="custo-top">R$/km</div><div class="custo-row"><span>💲</span><input class="custo-inp" id="orc-km-val" type="number" value="2" min="0" onchange="orcCalcTotal()"></div></div>
           </div>
-          <div id="orc-parcelas-wrap" style="display:none;margin-bottom:10px">
-            <div class="ilbl" style="margin-bottom:6px">Parcelamento</div>
-            <select class="inp" id="orc-parcelas" style="margin-bottom:0" onchange="orcCalcTotal()">
-              <option value="1">1× sem juros</option>
-              <option value="2">2× sem juros</option>
-              <option value="3">3× sem juros</option>
-              <option value="6">6× sem juros</option>
-              <option value="12">12× sem juros</option>
-            </select>
-          </div>
-          <div style="background:var(--acc-bg);border:1px solid var(--acc-border);border-radius:11px;padding:10px 13px;">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
-              <div style="font-size:9px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--text3)">Sinal / Entrada</div>
-              <div style="display:flex;align-items:center;gap:5px">
-                <input type="number" id="orc-sinal-pct" value="30" min="0" max="100"
-                  style="width:52px;background:transparent;border:none;border-bottom:1px solid var(--acc-border);outline:none;color:var(--acc);font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:700;text-align:right;padding:2px 0"
-                  oninput="orcCalcTotal()">
-                <span style="font-size:12px;color:var(--text3);font-weight:700">%</span>
+          <!-- ── FORMA DE PAGAMENTO ── -->
+          <div style="margin-bottom:12px">
+            <div class="ilbl" style="margin-bottom:8px">Forma de Pagamento</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
+              <button class="pagbtn on" onclick="selPagamento(this,'pix')">💠 Pix</button>
+              <button class="pagbtn" onclick="selPagamento(this,'dinheiro')">💵 Dinheiro</button>
+              <button class="pagbtn" onclick="selPagamento(this,'credito')">💳 Crédito</button>
+              <button class="pagbtn" onclick="selPagamento(this,'debito')">💳 Débito</button>
+              <button class="pagbtn" onclick="selPagamento(this,'boleto')">📄 Boleto</button>
+            </div>
+            <div id="orc-parcelas-wrap" style="display:none;margin-bottom:10px">
+              <div class="ilbl" style="margin-bottom:6px">Parcelamento</div>
+              <select class="inp" id="orc-parcelas" style="margin-bottom:0" onchange="orcCalcTotal()">
+                <option value="1">1× sem juros</option>
+                <option value="2">2× sem juros</option>
+                <option value="3">3× sem juros</option>
+                <option value="6">6× sem juros</option>
+                <option value="12">12× sem juros</option>
+              </select>
+            </div>
+            <div style="background:var(--acc-bg);border:1px solid var(--acc-border);border-radius:11px;padding:10px 13px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
+                <div style="font-size:9px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--text3)">Sinal / Entrada</div>
+                <div style="display:flex;align-items:center;gap:5px">
+                  <input type="number" id="orc-sinal-pct" value="30" min="0" max="100"
+                    style="width:52px;background:transparent;border:none;border-bottom:1px solid var(--acc-border);outline:none;color:var(--acc);font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:700;text-align:right;padding:2px 0"
+                    oninput="orcCalcTotal()">
+                  <span style="font-size:12px;color:var(--text3);font-weight:700">%</span>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div id="orc-parcela-info" style="font-size:10px;color:var(--text3)"></div>
+                <div id="orc-sinal-val" style="font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:700;color:var(--acc)">R$ 0,00</div>
               </div>
             </div>
-            <div style="display:flex;align-items:center;justify-content:space-between">
-              <div id="orc-parcela-info" style="font-size:10px;color:var(--text3)"></div>
-              <div id="orc-sinal-val" style="font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:700;color:var(--acc)">R$ 0,00</div>
-            </div>
           </div>
+          <button class="btn-calc" onclick="mostrarResultado()">⚡ CALCULAR TOTAL</button>
         </div>
-        <button class="btn-calc" onclick="mostrarResultado()">⚡ CALCULAR TOTAL</button>
       </div>
     </div>
   </div>
@@ -1221,13 +1236,7 @@ var _appReady = false;
     </div>
     <button onclick="mostrarResultado()" style="display:flex;align-items:center;gap:6px;padding:11px 18px;background:var(--acc);border:none;border-radius:11px;font-family:'Syne',sans-serif;font-size:12px;font-weight:800;color:#fff;cursor:pointer;box-shadow:0 4px 16px var(--acc-glow)">⚡ Ver resultado →</button>
   </div>
-  <div class="bnav">
-    <div class="ni" onclick="navTo('home')"><div class="ni-i">🏠</div>Home<div class="ni-bar"></div></div>
-    <div class="ni" onclick="abrirModal('modal-ferramentas')"><div class="ni-i">🔧</div>Ferramentas<div class="ni-bar"></div></div>
-    <div class="ni" onclick="navTo('agenda')"><div class="ni-i">📅</div>Agendar<div class="ni-bar"></div></div>
-    <div class="ni" onclick="abrirModal('modal-relatorio')"><div class="ni-i">📊</div>Relatório<div class="ni-bar"></div></div>
   </div>
-</div>
 
 <!-- ══ TELA RESULTADO ══ -->
 <div id="tela-resultado" class="tela tela-resultado">
@@ -1288,7 +1297,7 @@ var _appReady = false;
       <!-- FORNECIMENTO -->
       <div class="card" style="margin-bottom:12px">
         <div class="sec-head" style="margin-bottom:10px">
-          <div class="sec-lbl"><div class="dot" style="background:#a78bfa"></div>Fornecimento de Material</div>
+          <div class="sec-lbl"><div class="dot"></div>Fornecimento de Material</div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px">
           <button class="forn-pill on" id="forn-eletricista" onclick="selFornecimento(this,'eletricista')">✅<br><span style="font-size:10px">Eu forneco</span></button>
@@ -1353,12 +1362,6 @@ var _appReady = false;
 
     </div>
   </div>
-  <div class="bnav">
-    <div class="ni" onclick="navTo('home')"><div class="ni-i">🏠</div>Home<div class="ni-bar"></div></div>
-    <div class="ni" onclick="abrirModal('modal-ferramentas')"><div class="ni-i">🔧</div>Ferramentas<div class="ni-bar"></div></div>
-    <div class="ni" onclick="navTo('agenda')"><div class="ni-i">📅</div>Agendar<div class="ni-bar"></div></div>
-    <div class="ni" onclick="abrirModal('modal-relatorio')"><div class="ni-i">📊</div>Relatório<div class="ni-bar"></div></div>
-  </div>
 </div>
 
 <!-- ══ TELA AGENDA ══ -->
@@ -1367,12 +1370,6 @@ var _appReady = false;
   <div class="scroll"><div class="gest-body">
     <div class="gest-sec">Agendamentos<button class="btn-nova" onclick="abrirFormNovaVisita()">+ Nova visita</button></div>
   </div></div>
-  <div class="bnav">
-    <div class="ni" onclick="navTo('home')"><div class="ni-i">🏠</div>Home<div class="ni-bar"></div></div>
-    <div class="ni" onclick="abrirModal('modal-ferramentas')"><div class="ni-i">🔧</div>Ferramentas<div class="ni-bar"></div></div>
-    <div class="ni on"><div class="ni-i">📅</div>Agendar<div class="ni-bar"></div></div>
-    <div class="ni" onclick="abrirModal('modal-relatorio')"><div class="ni-i">📊</div>Relatório<div class="ni-bar"></div></div>
-  </div>
 </div>
 
 <!-- ══ MODAIS SIMPLES ══ -->
@@ -4148,14 +4145,25 @@ function updateMaterialBadge() {
 function _atualizarBtnCalc() {
   const srv = document.querySelectorAll('#srv-container .srv-row').length;
   const mat = document.querySelectorAll('#mat-container .mat-row').length;
-  const btn = document.querySelector('.btn-calc');
-  if (!btn) return;
-  if (srv > 0 || mat > 0) {
-    btn.classList.add('ativo');
-  } else {
-    btn.classList.remove('ativo');
-    btn.textContent = '⚡ CALCULAR TOTAL';
+  const btn  = document.querySelector('.btn-calc');
+  const body = document.getElementById('orc-custos-body');
+  const arrow = document.getElementById('orc-custos-arrow');
+  const temItens = srv > 0 || mat > 0;
+  if (btn) {
+    if (temItens) btn.classList.add('ativo');
+    else { btn.classList.remove('ativo'); btn.textContent = '⚡ CALCULAR TOTAL'; }
   }
+  if (body) body.style.display = temItens ? 'block' : 'none';
+  if (arrow) arrow.style.transform = temItens ? 'rotate(180deg)' : '';
+}
+
+function orcCustosToggle() {
+  const body  = document.getElementById('orc-custos-body');
+  const arrow = document.getElementById('orc-custos-arrow');
+  if (!body) return;
+  const aberto = body.style.display !== 'none';
+  body.style.display    = aberto ? 'none' : 'block';
+  arrow.style.transform = aberto ? '' : 'rotate(180deg)';
 }
 
 function orcDadosToggle(hdr) {
@@ -4485,6 +4493,8 @@ function novoOrcamento() {
   // acordeão: fechar body, atualizar resumo
   const db = document.getElementById('orc-dados-body'); if(db) db.style.display = 'none';
   const da = document.getElementById('orc-dados-arrow'); if(da) da.style.transform = '';
+  const cb = document.getElementById('orc-custos-body'); if(cb) cb.style.display = 'none';
+  const ca = document.getElementById('orc-custos-arrow'); if(ca) ca.style.transform = '';
   orcDadosResumo();
   navTo('orcamento');
 }
