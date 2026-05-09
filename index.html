@@ -4768,7 +4768,11 @@ function _salvarPDF() {
 
   win.document.write(html);
   win.document.close();
-  setTimeout(function() { win.print(); }, 300);
+  win.onafterprint = function() { win.close(); };
+  setTimeout(function() {
+    win.print();
+    setTimeout(function(){ if (!win.closed) win.close(); }, 60000);
+  }, 300);
 }
 
 function _pdfSocialLinks() {
@@ -4830,16 +4834,31 @@ function _abrirLaudoPDF(h){
   }
   win.document.write(html);
   win.document.close();
-  setTimeout(function(){ win.print(); }, 300);
+  // Fecha após imprimir OU cancelar
+  win.onafterprint = function() { win.close(); };
+  setTimeout(function(){
+    win.print();
+    // Garante fechamento após 60s independente do usuário
+    setTimeout(function(){ if (!win.closed) win.close(); }, 60000);
+  }, 300);
 }
 
 function demImprimirLaudo(){
+  // Feedback visual
+  var btn = document.querySelector('#print-area button[onclick*="demImprimirLaudo"]');
+  if (btn) { btn.textContent = '⏳ Gerando...'; btn.disabled = true; }
   var h=window._demLaudoHTML;
   if(!h){try{demExportarPDF();}catch(e){}}
   setTimeout(function(){
     var h2=window._demLaudoHTML;
-    if(!h2){alert("Calcule a demanda primeiro!");return;}
+    if(!h2){
+      if (btn) { btn.textContent = '📤 Salvar'; btn.disabled = false; }
+      alert("Calcule a demanda primeiro!");return;
+    }
     _abrirLaudoPDF(h2);
+    setTimeout(function(){
+      if (btn) { btn.textContent = '📤 Salvar'; btn.disabled = false; }
+    }, 1000);
   },h?0:400);
 }
 
@@ -9191,7 +9210,7 @@ function demExportarPDF(){
   // Dados da empresa (localStorage)
   const _demCfgPerfil = _getCfg ? _getCfg() : {};
   const cor      = demPdfCfg.cor || '#f59e0b';
-  const logoB64  = LS.getItem('logo_b64') || '';
+  const logoB64  = window._logoB64Cache || LS.getItem('logo_b64') || '';
   const logoForma  = _demCfgPerfil.logoForma || 'quadrado';
   const logoRadius = logoForma === 'redondo' ? '50%' : logoForma === 'arredondado' ? '14px' : '6px';
   const logoSize   = Math.min(_demCfgPerfil.logoSize || 64, 80);
@@ -9258,34 +9277,34 @@ function demExportarPDF(){
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:Arial,sans-serif;font-size:12px;color:#1a1a1a;background:#fff}
 .wrap{max-width:800px;margin:0 auto;padding:28px 32px}
-.hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:22px;padding-bottom:16px;border-bottom:3px solid #f59e0b}
+.hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:22px;padding-bottom:16px;border-bottom:3px solid ${cor}}
 .hdr-e{font-size:20px;font-weight:900;color:#1a1a1a;margin-bottom:3px}
 .hdr-s{font-size:11px;color:#888}
-.badge{background:#f59e0b;color:#000;font-size:11px;font-weight:800;border-radius:6px;padding:5px 12px;display:inline-block;margin-bottom:6px}
+.badge{background:${cor};color:#fff;font-size:11px;font-weight:800;border-radius:6px;padding:5px 12px;display:inline-block;margin-bottom:6px}
 .info-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px;background:#fafafa;border:1px solid #eee;border-radius:8px;padding:12px}
 .info-lbl{font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#999;margin-bottom:3px}
 .info-val{font-weight:700;font-size:13px;color:#1a1a1a}
-.sec{font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:#f59e0b;margin-bottom:8px;margin-top:18px;display:flex;align-items:center;gap:8px}
-.sec::after{content:'';flex:1;height:1px;background:#f59e0b44}
+.sec{font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:${cor};margin-bottom:8px;margin-top:18px;display:flex;align-items:center;gap:8px}
+.sec::after{content:'';flex:1;height:1px;background:${cor}44}
 table{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:8px}
-thead tr{background:#f59e0b}
-thead th{padding:8px 10px;font-size:9px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#000;text-align:left}
+thead tr{background:${cor}}
+thead th{padding:8px 10px;font-size:9px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#fff;text-align:left}
 thead th.c{text-align:center}
 tbody td{padding:7px 10px;border-bottom:1px solid #f0f0f0}
 tbody td.c{text-align:center}
-tbody td.acc{font-weight:700;color:#d97706;text-align:center}
+tbody td.acc{font-weight:700;color:${cor};text-align:center}
 tbody tr:nth-child(even){background:#fafafa}
 .res-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
 .res-card{background:#fafafa;border:1px solid #eee;border-radius:8px;padding:12px 14px}
 .res-lbl{font-size:9px;color:#999;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin-bottom:5px}
 .res-val{font-size:18px;font-weight:800;color:#1a1a1a;font-family:monospace}
-.res-val.acc{color:#d97706}
-.grand{display:flex;justify-content:space-between;align-items:center;background:#f59e0b;border-radius:8px;padding:14px 18px;margin:16px 0}
-.grand-lbl{font-size:14px;font-weight:900;color:#000}
-.grand-val{font-size:26px;font-weight:900;color:#000;font-family:monospace}
+.res-val.acc{color:${cor}}
+.grand{display:flex;justify-content:space-between;align-items:center;background:${cor};border-radius:8px;padding:14px 18px;margin:16px 0}
+.grand-lbl{font-size:14px;font-weight:900;color:#fff}
+.grand-val{font-size:26px;font-weight:900;color:#fff;font-family:monospace}
 .circ-list{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
 .circ-item{display:flex;align-items:center;gap:10px;padding:8px 12px;background:#fafafa;border:1px solid #eee;border-radius:6px;font-size:11px}
-.circ-dot{width:8px;height:8px;border-radius:50%;background:#f59e0b;flex-shrink:0}
+.circ-dot{width:8px;height:8px;border-radius:50%;background:${cor};flex-shrink:0}
 .circ-ind .circ-dot{background:#ef4444}
 .foot{margin-top:20px;padding-top:12px;border-top:1px solid #eee;display:flex;justify-content:space-between;font-size:10px;color:#aaa}
 .no-print{background:#1e40af;color:#fff;padding:10px 16px;border-radius:10px;display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
@@ -9301,7 +9320,7 @@ tbody tr:nth-child(even){background:#fafafa}
       </div>
       <button onclick="_abrirConfigDemNoPDF()" style="background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:9px 13px;font-weight:800;cursor:pointer;font-size:12px;font-family:'Syne',sans-serif;white-space:nowrap">🎨 Ajustar PDF</button>
       <button onclick="demImprimirLaudo()" style="background:#f59e0b;color:#000;border:none;border-radius:10px;padding:9px 16px;font-weight:800;cursor:pointer;font-size:13px;font-family:'Syne',sans-serif">📤 Salvar</button>
-      <button onclick="document.getElementById('print-area').style.display='none'" style="background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:9px 13px;font-weight:700;cursor:pointer;font-size:13px">✕</button>
+      <button onclick="_fecharLaudoDem()" style="background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:9px 13px;font-weight:700;cursor:pointer;font-size:13px">✕</button>
     </div>
   </div>
 
@@ -9362,7 +9381,7 @@ tbody tr:nth-child(even){background:#fafafa}
     <div class="circ-item"><div class="circ-dot" style="background:#3b82f6"></div><span>1× Proteção DR 30mA — circuitos com ponto de água</span></div>
   </div>` : ''}
 
-  ${catNeoObj?`<div style="margin:16px 0;padding:12px;background:#fffbeb;border:1px solid #f59e0b44;border-radius:8px"><div style="font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#f59e0b;margin-bottom:8px">🔌 PADRÃO DE ENTRADA — NEOENERGIA (DIS-NOR-030)</div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px"><div><div style="font-size:9px;color:#999;font-weight:700">CATEGORIA</div><div style="font-size:18px;font-weight:900;color:#f59e0b">${catNeoObj.id}</div></div><div><div style="font-size:9px;color:#999;font-weight:700">DISJUNTOR</div><div style="font-size:14px;font-weight:900">${catNeoObj.disj}A</div></div><div><div style="font-size:9px;color:#999;font-weight:700">CABO ENTRADA</div><div style="font-size:11px;font-weight:700">${catNeoObj.cabo}</div></div><div><div style="font-size:9px;color:#999;font-weight:700">SISTEMA</div><div style="font-size:11px;font-weight:700">${sisLabel} · ${tensaoLabel}</div></div></div></div>`:""}
+  ${catNeoObj?`<div style="margin:16px 0;padding:12px;background:#fffbeb;border:1px solid ${cor}44;border-radius:8px"><div style="font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:${cor};margin-bottom:8px">🔌 PADRÃO DE ENTRADA — NEOENERGIA (DIS-NOR-030)</div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px"><div><div style="font-size:9px;color:#999;font-weight:700">CATEGORIA</div><div style="font-size:18px;font-weight:900;color:${cor}">${catNeoObj.id}</div></div><div><div style="font-size:9px;color:#999;font-weight:700">DISJUNTOR</div><div style="font-size:14px;font-weight:900">${catNeoObj.disj}A</div></div><div><div style="font-size:9px;color:#999;font-weight:700">CABO ENTRADA</div><div style="font-size:11px;font-weight:700">${catNeoObj.cabo}</div></div><div><div style="font-size:9px;color:#999;font-weight:700">SISTEMA</div><div style="font-size:11px;font-weight:700">${sisLabel} · ${tensaoLabel}</div></div></div></div>`:""}
 
   ${SD.assinatura ? `
   <div style="display:flex;justify-content:space-between;margin-top:48px;gap:40px">
@@ -9378,15 +9397,20 @@ tbody tr:nth-child(even){background:#fafafa}
     <span>Base: NBR 5410:2004 e ${normaLabel} · ${data} · Laudo estimativo — validar com profissional habilitado (CREA/CFT).</span>
   </div>` : ''}
 </div>
-
-<\/script>
 <\/body><\/html>`;
 
   const area = document.getElementById('print-area');
   area.innerHTML = html;
-  area.style.display = 'block';
+  area.style.cssText = 'display:block;position:fixed;inset:0;z-index:9999;background:#fff;overflow-y:auto;-webkit-overflow-scrolling:touch';
   area.scrollTop = 0;
-  window._demLaudoHTML = html; // Guardar para impressão
+  window._demLaudoHTML = html;
+}
+
+function _fecharLaudoDem() {
+  const area = document.getElementById('print-area');
+  area.style.display = 'none';
+  area.innerHTML = '';
+  window._demLaudoHTML = null;
 }
 
 // ── MUC — DIS-NOR-053 REV06 ──
@@ -10406,7 +10430,7 @@ function fecharConfigDemPDF() {
 
 function _abrirConfigDemNoPDF() {
   window._demCfgVeioDoPreview = true;
-  document.getElementById('print-area').style.display = 'none';
+  _fecharLaudoDem();
   abrirConfigDemPDF();
 }
 
@@ -11390,6 +11414,7 @@ try { _atualizarBtnCalc(); }      catch(e) {}
 // init local — Firebase não ativo
 try { _sincPdfCfg(); }            catch(e) {}
 try { _sincDemPdfCfg(); }         catch(e) {}
+try { window._logoB64Cache = LS.getItem('logo_b64') || ''; } catch(e) { window._logoB64Cache = ''; }
 
 // ══ HIDE ON SCROLL — HOME ONLY ══
 (function(){
