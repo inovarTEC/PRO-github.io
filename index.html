@@ -835,6 +835,7 @@ table { min-width: 0; }
   #print-area{display:block!important;position:static!important;overflow:visible!important;width:100%!important;height:auto!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;background:#fff!important}
   #pdf-toolbar{display:none!important}
   #pdf-scroll{display:block!important;overflow:visible!important;height:auto!important;max-height:none!important;flex:none!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  #dem-laudo-scroll{display:block!important;overflow:visible!important;height:auto!important;max-height:none!important;flex:none!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
 }
 
@@ -4851,24 +4852,14 @@ function _abrirLaudoPDF(h){
 }
 
 function demImprimirLaudo(){
-  // Feedback visual — busca pelo texto do botão
   var btns = document.querySelectorAll('#print-area button');
   var btn = null;
   btns.forEach(function(b){ if(b.textContent.indexOf('Salvar') !== -1) btn = b; });
   if (btn) { btn.textContent = '⏳ Gerando...'; btn.disabled = true; }
-  var h=window._demLaudoHTML;
-  if(!h){try{demExportarPDF();}catch(e){}}
   setTimeout(function(){
-    var h2=window._demLaudoHTML;
-    if(!h2){
-      if (btn) { btn.textContent = '📤 Salvar'; btn.disabled = false; }
-      alert("Calcule a demanda primeiro!");return;
-    }
-    _abrirLaudoPDF(h2);
-    setTimeout(function(){
-      if (btn) { btn.textContent = '📤 Salvar'; btn.disabled = false; }
-    }, 1000);
-  },h?0:400);
+    window.print();
+    if (btn) { btn.textContent = '📤 Salvar'; btn.disabled = false; }
+  }, 100);
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -9409,8 +9400,8 @@ tbody tr:nth-child(even) td{background:#fafafa}
 <\/body><\/html>`;
 
   const area = document.getElementById('print-area');
-  area.innerHTML = html;
-  area.style.cssText = 'display:block;position:fixed;inset:0;z-index:9999;background:#fff!important;overflow-y:auto;-webkit-overflow-scrolling:touch;color:#1a1a1a';
+  area.innerHTML = '<div id="dem-laudo-scroll" style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#fff">' + html + '</div>';
+  area.style.cssText = 'display:flex;flex-direction:column;position:fixed;inset:0;z-index:9999;background:#fff;overflow:hidden;-webkit-overflow-scrolling:touch';
   area.scrollTop = 0;
   window._demLaudoHTML = html;
 }
@@ -9420,6 +9411,7 @@ function _fecharLaudoDem() {
   area.style.display = 'none';
   area.innerHTML = '';
   window._demLaudoHTML = null;
+  try { abrirModal('modal-ferramentas'); ferrAba(1); } catch(e) {}
 }
 
 // ── MUC — DIS-NOR-053 REV06 ──
