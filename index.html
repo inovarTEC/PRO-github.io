@@ -74,25 +74,25 @@ select.inp{appearance:none;-webkit-appearance:none;background-image:url("data:im
 .ni-lbl{font-size:9px;font-weight:700;letter-spacing:.3px;transition:color .15s}
 .ni:active{opacity:.6}
 /* Home — acc do tema */
-.ni.on.ni-home .ni-box{background:linear-gradient(135deg,var(--acc),var(--cg));box-shadow:0 4px 14px var(--acc-glow)}
-.ni:not(.on).ni-home .ni-box{background:var(--cg);border:none}
+.ni.on.ni-home .ni-box{background:var(--ni1);box-shadow:0 4px 14px var(--ni1-glow)}
+.ni:not(.on).ni-home .ni-box{background:var(--ni1-off);border:none}
 .ni.on.ni-home .ni-lbl{color:var(--acc)}
 .ni:not(.on).ni-home .ni-lbl{color:var(--textnav)}
-/* Ferramentas — azul */
-.ni.on.ni-ferr .ni-box{background:linear-gradient(135deg,#2563eb,#1d4ed8);box-shadow:0 4px 14px rgba(37,99,235,.45)}
-.ni:not(.on).ni-ferr .ni-box{background:#1d4ed8;border:none}
-.ni.on.ni-ferr .ni-lbl{color:#60a5fa}
+/* Nav — Ferramentas */
+.ni.on.ni-ferr .ni-box{background:var(--ni2);box-shadow:0 4px 14px var(--ni2-glow)}
+.ni:not(.on).ni-ferr .ni-box{background:var(--ni2-off);border:none}
+.ni.on.ni-ferr .ni-lbl{color:var(--acc)}
 .ni:not(.on).ni-ferr .ni-lbl{color:var(--textnav)}
-/* Agendar — verde */
-.ni.on.ni-agen .ni-box{background:linear-gradient(135deg,#16a34a,#15803d);box-shadow:0 4px 14px rgba(22,163,74,.45)}
-.ni:not(.on).ni-agen .ni-box{background:#15803d;border:none}
-.ni.on.ni-agen .ni-lbl{color:#4ade80}
+/* Nav — Agendar */
+.ni.on.ni-agen .ni-box{background:var(--ni3);box-shadow:0 4px 14px var(--ni3-glow)}
+.ni:not(.on).ni-agen .ni-box{background:var(--ni3-off);border:none}
+.ni.on.ni-agen .ni-lbl{color:var(--acc)}
 .ni:not(.on).ni-agen .ni-lbl{color:var(--textnav)}
-/* Relatório — roxo */
-.ni.on.ni-rela .ni-box{background:linear-gradient(135deg,#7c3aed,#6d28d9);box-shadow:0 4px 14px rgba(124,58,237,.45)}
-.ni:not(.on).ni-rela .ni-box{background:#6d28d9;border:none}
-.ni.on.ni-rela .ni-lbl{color:#a78bfa}
-.ni:not(.on).ni-rela .ni-lbl{color:var(--textnav)}
+/* Nav — Ajustes */
+.ni.on.ni-aj .ni-box{background:var(--ni4);box-shadow:0 4px 14px var(--ni4-glow)}
+.ni:not(.on).ni-aj .ni-box{background:var(--ni4-off);border:none}
+.ni.on.ni-aj .ni-lbl{color:var(--acc)}
+.ni:not(.on).ni-aj .ni-lbl{color:var(--textnav)}
 .ni.on .ni-bar{background:var(--acc);box-shadow:0 0 8px var(--acc-glow)}
 .sw{position:relative;margin-bottom:6px}
 .sw .inp{padding-left:36px;margin-bottom:0}
@@ -818,23 +818,25 @@ table { min-width: 0; }
 }
 
 @media print{
-  body>*{display:none!important}
-  #print-area{display:block!important;position:static!important;background:#fff!important;padding:0!important;overflow:visible!important}
+  body>*:not(#print-area){display:none!important}
+  #print-area{display:block!important;position:static!important;overflow:visible!important;width:100%!important;height:auto!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
   #pdf-toolbar{display:none!important}
+  #pdf-scroll{display:block!important;overflow:visible!important;height:auto!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
 }
 
 /* ── TEMAS DE ACENTO ─────────────────────────────────── */
-[data-acc="ambar"]   {--ct-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ct-glow:rgba(37,99,235,.5);--ca-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ca-glow:rgba(124,58,237,.5);--co-bg:linear-gradient(135deg,#16a34a,#15803d);--co-glow:rgba(22,163,74,.5);--cg-bg:linear-gradient(135deg,#f59e0b,#d97706);--cg-glow:rgba(245,158,11,.5);--ct:#92400e;--cg:#b45309;--cf:#d97706; --acc-strong:rgba(245,158,11,.42); --acc:#f59e0b;--acc-glow:rgba(245,158,11,.4);--acc-bg:rgba(245,158,11,.10);--acc-border:rgba(245,158,11,.20); }
-[data-acc="eletrico"]{--ct-bg:linear-gradient(135deg,#16a34a,#15803d);--ct-glow:rgba(22,163,74,.5);--ca-bg:linear-gradient(135deg,#f59e0b,#d97706);--ca-glow:rgba(245,158,11,.5);--co-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--co-glow:rgba(124,58,237,.5);--cg-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--cg-glow:rgba(37,99,235,.5);--ct:#1e3a8a;--cg:#1d4ed8;--cf:#2563eb; --acc-strong:rgba(59,130,246,.42);--acc:#3b82f6;--acc-glow:rgba(59,130,246,.4);--acc-bg:rgba(59,130,246,.10);--acc-border:rgba(59,130,246,.20); }
-[data-acc="neon"]    {--ct-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ct-glow:rgba(124,58,237,.5);--ca-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ca-glow:rgba(37,99,235,.5);--co-bg:linear-gradient(135deg,#f59e0b,#d97706);--co-glow:rgba(245,158,11,.5);--cg-bg:linear-gradient(135deg,#16a34a,#15803d);--cg-glow:rgba(22,163,74,.5);--ct:#14532d;--cg:#15803d;--cf:#16a34a; --acc-strong:rgba(34,197,94,.42);--acc:#22c55e;--acc-glow:rgba(34,197,94,.4);--acc-bg:rgba(34,197,94,.10);--acc-border:rgba(34,197,94,.20); }
-[data-acc="voltagem"]{--ct-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ct-glow:rgba(37,99,235,.5);--ca-bg:linear-gradient(135deg,#16a34a,#15803d);--ca-glow:rgba(22,163,74,.5);--co-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--co-glow:rgba(124,58,237,.5);--cg-bg:linear-gradient(135deg,#f59e0b,#d97706);--cg-glow:rgba(245,158,11,.5);--ct:#7f1d1d;--cg:#b91c1c;--cf:#dc2626; --acc-strong:rgba(239,68,68,.42);--acc:#ef4444;--acc-glow:rgba(239,68,68,.4);--acc-bg:rgba(239,68,68,.10);--acc-border:rgba(239,68,68,.20); }
-[data-acc="plasma"]  {--ct-bg:linear-gradient(135deg,#f59e0b,#d97706);--ct-glow:rgba(245,158,11,.5);--ca-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ca-glow:rgba(124,58,237,.5);--co-bg:linear-gradient(135deg,#16a34a,#15803d);--co-glow:rgba(22,163,74,.5);--cg-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--cg-glow:rgba(37,99,235,.5);--ct:#4a1d96;--cg:#7e22ce;--cf:#9333ea; --acc-strong:rgba(168,85,247,.42);--acc:#a855f7;--acc-glow:rgba(168,85,247,.4);--acc-bg:rgba(168,85,247,.10);--acc-border:rgba(168,85,247,.20); }
+[data-acc="ambar"]   {--ct-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ct-glow:rgba(37,99,235,.5);--ca-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ca-glow:rgba(124,58,237,.5);--co-bg:linear-gradient(135deg,#16a34a,#15803d);--co-glow:rgba(22,163,74,.5);--cg-bg:linear-gradient(135deg,#f59e0b,#d97706);--cg-glow:rgba(245,158,11,.5);--ct:#92400e;--cg:#b45309;--cf:#d97706; --acc-strong:rgba(245,158,11,.42); --acc:#f59e0b;--acc-glow:rgba(245,158,11,.4);--acc-bg:rgba(245,158,11,.10);--acc-border:rgba(245,158,11,.20); --ni1:linear-gradient(135deg,#fbbf24,#d97706);--ni1-glow:rgba(245,158,11,.45);--ni1-off:#b45309;--ni2:linear-gradient(135deg,#2563eb,#1d4ed8);--ni2-glow:rgba(37,99,235,.45);--ni2-off:#1d4ed8;--ni3:linear-gradient(135deg,#16a34a,#15803d);--ni3-glow:rgba(22,163,74,.45);--ni3-off:#15803d;--ni4:linear-gradient(135deg,#ef4444,#dc2626);--ni4-glow:rgba(239,68,68,.45);--ni4-off:#dc2626}
+[data-acc="eletrico"]{--ct-bg:linear-gradient(135deg,#16a34a,#15803d);--ct-glow:rgba(22,163,74,.5);--ca-bg:linear-gradient(135deg,#f59e0b,#d97706);--ca-glow:rgba(245,158,11,.5);--co-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--co-glow:rgba(124,58,237,.5);--cg-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--cg-glow:rgba(37,99,235,.5);--ct:#1e3a8a;--cg:#1d4ed8;--cf:#2563eb; --acc-strong:rgba(59,130,246,.42);--acc:#3b82f6;--acc-glow:rgba(59,130,246,.4);--acc-bg:rgba(59,130,246,.10);--acc-border:rgba(59,130,246,.20); --ni1:linear-gradient(135deg,#2563eb,#1d4ed8);--ni1-glow:rgba(37,99,235,.45);--ni1-off:#1d4ed8;--ni2:linear-gradient(135deg,#7c3aed,#6d28d9);--ni2-glow:rgba(124,58,237,.45);--ni2-off:#6d28d9;--ni3:linear-gradient(135deg,#0891b2,#0e7490);--ni3-glow:rgba(6,182,212,.45);--ni3-off:#0e7490;--ni4:linear-gradient(135deg,#fbbf24,#d97706);--ni4-glow:rgba(245,158,11,.45);--ni4-off:#d97706}
+[data-acc="neon"]    {--ct-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ct-glow:rgba(124,58,237,.5);--ca-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ca-glow:rgba(37,99,235,.5);--co-bg:linear-gradient(135deg,#f59e0b,#d97706);--co-glow:rgba(245,158,11,.5);--cg-bg:linear-gradient(135deg,#16a34a,#15803d);--cg-glow:rgba(22,163,74,.5);--ct:#14532d;--cg:#15803d;--cf:#16a34a; --acc-strong:rgba(34,197,94,.42);--acc:#22c55e;--acc-glow:rgba(34,197,94,.4);--acc-bg:rgba(34,197,94,.10);--acc-border:rgba(34,197,94,.20); --ni1:linear-gradient(135deg,#16a34a,#15803d);--ni1-glow:rgba(22,163,74,.45);--ni1-off:#15803d;--ni2:linear-gradient(135deg,#2563eb,#1d4ed8);--ni2-glow:rgba(37,99,235,.45);--ni2-off:#1d4ed8;--ni3:linear-gradient(135deg,#eab308,#ca8a04);--ni3-glow:rgba(234,179,8,.45);--ni3-off:#ca8a04;--ni4:linear-gradient(135deg,#ec4899,#db2777);--ni4-glow:rgba(236,72,153,.45);--ni4-off:#db2777}
+[data-acc="voltagem"]{--ct-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ct-glow:rgba(37,99,235,.5);--ca-bg:linear-gradient(135deg,#16a34a,#15803d);--ca-glow:rgba(22,163,74,.5);--co-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--co-glow:rgba(124,58,237,.5);--cg-bg:linear-gradient(135deg,#f59e0b,#d97706);--cg-glow:rgba(245,158,11,.5);--ct:#7f1d1d;--cg:#b91c1c;--cf:#dc2626; --acc-strong:rgba(239,68,68,.42);--acc:#ef4444;--acc-glow:rgba(239,68,68,.4);--acc-bg:rgba(239,68,68,.10);--acc-border:rgba(239,68,68,.20); --ni1:linear-gradient(135deg,#ef4444,#dc2626);--ni1-glow:rgba(239,68,68,.45);--ni1-off:#dc2626;--ni2:linear-gradient(135deg,#7c3aed,#6d28d9);--ni2-glow:rgba(124,58,237,.45);--ni2-off:#6d28d9;--ni3:linear-gradient(135deg,#16a34a,#15803d);--ni3-glow:rgba(22,163,74,.45);--ni3-off:#15803d;--ni4:linear-gradient(135deg,#2563eb,#1d4ed8);--ni4-glow:rgba(37,99,235,.45);--ni4-off:#1d4ed8}
+[data-acc="plasma"]  {--ct-bg:linear-gradient(135deg,#f59e0b,#d97706);--ct-glow:rgba(245,158,11,.5);--ca-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ca-glow:rgba(124,58,237,.5);--co-bg:linear-gradient(135deg,#16a34a,#15803d);--co-glow:rgba(22,163,74,.5);--cg-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--cg-glow:rgba(37,99,235,.5);--ct:#4a1d96;--cg:#7e22ce;--cf:#9333ea; --acc-strong:rgba(168,85,247,.42);--acc:#a855f7;--acc-glow:rgba(168,85,247,.4);--acc-bg:rgba(168,85,247,.10);--acc-border:rgba(168,85,247,.20); --ni1:linear-gradient(135deg,#7c3aed,#6d28d9);--ni1-glow:rgba(124,58,237,.45);--ni1-off:#6d28d9;--ni2:linear-gradient(135deg,#2563eb,#1d4ed8);--ni2-glow:rgba(37,99,235,.45);--ni2-off:#1d4ed8;--ni3:linear-gradient(135deg,#16a34a,#15803d);--ni3-glow:rgba(22,163,74,.45);--ni3-off:#15803d;--ni4:linear-gradient(135deg,#fbbf24,#d97706);--ni4-glow:rgba(245,158,11,.45);--ni4-off:#d97706}
 /* light overrides para temas de acento */
-[data-theme="light"][data-acc="ambar"]   {--ct-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ct-glow:rgba(37,99,235,.5);--ca-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ca-glow:rgba(124,58,237,.5);--co-bg:linear-gradient(135deg,#16a34a,#15803d);--co-glow:rgba(22,163,74,.5);--cg-bg:linear-gradient(135deg,#f59e0b,#d97706);--cg-glow:rgba(245,158,11,.5);--ct:#78350f;--cg:#b45309;--cf:#b45309; --acc-strong:rgba(217,119,6,.35); --acc:#d97706;--acc-glow:rgba(217,119,6,.3);--acc-bg:rgba(245,158,11,.12);--acc-border:rgba(217,119,6,.25); }
-[data-theme="light"][data-acc="eletrico"]{--ct-bg:linear-gradient(135deg,#16a34a,#15803d);--ct-glow:rgba(22,163,74,.5);--ca-bg:linear-gradient(135deg,#f59e0b,#d97706);--ca-glow:rgba(245,158,11,.5);--co-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--co-glow:rgba(124,58,237,.5);--cg-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--cg-glow:rgba(37,99,235,.5);--ct:#1e3a8a;--cg:#1e40af;--cf:#1d4ed8; --acc-strong:rgba(37,99,235,.35);--acc:#2563eb;--acc-glow:rgba(37,99,235,.3);--acc-bg:rgba(59,130,246,.12);--acc-border:rgba(37,99,235,.25); }
-[data-theme="light"][data-acc="neon"]    {--ct-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ct-glow:rgba(124,58,237,.5);--ca-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ca-glow:rgba(37,99,235,.5);--co-bg:linear-gradient(135deg,#f59e0b,#d97706);--co-glow:rgba(245,158,11,.5);--cg-bg:linear-gradient(135deg,#16a34a,#15803d);--cg-glow:rgba(22,163,74,.5);--ct:#14532d;--cg:#14532d;--cf:#15803d; --acc-strong:rgba(22,163,74,.35);--acc:#16a34a;--acc-glow:rgba(22,163,74,.3);--acc-bg:rgba(34,197,94,.12);--acc-border:rgba(22,163,74,.25); }
-[data-theme="light"][data-acc="voltagem"]{--ct-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ct-glow:rgba(37,99,235,.5);--ca-bg:linear-gradient(135deg,#16a34a,#15803d);--ca-glow:rgba(22,163,74,.5);--co-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--co-glow:rgba(124,58,237,.5);--cg-bg:linear-gradient(135deg,#f59e0b,#d97706);--cg-glow:rgba(245,158,11,.5);--ct:#7f1d1d;--cg:#991b1b;--cf:#b91c1c; --acc-strong:rgba(220,38,38,.35);--acc:#dc2626;--acc-glow:rgba(220,38,38,.3);--acc-bg:rgba(239,68,68,.12);--acc-border:rgba(220,38,38,.25); }
-[data-theme="light"][data-acc="plasma"]  {--ct-bg:linear-gradient(135deg,#f59e0b,#d97706);--ct-glow:rgba(245,158,11,.5);--ca-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ca-glow:rgba(124,58,237,.5);--co-bg:linear-gradient(135deg,#16a34a,#15803d);--co-glow:rgba(22,163,74,.5);--cg-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--cg-glow:rgba(37,99,235,.5);--ct:#4a1d96;--cg:#6b21a8;--cf:#7c3aed; --acc-strong:rgba(147,51,234,.35);--acc:#9333ea;--acc-glow:rgba(147,51,234,.3);--acc-bg:rgba(168,85,247,.12);--acc-border:rgba(147,51,234,.25); }
+[data-theme="light"][data-acc="ambar"]   {--ct-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ct-glow:rgba(37,99,235,.5);--ca-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ca-glow:rgba(124,58,237,.5);--co-bg:linear-gradient(135deg,#16a34a,#15803d);--co-glow:rgba(22,163,74,.5);--cg-bg:linear-gradient(135deg,#f59e0b,#d97706);--cg-glow:rgba(245,158,11,.5);--ct:#78350f;--cg:#b45309;--cf:#b45309; --acc-strong:rgba(217,119,6,.35); --acc:#d97706;--acc-glow:rgba(217,119,6,.3);--acc-bg:rgba(245,158,11,.12);--acc-border:rgba(217,119,6,.25); --ni1:linear-gradient(135deg,#d97706,#b45309);--ni1-glow:rgba(217,119,6,.4);--ni1-off:#b45309;--ni2:linear-gradient(135deg,#1d4ed8,#1e3a8a);--ni2-glow:rgba(29,78,216,.4);--ni2-off:#1e3a8a;--ni3:linear-gradient(135deg,#15803d,#14532d);--ni3-glow:rgba(21,128,61,.4);--ni3-off:#14532d;--ni4:linear-gradient(135deg,#dc2626,#b91c1c);--ni4-glow:rgba(220,38,38,.4);--ni4-off:#b91c1c}
+[data-theme="light"][data-acc="eletrico"]{--ct-bg:linear-gradient(135deg,#16a34a,#15803d);--ct-glow:rgba(22,163,74,.5);--ca-bg:linear-gradient(135deg,#f59e0b,#d97706);--ca-glow:rgba(245,158,11,.5);--co-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--co-glow:rgba(124,58,237,.5);--cg-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--cg-glow:rgba(37,99,235,.5);--ct:#1e3a8a;--cg:#1e40af;--cf:#1d4ed8; --acc-strong:rgba(37,99,235,.35);--acc:#2563eb;--acc-glow:rgba(37,99,235,.3);--acc-bg:rgba(59,130,246,.12);--acc-border:rgba(37,99,235,.25); --ni1:linear-gradient(135deg,#1d4ed8,#1e3a8a);--ni1-glow:rgba(29,78,216,.4);--ni1-off:#1e3a8a;--ni2:linear-gradient(135deg,#6d28d9,#4c1d95);--ni2-glow:rgba(109,40,217,.4);--ni2-off:#4c1d95;--ni3:linear-gradient(135deg,#0e7490,#155e75);--ni3-glow:rgba(14,116,144,.4);--ni3-off:#155e75;--ni4:linear-gradient(135deg,#d97706,#b45309);--ni4-glow:rgba(217,119,6,.4);--ni4-off:#b45309}
+[data-theme="light"][data-acc="neon"]    {--ct-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ct-glow:rgba(124,58,237,.5);--ca-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ca-glow:rgba(37,99,235,.5);--co-bg:linear-gradient(135deg,#f59e0b,#d97706);--co-glow:rgba(245,158,11,.5);--cg-bg:linear-gradient(135deg,#16a34a,#15803d);--cg-glow:rgba(22,163,74,.5);--ct:#14532d;--cg:#14532d;--cf:#15803d; --acc-strong:rgba(22,163,74,.35);--acc:#16a34a;--acc-glow:rgba(22,163,74,.3);--acc-bg:rgba(34,197,94,.12);--acc-border:rgba(22,163,74,.25); --ni1:linear-gradient(135deg,#15803d,#14532d);--ni1-glow:rgba(21,128,61,.4);--ni1-off:#14532d;--ni2:linear-gradient(135deg,#1d4ed8,#1e3a8a);--ni2-glow:rgba(29,78,216,.4);--ni2-off:#1e3a8a;--ni3:linear-gradient(135deg,#ca8a04,#a16207);--ni3-glow:rgba(202,138,4,.4);--ni3-off:#a16207;--ni4:linear-gradient(135deg,#db2777,#be185d);--ni4-glow:rgba(219,39,119,.4);--ni4-off:#be185d}
+[data-theme="light"][data-acc="voltagem"]{--ct-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--ct-glow:rgba(37,99,235,.5);--ca-bg:linear-gradient(135deg,#16a34a,#15803d);--ca-glow:rgba(22,163,74,.5);--co-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--co-glow:rgba(124,58,237,.5);--cg-bg:linear-gradient(135deg,#f59e0b,#d97706);--cg-glow:rgba(245,158,11,.5);--ct:#7f1d1d;--cg:#991b1b;--cf:#b91c1c; --acc-strong:rgba(220,38,38,.35);--acc:#dc2626;--acc-glow:rgba(220,38,38,.3);--acc-bg:rgba(239,68,68,.12);--acc-border:rgba(220,38,38,.25); --ni1:linear-gradient(135deg,#dc2626,#b91c1c);--ni1-glow:rgba(220,38,38,.4);--ni1-off:#b91c1c;--ni2:linear-gradient(135deg,#6d28d9,#4c1d95);--ni2-glow:rgba(109,40,217,.4);--ni2-off:#4c1d95;--ni3:linear-gradient(135deg,#15803d,#14532d);--ni3-glow:rgba(21,128,61,.4);--ni3-off:#14532d;--ni4:linear-gradient(135deg,#1d4ed8,#1e3a8a);--ni4-glow:rgba(29,78,216,.4);--ni4-off:#1e3a8a}
+[data-theme="light"][data-acc="plasma"]  {--ct-bg:linear-gradient(135deg,#f59e0b,#d97706);--ct-glow:rgba(245,158,11,.5);--ca-bg:linear-gradient(135deg,#7c3aed,#6d28d9);--ca-glow:rgba(124,58,237,.5);--co-bg:linear-gradient(135deg,#16a34a,#15803d);--co-glow:rgba(22,163,74,.5);--cg-bg:linear-gradient(135deg,#2563eb,#1d4ed8);--cg-glow:rgba(37,99,235,.5);--ct:#4a1d96;--cg:#6b21a8;--cf:#7c3aed; --acc-strong:rgba(147,51,234,.35);--acc:#9333ea;--acc-glow:rgba(147,51,234,.3);--acc-bg:rgba(168,85,247,.12);--acc-border:rgba(147,51,234,.25); --ni1:linear-gradient(135deg,#6d28d9,#4c1d95);--ni1-glow:rgba(109,40,217,.4);--ni1-off:#4c1d95;--ni2:linear-gradient(135deg,#1d4ed8,#1e3a8a);--ni2-glow:rgba(29,78,216,.4);--ni2-off:#1e3a8a;--ni3:linear-gradient(135deg,#15803d,#14532d);--ni3-glow:rgba(21,128,61,.4);--ni3-off:#14532d;--ni4:linear-gradient(135deg,#d97706,#b45309);--ni4-glow:rgba(217,119,6,.4);--ni4-off:#b45309}
 .acc-pills{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
 .acc-pill{width:40px;height:40px;border-radius:12px;border:3px solid transparent;cursor:pointer;transition:transform .1s,border-color .15s;-webkit-tap-highlight-color:transparent;flex-shrink:0}
 .acc-pill.on{border-color:#fff;transform:scale(1.12)}
@@ -1018,9 +1020,9 @@ var _appReady = false;
       <div class="ni-box">📅</div>
       <div class="ni-lbl">Agendar</div>
     </div>
-    <div class="ni ni-rela" onclick="abrirModal('modal-relatorio')">
-      <div class="ni-box">📊</div>
-      <div class="ni-lbl">Relatório</div>
+    <div class="ni ni-aj" onclick="abrirModal('modal-ajustes')">
+      <div class="ni-box">⚙️</div>
+      <div class="ni-lbl">Ajustes</div>
     </div>
   </div>
 </div>
@@ -1028,14 +1030,14 @@ var _appReady = false;
 <div id="tela-orcamento" class="tela">
   <div class="hdr">
     <div class="hbk" onclick="navTo('home')">←</div>
-    <div style="display:flex;flex-direction:column;align-items:center">
+    <div style="display:flex;flex-direction:column;align-items:center;min-width:0;flex:1;overflow:hidden">
       <div class="hdr-title" id="orc-titulo">Novo Orçamento</div>
       <div id="orc-num-badge" style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;color:var(--acc);letter-spacing:.5px;margin-top:1px"></div>
     </div>
-    <div style="display:flex;gap:6px;flex-shrink:0;align-items:center">
-      <button onclick="abrirConfigPDF()" style="display:flex;align-items:center;gap:5px;height:34px;padding:0 11px;border-radius:10px;border:1px solid #3b82f6;background:rgba(59,130,246,.12);color:#60a5fa;font-size:12px;font-family:'Syne',sans-serif;font-weight:800;cursor:pointer;white-space:nowrap">📄 PDF</button>
-      <button onclick="abrirHistorico()" style="display:flex;align-items:center;gap:4px;height:34px;padding:0 11px;border-radius:10px;border:1px solid var(--border-input);background:var(--bg-card);color:var(--text3);font-size:12px;font-family:'Syne',sans-serif;font-weight:800;cursor:pointer">📋</button>
-      <button class="btn-acc" onclick="salvarOrcamento()" style="padding:9px 16px;font-size:11px">SALVAR</button>
+    <div style="display:flex;gap:3px;flex-shrink:0;align-items:center">
+      <button onclick="abrirConfigPDF()" style="display:flex;align-items:center;gap:2px;height:28px;padding:0 6px;border-radius:8px;border:1px solid #3b82f6;background:rgba(59,130,246,.12);color:#60a5fa;font-size:10px;font-family:'Syne',sans-serif;font-weight:800;cursor:pointer;white-space:nowrap">📄 PDF</button>
+      <button onclick="abrirHistorico()" style="display:flex;align-items:center;height:28px;padding:0 6px;border-radius:8px;border:1px solid var(--border-input);background:var(--bg-card);color:var(--text3);font-size:12px;cursor:pointer">📋</button>
+      <button class="btn-acc" onclick="salvarOrcamento()" style="height:28px;padding:0 6px;font-size:10px;white-space:nowrap;border-radius:8px">💾 SAL</button>
     </div>
   </div>
   <div class="scroll">
@@ -4446,37 +4448,43 @@ function novoOrcamento() {
 // PDF / COMPARTILHAR
 // ══════════════════════════════════════════════════════════════
 function gerarPDF() {
-  const cor       = pdfCfg.cor || '#f59e0b';
-  const subtitulo = pdfCfg.subtitulo || 'Serviços Elétricos Profissionais';
+  const cor        = pdfCfg.cor || '#f59e0b';
+  const subtitulo  = pdfCfg.subtitulo || 'Serviços Elétricos Profissionais';
   const msgCliente = pdfCfg.msgCliente || '';
-  const S         = pdfCfg.secoes;
-  const empresa   = document.getElementById('orc-empresa')?.value || 'Eletricista Power PRO';
-  const cliente   = document.getElementById('orc-cliente')?.value || '—';
-  const endereco = document.getElementById('orc-endereco')?.value || '';
-  const tel      = document.getElementById('orc-tel')?.value || '';
-  const data     = document.getElementById('orc-data')?.value || '';
-  const garantia = document.getElementById('orc-garantia')?.value || '90';
-  const validade = document.getElementById('orc-validade')?.value || '15';
-  const numero   = document.getElementById('orc-numero')?.value || gerarNumeroOrc();
-  const obsServ  = document.getElementById('orc-serv-obs')?.value || '';
-  const obsMat   = document.getElementById('orc-mat-obs')?.value || '';
-  const logoB64  = LS.getItem('logo_b64') || '';
-  const logoCfg  = _getCfg ? _getCfg() : {};
-  const logoForma = logoCfg.logoForma || 'quadrado';
+  const S          = pdfCfg.secoes;
+  const empresa    = document.getElementById('orc-empresa')?.value || 'Eletricista Power PRO';
+  const cliente    = document.getElementById('orc-cliente')?.value || '—';
+  const endereco   = document.getElementById('orc-endereco')?.value || '';
+  const tel        = document.getElementById('orc-tel')?.value || '';
+  const data       = document.getElementById('orc-data')?.value || '';
+  const garantia   = document.getElementById('orc-garantia')?.value || '90';
+  const validade   = document.getElementById('orc-validade')?.value || '15';
+  const numero     = document.getElementById('orc-numero')?.value || gerarNumeroOrc();
+  const obsServ    = document.getElementById('orc-serv-obs')?.value || '';
+  const obsMat     = document.getElementById('orc-mat-obs')?.value || '';
+
+  // dados do perfil
+  const cfg        = _getCfg ? _getCfg() : {};
+  const docPrestador = cfg.doc || '';
+  const logoB64    = LS.getItem('logo_b64') || '';
+  const logoForma  = cfg.logoForma || 'quadrado';
   const logoRadius = logoForma === 'redondo' ? '50%' : logoForma === 'arredondado' ? '14px' : '6px';
-  const logoSize  = Math.min(logoCfg.logoSize || 64, 80);
+  const logoSize   = Math.min(cfg.logoSize || 64, 80);
+
+  // chave PIX
+  let pixKey = '';
+  try { pixKey = JSON.parse(LS.getItem('pagamento_config') || '{}').pix || ''; } catch(e) {}
 
   // coletar serviços
-  let srvRows = '';
-  let servTotal = 0;
+  let srvRows = '', servTotal = 0;
   document.querySelectorAll('#srv-container .srv-row').forEach(row => {
-    const nome  = row.querySelector('.row-name')?.textContent || '';
-    const cat   = row.querySelector('.row-sub')?.textContent || '';
-    const qt    = parseFloat(row.querySelector('.qty-val')?.value || 1);
-    const un    = row.querySelector('.qty-un')?.textContent || '';
-    const p     = parseCurrency(row.querySelector('.row-price-inp')?.value || '0');
-    const sub   = qt * p;
-    servTotal  += sub;
+    const nome = row.querySelector('.row-name')?.textContent || '';
+    const cat  = row.querySelector('.row-sub')?.textContent || '';
+    const qt   = parseFloat(row.querySelector('.qty-val')?.value || 1);
+    const un   = row.querySelector('.qty-un')?.textContent || '';
+    const p    = parseCurrency(row.querySelector('.row-price-inp')?.value || '0');
+    const sub  = qt * p;
+    servTotal += sub;
     const specs = row.dataset?.specs || '';
     srvRows += `<tr>
       <td>${nome}<br><span style="font-size:10px;color:#888">${cat}</span>${specs ? `<br><span style="font-size:9px;color:#aaa;font-style:italic">${specs}</span>` : ''}</td>
@@ -4486,15 +4494,13 @@ function gerarPDF() {
     </tr>`;
   });
 
-  // coletar materiais — 3 variantes conforme fornecimento
-  let matRows = '';        // com preços (eletricista fornece)
-  let matRowsSemPreco = ''; // sem preços (cliente compra)
-  let matTotal = 0;
+  // coletar materiais
+  let matRows = '', matRowsSemPreco = '', matTotal = 0;
   document.querySelectorAll('#mat-container .mat-row').forEach(row => {
     const nome = row.querySelector('.row-name')?.textContent || '';
-    const cat  = row.querySelector('.row-sub')?.textContent  || '';
+    const cat  = row.querySelector('.row-sub')?.textContent || '';
     const qt   = parseFloat(row.querySelector('.qty-val')?.value || 1);
-    const un   = row.querySelector('.qty-un')?.textContent   || '';
+    const un   = row.querySelector('.qty-un')?.textContent || '';
     const p    = parseCurrency(row.querySelector('.row-price-inp')?.value || '0');
     const sub  = qt * p;
     matTotal  += sub;
@@ -4510,11 +4516,10 @@ function gerarPDF() {
     </tr>`;
   });
 
-  // total respeita fornecimento
   const matEfetivo = orcFornecimento === 'eletricista' ? matTotal : 0;
   const { desc, acre, km, kmVal, kmTotal, sub, total, sinalPct, sinal } =
     calcOrcTotais(servTotal, matEfetivo);
-  const dataBr  = data ? new Date(data + 'T12:00:00').toLocaleDateString('pt-BR') : '—';
+  const dataBr = data ? new Date(data + 'T12:00:00').toLocaleDateString('pt-BR') : '—';
 
   const pagLabels = {pix:'💠 Pix',dinheiro:'💵 Dinheiro',credito:'💳 Cartão de Crédito',debito:'💳 Cartão de Débito',boleto:'📄 Boleto'};
   const pagLabel  = pagLabels[orcPagamento] || orcPagamento;
@@ -4539,6 +4544,7 @@ function gerarPDF() {
     .pdf-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;padding-bottom:18px;border-bottom:3px solid ${cor}}
     .pdf-empresa{font-size:20px;font-weight:900;color:#1a1a1a;margin-bottom:4px}
     .pdf-sub{font-size:11px;color:#888}
+    .pdf-doc{font-size:10px;color:#aaa;margin-top:2px}
     .pdf-badge{background:${cor};color:#fff;font-size:11px;font-weight:800;border-radius:6px;padding:5px 12px;letter-spacing:.5px;display:inline-block}
     .pdf-info{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px;background:#fafafa;border:1px solid #eee;border-radius:8px;padding:12px}
     .pdf-info-lbl{font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#999;margin-bottom:2px}
@@ -4569,8 +4575,9 @@ function gerarPDF() {
     .pdf-obs{background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:9px 11px;font-size:11px;color:#555;margin-top:6px}
     @media print{
       body{margin:0!important;padding:0!important}
-      .pdf-wrap{max-width:none!important;width:100%!important;padding:0!important}
-      @page{size:A4 portrait;margin:14mm 16mm 14mm 16mm}
+      .pdf-wrap{max-width:none!important;width:100%!important;padding:14mm 16mm!important}
+      a[href]:after{content:none!important}
+      @page{size:A4 portrait;margin:0}
     }
   </style>
   <div class="pdf-wrap">
@@ -4582,6 +4589,7 @@ function gerarPDF() {
         <div>
           <div class="pdf-empresa">${logoB64 ? '' : '⚡ '}${empresa}</div>
           <div class="pdf-sub">${subtitulo}</div>
+          ${docPrestador ? `<div class="pdf-doc">${docPrestador}</div>` : ''}
         </div>
       </div>
       <div style="text-align:right;flex-shrink:0">
@@ -4644,6 +4652,7 @@ function gerarPDF() {
       <div>
         <div style="font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#999;margin-bottom:3px">Forma de Pagamento</div>
         <div style="font-weight:700;font-size:14px">${pagLabel}${parcelaInfo}</div>
+        ${orcPagamento === 'pix' && pixKey ? `<div style="font-size:11px;color:#666;margin-top:4px">🔑 Chave PIX: <strong>${pixKey}</strong></div>` : ''}
       </div>
       <div style="text-align:right">
         <div style="font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#999;margin-bottom:3px">Sinal / Entrada (${sinalPct}%)</div>
@@ -4669,17 +4678,8 @@ function gerarPDF() {
       <span>Gerado por Eletricista Power PRO</span>
       <span>${dataBr}</span>
     </div>` : ''}
-    ${(() => {
-      const cfg = _getCfg ? _getCfg() : {};
-      const sp  = pdfCfg.socialPdf || cfg.socialPdf || {};
-      const links = [];
-      if (sp.insta    && cfg.insta)    links.push('<a href="https://instagram.com/' + cfg.insta.replace('@','') + '" style="display:inline-flex;align-items:center;gap:5px;color:#e1306c;text-decoration:none;font-size:11px;font-weight:700;padding:5px 10px;background:#fff0f5;border-radius:8px;border:1px solid #fbc8d4">📸 ' + cfg.insta + '</a>');
-      if (sp.whatsapp && cfg.whatsapp) links.push('<a href="https://wa.me/55' + cfg.whatsapp.replace(/\D/g,'') + '" style="display:inline-flex;align-items:center;gap:5px;color:#25d366;text-decoration:none;font-size:11px;font-weight:700;padding:5px 10px;background:#f0fff4;border-radius:8px;border:1px solid #b7ebc8">💬 ' + cfg.whatsapp + '</a>');
-      if (sp.site     && cfg.site)     links.push('<a href="https://' + cfg.site.replace(/^https?:\/\//,'') + '" style="display:inline-flex;align-items:center;gap:5px;color:#3b82f6;text-decoration:none;font-size:11px;font-weight:700;padding:5px 10px;background:#eff6ff;border-radius:8px;border:1px solid #bfdbfe">🌐 ' + cfg.site + '</a>');
-      if (sp.youtube  && cfg.youtube)  links.push('<a href="https://youtube.com/' + cfg.youtube.replace('@','@') + '" style="display:inline-flex;align-items:center;gap:5px;color:#ff0000;text-decoration:none;font-size:11px;font-weight:700;padding:5px 10px;background:#fff5f5;border-radius:8px;border:1px solid #fecaca">▶️ ' + cfg.youtube + '</a>');
-      if (!links.length) return '';
-      return '<div style="margin:12px 0 0;padding:12px;background:#f8f9fa;border-radius:10px;border:1px solid #e5e7eb;text-align:center"><div style="font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#6b7280;margin-bottom:8px">SIGA-NOS / ENTRE EM CONTATO</div><div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center">' + links.join('') + '</div></div>';
-    })()}
+
+    ${_pdfSocialLinks()}
   </div>`;
 
   const area = document.getElementById('print-area');
@@ -4688,6 +4688,20 @@ function gerarPDF() {
     conteudo + '</div>';
   area.style.display = 'flex';
   document.getElementById('pdf-scroll').scrollTop = 0;
+}
+
+function _pdfSocialLinks() {
+  try {
+    const cfg = _getCfg ? _getCfg() : {};
+    const sp  = pdfCfg.socialPdf || {};
+    const links = [];
+    if (sp.insta    && cfg.insta)    links.push('<a href="https://instagram.com/' + cfg.insta.replace('@','') + '" style="display:inline-flex;align-items:center;gap:5px;color:#e1306c;text-decoration:none;font-size:11px;font-weight:700;padding:5px 10px;background:#fff0f5;border-radius:8px;border:1px solid #fbc8d4">📸 ' + cfg.insta + '</a>');
+    if (sp.whatsapp && cfg.whatsapp) links.push('<a href="https://wa.me/55' + cfg.whatsapp.replace(/\D/g,'') + '" style="display:inline-flex;align-items:center;gap:5px;color:#25d366;text-decoration:none;font-size:11px;font-weight:700;padding:5px 10px;background:#f0fff4;border-radius:8px;border:1px solid #b7ebc8">💬 ' + cfg.whatsapp + '</a>');
+    if (sp.site     && cfg.site)     links.push('<a href="https://' + cfg.site.replace(/^https?:\/\//,'') + '" style="display:inline-flex;align-items:center;gap:5px;color:#3b82f6;text-decoration:none;font-size:11px;font-weight:700;padding:5px 10px;background:#eff6ff;border-radius:8px;border:1px solid #bfdbfe">🌐 ' + cfg.site + '</a>');
+    if (sp.youtube  && cfg.youtube)  links.push('<a href="https://youtube.com/' + cfg.youtube + '" style="display:inline-flex;align-items:center;gap:5px;color:#ff0000;text-decoration:none;font-size:11px;font-weight:700;padding:5px 10px;background:#fff5f5;border-radius:8px;border:1px solid #fecaca">▶️ ' + cfg.youtube + '</a>');
+    if (!links.length) return '';
+    return '<div style="margin:12px 0 0;padding:12px;background:#f8f9fa;border-radius:10px;border:1px solid #e5e7eb;text-align:center"><div style="font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#6b7280;margin-bottom:8px">SIGA-NOS / ENTRE EM CONTATO</div><div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center">' + links.join('') + '</div></div>';
+  } catch(e) { return ''; }
 }
 
 function demCompartilharLaudo(){
@@ -4722,7 +4736,6 @@ function demImprimirLaudo(){
     _abrirLaudoPDF(h2);
   },h?0:400);
 }
-
 
 // ══════════════════════════════════════════════════════════════
 // FECHAR DROPDOWNS AO CLICAR FORA
@@ -10082,11 +10095,11 @@ let pdfCfg = {
 function _sincPdfCfg() {
   try {
     var saved = JSON.parse(LS.getItem('pdf_config') || '{}');
-    if (saved.secoes)     Object.assign(pdfCfg.secoes, saved.secoes);
-    if (saved.assinatura !== undefined) pdfCfg.assinatura = saved.assinatura;
-    if (saved.msgCliente) pdfCfg.msgCliente = saved.msgCliente;
-    if (saved.subtitulo)  pdfCfg.subtitulo  = saved.subtitulo;
-    if (saved.socialPdf)  pdfCfg.socialPdf  = saved.socialPdf;
+    if (saved.secoes)                    Object.assign(pdfCfg.secoes, saved.secoes);
+    if (saved.assinatura !== undefined)  pdfCfg.assinatura = saved.assinatura;
+    if (saved.msgCliente)                pdfCfg.msgCliente = saved.msgCliente;
+    if (saved.subtitulo)                 pdfCfg.subtitulo  = saved.subtitulo;
+    if (saved.socialPdf)                 pdfCfg.socialPdf  = saved.socialPdf;
   } catch(e) {}
   try {
     var cfg = _getCfg();
