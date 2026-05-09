@@ -832,9 +832,9 @@ table { min-width: 0; }
 
 @media print{
   body>*:not(#print-area){display:none!important}
-  #print-area{display:block!important;position:static!important;overflow:visible!important;width:100%!important;height:auto!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  #print-area{display:block!important;position:static!important;overflow:visible!important;width:100%!important;height:auto!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;background:#fff!important}
   #pdf-toolbar{display:none!important}
-  #pdf-scroll{display:block!important;overflow:visible!important;height:auto!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  #pdf-scroll{display:block!important;overflow:visible!important;height:auto!important;max-height:none!important;flex:none!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
 }
 
@@ -4590,7 +4590,7 @@ function gerarPDF() {
     <div style="display:flex;gap:8px">
       <button onclick="_abrirConfigNoPDF()" style="background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:9px 13px;font-weight:800;cursor:pointer;font-size:12px;font-family:'Syne',sans-serif;white-space:nowrap">🎨 Ajustar PDF</button>
       <button onclick="window.print()" style="background:${cor};color:#fff;border:none;border-radius:10px;padding:9px 16px;font-weight:800;cursor:pointer;font-size:13px;font-family:'Syne',sans-serif">📤 Salvar</button>
-      <button onclick="document.getElementById('print-area').style.display='none'" style="background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:9px 13px;font-weight:700;cursor:pointer;font-size:13px">✕</button>
+      <button onclick="window.onbeforeprint=null;window.onafterprint=null;document.getElementById('print-area').style.cssText='display:none'" style="background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:9px 13px;font-weight:700;cursor:pointer;font-size:13px">✕</button>
     </div>
   </div>`;
 
@@ -4633,9 +4633,9 @@ function gerarPDF() {
     .pdf-obs{background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:9px 11px;font-size:11px;color:#555;margin-top:6px}
     @media print{
       body{margin:0!important;padding:0!important}
-      .pdf-wrap{max-width:none!important;width:100%!important;padding:14mm 16mm!important}
+      .pdf-wrap{max-width:none!important;width:100%!important;padding:10mm 14mm!important}
       a[href]:after{content:none!important}
-      @page{size:A4 portrait;margin:0}
+      @page{size:A4 portrait;margin:8mm 0 14mm 0}
     }
   </style>
   <div class="pdf-wrap">
@@ -4742,10 +4742,21 @@ function gerarPDF() {
 
   const area = document.getElementById('print-area');
   area.innerHTML = toolbar +
-    '<div id="pdf-scroll" style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#fff">' +
+    '<div id="pdf-scroll" style="display:block;overflow:visible;background:#fff">' +
     conteudo + '</div>';
-  area.style.display = 'flex';
-  document.getElementById('pdf-scroll').scrollTop = 0;
+  area.style.cssText = 'display:flex;flex-direction:column;position:fixed;inset:0;z-index:9999;background:#fff;overflow:hidden;-webkit-overflow-scrolling:touch';
+
+  // iOS fix: antes de imprimir, torna o conteúdo estático para paginar corretamente
+  window.onbeforeprint = function() {
+    area.style.cssText = 'display:block;position:static;width:100%;height:auto;overflow:visible;background:#fff';
+    var scroll = document.getElementById('pdf-scroll');
+    if (scroll) scroll.style.cssText = 'display:block;overflow:visible;height:auto';
+  };
+  window.onafterprint = function() {
+    area.style.cssText = 'display:flex;flex-direction:column;position:fixed;inset:0;z-index:9999;background:#fff;overflow:hidden;-webkit-overflow-scrolling:touch';
+    var scroll = document.getElementById('pdf-scroll');
+    if (scroll) scroll.style.cssText = 'display:block;overflow:visible;background:#fff';
+  };
 }
 
 function _pdfSocialLinks() {
