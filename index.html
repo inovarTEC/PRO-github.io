@@ -1591,12 +1591,15 @@ var _appReady = false;
         </div>
         <!-- TIPO -->
         <div style="border:1px solid var(--border-input);border-radius:13px;margin-bottom:14px;overflow:hidden">
-          <div onclick="demToggleTipo(this)" style="display:flex;align-items:center;justify-content:space-between;padding:11px 14px;cursor:pointer;background:var(--bg-input)">
-            <div style="display:flex;align-items:center;gap:8px">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 14px;cursor:pointer;background:var(--bg-input)">
+            <div onclick="demToggleTipo(this.parentElement.parentElement)" style="display:flex;align-items:center;gap:8px;flex:1">
               <span style="font-size:10px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--text3)">TIPO</span>
               <span id="dem-tipo-lbl" style="font-size:12px;font-weight:800;color:var(--acc)">🏠 Residencial</span>
             </div>
-            <span id="dem-tipo-arr" style="font-size:10px;color:var(--text3);transition:transform .2s">▼</span>
+            <div style="display:flex;align-items:center;gap:8px">
+              <button onclick="demAbrirHistorico()" style="display:flex;align-items:center;gap:4px;height:28px;padding:0 10px;border-radius:8px;border:1px solid var(--acc-border);background:var(--acc-bg);color:var(--acc);font-size:10px;font-family:'Syne',sans-serif;font-weight:800;cursor:pointer;white-space:nowrap">📋 Histórico</button>
+              <span id="dem-tipo-arr" onclick="demToggleTipo(this.parentElement.parentElement)" style="font-size:10px;color:var(--text3);transition:transform .2s;cursor:pointer">▼</span>
+            </div>
           </div>
           <div id="dem-tipo-body" style="display:none;padding:12px">
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px">
@@ -1684,6 +1687,8 @@ var _appReady = false;
         <!-- BOTÃO CALCULAR MÍNIMO -->
         <button id="dem-btn-minimo" class="btn-salvar-full" style="display:none;margin-bottom:8px;background:var(--bg-input);border:1px solid var(--border-input);color:var(--text);font-size:12px;padding:11px" onclick="demCalcMinimo()">📋 CALCULAR MÍNIMO NBR →</button>
 
+        <button class="btn-salvar-full" style="margin-bottom:12px" onclick="demCalcNBR()">⚡ CALCULAR DEMANDA ELÉTRICA</button>
+
         <!-- RESULTADO NBR (acordeão) -->
         <div id="dem-nbr-res" style="display:none;margin-bottom:12px">
           <div onclick="demToggleAcord('dem-nbr-body','dem-nbr-arrow','dem-nbr-status')" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;background:var(--acc-bg);border:1px solid var(--acc-border);border-radius:12px;padding:12px 14px;margin-bottom:8px">
@@ -1730,11 +1735,13 @@ var _appReady = false;
               <button class="btn-salvar-full" style="margin-top:0;background:#1d4ed8;color:#fff;font-size:11px;padding:11px" onclick="demLevarMUC()">🏢 Levar para MUC</button>
               <button class="btn-salvar-full" style="margin-top:0;background:rgba(99,102,241,.15);color:#818cf8;border:1px solid rgba(99,102,241,.25);font-size:11px;padding:11px" onclick="demLevarQuedaV()">📉 Queda de Tensão</button>
             </div>
-            <button class="btn-salvar-full" style="margin-top:0;background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.25);font-size:12px;padding:12px" onclick="demExportarPDF()">📄 Gerar Laudo PDF / Compartilhar</button>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:0">
+              <button class="btn-salvar-full" style="margin-top:0;background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.25);font-size:12px;padding:12px" onclick="demExportarPDF()">📄 Gerar Laudo PDF</button>
+              <button class="btn-salvar-full" style="margin-top:0;background:var(--acc-bg);color:var(--acc);border:1px solid var(--acc-border);font-size:12px;padding:12px" onclick="demSalvarHistorico()">💾 Salvar</button>
+            </div>
           </div>
         </div>
 
-        <button class="btn-salvar-full" style="margin-top:4px" onclick="demCalcNBR()">⚡ CALCULAR DEMANDA ELÉTRICA</button>
       </div>
 
       <!-- ══ SUB-ABA 1: MUC ══ -->
@@ -4801,27 +4808,29 @@ function _pdfSocialLinks() {
   } catch(e) { return ''; }
 }
 
-function demCompartilharLaudo(){
-  var h=window._demLaudoHTML;
-  if(!h){try{demExportarPDF();}catch(e){}}
-  setTimeout(function(){
-    var h2=window._demLaudoHTML;
-    if(!h2){alert("Calcule a demanda primeiro!");return;}
-    _abrirLaudoPDF(h2);
-  },h?0:400);
-}
 
 function _laudoParaPDF(h){
   return h.replace(/<div class="no-print">[\s\S]*?<\/div>\s*/,"");
 }
 function _abrirLaudoPDF(h){
-  var c=_laudoParaPDF(h);
-  var blob=new Blob([c],{type:"text/html;charset=utf-8"});
-  var url=URL.createObjectURL(blob);
-  var aba=window.open(url,"_blank");
-  if(!aba){var a=document.createElement("a");a.href=url;a.target="_blank";
-    document.body.appendChild(a);a.click();document.body.removeChild(a);}
-  setTimeout(function(){URL.revokeObjectURL(url);},30000);
+  var c = _laudoParaPDF(h);
+  var html = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">' +
+    '<meta name="viewport" content="width=device-width,initial-scale=1">' +
+    '<title>Laudo de Demanda</title></head><body style="margin:0;padding:0">' +
+    c + '</body></html>';
+  var win = window.open('', '_blank');
+  if (!win) {
+    var blob = new Blob([html], {type:'text/html;charset=utf-8'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.target = '_blank';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 30000);
+    return;
+  }
+  win.document.write(html);
+  win.document.close();
+  setTimeout(function(){ win.print(); }, 300);
 }
 
 function demImprimirLaudo(){
@@ -5502,6 +5511,122 @@ function carregarOrcamento(dados) {
   } catch(err) {
     console.error('carregarOrcamento:', err);
   }
+}
+
+// ══ HISTÓRICO DEMANDA ═════════════════════════════════════════
+function demSalvarHistorico() {
+  if (!window._demResultadoNBR) { alert('Calcule a demanda primeiro!'); return; }
+  var r = window._demResultadoNBR;
+  var tipoLabels = {
+    'htc-res':'Residencial','htc-pred':'Predial',
+    'htc-com':'Comercial','htc-ind':'Industrial',
+    'htc-6ap':'+6 Unidades','htc-out':'Geral'
+  };
+  var sisLabels = {'mono':'Monofásico','bi':'Bifásico','tri':'Trifásico'};
+  var agora = new Date();
+  var item = {
+    id: 'DEM-' + String(agora.getTime()).slice(-4),
+    salvadoEm: agora.toISOString(),
+    data: agora.toLocaleDateString('pt-BR') + ' ' + agora.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}),
+    tipo: tipoLabels[r.tipoKey] || 'Residencial',
+    tipoKey: r.tipoKey || 'htc-res',
+    sistema: sisLabels[r.sistema] || 'Monofásico',
+    tensao: r.tensao || 127,
+    comodos: Object.keys(r.comodos || {}).length,
+    demandaVA: r.demandada || 0,
+    demandaKva: ((r.demandada||0)/1000).toFixed(2),
+    disjuntor: r.disj ? r.disj + 'A' : '—',
+    snapshot: {
+      demComodos: JSON.parse(JSON.stringify(r.comodos || {})),
+      sistema: r.sistema || 'mono',
+      tensao: r.tensao || 127,
+      tipoKey: r.tipoKey || 'htc-res'
+    }
+  };
+  var hist = [];
+  try { hist = JSON.parse(LS.getItem('dem_historico') || '[]'); } catch(e) {}
+  hist.unshift(item);
+  if (hist.length > 20) hist = hist.slice(0, 20);
+  try { LS.setItem('dem_historico', JSON.stringify(hist)); } catch(e) {}
+  // Feedback visual
+  var btn = event.target;
+  var orig = btn.textContent;
+  btn.textContent = '✅ Salvo!';
+  btn.style.background = 'rgba(34,197,94,.25)';
+  setTimeout(function(){ btn.textContent = orig; btn.style.background = 'var(--acc-bg)'; }, 1500);
+}
+
+function demAbrirHistorico() {
+  var overlay = document.getElementById('dem-hist-overlay');
+  if (overlay) overlay.style.display = 'flex';
+  _renderDemHistorico();
+}
+
+function demFecharHistorico() {
+  var overlay = document.getElementById('dem-hist-overlay');
+  if (overlay) overlay.style.display = 'none';
+}
+
+function _renderDemHistorico() {
+  var hist = [];
+  try { hist = JSON.parse(LS.getItem('dem_historico') || '[]'); } catch(e) {}
+  var body = document.getElementById('dem-hist-body');
+  if (!body) return;
+  if (!hist.length) {
+    body.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--text3)"><div style="font-size:32px;margin-bottom:10px">⚡</div><div style="font-size:13px;font-weight:700">Nenhum cálculo salvo</div><div style="font-size:11px;margin-top:6px">Calcule e toque em 💾 Salvar</div></div>';
+    return;
+  }
+  body.innerHTML = hist.map(function(item, idx) {
+    return '<div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:13px;padding:13px 14px;margin-bottom:10px">' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">' +
+        '<div>' +
+          '<div style="font-family:\'Syne\',sans-serif;font-size:12px;font-weight:800;color:var(--acc)">' + item.id + '</div>' +
+          '<div style="font-size:10px;color:var(--text3);margin-top:2px">' + item.data + '</div>' +
+        '</div>' +
+        '<div style="text-align:right">' +
+          '<div style="font-size:15px;font-weight:900;color:var(--text)">' + item.demandaKva + ' kVA</div>' +
+          '<div style="font-size:10px;color:var(--text3)">Disj: ' + item.disjuntor + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">' +
+        '<span style="font-size:10px;font-weight:700;background:var(--acc-bg);color:var(--acc);border-radius:6px;padding:3px 8px">' + item.tipo + '</span>' +
+        '<span style="font-size:10px;font-weight:700;background:var(--bg-card);color:var(--text2);border-radius:6px;padding:3px 8px">' + item.sistema + ' ' + item.tensao + 'V</span>' +
+        '<span style="font-size:10px;font-weight:700;background:var(--bg-card);color:var(--text2);border-radius:6px;padding:3px 8px">' + item.comodos + ' cômodo' + (item.comodos !== 1 ? 's' : '') + '</span>' +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">' +
+        '<button onclick="_demCarregarHistorico(' + idx + ')" style="padding:8px;background:var(--acc);color:#fff;border:none;border-radius:8px;font-size:11px;font-weight:800;cursor:pointer">↺ Carregar</button>' +
+        '<button onclick="_demRemoverHistorico(' + idx + ')" style="padding:8px;background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.25);border-radius:8px;font-size:11px;font-weight:800;cursor:pointer">🗑 Remover</button>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function _demCarregarHistorico(idx) {
+  var hist = [];
+  try { hist = JSON.parse(LS.getItem('dem_historico') || '[]'); } catch(e) {}
+  var item = hist[idx];
+  if (!item) return;
+  // Restaurar snapshot
+  demComodos = JSON.parse(JSON.stringify(item.snapshot.demComodos || {}));
+  demSisAtual = item.snapshot.sistema || 'mono';
+  demTensaoAtual = item.snapshot.tensao || 127;
+  // Selecionar tipo visualmente
+  document.querySelectorAll('.htc').forEach(function(el) {
+    el.classList.remove('sel');
+    if (el.classList.contains(item.snapshot.tipoKey)) el.classList.add('sel');
+  });
+  window._tipoSelecionado = item.snapshot.tipoKey;
+  demFecharHistorico();
+  // Recalcular
+  try { demRenderGrid(); demRenderSelecionados(); demCalcNBR(); } catch(e) {}
+}
+
+function _demRemoverHistorico(idx) {
+  var hist = [];
+  try { hist = JSON.parse(LS.getItem('dem_historico') || '[]'); } catch(e) {}
+  hist.splice(idx, 1);
+  try { LS.setItem('dem_historico', JSON.stringify(hist)); } catch(e) {}
+  _renderDemHistorico();
 }
 
 // ══ HISTÓRICO ════════════════════════════════════════════════
@@ -9161,16 +9286,15 @@ tbody tr:nth-child(even){background:#fafafa}
 @media print{.no-print{display:none!important}@page{size:A4 portrait;margin:14mm 16mm}}
 </style></head><body>
 <div class="wrap">
-  <div class="no-print">
-    <span style="font-weight:700;font-size:13px">⚡ Laudo de Demanda — Pré-visualização</span>
-    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+  <div class="no-print" style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
+    <span style="font-weight:800;font-size:13px;font-family:'Syne',sans-serif">⚡ Laudo de Demanda</span>
+    <div style="display:flex;gap:8px;align-items:center">
       <div style="display:flex;border:1px solid rgba(255,255,255,.3);border-radius:8px;overflow:hidden">
-        <button id="btn-retrato" onclick="demSetOrientacao('portrait')" style="background:rgba(255,255,255,.3);color:#fff;border:none;padding:6px 10px;font-size:10px;font-weight:800;cursor:pointer">📄 Retrato</button>
-        <button id="btn-paisagem" onclick="demSetOrientacao('landscape')" style="background:transparent;color:rgba(255,255,255,.7);border:none;padding:6px 10px;font-size:10px;font-weight:800;cursor:pointer">🖼️ Paisagem</button>
+        <button id="btn-retrato" style="background:rgba(255,255,255,.3);color:#fff;border:none;padding:6px 12px;font-size:10px;font-weight:800;cursor:pointer">📄 Retrato</button>
+        <button id="btn-paisagem" style="background:transparent;color:rgba(255,255,255,.7);border:none;padding:6px 12px;font-size:10px;font-weight:800;cursor:pointer">🖼️ Paisagem</button>
       </div>
-      <button onclick="demImprimirLaudo()" style="background:#f59e0b;color:#000;border:none;border-radius:8px;padding:8px 14px;font-weight:800;cursor:pointer;font-size:11px">🖨️ Imprimir / PDF</button>
-      <button onclick="demCompartilharLaudo()" style="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:8px 12px;font-weight:700;cursor:pointer;font-size:11px">💬 Compartilhar</button>
-      <button onclick="document.getElementById('print-area').style.display='none'" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:8px 10px;font-weight:700;cursor:pointer;font-size:11px">✕ Fechar</button>
+      <button onclick="demImprimirLaudo()" style="background:#f59e0b;color:#000;border:none;border-radius:10px;padding:9px 16px;font-weight:800;cursor:pointer;font-size:13px;font-family:'Syne',sans-serif">📤 Salvar</button>
+      <button onclick="document.getElementById('print-area').style.display='none'" style="background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:9px 13px;font-weight:700;cursor:pointer;font-size:13px">✕</button>
     </div>
   </div>
 
@@ -11268,6 +11392,17 @@ try { _sincPdfCfg(); }            catch(e) {}
       <input id="agenda-overlay-busca" class="inp" type="text" placeholder="🔍 Buscar por título, cliente ou data..." style="margin:0" oninput="agendaOverlayBuscar(this.value)">
     </div>
     <div id="agenda-overlay-body" style="overflow-y:auto;flex:1;padding:14px"></div>
+  </div>
+</div>
+
+<!-- ══ HISTÓRICO DE LAUDOS DEMANDA ══ -->
+<div id="dem-hist-overlay" onclick="if(event.target===this)demFecharHistorico()" style="position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.7);display:none;align-items:flex-end;justify-content:center">
+  <div style="background:var(--bg-card);border-radius:20px 20px 0 0;width:100%;max-width:520px;max-height:88vh;display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);flex-shrink:0">
+      <span style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800">⚡ Histórico de Cálculos</span>
+      <button onclick="demFecharHistorico()" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--text3)">✕</button>
+    </div>
+    <div id="dem-hist-body" style="overflow-y:auto;flex:1;padding:14px"></div>
   </div>
 </div>
 
