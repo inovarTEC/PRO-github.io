@@ -4841,7 +4841,12 @@ function _abrirLaudoPDF(h){
   };
   setTimeout(function() {
     win.print();
-    setTimeout(function(){ if (!win.closed) win.close(); }, 60000);
+    setTimeout(function(){
+      if (!win.closed) {
+        win.close();
+        try { abrirModal('modal-ferramentas'); ferrAba(1); } catch(e) {}
+      }
+    }, 60000);
   }, 300);
 }
 
