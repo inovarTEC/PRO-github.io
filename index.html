@@ -4834,11 +4834,13 @@ function _abrirLaudoPDF(h){
   }
   win.document.write(html);
   win.document.close();
-  // Fecha após imprimir OU cancelar
-  win.onafterprint = function() { win.close(); };
-  setTimeout(function(){
+  // Ao fechar — garante que o app volta para a tela correta
+  win.onafterprint = function() {
+    win.close();
+    try { abrirModal('modal-ferramentas'); ferrAba(1); } catch(e) {}
+  };
+  setTimeout(function() {
     win.print();
-    // Garante fechamento após 60s independente do usuário
     setTimeout(function(){ if (!win.closed) win.close(); }, 60000);
   }, 300);
 }
@@ -9306,8 +9308,21 @@ tbody tr:nth-child(even){background:#fafafa}
 .circ-item{display:flex;align-items:center;gap:10px;padding:8px 12px;background:#fafafa;border:1px solid #eee;border-radius:6px;font-size:11px}
 .circ-dot{width:8px;height:8px;border-radius:50%;background:${cor};flex-shrink:0}
 .circ-ind .circ-dot{background:#ef4444}
-.foot{margin-top:20px;padding-top:12px;border-top:1px solid #eee;display:flex;justify-content:space-between;font-size:10px;color:#aaa}
-.no-print{background:#1e40af;color:#fff;padding:10px 16px;border-radius:10px;display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.foot{margin-top:20px;padding-top:12px;border-top:1px solid #eee;display:flex;justify-content:space-between;font-size:10px;color:#aaa;flex-wrap:wrap;gap:4px}
+.no-print{background:#1e40af;color:#fff;padding:10px 16px;border-radius:10px;display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:8px}
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:8px}
+@media screen and (max-width:520px){
+  .wrap{padding:16px 10px}
+  .hdr{flex-direction:column;gap:10px}
+  .info-grid{grid-template-columns:1fr 1fr}
+  table{font-size:10px}
+  thead th{padding:6px 4px;font-size:8px;letter-spacing:0}
+  tbody td{padding:5px 4px}
+  .res-grid{grid-template-columns:1fr 1fr}
+  .grand{padding:10px 12px}
+  .grand-lbl{font-size:12px}
+  .grand-val{font-size:20px}
+}
 @media print{.no-print{display:none!important}@page{size:A4 portrait;margin:14mm 16mm}}
 </style></head><body>
 <div class="wrap">
@@ -9353,13 +9368,13 @@ tbody tr:nth-child(even){background:#fafafa}
 
   ${SD.planta !== false ? `
   <div class="sec">${plantaLabel}</div>
-  <table>
+  <div class="tbl-wrap"><table>
     <thead><tr>
-      <th>Ambiente</th><th class="c">Área</th><th class="c">Pts Ilum.</th>
-      <th class="c">Pts Tom.</th><th class="c">Equipamentos</th><th class="c">VA Total</th>
+      <th>Ambiente</th><th class="c">Área</th><th class="c">Ilum.</th>
+      <th class="c">Tom.</th><th class="c">Equip.</th><th class="c">VA</th>
     </tr></thead>
     <tbody>${rowsComodos}</tbody>
-  </table>` : ''}
+  </table></div>` : ''}
 
   ${SD.resultado !== false ? `
   <div class="sec">Resultado da Demanda</div>
