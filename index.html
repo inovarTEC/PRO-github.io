@@ -15,6 +15,29 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
+/* ══ TELA LOGIN ══ */
+#tela-login{position:fixed;inset:0;z-index:9999;background:#060810;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:24px;font-family:'Syne',sans-serif}
+.login-logo{width:80px;height:80px;background:linear-gradient(135deg,#f59e0b,#d97706);border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:40px;margin-bottom:20px;box-shadow:0 0 32px rgba(245,158,11,.4)}
+.login-title{font-size:28px;font-weight:900;color:#fff;text-align:center;line-height:1.1;margin-bottom:6px}
+.login-sub{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:32px}
+.login-box{width:100%;max-width:360px;display:flex;flex-direction:column;gap:12px}
+.login-inp-wrap{position:relative}
+.login-inp{width:100%;padding:14px 16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;color:#fff;font-size:15px;font-family:'Syne',sans-serif;outline:none;box-sizing:border-box;transition:border .2s}
+.login-inp:focus{border-color:rgba(245,158,11,.5)}
+.login-inp::placeholder{color:rgba(255,255,255,.3)}
+.login-eye{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,.35);cursor:pointer;font-size:16px;padding:4px}
+.login-btn{width:100%;padding:15px;background:linear-gradient(135deg,#f59e0b,#d97706);border:none;border-radius:14px;color:#000;font-size:15px;font-weight:900;font-family:'Syne',sans-serif;cursor:pointer;box-shadow:0 0 24px rgba(245,158,11,.35);transition:opacity .15s,transform .1s;letter-spacing:.5px}
+.login-btn:active{opacity:.85;transform:scale(.98)}
+.login-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.login-erro{display:none;align-items:center;gap:8px;color:#f87171;font-size:12px;font-weight:700;padding:10px 12px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:10px}
+.login-erro-btns{display:none;gap:8px}
+.login-erro-btn{flex:1;padding:10px;border-radius:10px;font-size:12px;font-weight:800;font-family:'Syne',sans-serif;cursor:pointer;text-align:center;text-decoration:none;border:none;display:flex;align-items:center;justify-content:center;gap:6px}
+.login-erro-btn.ver{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.12)}
+.login-erro-btn.comprar{background:#f59e0b;color:#000}
+.login-redefinir{text-align:center;font-size:12px;color:rgba(255,255,255,.4);margin-top:4px}
+.login-redefinir a{color:#f59e0b;font-weight:700;cursor:pointer;text-decoration:none}
+/* ══ FIM TELA LOGIN ══ */
+
 :root,[data-theme="dark"]{
   --bg:#060810;--bg-home:#07090f;--bg-hdr:rgba(11,14,24,.97);--bg-card:#0b0e18;
   --bg-modal:#0d1117;--bg-input:#0d1b2a;--bg-btn:#0b0e18;--bg-bnav:rgba(8,11,20,.98);
@@ -835,7 +858,6 @@ table { min-width: 0; }
   #print-area{display:block!important;position:static!important;overflow:visible!important;width:100%!important;height:auto!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;background:#fff!important}
   #pdf-toolbar{display:none!important}
   #pdf-scroll{display:block!important;overflow:visible!important;height:auto!important;max-height:none!important;flex:none!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
-  #dem-laudo-scroll{display:block!important;overflow:visible!important;height:auto!important;max-height:none!important;flex:none!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
 }
 
@@ -869,6 +891,29 @@ var _appReady = false;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 </head>
 <body>
+
+<!-- ══ TELA LOGIN FIREBASE ══ -->
+<div id="tela-login">
+  <div class="login-logo">⚡</div>
+  <div class="login-title">Eletricista Power<br>PRO</div>
+  <div class="login-sub">Área Restrita</div>
+  <div class="login-box">
+    <input id="login-email" class="login-inp" type="email" placeholder="Seu e-mail" autocomplete="email">
+    <div class="login-inp-wrap">
+      <input id="login-senha" class="login-inp" type="password" placeholder="Senha" autocomplete="current-password" style="padding-right:44px">
+      <button class="login-eye" onclick="loginToggleSenha()" id="login-eye-btn">👁️</button>
+    </div>
+    <div class="login-erro" id="login-erro">
+      <span>✕</span><span id="login-erro-msg">E-mail não cadastrado na plataforma.</span>
+    </div>
+    <div class="login-erro-btns" id="login-erro-btns">
+      <a href="https://eletricistapro.com.br/" target="_blank" class="login-erro-btn ver">🌐 Ver App</a>
+      <a href="https://pay.cakto.com.br/94rb2jd_835329" target="_blank" class="login-erro-btn comprar">🛒 Comprar</a>
+    </div>
+    <button class="login-btn" id="login-btn" onclick="loginEntrar()">⚡ ENTRAR</button>
+    <div class="login-redefinir">Esqueceu a senha? <a onclick="loginRedefinir()">Redefinir</a></div>
+  </div>
+</div>
 
 <!-- ══ TELA HOME ══ -->
 <div id="tela-home" class="tela ativa">
@@ -2170,14 +2215,23 @@ var _appReady = false;
   </div>
   <div class="aj-panel" id="aj-3"><div class="aj-body">
     <div class="acesso-card">
-      <div class="acesso-sec">🔒 Acesso</div>
-      <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:13px;padding:14px;margin-bottom:12px">
-        <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px">MODO</div>
+      <div class="acesso-sec">🔒 Conta</div>
+      <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:13px;padding:14px;margin-bottom:10px">
+        <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px">E-MAIL</div>
+        <div id="acesso-email" style="font-size:13px;font-weight:700;color:#60a5fa;font-family:'IBM Plex Mono',monospace">—</div>
+      </div>
+      <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:13px;padding:14px;margin-bottom:10px">
+        <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px">STATUS</div>
         <div style="display:flex;align-items:center;gap:6px">
-          <div style="width:7px;height:7px;border-radius:50%;background:#4ade80"></div>
-          <span style="font-size:13px;color:#4ade80;font-weight:600">Modo Teste (sem Firebase)</span>
+          <div style="width:7px;height:7px;border-radius:50%;background:#4ade80;flex-shrink:0"></div>
+          <span style="font-size:13px;color:#4ade80;font-weight:600">Autenticado</span>
         </div>
       </div>
+      <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:13px;padding:14px;margin-bottom:16px;cursor:pointer" onclick="loginEnviarRedefinicao()">
+        <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px">SENHA</div>
+        <div style="font-size:13px;font-weight:700;color:#f59e0b">🔑 Enviar link de redefinição</div>
+      </div>
+      <button onclick="loginSair()" style="width:100%;padding:15px;background:rgba(153,27,27,.3);border:1px solid rgba(239,68,68,.3);border-radius:13px;font-family:'Syne',sans-serif;font-size:13px;font-weight:900;color:#f87171;cursor:pointer;letter-spacing:.5px">🚪 SAIR DA CONTA</button>
     </div>
   </div></div>
   <div class="aj-panel" id="aj-4"><div class="aj-body">
@@ -4852,14 +4906,24 @@ function _abrirLaudoPDF(h){
 }
 
 function demImprimirLaudo(){
+  // Feedback visual — busca pelo texto do botão
   var btns = document.querySelectorAll('#print-area button');
   var btn = null;
   btns.forEach(function(b){ if(b.textContent.indexOf('Salvar') !== -1) btn = b; });
   if (btn) { btn.textContent = '⏳ Gerando...'; btn.disabled = true; }
+  var h=window._demLaudoHTML;
+  if(!h){try{demExportarPDF();}catch(e){}}
   setTimeout(function(){
-    window.print();
-    if (btn) { btn.textContent = '📤 Salvar'; btn.disabled = false; }
-  }, 100);
+    var h2=window._demLaudoHTML;
+    if(!h2){
+      if (btn) { btn.textContent = '📤 Salvar'; btn.disabled = false; }
+      alert("Calcule a demanda primeiro!");return;
+    }
+    _abrirLaudoPDF(h2);
+    setTimeout(function(){
+      if (btn) { btn.textContent = '📤 Salvar'; btn.disabled = false; }
+    }, 1000);
+  },h?0:400);
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -9400,8 +9464,8 @@ tbody tr:nth-child(even) td{background:#fafafa}
 <\/body><\/html>`;
 
   const area = document.getElementById('print-area');
-  area.innerHTML = '<div id="dem-laudo-scroll" style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#fff">' + html + '</div>';
-  area.style.cssText = 'display:flex;flex-direction:column;position:fixed;inset:0;z-index:9999;background:#fff;overflow:hidden;-webkit-overflow-scrolling:touch';
+  area.innerHTML = html;
+  area.style.cssText = 'display:block;position:fixed;inset:0;z-index:9999;background:#fff!important;overflow-y:auto;-webkit-overflow-scrolling:touch;color:#1a1a1a';
   area.scrollTop = 0;
   window._demLaudoHTML = html;
 }
@@ -9411,7 +9475,6 @@ function _fecharLaudoDem() {
   area.style.display = 'none';
   area.innerHTML = '';
   window._demLaudoHTML = null;
-  try { abrirModal('modal-ferramentas'); ferrAba(1); } catch(e) {}
 }
 
 // ── MUC — DIS-NOR-053 REV06 ──
@@ -11403,19 +11466,114 @@ try {
   const acc = localStorage.getItem('acc') || 'ambar';
   document.documentElement.setAttribute('data-acc', acc);
 } catch(e) {}
-// ── init direto (modo teste — sem Firebase) ──────────────────
-try { gerarNumeroOrc(); }         catch(e) {}
-try { _carregarCustomLocal(); }   catch(e) {}
-try { renderNBR(); }              catch(e) {}
-try { renderCheck(); }            catch(e) {}
-try { demRenderGrid(); }          catch(e) {}
-try { demRenderSelecionados(); }  catch(e) {}
-try { orcDadosResumo(); }         catch(e) {}
-try { _atualizarBtnCalc(); }      catch(e) {}
-// init local — Firebase não ativo
-try { _sincPdfCfg(); }            catch(e) {}
-try { _sincDemPdfCfg(); }         catch(e) {}
-try { window._logoB64Cache = LS.getItem('logo_b64') || ''; } catch(e) { window._logoB64Cache = ''; }
+// ══ FUNÇÕES FIREBASE AUTH ══════════════════════════════════════
+function loginEntrar() {
+  var email  = (document.getElementById('login-email').value || '').trim();
+  var senha  = (document.getElementById('login-senha').value || '');
+  var btn    = document.getElementById('login-btn');
+  var erro   = document.getElementById('login-erro');
+  var erroMsg= document.getElementById('login-erro-msg');
+  var erroBtns= document.getElementById('login-erro-btns');
+
+  if (!email || !senha) {
+    erro.style.display = 'flex';
+    erroMsg.textContent = 'Preencha e-mail e senha.';
+    erroBtns.style.display = 'none';
+    return;
+  }
+  btn.textContent = '⏳ Entrando...';
+  btn.disabled = true;
+  erro.style.display = 'none';
+  erroBtns.style.display = 'none';
+
+  firebase.auth().signInWithEmailAndPassword(email, senha)
+    .then(function() {
+      btn.textContent = '⚡ ENTRAR';
+      btn.disabled = false;
+    })
+    .catch(function(e) {
+      btn.textContent = '⚡ ENTRAR';
+      btn.disabled = false;
+      erro.style.display = 'flex';
+      erroBtns.style.display = 'flex';
+      var cod = e.code || '';
+      if (cod === 'auth/user-not-found' || cod === 'auth/invalid-credential') {
+        erroMsg.textContent = 'E-mail não cadastrado na plataforma.';
+      } else if (cod === 'auth/wrong-password') {
+        erroMsg.textContent = 'Senha incorreta.';
+        erroBtns.style.display = 'none';
+      } else if (cod === 'auth/invalid-email') {
+        erroMsg.textContent = 'E-mail inválido.';
+        erroBtns.style.display = 'none';
+      } else if (cod === 'auth/too-many-requests') {
+        erroMsg.textContent = 'Muitas tentativas. Tente novamente mais tarde.';
+        erroBtns.style.display = 'none';
+      } else {
+        erroMsg.textContent = 'E-mail não cadastrado na plataforma.';
+      }
+    });
+}
+
+function loginSair() {
+  firebase.auth().signOut().catch(function(){});
+}
+
+function loginRedefinir() {
+  var email = (document.getElementById('login-email').value || '').trim();
+  var erro  = document.getElementById('login-erro');
+  var erroMsg = document.getElementById('login-erro-msg');
+  var erroBtns = document.getElementById('login-erro-btns');
+  if (!email) {
+    erro.style.display = 'flex';
+    erroMsg.textContent = 'Digite seu e-mail para redefinir a senha.';
+    erroBtns.style.display = 'none';
+    return;
+  }
+  firebase.auth().sendPasswordResetEmail(email)
+    .then(function() {
+      erro.style.display = 'flex';
+      erroMsg.textContent = '✅ Link enviado para ' + email;
+      erroBtns.style.display = 'none';
+    })
+    .catch(function() {
+      erro.style.display = 'flex';
+      erroMsg.textContent = 'E-mail não encontrado.';
+      erroBtns.style.display = 'none';
+    });
+}
+
+function loginEnviarRedefinicao() {
+  var user = firebase.auth().currentUser;
+  if (!user) return;
+  firebase.auth().sendPasswordResetEmail(user.email)
+    .then(function() { alert('✅ Link enviado para ' + user.email); })
+    .catch(function() { alert('Erro ao enviar link. Tente novamente.'); });
+}
+
+function loginToggleSenha() {
+  var inp = document.getElementById('login-senha');
+  var btn = document.getElementById('login-eye-btn');
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    btn.textContent = '🙈';
+  } else {
+    inp.type = 'password';
+    btn.textContent = '👁️';
+  }
+}
+
+// Enter no campo senha dispara login
+document.addEventListener('DOMContentLoaded', function() {
+  var s = document.getElementById('login-senha');
+  if (s) s.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') loginEntrar();
+  });
+  var em = document.getElementById('login-email');
+  if (em) em.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') document.getElementById('login-senha').focus();
+  });
+});
+// ══ FIM FUNÇÕES FIREBASE AUTH ══════════════════════════════════
 
 // ══ HIDE ON SCROLL — HOME ONLY ══
 (function(){
@@ -11683,6 +11841,43 @@ try { window._logoB64Cache = LS.getItem('logo_b64') || ''; } catch(e) { window._
     style="background:var(--bg-card);border-radius:20px 20px 0 0;width:100%;max-width:520px;max-height:88vh;display:flex;flex-direction:column;overflow:hidden">
   </div>
 </div>
+<!-- ══ FIREBASE SDK ══ -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script>
+(function() {
+  var firebaseConfig = {
+    apiKey: "AIzaSyCUoVzr9_PIGZXe1DKBZaINNCVQVj14Iqk",
+    authDomain: "eletricista-pro.firebaseapp.com",
+    projectId: "eletricista-pro",
+    storageBucket: "eletricista-pro.firebasestorage.app",
+    messagingSenderId: "184661625796",
+    appId: "1:184661625796:web:18c38153a0a2621025b291"
+  };
+  try { firebase.initializeApp(firebaseConfig); } catch(e) {}
+  firebase.auth().onAuthStateChanged(function(user) {
+    var telaLogin = document.getElementById('tela-login');
+    if (user) {
+      if (telaLogin) telaLogin.style.display = 'none';
+      var el = document.getElementById('acesso-email');
+      if (el) el.textContent = user.email || '—';
+      try { gerarNumeroOrc(); }         catch(e) {}
+      try { _carregarCustomLocal(); }   catch(e) {}
+      try { renderNBR(); }              catch(e) {}
+      try { renderCheck(); }            catch(e) {}
+      try { demRenderGrid(); }          catch(e) {}
+      try { demRenderSelecionados(); }  catch(e) {}
+      try { orcDadosResumo(); }         catch(e) {}
+      try { _atualizarBtnCalc(); }      catch(e) {}
+      try { _sincPdfCfg(); }            catch(e) {}
+      try { _sincDemPdfCfg(); }         catch(e) {}
+      try { window._logoB64Cache = LS.getItem('logo_b64') || ''; } catch(e) { window._logoB64Cache = ''; }
+    } else {
+      if (telaLogin) telaLogin.style.display = 'flex';
+    }
+  });
+})();
+</script>
 
 </body>
 </html>
