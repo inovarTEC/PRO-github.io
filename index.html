@@ -4871,22 +4871,50 @@ function _pdfSocialLinks() {
 function _laudoParaPDF(h){
   return h.replace(/<div class="no-print">[\s\S]*?<\/div>\s*/,"");
 }
+// ── Helper: abre nova janela com laudo completo + print (passo 3) ──
+function _laudoAbrirJanela(htmlDoc) {
+  var win = window.open('', '_blank');
+  if (win) {
+    win.document.write(htmlDoc);
+    win.document.close();
+    win.onafterprint = function() {
+      win.close();
+      try { abrirModal('modal-ferramentas'); ferrAba(1); } catch(e2) {}
+    };
+    setTimeout(function() {
+      win.print();
+      setTimeout(function(){
+        if (!win.closed) {
+          win.close();
+          try { abrirModal('modal-ferramentas'); ferrAba(1); } catch(e2) {}
+        }
+      }, 60000);
+    }, 300);
+  } else {
+    // popup bloqueado — imprime página atual
+    window.print();
+    try { abrirModal('modal-ferramentas'); ferrAba(1); } catch(e2) {}
+  }
+}
+
 async function _abrirLaudoPDF(h) {
+  // c = conteúdo limpo (sem botões .no-print)
   var c = _laudoParaPDF(h);
 
-  // HTML completo do documento (usado no passo 3)
+  // htmlDoc = documento completo para o passo 3 (window.open + print)
   var htmlDoc = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">' +
     '<meta name="viewport" content="width=device-width,initial-scale=1">' +
     '<title>Laudo de Demanda</title></head><body style="margin:0;padding:0">' +
     c + '</body></html>';
 
-  // Elemento temporário invisível para o html2pdf capturar
-  var wrapper = document.createElement('div');
-  wrapper.innerHTML = c;
-  wrapper.style.cssText = 'position:fixed;left:-9999px;top:0;background:#fff;width:820px;font-family:Arial,sans-serif;';
-  document.body.appendChild(wrapper);
-
   var filename = 'Laudo_Demanda_Eletrica.pdf';
+
+  // ── CAUSA DO PDF BRANCO:
+  // O #print-area tem position:fixed;inset:0 — o html2canvas não consegue
+  // calcular o scroll interno e gera página em branco.
+  // SOLUÇÃO CORRETA: passar a string HTML direto para html2pdf().from(string).
+  // O html2pdf cria e gerencia o elemento no fluxo normal do documento
+  // internamente, sem problemas de posicionamento fixo ou scroll.
   var opt = {
     margin: 8,
     filename: filename,
@@ -4898,8 +4926,8 @@ async function _abrirLaudoPDF(h) {
   try {
     // PASSO 1 — navigator.share com arquivo PDF (iOS Safari / Android Chrome modernos)
     if (navigator.share && navigator.canShare) {
-      var blob = await html2pdf().set(opt).from(wrapper).output('blob');
-      if (document.body.contains(wrapper)) document.body.removeChild(wrapper);
+      // html2pdf.from(string) cria o elemento internamente — sem blank pages
+      var blob = await html2pdf().set(opt).from(c).output('blob');
       var file = new File([blob], filename, { type: 'application/pdf' });
       if (navigator.canShare({ files: [file] })) {
         await navigator.share({
@@ -4908,40 +4936,16 @@ async function _abrirLaudoPDF(h) {
           text: 'Segue o laudo de demanda elétrica.'
         });
       } else {
-        throw new Error('no share'); // canShare retornou false — cai no passo 2
+        throw new Error('no share'); // canShare retornou false → passo 2
       }
     } else {
       // PASSO 2 — Sem Web Share API: download direto via html2pdf (desktop)
-      await html2pdf().set(opt).from(wrapper).save();
-      if (document.body.contains(wrapper)) document.body.removeChild(wrapper);
+      await html2pdf().set(opt).from(c).save();
     }
     try { abrirModal('modal-ferramentas'); ferrAba(1); } catch(e2) {}
   } catch(e) {
-    if (document.body.contains(wrapper)) document.body.removeChild(wrapper);
-    // PASSO 3 — Fallback final: nova janela com laudo completo + print
-    // iOS: abre share sheet via impressão (orientação, zoom, AirDrop etc.)
-    // Desktop: janela de impressão para configurar e salvar
-    var win = window.open('', '_blank');
-    if (win) {
-      win.document.write(htmlDoc);
-      win.document.close();
-      win.onafterprint = function() {
-        win.close();
-        try { abrirModal('modal-ferramentas'); ferrAba(1); } catch(e2) {}
-      };
-      setTimeout(function() {
-        win.print();
-        setTimeout(function(){
-          if (!win.closed) {
-            win.close();
-            try { abrirModal('modal-ferramentas'); ferrAba(1); } catch(e2) {}
-          }
-        }, 60000);
-      }, 300);
-    } else {
-      window.print();
-      try { abrirModal('modal-ferramentas'); ferrAba(1); } catch(e2) {}
-    }
+    // PASSO 3 — Nova janela + print (iOS antigo, share sheet, configuração de orientação)
+    _laudoAbrirJanela(htmlDoc);
   }
 }
 
