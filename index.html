@@ -835,7 +835,6 @@ table { min-width: 0; }
   #print-area{display:block!important;position:static!important;overflow:visible!important;width:100%!important;height:auto!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;background:#fff!important}
   #pdf-toolbar{display:none!important}
   #pdf-scroll{display:block!important;overflow:visible!important;height:auto!important;max-height:none!important;flex:none!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
-  #dem-laudo-scroll{display:block!important;overflow:visible!important;height:auto!important;max-height:none!important;flex:none!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
 }
 
@@ -864,9 +863,24 @@ var LS = {
   removeItem: function(k)   { try { localStorage.removeItem(k); }        catch(e) {} }
 };
 var _appReady = false;
+
+// ─── Sanitização HTML — evita XSS nos templates do PDF ────────
+function _esc(str) {
+  var el = document.createElement('div');
+  el.textContent = String(str ?? '');
+  return el.innerHTML;
+}
+
+// ─── Globais declarados explicitamente (eram window.*) ────────
+var _demLaudoHTML        = null;
+var _scpPrice            = null;
+var _demResultadoNBR     = null;
+var _demResultadoMUC     = null;
+var _demCfgVeioDoPreview = false;
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
 
@@ -916,7 +930,6 @@ var _appReady = false;
     </div>
 
     <!-- ── FERRAMENTA PRINCIPAL: DEMANDA ── -->
-    <div 
     <div class="hero">
       <div class="hero-head">
         <div class="hh-l">
@@ -3184,8 +3197,6 @@ function _atualizarListaExtrasModal(k) {
   });
 }
 
-var _chipModalMod = null;
-
 function scpAbrirChipModal(modKey, modLabel) {
   _chipModalMod = { k: modKey, label: modLabel };
   var overlay = document.getElementById('chip-modal-overlay');
@@ -3321,7 +3332,7 @@ function scpAtualizarItem() {
   if (!row) { scpAdicionar(); return; }
 
   var cfg   = SERVICOS_CFG[scpAtivo];
-  var price = window._scpPrice || scpSrvData.p;
+  var price = _scpPrice || scpSrvData.p;
   var qt    = scpEstado.qt || 1;
 
   // Montar nome com specs
@@ -3565,12 +3576,12 @@ function scpAtualizarPreview() {
   document.getElementById('scp-preview-tags').innerHTML = tags
     .map(t => `<span style="background:var(--acc-bg);border:1px solid var(--acc-border);border-radius:6px;padding:3px 8px;font-size:9px;font-weight:700;color:var(--acc)">${t}</span>`)
     .join('');
-  window._scpPrice = price;
+  _scpPrice = price;
 }
 
 function scpAdicionar() {
   const cfg = SERVICOS_CFG[scpAtivo];
-  const price = window._scpPrice || scpSrvData.p;
+  const price = _scpPrice || scpSrvData.p;
   const qt = scpEstado.qt || 1;
 
   // ── montar nome do serviço ────────────────────────────────
@@ -4514,23 +4525,23 @@ function novoOrcamento() {
 // ══════════════════════════════════════════════════════════════
 function gerarPDF() {
   const cor        = pdfCfg.cor || '#f59e0b';
-  const subtitulo  = pdfCfg.subtitulo || 'Serviços Elétricos Profissionais';
-  const msgCliente = pdfCfg.msgCliente || '';
+  const subtitulo  = _esc(pdfCfg.subtitulo || 'Serviços Elétricos Profissionais');
+  const msgCliente = _esc(pdfCfg.msgCliente || '');
   const S          = pdfCfg.secoes;
-  const empresa    = document.getElementById('orc-empresa')?.value || 'Eletricista Power PRO';
-  const cliente    = document.getElementById('orc-cliente')?.value || '—';
-  const endereco   = document.getElementById('orc-endereco')?.value || '';
-  const tel        = document.getElementById('orc-tel')?.value || '';
+  const empresa    = _esc(document.getElementById('orc-empresa')?.value || 'Eletricista Power PRO');
+  const cliente    = _esc(document.getElementById('orc-cliente')?.value || '—');
+  const endereco   = _esc(document.getElementById('orc-endereco')?.value || '');
+  const tel        = _esc(document.getElementById('orc-tel')?.value || '');
   const data       = document.getElementById('orc-data')?.value || '';
   const garantia   = document.getElementById('orc-garantia')?.value || '90';
   const validade   = document.getElementById('orc-validade')?.value || '15';
   const numero     = document.getElementById('orc-numero')?.value || gerarNumeroOrc();
-  const obsServ    = document.getElementById('orc-serv-obs')?.value || '';
-  const obsMat     = document.getElementById('orc-mat-obs')?.value || '';
+  const obsServ    = _esc(document.getElementById('orc-serv-obs')?.value || '');
+  const obsMat     = _esc(document.getElementById('orc-mat-obs')?.value || '');
 
   // dados do perfil
   const cfg        = _getCfg ? _getCfg() : {};
-  const docPrestador = cfg.doc || '';
+  const docPrestador = _esc(cfg.doc || '');
   const logoB64    = LS.getItem('logo_b64') || '';
   const logoForma  = cfg.logoForma || 'quadrado';
   const logoRadius = logoForma === 'redondo' ? '50%' : logoForma === 'arredondado' ? '14px' : '6px';
@@ -4755,25 +4766,59 @@ function gerarPDF() {
   area.style.cssText = 'display:flex;flex-direction:column;position:fixed;inset:0;z-index:9999;background:#fff;overflow:hidden;-webkit-overflow-scrolling:touch';
 }
 
-function _salvarPDF() {
+async function _salvarPDF() {
   const scroll = document.getElementById('pdf-scroll');
-  if (!scroll) { window.print(); return; }
+  if (!scroll) return;
 
-  const html = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">' +
-    '<meta name="viewport" content="width=device-width,initial-scale=1">' +
-    '<title>Orçamento</title></head><body style="margin:0;padding:0">' +
-    scroll.innerHTML + '</body></html>';
+  // Feedback visual no botão Salvar
+  const btn = document.querySelector('#pdf-toolbar button[onclick="_salvarPDF()"]');
+  const origTxt = btn ? btn.innerHTML : '';
+  if (btn) { btn.innerHTML = '⏳'; btn.disabled = true; }
 
-  const win = window.open('', '_blank');
-  if (!win) { window.print(); return; }
+  // Nome do arquivo a partir do cliente
+  const clienteRaw = document.getElementById('orc-cliente')?.value || 'Orcamento';
+  const filename   = 'Orcamento_' + clienteRaw.replace(/[^a-zA-Z0-9À-ú]/g, '_') + '.pdf';
 
-  win.document.write(html);
-  win.document.close();
-  win.onafterprint = function() { win.close(); };
-  setTimeout(function() {
-    win.print();
-    setTimeout(function(){ if (!win.closed) win.close(); }, 60000);
-  }, 300);
+  const opt = {
+    margin: 5,
+    filename: filename,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+
+  try {
+    // PASSO 1 — Gerar blob do PDF a partir do conteúdo visível
+    const blob = await html2pdf().set(opt).from(scroll).output('blob');
+    const file = new File([blob], filename, { type: 'application/pdf' });
+
+    // PASSO 2 — Tentar compartilhar via Web Share API (mobile iOS/Android)
+    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({
+        files: [file],
+        title: 'Orçamento',
+        text: 'Segue o orçamento gerado pelo Eletricista Power PRO.'
+      });
+    } else {
+      // PASSO 3 — Fallback desktop: download direto
+      const url = URL.createObjectURL(blob);
+      const a   = document.createElement('a');
+      a.href     = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 30000);
+    }
+  } catch(e) {
+    // PASSO 4 — Fallback final: mensagem amigável (nunca window.print())
+    if (!e || e.name !== 'AbortError') {
+      alert('Não foi possível gerar o PDF automaticamente.\n\nDica: use o menu ⋮ do navegador e selecione "Impressão" ou "Compartilhar".');
+    }
+  } finally {
+    // PASSO 5 — Sempre restaura o botão, independente de sucesso ou erro
+    if (btn) { btn.innerHTML = origTxt; btn.disabled = false; }
+  }
 }
 
 function _pdfSocialLinks() {
@@ -4817,49 +4862,79 @@ function _pdfSocialLinks() {
 function _laudoParaPDF(h){
   return h.replace(/<div class="no-print">[\s\S]*?<\/div>\s*/,"");
 }
-function _abrirLaudoPDF(h){
+async function _abrirLaudoPDF(h){
   var c = _laudoParaPDF(h);
-  var html = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">' +
-    '<meta name="viewport" content="width=device-width,initial-scale=1">' +
-    '<title>Laudo de Demanda</title></head><body style="margin:0;padding:0">' +
-    c + '</body></html>';
-  var win = window.open('', '_blank');
-  if (!win) {
-    var blob = new Blob([html], {type:'text/html;charset=utf-8'});
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url; a.target = '_blank';
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    setTimeout(function(){ URL.revokeObjectURL(url); }, 30000);
-    return;
-  }
-  win.document.write(html);
-  win.document.close();
-  // Ao fechar — garante que o app volta para a tela correta
-  win.onafterprint = function() {
-    win.close();
-    try { abrirModal('modal-ferramentas'); ferrAba(1); } catch(e) {}
+
+  // Criar elemento temporário invisível para o html2pdf renderizar
+  var wrapper = document.createElement('div');
+  wrapper.innerHTML = c;
+  wrapper.style.cssText = 'position:fixed;left:-9999px;top:0;background:#fff;width:820px;font-family:Arial,sans-serif;';
+  document.body.appendChild(wrapper);
+
+  var filename = 'Laudo_Demanda_Eletrica.pdf';
+  var opt = {
+    margin: 8,
+    filename: filename,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
   };
-  setTimeout(function() {
-    win.print();
-    setTimeout(function(){
-      if (!win.closed) {
-        win.close();
-        try { abrirModal('modal-ferramentas'); ferrAba(1); } catch(e) {}
-      }
-    }, 60000);
-  }, 300);
+
+  try {
+    // PASSO 1 — Gerar PDF blob
+    var blob = await html2pdf().set(opt).from(wrapper).output('blob');
+    if (document.body.contains(wrapper)) document.body.removeChild(wrapper);
+
+    var file = new File([blob], filename, { type: 'application/pdf' });
+
+    // PASSO 2 — Tentar Web Share API (mobile)
+    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({
+        files: [file],
+        title: 'Laudo de Demanda Elétrica',
+        text: 'Segue o laudo de demanda elétrica.'
+      });
+    } else {
+      // PASSO 3 — Fallback desktop: download direto
+      var url = URL.createObjectURL(blob);
+      var a   = document.createElement('a');
+      a.href     = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 30000);
+    }
+    try { abrirModal('modal-ferramentas'); ferrAba(1); } catch(e2) {}
+  } catch(e) {
+    if (document.body.contains(wrapper)) document.body.removeChild(wrapper);
+    // PASSO 4 — Fallback final: mensagem amigável
+    if (!e || e.name !== 'AbortError') {
+      alert('Não foi possível gerar o PDF.\n\nDica: use o menu ⋮ do navegador e selecione "Impressão" ou "Compartilhar".');
+    }
+    try { abrirModal('modal-ferramentas'); ferrAba(1); } catch(e2) {}
+  }
 }
 
 function demImprimirLaudo(){
+  // Feedback visual — busca pelo texto do botão
   var btns = document.querySelectorAll('#print-area button');
   var btn = null;
   btns.forEach(function(b){ if(b.textContent.indexOf('Salvar') !== -1) btn = b; });
   if (btn) { btn.textContent = '⏳ Gerando...'; btn.disabled = true; }
+  var h=_demLaudoHTML;
+  if(!h){try{demExportarPDF();}catch(e){}}
   setTimeout(function(){
-    window.print();
-    if (btn) { btn.textContent = '📤 Salvar'; btn.disabled = false; }
-  }, 100);
+    var h2=_demLaudoHTML;
+    if(!h2){
+      if (btn) { btn.textContent = '📤 Salvar'; btn.disabled = false; }
+      alert("Calcule a demanda primeiro!");return;
+    }
+    _abrirLaudoPDF(h2);
+    setTimeout(function(){
+      if (btn) { btn.textContent = '📤 Salvar'; btn.disabled = false; }
+    }, 1000);
+  },h?0:400);
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -5534,8 +5609,8 @@ function carregarOrcamento(dados) {
 
 // ══ HISTÓRICO DEMANDA ═════════════════════════════════════════
 function demSalvarHistorico() {
-  if (!window._demResultadoNBR) { alert('Calcule a demanda primeiro!'); return; }
-  var r = window._demResultadoNBR;
+  if (!_demResultadoNBR) { alert('Calcule a demanda primeiro!'); return; }
+  var r = _demResultadoNBR;
   var tipoLabels = {
     'htc-res':'Residencial','htc-pred':'Predial',
     'htc-com':'Comercial','htc-ind':'Industrial',
@@ -5977,8 +6052,8 @@ function qvAplicarConfig(tipoKey) {
     + ' <span style="margin-left:auto;font-size:9px;opacity:.7;font-weight:400">Ajuste se necessário</span>';
 
   // Se vier resultado da Demanda, popular corrente e bitola
-  if (window._demResultadoNBR) {
-    const r = window._demResultadoNBR;
+  if (_demResultadoNBR) {
+    const r = _demResultadoNBR;
     const corrEl = document.getElementById('qv-corrente');
     if (corrEl && !corrEl.value) corrEl.value = r.corrente.toFixed(1);
     const bitMap = {'1,5mm²':'1.5','2,5mm²':'2.5','4mm²':'4','6mm²':'6',
@@ -7652,7 +7727,7 @@ function disnorFDACTipo(n, tipo) {
 var _mucLaudoHTML = null;
 
 function mucExportarPDF() {
-  var m = window._demResultadoMUC;
+  var m = _demResultadoMUC;
   if (!m) { alert('Calcule a demanda MUC primeiro!'); return; }
 
   var data  = new Date().toLocaleDateString('pt-BR');
@@ -9077,7 +9152,7 @@ function demCalcNBR() {
     document.getElementById('dem-nbr-res').scrollIntoView({ behavior:'smooth', block:'start' });
   }, 50);
 
-  window._demResultadoNBR = {
+  _demResultadoNBR = {
     totalVA: ciTotal, demandada: demandakW * 1000, corrente: corrente,
     disj: disj, bit: bit, tensao: tensao, sistema: sistema,
     tipoKey: window._tipoSelecionado || 'htc-res',
@@ -9091,8 +9166,8 @@ function demCalcNBR() {
 }
 
 function demLevarMUC(){
-  if(!window._demResultadoNBR){alert('Calcule a demanda primeiro!');return;}
-  var kva = (window._demResultadoNBR.demandada/1000).toFixed(2);
+  if(!_demResultadoNBR){alert('Calcule a demanda primeiro!');return;}
+  var kva = (_demResultadoNBR.demandada/1000).toFixed(2);
   var tipo = (typeof _TIPO_INFO!=='undefined'&&typeof _demTipoInstalacao!=='undefined')
     ? (_TIPO_INFO[_demTipoInstalacao]||{label:'Unidade'}).label : 'Unidade';
   // Popup para confirmar nome e quantidade
@@ -9140,8 +9215,8 @@ function mucIrCalcularDemanda(btn) {
 }
 
 function demLevarQuedaV(){
-  if(!window._demResultadoNBR){alert('Calcule a demanda NBR 5410 primeiro!');return;}
-  var r=window._demResultadoNBR;
+  if(!_demResultadoNBR){alert('Calcule a demanda NBR 5410 primeiro!');return;}
+  var r=_demResultadoNBR;
   ferrAba(2);
   setTimeout(function(){
     // Sistema elétrico
@@ -9173,8 +9248,8 @@ function demLevarQuedaV(){
 }
 
 function demSetOrientacao(ori) {
-  if (window._demLaudoHTML) {
-    window._demLaudoHTML = window._demLaudoHTML.replace(
+  if (_demLaudoHTML) {
+    _demLaudoHTML = _demLaudoHTML.replace(
       /@page\{size:A4 (portrait|landscape)/g,
       '@page{size:A4 ' + ori
     );
@@ -9193,8 +9268,8 @@ function demSetOrientacao(ori) {
 }
 
 function demExportarPDF(){
-  if(!window._demResultadoNBR){alert('Calcule a demanda primeiro!');return;}
-  const r   = window._demResultadoNBR;
+  if(!_demResultadoNBR){alert('Calcule a demanda primeiro!');return;}
+  const r   = _demResultadoNBR;
   const data = new Date().toLocaleDateString('pt-BR');
 
   // Dados da empresa (localStorage)
@@ -9400,18 +9475,17 @@ tbody tr:nth-child(even) td{background:#fafafa}
 <\/body><\/html>`;
 
   const area = document.getElementById('print-area');
-  area.innerHTML = '<div id="dem-laudo-scroll" style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#fff">' + html + '</div>';
-  area.style.cssText = 'display:flex;flex-direction:column;position:fixed;inset:0;z-index:9999;background:#fff;overflow:hidden;-webkit-overflow-scrolling:touch';
+  area.innerHTML = html;
+  area.style.cssText = 'display:block;position:fixed;inset:0;z-index:9999;background:#fff!important;overflow-y:auto;-webkit-overflow-scrolling:touch;color:#1a1a1a';
   area.scrollTop = 0;
-  window._demLaudoHTML = html;
+  _demLaudoHTML = html;
 }
 
 function _fecharLaudoDem() {
   const area = document.getElementById('print-area');
   area.style.display = 'none';
   area.innerHTML = '';
-  window._demLaudoHTML = null;
-  try { abrirModal('modal-ferramentas'); ferrAba(1); } catch(e) {}
+  _demLaudoHTML = null;
 }
 
 // ── MUC — DIS-NOR-053 REV06 ──
@@ -9581,7 +9655,7 @@ function demCalcMUC(){
   document.getElementById('muc-resultado').style.display='block';
   demAtualizaStatusMUC(Ded,cat.id);
   setTimeout(()=>document.getElementById('muc-resultado').scrollIntoView({behavior:'smooth',block:'start'}),50);
-  window._demResultadoMUC={Ded,cat,tensaoKey,Dr,Dtr,Drf,Ds,Dc,fc,fr,totalAptos,tipos:mucTipos.slice()};
+  _demResultadoMUC={Ded,cat,tensaoKey,Dr,Dtr,Drf,Ds,Dc,fc,fr,totalAptos,tipos:mucTipos.slice()};
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -10423,14 +10497,14 @@ function fecharConfigDemPDF() {
   demPdfCfg.subtitulo = document.getElementById('dem-cfg-subtitulo').value;
   try { LS.setItem('dem_pdf_config', JSON.stringify(demPdfCfg)); } catch(e) {}
   document.getElementById('modal-cfg-dem-pdf').style.display = 'none';
-  if (window._demCfgVeioDoPreview) {
-    window._demCfgVeioDoPreview = false;
+  if (_demCfgVeioDoPreview) {
+    _demCfgVeioDoPreview = false;
     demExportarPDF();
   }
 }
 
 function _abrirConfigDemNoPDF() {
-  window._demCfgVeioDoPreview = true;
+  _demCfgVeioDoPreview = true;
   _fecharLaudoDem();
   abrirConfigDemPDF();
 }
