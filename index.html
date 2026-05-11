@@ -4768,14 +4768,13 @@ function gerarPDF() {
 
 async function _salvarPDF() {
   const scroll = document.getElementById('pdf-scroll');
-  if (!scroll) return;
+  if (!scroll) { window.print(); return; }
 
   // Feedback visual no botão Salvar
   const btn = document.querySelector('#pdf-toolbar button[onclick="_salvarPDF()"]');
   const origTxt = btn ? btn.innerHTML : '';
   if (btn) { btn.innerHTML = '⏳'; btn.disabled = true; }
 
-  // Nome do arquivo a partir do cliente
   const clienteRaw = document.getElementById('orc-cliente')?.value || 'Orcamento';
   const filename   = 'Orcamento_' + clienteRaw.replace(/[^a-zA-Z0-9À-ú]/g, '_') + '.pdf';
 
@@ -4788,35 +4787,45 @@ async function _salvarPDF() {
   };
 
   try {
-    // PASSO 1 — Gerar blob do PDF a partir do conteúdo visível
-    const blob = await html2pdf().set(opt).from(scroll).output('blob');
-    const file = new File([blob], filename, { type: 'application/pdf' });
-
-    // PASSO 2 — Tentar compartilhar via Web Share API (mobile iOS/Android)
-    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-      await navigator.share({
-        files: [file],
-        title: 'Orçamento',
-        text: 'Segue o orçamento gerado pelo Eletricista Power PRO.'
-      });
+    // PASSO 1 — navigator.share com arquivo PDF (iOS Safari / Android Chrome modernos)
+    if (navigator.share && navigator.canShare) {
+      const blob = await html2pdf().set(opt).from(scroll).output('blob');
+      const file = new File([blob], filename, { type: 'application/pdf' });
+      if (navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: 'Orçamento',
+          text: 'Segue o orçamento gerado pelo Eletricista Power PRO.'
+        });
+      } else {
+        throw new Error('no share'); // canShare retornou false — cai no passo 2
+      }
     } else {
-      // PASSO 3 — Fallback desktop: download direto
-      const url = URL.createObjectURL(blob);
-      const a   = document.createElement('a');
-      a.href     = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      setTimeout(() => URL.revokeObjectURL(url), 30000);
+      // PASSO 2 — Sem Web Share API: download direto via html2pdf (desktop)
+      await html2pdf().set(opt).from(scroll).save();
     }
   } catch(e) {
-    // PASSO 4 — Fallback final: mensagem amigável (nunca window.print())
-    if (!e || e.name !== 'AbortError') {
-      alert('Não foi possível gerar o PDF automaticamente.\n\nDica: use o menu ⋮ do navegador e selecione "Impressão" ou "Compartilhar".');
+    // PASSO 3 — Fallback final: abre nova janela com o PDF completo + print
+    // No iOS abre o share sheet via diálogo de impressão (orientação, zoom, AirDrop etc.)
+    // No desktop abre a janela de impressão para configurar e salvar
+    const html = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">' +
+      '<meta name="viewport" content="width=device-width,initial-scale=1">' +
+      '<title>Orçamento</title></head><body style="margin:0;padding:0">' +
+      scroll.innerHTML + '</body></html>';
+    const win = window.open('', '_blank');
+    if (win) {
+      win.document.write(html);
+      win.document.close();
+      win.onafterprint = function() { win.close(); };
+      setTimeout(function() {
+        win.print();
+        setTimeout(function(){ if (!win.closed) win.close(); }, 60000);
+      }, 300);
+    } else {
+      window.print(); // popup bloqueado — imprime a página atual como último recurso
     }
   } finally {
-    // PASSO 5 — Sempre restaura o botão, independente de sucesso ou erro
+    // Sempre restaura o botão, independente de sucesso ou erro
     if (btn) { btn.innerHTML = origTxt; btn.disabled = false; }
   }
 }
@@ -4862,10 +4871,16 @@ function _pdfSocialLinks() {
 function _laudoParaPDF(h){
   return h.replace(/<div class="no-print">[\s\S]*?<\/div>\s*/,"");
 }
-async function _abrirLaudoPDF(h){
+async function _abrirLaudoPDF(h) {
   var c = _laudoParaPDF(h);
 
-  // Criar elemento temporário invisível para o html2pdf renderizar
+  // HTML completo do documento (usado no passo 3)
+  var htmlDoc = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">' +
+    '<meta name="viewport" content="width=device-width,initial-scale=1">' +
+    '<title>Laudo de Demanda</title></head><body style="margin:0;padding:0">' +
+    c + '</body></html>';
+
+  // Elemento temporário invisível para o html2pdf capturar
   var wrapper = document.createElement('div');
   wrapper.innerHTML = c;
   wrapper.style.cssText = 'position:fixed;left:-9999px;top:0;background:#fff;width:820px;font-family:Arial,sans-serif;';
@@ -4881,38 +4896,52 @@ async function _abrirLaudoPDF(h){
   };
 
   try {
-    // PASSO 1 — Gerar PDF blob
-    var blob = await html2pdf().set(opt).from(wrapper).output('blob');
-    if (document.body.contains(wrapper)) document.body.removeChild(wrapper);
-
-    var file = new File([blob], filename, { type: 'application/pdf' });
-
-    // PASSO 2 — Tentar Web Share API (mobile)
-    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-      await navigator.share({
-        files: [file],
-        title: 'Laudo de Demanda Elétrica',
-        text: 'Segue o laudo de demanda elétrica.'
-      });
+    // PASSO 1 — navigator.share com arquivo PDF (iOS Safari / Android Chrome modernos)
+    if (navigator.share && navigator.canShare) {
+      var blob = await html2pdf().set(opt).from(wrapper).output('blob');
+      if (document.body.contains(wrapper)) document.body.removeChild(wrapper);
+      var file = new File([blob], filename, { type: 'application/pdf' });
+      if (navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: 'Laudo de Demanda Elétrica',
+          text: 'Segue o laudo de demanda elétrica.'
+        });
+      } else {
+        throw new Error('no share'); // canShare retornou false — cai no passo 2
+      }
     } else {
-      // PASSO 3 — Fallback desktop: download direto
-      var url = URL.createObjectURL(blob);
-      var a   = document.createElement('a');
-      a.href     = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      setTimeout(function(){ URL.revokeObjectURL(url); }, 30000);
+      // PASSO 2 — Sem Web Share API: download direto via html2pdf (desktop)
+      await html2pdf().set(opt).from(wrapper).save();
+      if (document.body.contains(wrapper)) document.body.removeChild(wrapper);
     }
     try { abrirModal('modal-ferramentas'); ferrAba(1); } catch(e2) {}
   } catch(e) {
     if (document.body.contains(wrapper)) document.body.removeChild(wrapper);
-    // PASSO 4 — Fallback final: mensagem amigável
-    if (!e || e.name !== 'AbortError') {
-      alert('Não foi possível gerar o PDF.\n\nDica: use o menu ⋮ do navegador e selecione "Impressão" ou "Compartilhar".');
+    // PASSO 3 — Fallback final: nova janela com laudo completo + print
+    // iOS: abre share sheet via impressão (orientação, zoom, AirDrop etc.)
+    // Desktop: janela de impressão para configurar e salvar
+    var win = window.open('', '_blank');
+    if (win) {
+      win.document.write(htmlDoc);
+      win.document.close();
+      win.onafterprint = function() {
+        win.close();
+        try { abrirModal('modal-ferramentas'); ferrAba(1); } catch(e2) {}
+      };
+      setTimeout(function() {
+        win.print();
+        setTimeout(function(){
+          if (!win.closed) {
+            win.close();
+            try { abrirModal('modal-ferramentas'); ferrAba(1); } catch(e2) {}
+          }
+        }, 60000);
+      }, 300);
+    } else {
+      window.print();
+      try { abrirModal('modal-ferramentas'); ferrAba(1); } catch(e2) {}
     }
-    try { abrirModal('modal-ferramentas'); ferrAba(1); } catch(e2) {}
   }
 }
 
