@@ -430,7 +430,7 @@ textarea.inp { font-size: 15px; }
 }
 
 /* ── Scroll containers: garantir que conteúdo não transborda ── */
-.scroll, .aj-body, .gest-body, .cat-body, .aj-body, .aj-panel {
+.scroll, .aj-body, .gest-body, .cat-body, .aj-panel {
   min-height: 0;
 }
 
@@ -570,8 +570,7 @@ table { min-width: 0; }
   -webkit-tap-highlight-color: transparent;
   color: var(--text);
 }
-.home-ferr-btn:active { transform: scale(.95); opacity: .85; }
-.home-ferr-btn:active { opacity: .7; }
+.home-ferr-btn:active { transform: scale(.95); opacity: .7; }
 .home-ferr-ico {
   width: 40px;
   height: 40px;
@@ -625,7 +624,15 @@ table { min-width: 0; }
 .home-gestao-btn:active { transform: scale(.97); opacity: .85; }
 .home-gestao-lbl { color: var(--text) !important; }
 .home-gestao-sub { color: var(--text2) !important; }
-.hg-num { color: var(--text) !important; font-size: 38px !important; font-weight: 800 !important; line-height: 1.1; }
+.hg-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 38px !important;
+  font-weight: 800 !important;
+  color: var(--text) !important;
+  line-height: 1;
+  margin-bottom: 4px;
+  letter-spacing: -1px;
+}
 .hg-top {
   display: flex;
   flex-direction: column;
@@ -660,15 +667,6 @@ table { min-width: 0; }
   justify-content: center;
   padding: 0 6px;
   font-family: 'IBM Plex Mono', monospace;
-}
-.hg-num {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--text);
-  line-height: 1;
-  margin-bottom: 4px;
-  letter-spacing: -1px;
 }
 .home-gestao-lbl {
   font-size: 12px;
@@ -832,9 +830,9 @@ table { min-width: 0; }
 
 @media print{
   body>*:not(#print-area){display:none!important}
-  #print-area{display:block!important;position:static!important;overflow:visible!important;width:100%!important;height:auto!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;background:#fff!important}
+  #print-area{display:block!important;position:static!important;overflow:visible!important;width:100%!important;height:auto!important;background:#fff!important}
   #pdf-toolbar{display:none!important}
-  #pdf-scroll{display:block!important;overflow:visible!important;height:auto!important;max-height:none!important;flex:none!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  #pdf-scroll{display:block!important;overflow:visible!important;height:auto!important;max-height:none!important;flex:none!important}
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
 }
 
@@ -862,7 +860,7 @@ var LS = {
   setItem:    function(k,v) { try { localStorage.setItem(k, v); }        catch(e) {} },
   removeItem: function(k)   { try { localStorage.removeItem(k); }        catch(e) {} }
 };
-var _appReady = false;
+window._appReady = false;
 
 // ─── Sanitização HTML — evita XSS nos templates do PDF ────────
 function _esc(str) {
@@ -883,6 +881,79 @@ var _demCfgVeioDoPreview = false;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
+
+<!-- ══ TELA LOGIN FIREBASE ══ -->
+<div id="login-overlay" style="position:fixed;inset:0;z-index:9999;background:#060810;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:24px;font-family:'Syne',sans-serif;opacity:0;pointer-events:none;transition:opacity .25s ease;">
+
+  <!-- Glow -->
+  <div style="position:absolute;top:30%;left:50%;transform:translate(-50%,-50%);width:320px;height:320px;background:radial-gradient(circle,rgba(245,158,11,.18) 0%,transparent 70%);pointer-events:none"></div>
+
+  <!-- Ícone -->
+  <div style="width:80px;height:80px;background:linear-gradient(135deg,#f59e0b,#d97706);border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:38px;margin-bottom:22px;box-shadow:0 8px 32px rgba(245,158,11,.45)">⚡</div>
+
+  <!-- Título -->
+  <div style="text-align:center;margin-bottom:32px">
+    <div style="font-size:28px;font-weight:900;color:#fff;line-height:1.1">Eletricista Power<br><span style="color:#f59e0b">PRO</span></div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,.35);margin-top:8px">ÁREA RESTRITA</div>
+  </div>
+
+  <!-- Campos -->
+  <div style="width:100%;max-width:360px;display:flex;flex-direction:column;gap:12px">
+
+    <!-- E-mail -->
+    <input id="login-email" type="email" placeholder="Seu e-mail"
+      style="width:100%;box-sizing:border-box;padding:15px 16px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:14px;color:#fff;font-size:15px;font-family:'Syne',sans-serif;outline:none;transition:border-color .2s"
+      onfocus="this.style.borderColor='rgba(245,158,11,.7)'"
+      onblur="this.style.borderColor='rgba(255,255,255,.12)'"
+      onkeydown="if(event.key==='Enter')document.getElementById('login-senha').focus()">
+
+    <!-- Senha -->
+    <div style="position:relative">
+      <input id="login-senha" type="password" placeholder="Senha"
+        style="width:100%;box-sizing:border-box;padding:15px 48px 15px 16px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:14px;color:#fff;font-size:15px;font-family:'Syne',sans-serif;outline:none;transition:border-color .2s"
+        onfocus="this.style.borderColor='rgba(245,158,11,.7)'"
+        onblur="this.style.borderColor='rgba(255,255,255,.12)'"
+        onkeydown="if(event.key==='Enter')_fbLogin()">
+      <button id="login-eye" onclick="_toggleSenha()" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:rgba(255,255,255,.4);font-size:18px;padding:4px;line-height:1">👁</button>
+    </div>
+
+    <!-- Erro -->
+    <div id="login-erro" style="display:none;flex-direction:column;gap:10px;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.35);border-radius:11px;padding:11px 14px;color:#f87171;font-size:13px;font-weight:600;font-family:'Syne',sans-serif">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="flex-shrink:0">✕</span>
+        <span id="login-erro-msg"></span>
+      </div>
+      <!-- Botões Ver App e Comprar — visíveis só quando erro aparece -->
+      <div id="login-erro-btns" style="display:none;gap:8px">
+        <a href="https://eletricistapro.com.br/" target="_blank" style="flex:1;padding:10px 8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;color:#fff;font-size:13px;font-weight:700;font-family:'Syne',sans-serif;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px">
+          🌐 Ver App
+        </a>
+        <a href="https://pay.cakto.com.br/94rb2jd_835329" target="_blank" style="flex:1;padding:10px 8px;background:linear-gradient(135deg,#f59e0b,#d97706);border:none;border-radius:10px;color:#000;font-size:13px;font-weight:700;font-family:'Syne',sans-serif;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px">
+          🛒 Comprar
+        </a>
+      </div>
+    </div>
+
+    <!-- Botão entrar -->
+    <button id="login-btn" onclick="_fbLogin()" style="width:100%;padding:16px;background:linear-gradient(135deg,#f59e0b,#d97706);border:none;border-radius:14px;color:#000;font-size:16px;font-weight:900;font-family:'Syne',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 24px rgba(245,158,11,.4);transition:opacity .15s,transform .1s;margin-top:4px"
+      onmousedown="this.style.transform='scale(.97)'" onmouseup="this.style.transform=''">
+      <span id="login-btn-ico">⚡</span>
+      <span id="login-btn-txt">ENTRAR</span>
+    </button>
+
+    <!-- Link redefinir -->
+    <div style="text-align:center;margin-top:4px">
+      <span style="font-size:13px;color:rgba(255,255,255,.4);font-family:'Syne',sans-serif">Esqueceu a senha? </span>
+      <button onclick="_fbResetSenha()" style="background:none;border:none;cursor:pointer;color:#f59e0b;font-size:13px;font-weight:700;font-family:'Syne',sans-serif;padding:0">Redefinir</button>
+    </div>
+
+  </div>
+
+  <!-- Toast feedback -->
+  <div id="login-toast" style="display:none;position:fixed;bottom:40px;left:50%;transform:translateX(-50%);background:#22c55e;color:#fff;font-size:13px;font-weight:700;font-family:'Syne',sans-serif;padding:12px 20px;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.4);white-space:nowrap;z-index:10000;pointer-events:none"></div>
+
+</div>
+<!-- ══ FIM TELA LOGIN ══ -->
 
 <!-- ══ TELA HOME ══ -->
 <div id="tela-home" class="tela ativa">
@@ -2199,14 +2270,33 @@ var _demCfgVeioDoPreview = false;
   </div>
   <div class="aj-panel" id="aj-3"><div class="aj-body">
     <div class="acesso-card">
-      <div class="acesso-sec">🔒 Acesso</div>
-      <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:13px;padding:14px;margin-bottom:12px">
-        <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px">MODO</div>
+      <div class="acesso-sec">🔒 Conta</div>
+
+      <!-- E-mail -->
+      <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:13px;padding:14px;margin-bottom:10px">
+        <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px">E-MAIL</div>
+        <div id="acesso-email" style="font-size:13px;color:#f59e0b;font-weight:600">—</div>
+      </div>
+
+      <!-- Status -->
+      <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:13px;padding:14px;margin-bottom:10px">
+        <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px">STATUS</div>
         <div style="display:flex;align-items:center;gap:6px">
-          <div style="width:7px;height:7px;border-radius:50%;background:#4ade80"></div>
-          <span style="font-size:13px;color:#4ade80;font-weight:600">Modo Teste (sem Firebase)</span>
+          <div id="acesso-status-dot" style="width:7px;height:7px;border-radius:50%;background:#f87171;flex-shrink:0"></div>
+          <span id="acesso-status-txt" style="font-size:13px;color:#f87171;font-weight:600">Desconectado</span>
         </div>
       </div>
+
+      <!-- Reset senha -->
+      <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:13px;padding:14px;margin-bottom:16px">
+        <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px">SENHA</div>
+        <button onclick="_acessoResetSenha()" style="background:none;border:none;cursor:pointer;padding:0;display:flex;align-items:center;gap:6px;color:#f59e0b;font-size:13px;font-weight:700;font-family:'Syne',sans-serif">🔑 Enviar link de redefinição</button>
+      </div>
+
+      <!-- Sair -->
+      <button onclick="_fbLogout()" style="width:100%;padding:15px;background:rgba(239,68,68,.1);border:1.5px solid rgba(239,68,68,.3);border-radius:13px;color:#f87171;font-size:13px;font-weight:800;font-family:'Syne',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:.5px">
+        🚪 SAIR DA CONTA
+      </button>
     </div>
   </div></div>
   <div class="aj-panel" id="aj-4"><div class="aj-body">
@@ -2480,8 +2570,8 @@ const SRV = [
   {id:'s080',ico:'🏭',n:'Instalação de transformador',cat:'Industrial',p:2500,un:'un'},
   {id:'s082',ico:'🔌',n:'Ponto trifásico 380V',cat:'Industrial',p:350,un:'pt',cfg:'trifasico'},
   // ── Segurança Eletrônica ─────────────────────────────────
-  {id:'s084',ico:'📹',n:'Instalação de câmera CFTV',cat:'Segurança Eletrônica',p:180,un:'un',cfg:'cftv',mats:['m071','m071']},
-  {id:'s085',ico:'🎥',n:'Instalação de DVR/NVR',cat:'Segurança Eletrônica',p:300,un:'un',mats:['m073','m073','m075']},
+  {id:'s084',ico:'📹',n:'Instalação de câmera CFTV',cat:'Segurança Eletrônica',p:180,un:'un',cfg:'cftv',mats:['m071']},
+  {id:'s085',ico:'🎥',n:'Instalação de DVR/NVR',cat:'Segurança Eletrônica',p:300,un:'un',mats:['m073','m075']},
   {id:'s086',ico:'🔔',n:'Instalação de alarme de segurança',cat:'Segurança Eletrônica',p:600,un:'un',cfg:'alarme',mats:['m076','m077','m078','m079']},
   {id:'s087',ico:'🔒',n:'Instalação de controle de acesso',cat:'Segurança Eletrônica',p:450,un:'un',mats:['m080']},
   {id:'s088',ico:'🔔',n:'Instalação de interfone/videoporteiro',cat:'Segurança Eletrônica',p:350,un:'un'},
@@ -2906,7 +2996,7 @@ const SERVICOS_CFG = {
       },
     ],
     basePrice:{tipo:{'Dome interna':150,'Dome externa':180,'Bullet externa':200,'PTZ':600,'Mini dome':130}},
-    mats:['m071','m071','m073','m073','m075'],
+    mats:['m071','m073','m075'],
   },
   // ─── ALARME ───────────────────────────────────────────────
   alarme: {
@@ -3837,7 +3927,17 @@ function abrirConfiguradorMat(m) {
   document.getElementById('mat-ov-name').textContent = m.n;
   document.getElementById('mat-ov-cat').textContent = m.cat;
   const body = document.getElementById('mat-ov-body');
-  const SPEC_LABELS = {bitola:'Bitola',cor:'Cor',amperagem:'Amperagem',tamanho:'Tamanho',diametro:'Diâmetro',tipo:'Tipo',potencia:'Potência',temperatura:'Temperatura de Cor',sensibilidade:'Sensibilidade'};
+  const SPEC_LABELS = {
+    bitola:'Bitola', cor:'Cor', amperagem:'Amperagem', tamanho:'Tamanho',
+    diametro:'Diâmetro', tipo:'Tipo', potencia:'Potência',
+    temperatura:'Temperatura de Cor', sensibilidade:'Sensibilidade',
+    polos:'Número de Pólos', configuracao:'Configuração', classe:'Classe',
+    resolucao:'Resolução', canais:'Canais', capacidade:'Capacidade',
+    zonas:'Zonas', db:'Nível Sonoro', forca:'Força', extensao:'Extensão',
+    gang:'Gang', vias:'Vias', furos:'Furos', tensao:'Tensão',
+    bobina:'Tensão da Bobina', faixa:'Faixa de Ajuste', fases:'Fases',
+    secao:'Seção', teclas:'Teclas'
+  };
   let html = '';
   if (m.specs) {
     Object.keys(m.specs).forEach(k => {
@@ -3854,12 +3954,6 @@ function abrirConfiguradorMat(m) {
   matOvCalcTotal();
   window._matOvData = m;
   document.getElementById('mat-overlay').style.display = 'flex';
-}
-
-function matOvSelSpec(k, v, el) {
-  el.closest('[style]').querySelectorAll('.scp-chip').forEach(b => b.classList.remove('on'));
-  el.classList.add('on');
-  matOvEspecsSel[k] = v;
 }
 
 function matOvCalcTotal() {
@@ -5243,8 +5337,6 @@ function catAbrirEditorItem(tipo, id) {
   _catEditorRender(item);
 }
 
-// alias para compatibilidade
-
 function _catEditorRender(item) {
   var tipo  = _catEditorTipo;
   var cats  = tipo === 'srv' ? SRV_CATS : MAT_CATS;
@@ -5422,8 +5514,6 @@ function catRemoverItem(tipo, id, origem) {
   renderCatalogo();
 }
 
-// alias para compatibilidade
-
 function catRestaurarTodos() {
   if (!confirm('Restaurar todos os itens removidos ao catálogo original?')) return;
   LS.removeItem('cat_removidos');
@@ -5437,25 +5527,16 @@ function catFecharEditor() {
   if (overlay) overlay.style.display = 'none';
 }
 
-// alias antigo
-
 function abrirCatalogo(tipo) {
   abrirModal('modal-ajustes');
-  // navegar para aba Catálogo (índice 2)
-  document.querySelectorAll('.ajtab').forEach((t,i) => {
-    t.classList.toggle('on', i===2);
-  });
+  // Navegar para aba Catálogo (índice 2) — mesmo padrão de ajTab
+  document.querySelectorAll('.ajtab').forEach((t,i) => t.classList.toggle('on', i===2));
   document.querySelectorAll('.aj-panel').forEach((p,i) => {
-    if (i===2) p.style.display = i===2?'flex':'none';
-    else { p.classList.remove('on'); if(i===2) p.classList.add('on'); }
-  });
-  document.getElementById('aj-2').style.display = 'flex';
-  ['aj-0','aj-1','aj-3','aj-4'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) { el.classList.remove('on'); el.style.display=''; }
+    if (i===2) p.style.display = 'flex';
+    else { p.classList.remove('on'); p.style.display = ''; }
   });
   renderCatalogo();
-  // selecionar sub-aba correta
+  // Selecionar sub-aba correta (Serviços ou Materiais)
   const idx = tipo === 'srv' ? 0 : 1;
   document.querySelectorAll('.cstab').forEach((t,i) => t.classList.toggle('on', i===idx));
   document.getElementById('cat-servicos').style.display = idx===0?'block':'none';
@@ -5486,6 +5567,7 @@ function salvarOrcamento() {
       desc:        document.getElementById('orc-desc')?.value        || '0',
       acre:        document.getElementById('orc-acre')?.value        || '0',
       km:          document.getElementById('orc-km')?.value          || '0',
+      kmVal:       document.getElementById('orc-km-val')?.value      || '2',
       servObs:     document.getElementById('orc-serv-obs')?.value    || '',
       matObs:      document.getElementById('orc-mat-obs')?.value     || '',
       pagamento:   orcPagamento   || 'pix',
@@ -5582,6 +5664,7 @@ function carregarOrcamento(dados) {
     set('orc-desc',      dados.desc);
     set('orc-acre',      dados.acre);
     set('orc-km',        dados.km);
+    if (dados.kmVal !== undefined) set('orc-km-val', dados.kmVal);
     set('orc-serv-obs',  dados.servObs);
     set('orc-mat-obs',   dados.matObs);
     if (dados.parcelas) set('orc-parcelas', dados.parcelas);
@@ -8805,13 +8888,6 @@ function demTipicaContexto() {
   if (arr)  { arr.style.transform = 'rotate(180deg)'; }
 }
 
-function demTipica(){
-  demComodos={};
-  DEM_TIPICA.forEach(i=>demComodos[i]={...DEM_COMODOS[i],equips:[]});
-  demRenderGrid();
-  demRenderSelecionados();
-}
-
 function demRenderSelecionados(){
   const keys=Object.keys(demComodos);
   const wrap=document.getElementById('dem-sel-wrap');
@@ -11941,19 +12017,111 @@ try {
   const acc = localStorage.getItem('acc') || 'ambar';
   document.documentElement.setAttribute('data-acc', acc);
 } catch(e) {}
-// ── init direto (modo teste — sem Firebase) ──────────────────
-try { gerarNumeroOrc(); }         catch(e) {}
-try { _carregarCustomLocal(); }   catch(e) {}
-try { renderNBR(); }              catch(e) {}
-try { renderCheck(); }            catch(e) {}
-try { demRenderGrid(); }          catch(e) {}
-try { demRenderSelecionados(); }  catch(e) {}
-try { orcDadosResumo(); }         catch(e) {}
-try { _atualizarBtnCalc(); }      catch(e) {}
-// init local — Firebase não ativo
-try { _sincPdfCfg(); }            catch(e) {}
-try { _sincDemPdfCfg(); }         catch(e) {}
-try { window._logoB64Cache = LS.getItem('logo_b64') || ''; } catch(e) { window._logoB64Cache = ''; }
+// ══ FIREBASE AUTH ══════════════════════════════════════════════
+
+// ── Helpers UI ────────────────────────────────────────────────
+function _mostrarErroLogin(msg, mostrarBtns) {
+  var el   = document.getElementById('login-erro');
+  var btns = document.getElementById('login-erro-btns');
+  document.getElementById('login-erro-msg').textContent = msg;
+  el.style.display   = 'flex';
+  btns.style.display = mostrarBtns ? 'flex' : 'none';
+}
+function _limparErroLogin() {
+  document.getElementById('login-erro').style.display      = 'none';
+  document.getElementById('login-erro-btns').style.display = 'none';
+}
+function _mostrarToastLogin(msg) {
+  var t = document.getElementById('login-toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  setTimeout(function() { t.style.display = 'none'; }, 3500);
+}
+// fix #6 + #7: ícone do olho atualiza junto com o estado
+function _toggleSenha() {
+  var inp = document.getElementById('login-senha');
+  var eye = document.getElementById('login-eye');
+  var show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  eye.textContent = show ? '🙈' : '👁';
+}
+function _setBtnLoading(sim) {
+  document.getElementById('login-btn-ico').textContent     = sim ? '⏳' : '⚡';
+  document.getElementById('login-btn-txt').textContent     = sim ? 'Entrando...' : 'ENTRAR';
+  document.getElementById('login-btn').style.opacity       = sim ? '0.7' : '1';
+  document.getElementById('login-btn').style.pointerEvents = sim ? 'none' : '';
+}
+
+// ── Login direto — proteção de e-mail ativa no Firebase ───────
+function _fbLogin() {
+  _limparErroLogin();
+  var email = (document.getElementById('login-email').value || '').trim();
+  var senha = (document.getElementById('login-senha').value || '');
+  if (!email || !senha) { _mostrarErroLogin('Preencha o e-mail e a senha.', false); return; }
+  _setBtnLoading(true);
+  _fbAuth.signInWithEmailAndPassword(email, senha)
+    .then(function() { /* onAuthStateChanged cuida do restante */ })
+    .catch(function(err) {
+      _setBtnLoading(false);
+      var code = err.code || '';
+      if (code === 'auth/too-many-requests') {
+        _mostrarErroLogin('Muitas tentativas. Aguarde alguns minutos e tente novamente.', false);
+      } else if (code === 'auth/network-request-failed') {
+        _mostrarErroLogin('Sem conexão. Verifique sua internet e tente novamente.', false);
+      } else if (code === 'auth/invalid-email') {
+        _mostrarErroLogin('Digite um e-mail válido.', false);
+      } else {
+        // invalid-credential cobre: e-mail não cadastrado + senha errada
+        _mostrarErroLogin('E-mail ou senha incorretos.', true);
+      }
+    });
+}
+
+// ── Logout — limpa campos após sair (fix #4) ──────────────────
+function _fbLogout() {
+  if (!confirm('Deseja realmente sair da conta?')) return;
+  _fbAuth.signOut().then(function() {
+    try {
+      document.getElementById('login-email').value = '';
+      document.getElementById('login-senha').value = '';
+      document.getElementById('login-eye').textContent = '👁';
+      _limparErroLogin();
+    } catch(e) {}
+  });
+}
+
+// ── Reset senha da tela de login ──────────────────────────────
+function _fbResetSenha() {
+  var email = (document.getElementById('login-email').value || '').trim();
+  if (!email) { _mostrarErroLogin('Digite seu e-mail acima para receber o link.', false); return; }
+  _fbAuth.sendPasswordResetEmail(email)
+    .then(function() { _mostrarToastLogin('Link enviado para ' + email); })
+    .catch(function() { _mostrarErroLogin('Não foi possível enviar o link. Verifique o e-mail.', false); });
+}
+
+// ── Reset senha do painel Acesso (fix #8: usa toast, não alert) ─
+function _acessoResetSenha() {
+  var u = _fbAuth.currentUser;
+  if (!u) return;
+  _fbAuth.sendPasswordResetEmail(u.email)
+    .then(function() { _mostrarToastLogin('Link enviado para ' + u.email); })
+    .catch(function() { _mostrarToastLogin('Não foi possível enviar o link.'); });
+}
+
+// ── Init do app (chamado 1x após autenticação) ────────────────
+function _appInit() {
+  try { gerarNumeroOrc(); }         catch(e) {}
+  try { _carregarCustomLocal(); }   catch(e) {}
+  try { renderNBR(); }              catch(e) {}
+  try { renderCheck(); }            catch(e) {}
+  try { demRenderGrid(); }          catch(e) {}
+  try { demRenderSelecionados(); }  catch(e) {}
+  try { orcDadosResumo(); }         catch(e) {}
+  try { _atualizarBtnCalc(); }      catch(e) {}
+  try { _sincPdfCfg(); }            catch(e) {}
+  try { _sincDemPdfCfg(); }         catch(e) {}
+  try { window._logoB64Cache = LS.getItem('logo_b64') || ''; } catch(e) { window._logoB64Cache = ''; }
+}
 
 // ══ HIDE ON SCROLL — HOME ONLY ══
 (function(){
@@ -12221,6 +12389,61 @@ try { window._logoB64Cache = LS.getItem('logo_b64') || ''; } catch(e) { window._
     style="background:var(--bg-card);border-radius:20px 20px 0 0;width:100%;max-width:520px;max-height:88vh;display:flex;flex-direction:column;overflow:hidden">
   </div>
 </div>
+
+<!-- ══ FIREBASE SDK — carregado no final para não bloquear o parsing ══ -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script>
+// var (não const/let) garante acesso global entre todos os blocos de script
+try {
+  var _fbApp  = firebase.initializeApp({
+    apiKey:            "AIzaSyCUoVzr9_PIGZXe1DKBZaINNCVQVj14Iqk",
+    authDomain:        "eletricista-pro.firebaseapp.com",
+    projectId:         "eletricista-pro",
+    storageBucket:     "eletricista-pro.firebasestorage.app",
+    messagingSenderId: "184661625796",
+    appId:             "1:184661625796:web:18c38153a0a2621025b291"
+  });
+  var _fbAuth = firebase.auth();
+  _fbAuth.onAuthStateChanged(function(user) {
+    var overlay = document.getElementById('login-overlay');
+    if (!overlay) return;
+    if (user) {
+      overlay.style.opacity       = '0';
+      overlay.style.pointerEvents = 'none';
+      try {
+        document.getElementById('acesso-email').textContent           = user.email || '—';
+        document.getElementById('acesso-status-dot').style.background = '#4ade80';
+        document.getElementById('acesso-status-txt').style.color      = '#4ade80';
+        document.getElementById('acesso-status-txt').textContent      = 'Autenticado';
+      } catch(e) {}
+      if (!window._appReady) {
+        window._appReady = true;
+        _appInit();
+      }
+    } else {
+      overlay.style.opacity       = '1';
+      overlay.style.pointerEvents = 'auto';
+      window._appReady = false;
+      try {
+        document.getElementById('acesso-email').textContent           = '—';
+        document.getElementById('acesso-status-dot').style.background = '#f87171';
+        document.getElementById('acesso-status-txt').style.color      = '#f87171';
+        document.getElementById('acesso-status-txt').textContent      = 'Desconectado';
+      } catch(e) {}
+    }
+  });
+} catch(e) {
+  var overlay = document.getElementById('login-overlay');
+  if (overlay) { overlay.style.opacity = '1'; overlay.style.pointerEvents = 'auto'; }
+  var erroEl  = document.getElementById('login-erro');
+  var erroMsg = document.getElementById('login-erro-msg');
+  if (erroEl && erroMsg) {
+    erroMsg.textContent  = 'Sem conexão com o servidor. Verifique sua internet.';
+    erroEl.style.display = 'flex';
+  }
+}
+</script>
 
 </body>
 </html>
