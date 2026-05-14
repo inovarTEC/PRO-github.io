@@ -855,30 +855,6 @@ table { min-width: 0; }
 .acc-pill.on{border-color:#fff;transform:scale(1.12)}
 [data-theme="light"] .acc-pill.on{border-color:#0f172a}
 </style>
-<!-- ── LOGIN FIREBASE ── -->
-<style>
-#tela-login{position:fixed;inset:0;z-index:9999;background:#060810;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:24px;font-family:'Syne',sans-serif}
-.login-logo{width:80px;height:80px;background:linear-gradient(135deg,#f59e0b,#d97706);border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:40px;margin-bottom:20px;box-shadow:0 0 32px rgba(245,158,11,.4)}
-.login-title{font-size:28px;font-weight:900;color:#fff;text-align:center;line-height:1.1;margin-bottom:6px}
-.login-sub{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:32px}
-.login-box{width:100%;max-width:360px;display:flex;flex-direction:column;gap:12px}
-.login-inp-wrap{position:relative}
-.login-inp{width:100%;padding:14px 16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;color:#fff;font-size:16px;font-family:'Syne',sans-serif;outline:none;box-sizing:border-box;transition:border .2s}
-.login-inp:focus{border-color:rgba(245,158,11,.5)}
-.login-inp::placeholder{color:rgba(255,255,255,.3)}
-.login-eye{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,.35);cursor:pointer;font-size:16px;padding:4px}
-.login-btn{width:100%;padding:15px;background:linear-gradient(135deg,#f59e0b,#d97706);border:none;border-radius:14px;color:#000;font-size:15px;font-weight:900;font-family:'Syne',sans-serif;cursor:pointer;box-shadow:0 0 24px rgba(245,158,11,.35);transition:opacity .15s,transform .1s;letter-spacing:.5px}
-.login-btn:active{opacity:.85;transform:scale(.98)}
-.login-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
-.login-erro{display:none;align-items:center;gap:8px;color:#f87171;font-size:12px;font-weight:700;padding:10px 12px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:10px}
-.login-erro-btns{display:none;gap:8px}
-.login-erro-btn{flex:1;padding:10px;border-radius:10px;font-size:12px;font-weight:800;font-family:'Syne',sans-serif;cursor:pointer;text-align:center;text-decoration:none;border:none;display:flex;align-items:center;justify-content:center;gap:6px}
-.login-erro-btn.ver{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.12)}
-.login-erro-btn.comprar{background:#f59e0b;color:#000}
-.login-redefinir{text-align:center;font-size:12px;color:rgba(255,255,255,.4);margin-top:4px}
-.login-redefinir a{color:#f59e0b;font-weight:700;cursor:pointer;text-decoration:none}
-</style>
-
 <!-- ══ LS (localStorage puro) ══ -->
 <script>
 var LS = {
@@ -907,28 +883,6 @@ var _demCfgVeioDoPreview = false;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
-
-<div id="tela-login">
-  <div class="login-logo">⚡</div>
-  <div class="login-title">Eletricista Power<br>PRO</div>
-  <div class="login-sub">Área Restrita</div>
-  <div class="login-box">
-    <input id="login-email" class="login-inp" type="email" placeholder="Seu e-mail" autocomplete="email">
-    <div class="login-inp-wrap">
-      <input id="login-senha" class="login-inp" type="password" placeholder="Senha" autocomplete="current-password" style="padding-right:44px">
-      <button class="login-eye" onclick="loginToggleSenha()" id="login-eye-btn">👁️</button>
-    </div>
-    <div class="login-erro" id="login-erro">
-      <span>✕</span><span id="login-erro-msg">E-mail não cadastrado na plataforma.</span>
-    </div>
-    <div class="login-erro-btns" id="login-erro-btns">
-      <a href="https://eletricistapro.com.br/" target="_blank" class="login-erro-btn ver">🌐 Ver App</a>
-      <a href="https://pay.cakto.com.br/94rb2jd_835329" target="_blank" class="login-erro-btn comprar">🛒 Comprar</a>
-    </div>
-    <button class="login-btn" id="login-btn" onclick="loginEntrar()">⚡ ENTRAR</button>
-    <div class="login-redefinir">Esqueceu a senha? <a onclick="loginRedefinir()">Redefinir</a></div>
-  </div>
-</div>
 
 <!-- ══ TELA HOME ══ -->
 <div id="tela-home" class="tela ativa">
@@ -1622,6 +1576,26 @@ var _demCfgVeioDoPreview = false;
     </div>
     <!-- ABA 1: DEMANDA -->
     <div id="ferr-1" class="ferr-panel" style="padding:0">
+
+      <!-- ── SELETOR GLOBAL DE DISTRIBUIDORA ── -->
+      <div style="padding:10px 14px 0;background:var(--bg-hdr);border-bottom:1px solid var(--border)">
+        <div style="font-size:9px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--text3);margin-bottom:6px">🔌 Distribuidora</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">
+          <button id="dist-btn-pe" class="ferr-pill on" onclick="distSetAtiva('pe',this)" style="font-size:11px">PE / RN / DF</button>
+          <button id="dist-btn-ba" class="ferr-pill"    onclick="distSetAtiva('ba',this)" style="font-size:11px">BA — Coelba</button>
+          <button id="dist-btn-ek" class="ferr-pill"    onclick="distSetAtiva('ek',this)" style="font-size:11px">SP / MS — Elektro</button>
+        </div>
+        <!-- Card da norma ativa -->
+        <div id="dist-card" style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:10px;padding:9px 12px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
+          <div>
+            <div id="dist-card-nome" style="font-size:11px;font-weight:800;color:var(--text)">Neoenergia PE / Cosern / Brasília</div>
+            <div id="dist-card-info" style="font-size:10px;color:var(--text3);margin-top:2px">DIS-NOR-030 Rev.07 · 380/220V · PE · RN · DF</div>
+          </div>
+          <a id="dist-card-link" href="https://www.neoenergia.com/documents/d/sp/dis-nor-030-rev07" target="_blank"
+            style="font-size:10px;font-weight:800;color:var(--acc);text-decoration:none;white-space:nowrap">📖 Ver norma →</a>
+        </div>
+      </div>
+
       <!-- SUB-ABAS -->
       <div style="display:flex;border-bottom:1px solid var(--border);background:var(--bg-hdr);flex-shrink:0">
         <div class="dem-stab on" onclick="demSubAba(0,this)">📐 NBR 5410</div>
@@ -1645,10 +1619,11 @@ var _demCfgVeioDoPreview = false;
         </div>
         <!-- TENSÃO -->
         <div class="ilbl">Tensão da Rede</div>
-        <div id="dem-tensoes" style="display:flex;gap:8px;margin:6px 0 14px">
+        <div id="dem-tensoes" style="display:flex;gap:8px;margin:6px 0 8px">
           <button class="ferr-pill on" onclick="demTensao(this)">127V</button>
           <button class="ferr-pill" onclick="demTensao(this)">220V</button>
         </div>
+        <button id="dem-recalc-btn" onclick="demCalcNBR()" style="display:none;width:100%;margin-bottom:12px;padding:9px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);border-radius:10px;font-size:11px;font-weight:800;color:var(--acc);cursor:pointer;letter-spacing:.4px">⚡ Recalcular com nova tensão / sistema</button>
         <!-- TIPO -->
         <div style="border:1px solid var(--border-input);border-radius:13px;margin-bottom:14px;overflow:hidden">
           <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 14px;cursor:pointer;background:var(--bg-input)">
@@ -1785,12 +1760,13 @@ var _demCfgVeioDoPreview = false;
             </div>
             <div id="nbr-r-breakdown" style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:12px;padding:12px;margin-bottom:8px;display:none"></div>
             <div id="nbr-r-cat" style="margin-bottom:8px"></div>
+            <div id="nbr-r-sugestao" style="margin-bottom:8px"></div>
             <div id="nbr-r-alertas" style="margin-bottom:8px"></div>
             <div id="nbr-r-circs" style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:12px;padding:14px;margin-bottom:10px">
               <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px;font-weight:700">Circuitos Sugeridos</div>
               <div id="nbr-r-circs-lista"></div>
             </div>
-            <div id="nbr-r-padrao" style="display:none;margin-bottom:10px"><div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);border-radius:13px;padding:14px"><div style="font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#4ade80;margin-bottom:10px">🔌 PADRÃO DE ENTRADA — NEOENERGIA</div><div id="nbr-r-padrao-conteudo"></div><div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><button onclick="abrirNormaCategoria()" style="flex:1;padding:9px 10px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);border-radius:9px;font-size:11px;font-weight:800;color:var(--acc);cursor:pointer;min-width:120px">📋 Ver tabela no app</button><a href="https://www.neoenergia.com/busca?q=normas" target="_blank" style="flex:1;padding:9px 10px;background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.3);border-radius:9px;font-size:11px;font-weight:800;color:#60a5fa;text-decoration:none;text-align:center;min-width:120px">🌐 Site Neoenergia</a></div></div></div>
+            <div id="nbr-r-padrao" style="display:none;margin-bottom:10px"><div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);border-radius:13px;padding:14px"><div id="nbr-r-padrao-titulo" style="font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#4ade80;margin-bottom:10px">🔌 PADRÃO DE ENTRADA — NEOENERGIA</div><div id="nbr-r-padrao-conteudo"></div><div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><button onclick="abrirNormaCategoria()" style="flex:1;padding:9px 10px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);border-radius:9px;font-size:11px;font-weight:800;color:var(--acc);cursor:pointer;min-width:120px">📋 Ver tabela no app</button><a id="nbr-r-padrao-link" href="https://www.neoenergia.com/documents/d/sp/dis-nor-030-rev07" target="_blank" style="flex:1;padding:9px 10px;background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.3);border-radius:9px;font-size:11px;font-weight:800;color:#60a5fa;text-decoration:none;text-align:center;min-width:120px">📖 Ver norma →</a></div></div></div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px">
               <button class="btn-salvar-full" style="margin-top:0;background:#1d4ed8;color:#fff;font-size:11px;padding:11px" onclick="demLevarMUC()">🏢 Levar para MUC</button>
               <button class="btn-salvar-full" style="margin-top:0;background:rgba(99,102,241,.15);color:#818cf8;border:1px solid rgba(99,102,241,.25);font-size:11px;padding:11px" onclick="demLevarQuedaV()">📉 Queda de Tensão</button>
@@ -1806,12 +1782,6 @@ var _demCfgVeioDoPreview = false;
 
       <!-- ══ SUB-ABA 1: MUC ══ -->
       <div id="dem-s1" class="dem-spanel" style="padding:14px">
-        <div class="ilbl">Distribuidora</div>
-        <select class="inp" id="muc-dist" style="margin:6px 0 14px">
-          <option value="pe">Neoenergia Pernambuco / Cosern / Brasília</option>
-          <option value="ba">Neoenergia Coelba</option>
-          <option value="ek">Neoenergia Elektro</option>
-        </select>
         <div class="ilbl">Tensão de Fornecimento</div>
         <div style="display:flex;gap:8px;margin:6px 0 14px">
           <button class="ferr-pill on" onclick="ferrPill(this,'muc-v')">380/220V</button>
@@ -2229,23 +2199,14 @@ var _demCfgVeioDoPreview = false;
   </div>
   <div class="aj-panel" id="aj-3"><div class="aj-body">
     <div class="acesso-card">
-      <div class="acesso-sec">🔒 Conta</div>
-      <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:13px;padding:14px;margin-bottom:10px">
-        <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px">E-MAIL</div>
-        <div id="acesso-email" style="font-size:13px;font-weight:700;color:#60a5fa;font-family:'IBM Plex Mono',monospace">—</div>
-      </div>
-      <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:13px;padding:14px;margin-bottom:10px">
-        <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px">STATUS</div>
+      <div class="acesso-sec">🔒 Acesso</div>
+      <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:13px;padding:14px;margin-bottom:12px">
+        <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px">MODO</div>
         <div style="display:flex;align-items:center;gap:6px">
-          <div style="width:7px;height:7px;border-radius:50%;background:#4ade80;flex-shrink:0"></div>
-          <span style="font-size:13px;color:#4ade80;font-weight:600">Autenticado</span>
+          <div style="width:7px;height:7px;border-radius:50%;background:#4ade80"></div>
+          <span style="font-size:13px;color:#4ade80;font-weight:600">Modo Teste (sem Firebase)</span>
         </div>
       </div>
-      <div style="background:var(--bg-input);border:1px solid var(--border-input);border-radius:13px;padding:14px;margin-bottom:16px;cursor:pointer" onclick="loginEnviarRedefinicao()">
-        <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px">SENHA</div>
-        <div style="font-size:13px;font-weight:700;color:#f59e0b">🔑 Enviar link de redefinição</div>
-      </div>
-      <button onclick="loginSair()" style="width:100%;padding:15px;background:rgba(153,27,27,.3);border:1px solid rgba(239,68,68,.3);border-radius:13px;font-family:'Syne',sans-serif;font-size:13px;font-weight:900;color:#f87171;cursor:pointer;letter-spacing:.5px">🚪 SAIR DA CONTA</button>
     </div>
   </div></div>
   <div class="aj-panel" id="aj-4"><div class="aj-body">
@@ -4836,8 +4797,8 @@ async function _salvarPDF() {
   const opt = {
     margin: 5,
     filename: filename,
-    image: { type: 'png' },
-    html2canvas: { scale: 3, useCORS: true },
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true },
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
   };
 
@@ -4973,8 +4934,8 @@ async function _abrirLaudoPDF(h) {
   var opt = {
     margin: 8,
     filename: filename,
-    image: { type: 'png' },
-    html2canvas: { scale: 3, useCORS: true },
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true },
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
   };
 
@@ -7111,34 +7072,109 @@ function backupFeedback(msg, tipo) {
   setTimeout(function() { el.style.display = 'none'; }, 4000);
 }
 
-// ══ DADOS DIS-NOR-030 REV.05 ═════════════════════════════════
+// ══ DADOS DIS-NOR-030 REV.07 — PERFIS DE DISTRIBUIDORA ═══════
+// Fonte única de verdade: categorias, cabos, normas e links por distribuidora.
+// Campos por categoria:
+//   id=código, tipo=texto display, carga=kW range display, dem=kVA range display,
+//   min/max=limites numéricos p/ cálculo, disj=disjuntor (A), cabo=ramal entrada embutido
 
-// Tabela 2 — Neoenergia PE, RN, PB, BA, DF (380/220V)
-var DISNOR_CAT_PE = [
-  { cat:'M2', tipo:'Monofásica', carga:'0–10',  dem:'-',    disj:40,  cabo:'6+6 CU CONC / 10+10 AL CONC' },
-  { cat:'M3', tipo:'Monofásica', carga:'10,1–15',dem:'-',   disj:63,  cabo:'10+10 CU CONC / 16+16 AL CONC' },
-  { cat:'T6', tipo:'Trifásica',  carga:'0–75',  dem:'0–21', disj:32,  cabo:'3x10+10 AL MULT' },
-  { cat:'T7', tipo:'Trifásica',  carga:'0–75',  dem:'21,2–26',disj:40,cabo:'3x10+10 AL MULT' },
-  { cat:'T8', tipo:'Trifásica',  carga:'0–75',  dem:'26,1–33',disj:50,cabo:'3x16+16 AL MULT' },
-  { cat:'T9', tipo:'Trifásica',  carga:'0–75',  dem:'33,1–40',disj:63,cabo:'3x16+16 AL MULT' },
-  { cat:'T10',tipo:'Trifásica',  carga:'0–75',  dem:'40,1–52',disj:80,cabo:'3x25+25 AL MULT' },
-  { cat:'T11',tipo:'Trifásica',  carga:'0–75',  dem:'52,1–66',disj:100,cabo:'3x35+35 AL MULT' },
-  { cat:'T12',tipo:'Trifásica',  carga:'0–75',  dem:'66,1–75',disj:125,cabo:'3x50+50 AL MULT' },
-];
+// ── Variável global — distribuidora ativa ────────────────────
+var _distribuidoraAtiva = 'pe';
 
-// Tabela 1 — Neoenergia Coelba (220/127V)
-var DISNOR_CAT_COELBA = [
-  { cat:'M0', tipo:'Monofásica', carga:'0–5',   dem:'-',    disj:40,  cabo:'6+6 CU CONC / 10+10 AL CONC' },
-  { cat:'M1', tipo:'Monofásica', carga:'5,1–10', dem:'-',   disj:63,  cabo:'10+10 CU CONC / 16+16 AL CONC' },
-  { cat:'B0', tipo:'Bifásica',   carga:'0–11',  dem:'-',    disj:50,  cabo:'2x16+16 AL MULT' },
-  { cat:'B1', tipo:'Bifásica',   carga:'11,1–18',dem:'-',   disj:70,  cabo:'2x25+25 AL MULT' },
-  { cat:'T0', tipo:'Trifásica',  carga:'0–75',  dem:'0–19', disj:50,  cabo:'3x16+16 AL MULT' },
-  { cat:'T1', tipo:'Trifásica',  carga:'0–75',  dem:'19,1–24',disj:63,cabo:'3x16+16 AL MULT' },
-  { cat:'T2', tipo:'Trifásica',  carga:'0–75',  dem:'24,1–38',disj:100,cabo:'3x25+25 AL MULT' },
-  { cat:'T3', tipo:'Trifásica',  carga:'0–75',  dem:'38,1–47',disj:125,cabo:'3x35+35 AL MULT' },
-  { cat:'T4', tipo:'Trifásica',  carga:'0–75',  dem:'47,1–57',disj:150,cabo:'3x50+50 AL MULT' },
-  { cat:'T5', tipo:'Trifásica',  carga:'0–75',  dem:'57,1–75',disj:200,cabo:'3x70+50 AL MULT' },
-];
+var DIST_PERFIS = {
+
+  // ── Neoenergia Pernambuco / Cosern (RN) / Brasília (DF) ──────
+  // Tabela 2 Rev.07 · 380/220V · sem categorias 220/127V individuais
+  'pe': {
+    id: 'pe',
+    nome: 'Neoenergia PE / Cosern / Brasília',
+    estados: 'PE · RN · DF',
+    tensao: '380/220V',
+    norma:     { cod:'DIS-NOR-030', rev:'Rev.07', link:'https://www.neoenergia.com/documents/d/sp/dis-nor-030-rev07' },
+    norma_muc: { cod:'DIS-NOR-053', rev:'Rev.06', link:'https://www.neoenergia.com/documents/d/sp/dis-nor-053-rev06' },
+    cats: {
+      '380': [
+        { id:'M2',  tipo:'Monofásica', carga:'0–10',    dem:'—',       min:0,    max:10,   disj:40,  cabo:'6+6 CU CONC / 10+10 AL CONC' },
+        { id:'M3',  tipo:'Monofásica', carga:'10,1–15', dem:'—',       min:10.1, max:15,   disj:63,  cabo:'10+10 CU CONC / 16+16 AL CONC' },
+        { id:'T6',  tipo:'Trifásica',  carga:'0–75',    dem:'0–21',    min:0,    max:21,   disj:32,  cabo:'3x6/6 CU XLPE/HEPR' },
+        { id:'T7',  tipo:'Trifásica',  carga:'0–75',    dem:'21,2–26', min:21.1, max:26,   disj:40,  cabo:'3x6/6 CU XLPE/HEPR' },
+        { id:'T8',  tipo:'Trifásica',  carga:'0–75',    dem:'26,1–33', min:26.1, max:33,   disj:50,  cabo:'3x10/10 CU XLPE/HEPR' },
+        { id:'T9',  tipo:'Trifásica',  carga:'0–75',    dem:'33,1–40', min:33.1, max:40,   disj:63,  cabo:'3x16/16 CU XLPE/HEPR' },
+        { id:'T10', tipo:'Trifásica',  carga:'0–75',    dem:'40,1–52', min:40.1, max:52,   disj:80,  cabo:'3x25/25 CU XLPE/HEPR' },
+        { id:'T11', tipo:'Trifásica',  carga:'0–75',    dem:'52,1–66', min:52.1, max:66,   disj:100, cabo:'3x35/35 CU XLPE/HEPR' },
+        { id:'T12', tipo:'Trifásica',  carga:'0–75',    dem:'66,1–75', min:66.1, max:75,   disj:125, cabo:'3x50/50 CU XLPE/HEPR' },
+      ],
+      '220': []
+    }
+  },
+
+  // ── Neoenergia Coelba (BA) ────────────────────────────────────
+  // Tabela 1 Rev.07 · 220/127V
+  // ATENÇÃO Rev.07: categoria bifásica é B2 (11,1–15 kW), não B1
+  'ba': {
+    id: 'ba',
+    nome: 'Neoenergia Coelba',
+    estados: 'BA',
+    tensao: '220/127V',
+    norma:     { cod:'DIS-NOR-030', rev:'Rev.07', link:'https://www.neoenergia.com/documents/d/sp/dis-nor-030-rev07' },
+    norma_muc: { cod:'DIS-NOR-053', rev:'Rev.06', link:'https://www.neoenergia.com/documents/d/sp/dis-nor-053-rev06' },
+    cats: {
+      '380': [],
+      '220': [
+        { id:'M0',  tipo:'Monofásica', carga:'0–5',     dem:'—',       min:0,    max:5,    disj:40,  cabo:'6+6 CU CONC / 10+10 AL CONC' },
+        { id:'M1',  tipo:'Monofásica', carga:'5,1–10',  dem:'—',       min:5.1,  max:10,   disj:63,  cabo:'10+10 CU CONC / 16+16 AL CONC' },
+        { id:'B0',  tipo:'Bifásica',   carga:'0–11',    dem:'—',       min:0,    max:11,   disj:50,  cabo:'2x16+16 AL MULT' },
+        { id:'B2',  tipo:'Bifásica',   carga:'11,1–15', dem:'—',       min:11.1, max:15,   disj:70,  cabo:'2x25+25 AL MULT' },
+        { id:'T0',  tipo:'Trifásica',  carga:'0–75',    dem:'0–19',    min:0,    max:19,   disj:50,  cabo:'3x10/10 CU XLPE/HEPR' },
+        { id:'T1',  tipo:'Trifásica',  carga:'0–75',    dem:'19,1–24', min:19.1, max:24,   disj:63,  cabo:'3x16/16 CU XLPE/HEPR' },
+        { id:'T2',  tipo:'Trifásica',  carga:'0–75',    dem:'24,1–38', min:24.1, max:38,   disj:100, cabo:'3x35/35 CU XLPE/HEPR' },
+        { id:'T3',  tipo:'Trifásica',  carga:'0–75',    dem:'38,1–47', min:38.1, max:47,   disj:125, cabo:'3x50/50 CU XLPE/HEPR' },
+        { id:'T4',  tipo:'Trifásica',  carga:'0–75',    dem:'47,1–57', min:47.1, max:57,   disj:150, cabo:'3x70/70 CU XLPE/HEPR' },
+        { id:'T5',  tipo:'Trifásica',  carga:'0–75',    dem:'57,1–75', min:57.1, max:75,   disj:200, cabo:'3x95/95 CU XLPE/HEPR' },
+      ]
+    }
+  },
+
+  // ── Neoenergia Elektro (SP / MS) ─────────────────────────────
+  // Tabela 3 Rev.07 · 220/127V e 380/220V
+  // ATENÇÃO Rev.07: B1 mudou para 11,1–13 kW / 63A / 2x16+16 AL MULT
+  'ek': {
+    id: 'ek',
+    nome: 'Neoenergia Elektro',
+    estados: 'SP · MS',
+    tensao: '220/127V ou 380/220V',
+    norma:     { cod:'DIS-NOR-030', rev:'Rev.07', link:'https://www.neoenergia.com/documents/d/sp/dis-nor-030-rev07' },
+    norma_muc: { cod:'DIS-NOR-053', rev:'Rev.06', link:'https://www.neoenergia.com/documents/d/sp/dis-nor-053-rev06' },
+    cats: {
+      '380': [
+        { id:'M3',  tipo:'Monofásica', carga:'10,1–15', dem:'—',       min:10.1, max:15,   disj:63,  cabo:'10+10 CU CONC / 16+16 AL CONC' },
+        { id:'T6',  tipo:'Trifásica',  carga:'0–75',    dem:'0–21',    min:0,    max:21,   disj:32,  cabo:'3x6/6 CU XLPE/HEPR' },
+        { id:'T7',  tipo:'Trifásica',  carga:'0–75',    dem:'21,2–26', min:21.1, max:26,   disj:40,  cabo:'3x6/6 CU XLPE/HEPR' },
+        { id:'T8',  tipo:'Trifásica',  carga:'0–75',    dem:'26,1–33', min:26.1, max:33,   disj:50,  cabo:'3x10/10 CU XLPE/HEPR' },
+        { id:'T9',  tipo:'Trifásica',  carga:'0–75',    dem:'33,1–40', min:33.1, max:40,   disj:63,  cabo:'3x16/16 CU XLPE/HEPR' },
+        { id:'T10', tipo:'Trifásica',  carga:'0–75',    dem:'40,1–52', min:40.1, max:52,   disj:80,  cabo:'3x25/25 CU XLPE/HEPR' },
+        { id:'T11', tipo:'Trifásica',  carga:'0–75',    dem:'52,1–66', min:52.1, max:66,   disj:100, cabo:'3x35/35 CU XLPE/HEPR' },
+        { id:'T12', tipo:'Trifásica',  carga:'0–75',    dem:'66,1–75', min:66.1, max:75,   disj:125, cabo:'3x50/50 CU XLPE/HEPR' },
+      ],
+      '220': [
+        { id:'M1',  tipo:'Monofásica', carga:'5,1–10',  dem:'—',       min:5.1,  max:10,   disj:63,  cabo:'10+10 CU CONC / 16+16 AL CONC' },
+        { id:'B0',  tipo:'Bifásica',   carga:'0–11',    dem:'—',       min:0,    max:11,   disj:50,  cabo:'2x16+16 AL MULT' },
+        { id:'B1',  tipo:'Bifásica',   carga:'11,1–13', dem:'—',       min:11.1, max:13,   disj:63,  cabo:'2x16+16 AL MULT' },
+        { id:'T0',  tipo:'Trifásica',  carga:'0–75',    dem:'0–19',    min:0,    max:19,   disj:50,  cabo:'3x10/10 CU XLPE/HEPR' },
+        { id:'T1',  tipo:'Trifásica',  carga:'0–75',    dem:'19,1–24', min:19.1, max:24,   disj:63,  cabo:'3x16/16 CU XLPE/HEPR' },
+        { id:'T2',  tipo:'Trifásica',  carga:'0–75',    dem:'24,1–38', min:24.1, max:38,   disj:100, cabo:'3x25/25 CU XLPE/HEPR' },
+        { id:'T3',  tipo:'Trifásica',  carga:'0–75',    dem:'38,1–47', min:38.1, max:47,   disj:125, cabo:'3x35/35 CU XLPE/HEPR' },
+        { id:'T4',  tipo:'Trifásica',  carga:'0–75',    dem:'47,1–57', min:47.1, max:57,   disj:150, cabo:'3x50/50 CU XLPE/HEPR' },
+        { id:'T5',  tipo:'Trifásica',  carga:'0–75',    dem:'57,1–75', min:57.1, max:75,   disj:200, cabo:'3x70/70 CU XLPE/HEPR' },
+      ]
+    }
+  }
+
+};
+
+// ── Helpers para acessar o perfil ativo ──────────────────────
+function distPerfil() { return DIST_PERFIS[_distribuidoraAtiva] || DIST_PERFIS['pe']; }
+function distCats(tensaoStr) { return (distPerfil().cats[tensaoStr] || []); }
 
 // Tabela 6 — FD Tomadas e Iluminação Residencial
 var DISNOR_FD_TOMILL = [
@@ -7155,25 +7191,18 @@ var DISNOR_FD_TOMILL = [
   { carga:'C > 10',    fd:0.24 },
 ];
 
-// Tabela 7 — FD Chuveiros, Torneiras, Aquecedores, Ferros
+// Tabela 7 — FD Chuveiros, Torneiras, Aquecedores de Água de Passagem e Ferros Elétricos
+// DIS-NOR-030 Rev.07 — §6.27.2 · Nota: soma de chuveiros + torneiras + ferros = nº aparelhos
 var DISNOR_FD_CHUV = [
-  { n:1, fd:1.00 }, { n:2, fd:1.00 }, { n:3, fd:0.84 },
-  { n:4, fd:0.76 }, { n:5, fd:0.70 }, { n:6, fd:0.65 },
-  { n:7, fd:0.61 }, { n:8, fd:0.57 }, { n:9, fd:0.54 },
-  { n:10,fd:0.51 }, { n:11,fd:0.49 }, { n:12,fd:0.47 },
-  { n:13,fd:0.46 }, { n:14,fd:0.45 }, { n:15,fd:0.44 },
-];
-
-// Tabela 8 — FD Aquecedor Central/Boiler
-var DISNOR_FD_BOILER = [
-  { n:'1', fd:1.00 }, { n:'2', fd:0.72 },
-  { n:'3', fd:0.62 }, { n:'> 3', fd:0.62 },
-];
-
-// Tabela 9 — FD Secadora, Forno, Lava-roupas, Lava-louças, Micro-ondas
-var DISNOR_FD_ELET = [
-  { n:'1',     fd:1.00 }, { n:'2 a 4', fd:0.70 },
-  { n:'5 a 6', fd:0.60 }, { n:'> 6',   fd:0.50 },
+  { n:'1',        fd:1.00 }, { n:'2',        fd:1.00 }, { n:'3',        fd:0.84 },
+  { n:'4',        fd:0.76 }, { n:'5',        fd:0.70 }, { n:'6',        fd:0.65 },
+  { n:'7',        fd:0.60 }, { n:'8',        fd:0.57 }, { n:'9',        fd:0.54 },
+  { n:'10',       fd:0.52 }, { n:'11',       fd:0.49 }, { n:'12',       fd:0.48 },
+  { n:'13',       fd:0.46 }, { n:'14',       fd:0.45 }, { n:'15',       fd:0.44 },
+  { n:'16',       fd:0.43 }, { n:'17',       fd:0.42 }, { n:'18',       fd:0.41 },
+  { n:'19',       fd:0.40 }, { n:'20',       fd:0.40 }, { n:'21',       fd:0.39 },
+  { n:'22',       fd:0.39 }, { n:'23',       fd:0.39 }, { n:'24',       fd:0.38 },
+  { n:'25',       fd:0.38 }, { n:'acima de 25', fd:0.38 },
 ];
 
 // Tabela 12 — FD Condicionadores de Ar
@@ -7188,6 +7217,50 @@ var DISNOR_FD_AC = [
   { n:'> 100',      res:0.60, com:0.75 },
 ];
 
+// Tabela 10 — FD Fogões e Fornos Elétricos (tabela separada da Tab.9)
+// DIS-NOR-030 Rev.07 — §6.27.5
+var DISNOR_FD_FOGAO = [
+  { n:'1',        fd:1.00 },
+  { n:'2',        fd:0.60 },
+  { n:'3',        fd:0.48 },
+  { n:'4',        fd:0.40 },
+  { n:'5',        fd:0.37 },
+  { n:'6',        fd:0.35 },
+  { n:'7',        fd:0.33 },
+  { n:'8',        fd:0.32 },
+  { n:'9',        fd:0.31 },
+  { n:'10 a 11',  fd:0.30 },
+  { n:'12 a 15',  fd:0.28 },
+  { n:'acima de 15', fd:0.26 },
+];
+
+// Tabela 13 — FD Estações de Recarga de Veículos Elétricos (individuais)
+// DIS-NOR-030 Rev.07 — §6.27.10 · Postos coletivos: FD = 1,00 sempre
+var DISNOR_FD_EV = [
+  { n:'1 a 10',    fd:1.00 },
+  { n:'11 a 20',   fd:0.90 },
+  { n:'21 a 30',   fd:0.82 },
+  { n:'31 a 40',   fd:0.80 },
+  { n:'41 a 50',   fd:0.77 },
+  { n:'acima de 50', fd:0.75 },
+];
+
+// Tabela 15 — FD Equipamentos Especiais (raios-X, solda a trafo, forno a arco etc.)
+// DIS-NOR-030 Rev.07 — §6.27.8
+var DISNOR_FD_EQUIP_ESP = [
+  { n:'Maior equipamento', fd:1.00 },
+  { n:'Demais',            fd:0.60 },
+];
+
+// Tabela 16 — FD Bombas e Hidromassagem
+// DIS-NOR-030 Rev.07 — §6.27.9
+var DISNOR_FD_BOMBAS = [
+  { n:'1',        fd:1.00 },
+  { n:'2',        fd:0.56 },
+  { n:'3',        fd:0.47 },
+  { n:'acima de 3', fd:0.39 },
+];
+
 // Tabela 5 — Nº mínimo de tomadas por área
 var DISNOR_TOMADAS = [
   { area:'S < 8 m²',      n:1 }, { area:'8–15 m²',    n:3 },
@@ -7199,12 +7272,32 @@ var DISNOR_TOMADAS = [
   { area:'220–250 m²',    n:14 },
 ];
 
-// Limites de atendimento (6.2.8.2) — 220/127V
+// Limites de atendimento (§6.2.8.2) — DIS-NOR-030 Rev.07
 var DISNOR_LIMITES = [
-  { tipo:'Monofásico (M)', fios:'Fase + Neutro', limite:'Até 10 kW (220/127V)', obs:'Sem solda a transformador ou raios-X' },
-  { tipo:'Bifásico (B)',   fios:'2 Fases + Neutro', limite:'Até 18 kW (220/127V)', obs:'Sem solda >10kVA ou raios-X >1,5kW' },
-  { tipo:'Trifásico (T)',  fios:'3 Fases + Neutro', limite:'Até 75 kW / 75 kVA', obs:'Sem solda >10kVA ou raios-X trifásico >20kVA' },
+  { tipo:'Monofásico (M)', fios:'Fase + Neutro',     limite:'Até 10 kW (220/127V) · Até 15 kW (380/220V)', obs:'Sem solda a transformador ou raios-X' },
+  { tipo:'Bifásico (B)',   fios:'2 Fases + Neutro',  limite:'Até 18 kW (220/127V) · Até 38 kW (380/220V — Elektro)', obs:'Sem solda >10kVA ou raios-X >1,5kW' },
+  { tipo:'Trifásico (T)',  fios:'3 Fases + Neutro',  limite:'Até 75 kW / 75 kVA',  obs:'Sem solda >10kVA ou raios-X trifásico >20kVA' },
 ];
+
+// ── Selecionar distribuidora ativa ───────────────────────────
+function distSetAtiva(id, btnEl) {
+  _distribuidoraAtiva = id;
+  // Atualizar pills
+  ['pe','ba','ek'].forEach(function(k) {
+    var b = document.getElementById('dist-btn-' + k);
+    if (b) b.classList.toggle('on', k === id);
+  });
+  // Atualizar card
+  var perfil = distPerfil();
+  var nome = document.getElementById('dist-card-nome');
+  var info = document.getElementById('dist-card-info');
+  var link = document.getElementById('dist-card-link');
+  if (nome) nome.textContent = perfil.nome;
+  if (info) info.textContent = perfil.norma.cod + ' ' + perfil.norma.rev + ' · ' + perfil.tensao + ' · ' + perfil.estados;
+  if (link) { link.href = perfil.norma.link; }
+  // Atualizar tabela de normas se visível
+  try { renderNormas(); } catch(e) {}
+}
 
 // ══ RENDER NORMAS ════════════════════════════════════════════
 function renderNormas() {
@@ -7237,7 +7330,10 @@ function renderNormas() {
     }).join('') +
     '</tbody></table>';
 
-  // --- Seção 2: Categorias PE/Nordeste ---
+  // --- Seção 2: Categorias da distribuidora ativa ---
+  var _perfil = distPerfil();
+  var _catsDisplay = (_perfil.cats['380'].length ? _perfil.cats['380'] : _perfil.cats['220']);
+  var _tensaoLabel = _perfil.cats['380'].length ? '380/220V' : '220/127V';
   var htmlCatPE = '<table style="width:100%;border-collapse:collapse">' +
     '<thead><tr>' +
     '<th style="' + thStyle('var(--acc)') + '">Cat.</th>' +
@@ -7246,10 +7342,10 @@ function renderNormas() {
     '<th style="' + thStyle() + '">Dem. (kVA)</th>' +
     '<th style="' + thStyle('#60a5fa') + '">Disj. (A)</th>' +
     '</tr></thead><tbody>' +
-    DISNOR_CAT_PE.map(function(r, i) {
+    _catsDisplay.map(function(r, i) {
       var bg = i%2 ? 'var(--bg-input)' : 'transparent';
       return '<tr style="background:' + bg + '">' +
-        '<td style="' + tdStyle(true,'var(--acc)') + '">' + r.cat + '</td>' +
+        '<td style="' + tdStyle(true,'var(--acc)') + '">' + r.id + '</td>' +
         '<td style="' + tdStyle() + '">' + r.tipo + '</td>' +
         '<td style="' + tdStyle() + '">' + r.carga + '</td>' +
         '<td style="' + tdStyle() + '">' + r.dem + '</td>' +
@@ -7316,6 +7412,64 @@ function renderNormas() {
       '</tr>';
     }).join('') + '</tbody></table>';
 
+  // --- Seção 7: FD Fogões (Tab.10) ---
+  var htmlFDFogao = '<table style="width:100%;border-collapse:collapse">' +
+    '<thead><tr>' +
+    '<th style="' + thStyle() + '">Nº Aparelhos</th>' +
+    '<th style="' + thStyle('#4ade80') + '">Fator de Demanda</th>' +
+    '</tr></thead><tbody>' +
+    DISNOR_FD_FOGAO.map(function(r, i) {
+      var bg = i%2 ? 'var(--bg-input)' : 'transparent';
+      return '<tr style="background:' + bg + '">' +
+        '<td style="' + tdStyle() + '">' + r.n + '</td>' +
+        '<td style="' + tdStyle(true,'#4ade80') + '">' + r.fd + '</td>' +
+      '</tr>';
+    }).join('') + '</tbody></table>';
+
+  // --- Seção 8: FD EV Charging (Tab.13) ---
+  var htmlFDEV = '<div style="padding:10px 12px;font-size:10px;color:var(--text3);background:rgba(59,130,246,.06);border-bottom:1px solid var(--border)">Postos de recarga <strong>coletivos</strong>: FD = 1,00 sempre. Esta tabela aplica-se apenas a postos <strong>individuais</strong>.</div>' +
+    '<table style="width:100%;border-collapse:collapse">' +
+    '<thead><tr>' +
+    '<th style="' + thStyle() + '">Nº Aparelhos</th>' +
+    '<th style="' + thStyle('#4ade80') + '">Fator de Demanda</th>' +
+    '</tr></thead><tbody>' +
+    DISNOR_FD_EV.map(function(r, i) {
+      var bg = i%2 ? 'var(--bg-input)' : 'transparent';
+      return '<tr style="background:' + bg + '">' +
+        '<td style="' + tdStyle() + '">' + r.n + '</td>' +
+        '<td style="' + tdStyle(true,'#4ade80') + '">' + r.fd + '</td>' +
+      '</tr>';
+    }).join('') + '</tbody></table>';
+
+  // --- Seção 9: FD Equipamentos Especiais (Tab.15) ---
+  var htmlFDEquipEsp = '<div style="padding:10px 12px;font-size:10px;color:var(--text3);background:rgba(239,68,68,.06);border-bottom:1px solid var(--border)">Raios-X, máq. solda a transformador, fornos a arco/indução, retificadores, eletrólise. Se maiores com potências iguais, considerar apenas um como maior.</div>' +
+    '<table style="width:100%;border-collapse:collapse">' +
+    '<thead><tr>' +
+    '<th style="' + thStyle() + '">Equipamento</th>' +
+    '<th style="' + thStyle('#4ade80') + '">Fator de Demanda</th>' +
+    '</tr></thead><tbody>' +
+    DISNOR_FD_EQUIP_ESP.map(function(r, i) {
+      var bg = i%2 ? 'var(--bg-input)' : 'transparent';
+      return '<tr style="background:' + bg + '">' +
+        '<td style="' + tdStyle(true,'var(--text)') + '">' + r.n + '</td>' +
+        '<td style="' + tdStyle(true,'#4ade80') + '">' + r.fd + '</td>' +
+      '</tr>';
+    }).join('') + '</tbody></table>';
+
+  // --- Seção 10: FD Bombas e Hidromassagem (Tab.16) ---
+  var htmlFDBombas = '<table style="width:100%;border-collapse:collapse">' +
+    '<thead><tr>' +
+    '<th style="' + thStyle() + '">Nº Aparelhos</th>' +
+    '<th style="' + thStyle('#4ade80') + '">Fator de Demanda</th>' +
+    '</tr></thead><tbody>' +
+    DISNOR_FD_BOMBAS.map(function(r, i) {
+      var bg = i%2 ? 'var(--bg-input)' : 'transparent';
+      return '<tr style="background:' + bg + '">' +
+        '<td style="' + tdStyle() + '">' + r.n + '</td>' +
+        '<td style="' + tdStyle(true,'#4ade80') + '">' + r.fd + '</td>' +
+      '</tr>';
+    }).join('') + '</tbody></table>';
+
   function acord(id, titulo, corpo, sub) {
     return '<div style="border:1px solid var(--border-input);border-radius:13px;margin-bottom:8px;overflow:hidden">' +
       '<div onclick="norToggle(\'' + id + '\',this)" style="display:flex;align-items:flex-start;justify-content:space-between;padding:13px 14px;cursor:pointer;background:var(--bg-input)">' +
@@ -7331,19 +7485,23 @@ function renderNormas() {
 
   el.innerHTML =
     '<div style="font-size:10px;color:var(--text3);margin-bottom:12px;padding:10px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:10px">' +
-      '📄 <strong>DIS-NOR-030 Rev.05</strong> — Neoenergia · Nordeste (PE, BA, RN, PB, PI) e Brasília · Aprovação: 03/06/2024' +
-      '<a href="https://neoenergiapernambuco.com.br/normas" target="_blank" style="display:block;margin-top:4px;font-size:10px;color:var(--acc);font-weight:700">📖 Ver norma completa →</a>' +
+      '📄 <strong>' + _perfil.norma.cod + ' ' + _perfil.norma.rev + '</strong> — ' + _perfil.nome + ' (' + _perfil.estados + ') · Aprovação: 17/04/2026' +
+      '<a href="' + _perfil.norma.link + '" target="_blank" style="display:block;margin-top:4px;font-size:10px;color:var(--acc);font-weight:700">📖 Ver norma completa →</a>' +
     '</div>' +
-    acord('nor-limites', '⚡ Limites de Atendimento', htmlLimites, 'Monofásico · Bifásico · Trifásico — 220/127V') +
-    acord('nor-cat-pe', '📋 Categorias — Neoenergia PE/Nordeste', htmlCatPE, 'Tabela 2 · 380/220V · M2, M3, T6–T12') +
+    acord('nor-limites', '⚡ Limites de Atendimento', htmlLimites, 'Monofásico · Bifásico · Trifásico — 220/127V e 380/220V') +
+    acord('nor-cat-pe', '📋 Categorias — ' + _perfil.nome, htmlCatPE, 'DIS-NOR-030 ' + _perfil.norma.rev + ' · ' + _tensaoLabel) +
     acord('nor-fd-tom', '💡 FD — Tomadas e Iluminação', htmlFDTom, 'Tabela 6 · Instalação residencial') +
-    acord('nor-fd-chuv', '🚿 FD — Chuveiros e Torneiras', htmlFDChuv, 'Tabela 7 · Chuveiros, torneiras, aquecedores, ferros') +
+    acord('nor-fd-chuv', '🚿 FD — Chuveiros, Torneiras e Ferros', htmlFDChuv, 'Tabela 7 · Rev.07 · 1 a 25+ aparelhos') +
+    acord('nor-fd-fogao', '🍳 FD — Fogões e Fornos Elétricos', htmlFDFogao, 'Tabela 10 · Tabela separada da Tab.9') +
     acord('nor-fd-ac', '❄️ FD — Condicionadores de Ar', htmlFDAC, 'Tabela 12 · Residencial e Comercial') +
+    acord('nor-fd-bombas', '💧 FD — Bombas e Hidromassagem', htmlFDBombas, 'Tabela 16 · Grupo separado de motores') +
+    acord('nor-fd-equip', '⚙️ FD — Equipamentos Especiais', htmlFDEquipEsp, 'Tabela 15 · Raios-X, solda a trafo, fornos a arco') +
+    acord('nor-fd-ev', '🔌 FD — Recarga Veículos Elétricos', htmlFDEV, 'Tabela 13 · Rev.07 · Postos individuais') +
     acord('nor-tomadas', '🔌 Tomadas Mínimas por Área', htmlTom, 'Tabela 5 · Instalação residencial') +
     '<div style="margin-top:4px;text-align:center">' +
-      '<a href="https://www.neoenergiapernambuco.com.br/documents/normas/DIS-NOR-030.pdf" target="_blank" ' +
+      '<a href="' + _perfil.norma.link + '" target="_blank" ' +
         'style="display:inline-flex;align-items:center;gap:6px;padding:10px 18px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);border-radius:11px;font-family:\'Syne\',sans-serif;font-size:12px;font-weight:800;color:var(--acc);text-decoration:none">' +
-        '📖 Abrir DIS-NOR-030 completo' +
+        '📖 Abrir ' + _perfil.norma.cod + ' ' + _perfil.norma.rev + ' completo' +
       '</a>' +
     '</div>';
 }
@@ -7945,7 +8103,7 @@ function mucExportarPDF() {
     + btStr + '</div>\n\n'
     + '  <div class="foot">\n'
     + '    <span>⚡ ' + empresa + '</span>\n'
-    + '    <span>Base: DIS-NOR-030 Rev.05 · ' + data + ' · Laudo estimativo — validar com profissional habilitado (CREA/CFT).</span>\n'
+    + '    <span>Base: DIS-NOR-030 Rev.07 · ' + data + ' · Laudo estimativo — validar com profissional habilitado (CREA/CFT).</span>\n'
     + '  </div>\n'
     + '</div></body></html>';
 
@@ -8277,7 +8435,7 @@ const NBR_DISJ_SERIE = [6,10,16,20,25,32,40,50,63,80,100,125,160,200,250,315,400
 // ══════════════════════════════════════════════════════════════
 // DEMANDA ELÉTRICA — NBR 5410 + MUC (DIS-NOR-053 REV06)
 // ══════════════════════════════════════════════════════════════
-let demSisAtual='mono', demTensaoAtual=127, demComodos={};
+let demSisAtual='mono', demTensaoAtual=127, demComodos={}, _demCalcFeito=false;
 
 const DEM_COMODOS=[
   // ── RESIDENCIAL (0-17) ──────────────────────────
@@ -8385,15 +8543,16 @@ const DEM_EQUIP_CATS = [
 
 const DEM_EQUIPAMENTOS = [
   // ── AQUECIMENTO ─────────────────────────────────────────────
-  {n:'Chuveiro elétrico 5500W',   grupo:'chuv', cat:'Aquecimento', ico:'🚿', w:5500, fp:1.00, fd:1.00, tensao:220, circ:true,  obs:'Circ. exclusivo — NBR 5410'},
-  {n:'Chuveiro elétrico 7500W',   grupo:'chuv', cat:'Aquecimento', ico:'🚿', w:7500, fp:1.00, fd:1.00, tensao:220, circ:true,  obs:'Circ. exclusivo — NBR 5410'},
-  {n:'Torneira elétrica',         grupo:'chuv', cat:'Aquecimento', ico:'🚰', w:3800, fp:1.00, fd:0.50, tensao:220, circ:true,  obs:'fd 0,5 — uso não simultâneo'},
+  {n:'Chuveiro elétrico',          grupo:'chuv', cat:'Aquecimento', ico:'🚿', w:4000, fp:1.00, fd:1.00, tensao:220, circ:true,  obs:'4.000W — DIS-NOR-030 §6.26.2.1 · Circ. exclusivo'},
+  {n:'Chuveiro elétrico 5500W',   grupo:'chuv', cat:'Aquecimento', ico:'🚿', w:5500, fp:1.00, fd:1.00, tensao:220, circ:true,  obs:'Potência de placa — §6.26.2.2 · Circ. exclusivo'},
+  {n:'Chuveiro elétrico 7500W',   grupo:'chuv', cat:'Aquecimento', ico:'🚿', w:7500, fp:1.00, fd:1.00, tensao:220, circ:true,  obs:'Potência de placa — §6.26.2.2 · Circ. exclusivo'},
+  {n:'Torneira elétrica',         grupo:'chuv', cat:'Aquecimento', ico:'🚰', w:3000, fp:1.00, fd:1.00, tensao:220, circ:true,  obs:'3.000W — DIS-NOR-030 §6.26.2.1'},
   {n:'Aquecedor de ambiente',     cat:'Aquecimento', ico:'🔥', w:1500, fp:1.00, fd:1.00, tensao:127, circ:true,  obs:'Resistivo — circ. exclusivo >1,5kW'},
   {n:'Aquecedor central (boiler)',grupo:'boiler', cat:'Aquecimento', ico:'🌡️', w:3000, fp:1.00, fd:0.60, tensao:220, circ:true,  obs:'fd 0,6 — ciclo intermitente'},
   {n:'Secador de cabelo',         cat:'Aquecimento', ico:'💇', w:2000, fp:1.00, fd:0.30, tensao:127, circ:false, obs:'fd 0,3 — uso breve'},
-  {grupo:'chuv', n:'Ferro de passar',           cat:'Aquecimento', ico:'👔', w:1200, fp:1.00, fd:0.50, tensao:127, circ:false, obs:'fd 0,5 — uso intermitente'},
-  {grupo:'elet_dom', n:'Forno elétrico embutido',   cat:'Aquecimento', ico:'🟫', w:3000, fp:1.00, fd:1.00, tensao:220, circ:true,  obs:'Circ. exclusivo obrigatório'},
-  {grupo:'elet_dom', n:'Forno de micro-ondas',      cat:'Aquecimento', ico:'📦', w:1200, fp:0.95, fd:0.60, tensao:127, circ:false, obs:'fd 0,6 — uso intermitente'},
+  {grupo:'chuv', n:'Ferro de passar',           cat:'Aquecimento', ico:'👔', w:1000, fp:1.00, fd:1.00, tensao:127, circ:false, obs:'1.000W — DIS-NOR-030 §6.26.2.1 · Tab.7'},
+  {grupo:'elet_dom', n:'Forno elétrico embutido',   cat:'Aquecimento', ico:'🟫', w:1500, fp:1.00, fd:1.00, tensao:220, circ:true,  obs:'1.500W — DIS-NOR-030 §6.26.2.1 · Circ. exclusivo'},
+  {grupo:'elet_dom', n:'Forno de micro-ondas',      cat:'Aquecimento', ico:'📦', w:1500, fp:1.00, fd:1.00, tensao:127, circ:false, obs:'1.500W — DIS-NOR-030 §6.26.2.1'},
   {n:'Torradeira',                cat:'Aquecimento', ico:'🍞', w:900,  fp:1.00, fd:0.20, tensao:127, circ:false, obs:'fd 0,2 — uso esporádico'},
   {n:'Cafeteira elétrica',        cat:'Aquecimento', ico:'☕', w:800,  fp:1.00, fd:0.25, tensao:127, circ:false, obs:'fd 0,25 — uso esporádico'},
   {n:'Sanduicheira/Waffle',       cat:'Aquecimento', ico:'🥪', w:750,  fp:1.00, fd:0.20, tensao:127, circ:false, obs:'fd 0,2 — uso esporádico'},
@@ -8408,26 +8567,25 @@ const DEM_EQUIPAMENTOS = [
   {n:'Adega climatizada',         cat:'Refrigeração', ico:'🍷', w:120,  fp:0.75, fd:0.70, tensao:127, circ:false, obs:'Compressor cíclico'},
 
   // ── AR-CONDICIONADO ───────────────────────────────────────────
-  {n:'Ar-cond. Split 7.500 BTU',  grupo:'ac', cat:'Ar-condicionado', ico:'❄️', w:750,  fp:0.82, fd:0.75, tensao:127, circ:false, obs:'NBR 5410 — verificar tensão'},
-  {n:'Ar-cond. Split 9.000 BTU',  grupo:'ac', cat:'Ar-condicionado', ico:'❄️', w:1050, fp:0.82, fd:0.75, tensao:220, circ:false, obs:'fd 0,75 — uso não simultâneo'},
-  {n:'Ar-cond. Split 12.000 BTU', grupo:'ac', cat:'Ar-condicionado', ico:'❄️', w:1350, fp:0.82, fd:0.75, tensao:220, circ:false, obs:'fd 0,75'},
-  {n:'Ar-cond. Split 18.000 BTU', grupo:'ac', cat:'Ar-condicionado', ico:'❄️', w:1760, fp:0.82, fd:0.75, tensao:220, circ:true,  obs:'Circ. exclusivo ≥18.000 BTU'},
-  {n:'Ar-cond. Split 24.000 BTU', grupo:'ac', cat:'Ar-condicionado', ico:'❄️', w:2200, fp:0.82, fd:0.75, tensao:220, circ:true,  obs:'Circ. exclusivo'},
-  {n:'Ar-cond. Split 30.000 BTU', grupo:'ac', cat:'Ar-condicionado', ico:'❄️', w:2800, fp:0.82, fd:0.75, tensao:220, circ:true,  obs:'Circ. exclusivo'},
+  {n:'Ar-cond. Split 7.500 BTU',  grupo:'ac', cat:'Ar-condicionado', ico:'❄️', w:1100, fp:1.00, fd:1.00, tensao:220, circ:false, obs:'1.100VA — DIS-NOR-030 Tab.11 · §6.27.6'},
+  {n:'Ar-cond. Split 9.000 BTU',  grupo:'ac', cat:'Ar-condicionado', ico:'❄️', w:1550, fp:1.00, fd:1.00, tensao:220, circ:false, obs:'1.550VA — DIS-NOR-030 Tab.11 · §6.27.6'},
+  {n:'Ar-cond. Split 12.000 BTU', grupo:'ac', cat:'Ar-condicionado', ico:'❄️', w:1900, fp:1.00, fd:1.00, tensao:220, circ:false, obs:'1.900VA — DIS-NOR-030 Tab.11 · §6.27.6'},
+  {n:'Ar-cond. Split 18.000 BTU', grupo:'ac', cat:'Ar-condicionado', ico:'❄️', w:2860, fp:1.00, fd:1.00, tensao:220, circ:true,  obs:'2.860VA — DIS-NOR-030 Tab.11 · §6.27.6 · Circ. exclusivo'},
+  {n:'Ar-cond. Split 24.000 BTU', grupo:'ac', cat:'Ar-condicionado', ico:'❄️', w:3080, fp:1.00, fd:1.00, tensao:220, circ:true,  obs:'3.080VA — DIS-NOR-030 Tab.11 · §6.27.6 · Circ. exclusivo'},
+  {n:'Ar-cond. Split 30.000 BTU', grupo:'ac', cat:'Ar-condicionado', ico:'❄️', w:4000, fp:1.00, fd:1.00, tensao:220, circ:true,  obs:'4.000VA — DIS-NOR-030 Tab.11 · §6.27.6 · Circ. exclusivo'},
   {n:'Ar-cond. Janela 10.000 BTU',grupo:'ac', cat:'Ar-condicionado', ico:'❄️', w:1200, fp:0.80, fd:0.75, tensao:127, circ:false, obs:'fd 0,75'},
   {n:'VRF / Fan Coil (por kW)',   grupo:'ac', cat:'Ar-condicionado', ico:'❄️', w:1000, fp:0.85, fd:0.75, tensao:220, circ:true,  obs:'Circ. exclusivo — sistema central'},
 
   // ── LAVANDERIA ───────────────────────────────────────────────
-  {n:'Máquina de lavar 10kg',     grupo:'elet_dom', cat:'Lavanderia', ico:'🫧', w:1000, fp:0.85, fd:0.50, tensao:127, circ:false, obs:'fd 0,5 — uso intermitente'},
-  {n:'Máquina de lavar 15kg',     grupo:'elet_dom', cat:'Lavanderia', ico:'🫧', w:1200, fp:0.85, fd:0.50, tensao:127, circ:false, obs:'fd 0,5'},
-  {grupo:'elet_dom', n:'Secadora de roupas elét.',  grupo:'elet_dom', cat:'Lavanderia', ico:'💨', w:3000, fp:1.00, fd:1.00, tensao:220, circ:true,  obs:'Circ. exclusivo — resistivo'},
+  {n:'Máquina de lavar roupas',   grupo:'elet_dom', cat:'Lavanderia', ico:'🫧', w:1500, fp:1.00, fd:1.00, tensao:127, circ:false, obs:'1.500W — DIS-NOR-030 §6.26.2.1'},
+  {grupo:'elet_dom', n:'Secadora de roupas elét.',                    cat:'Lavanderia', ico:'💨', w:2500, fp:1.00, fd:1.00, tensao:220, circ:true,  obs:'2.500W — DIS-NOR-030 §6.26.2.1 · Circ. exclusivo'},
   {n:'Lava e seca',               grupo:'elet_dom', cat:'Lavanderia', ico:'🫧', w:1500, fp:0.85, fd:0.60, tensao:127, circ:false, obs:'fd 0,6'},
-  {n:'Lava-louças',               grupo:'elet_dom', cat:'Lavanderia', ico:'🍽️', w:1800, fp:0.95, fd:0.50, tensao:127, circ:false, obs:'fd 0,5 — uso intermitente'},
+  {n:'Lava-louças',               grupo:'elet_dom', cat:'Lavanderia', ico:'🍽️', w:2000, fp:1.00, fd:1.00, tensao:127, circ:false, obs:'2.000W — DIS-NOR-030 §6.26.2.1'},
   {n:'Aspirador de pó',           grupo:'elet_dom', cat:'Lavanderia', ico:'🌀', w:1200, fp:0.85, fd:0.20, tensao:127, circ:false, obs:'fd 0,2 — uso esporádico'},
 
   // ── COZINHA ─────────────────────────────────────────────────
-  {n:'Fogão de indução 2 bocas',  cat:'Cozinha', ico:'🍳', w:3500, fp:0.95, fd:0.60, tensao:220, circ:true,  obs:'Circ. exclusivo'},
-  {n:'Fogão de indução 4 bocas',  cat:'Cozinha', ico:'🍳', w:7000, fp:0.95, fd:0.60, tensao:220, circ:true,  obs:'Circ. exclusivo — alta potência'},
+  {n:'Fogão de indução 2 bocas',  grupo:'fogao', cat:'Cozinha', ico:'🍳', w:3500, fp:0.95, fd:1.00, tensao:220, circ:true,  obs:'Tab.10 — fogão elétrico · circ. exclusivo'},
+  {n:'Fogão de indução 4 bocas',  grupo:'fogao', cat:'Cozinha', ico:'🍳', w:7000, fp:0.95, fd:1.00, tensao:220, circ:true,  obs:'Tab.10 — fogão elétrico · circ. exclusivo — alta potência'},
   {n:'Coifa/Exaustor',            cat:'Cozinha', ico:'🍴', w:200,  fp:0.85, fd:0.40, tensao:127, circ:false, obs:'fd 0,4 — uso parcial'},
   {n:'Liquidificador',            cat:'Cozinha', ico:'🥤', w:700,  fp:0.85, fd:0.15, tensao:127, circ:false, obs:'fd 0,15 — uso esporádico'},
   {n:'Batedeira',                 cat:'Cozinha', ico:'🥣', w:500,  fp:0.85, fd:0.15, tensao:127, circ:false, obs:'fd 0,15'},
@@ -8435,11 +8593,11 @@ const DEM_EQUIPAMENTOS = [
   {n:'Frigobar',                  cat:'Cozinha', ico:'🧃', w:80,   fp:0.75, fd:0.70, tensao:127, circ:false, obs:'Compressor cíclico'},
 
   // ── MOTORES / BOMBAS ─────────────────────────────────────────
-  {n:'Bomba de agua 0,5 CV',      grupo:'motor', cat:'Motores/Bombas', ico:'💧', w:370,  fp:0.85, fd:0.75, tensao:127, circ:false, obs:'fd 0,75 — ciclagem'},
-  {n:'Bomba de agua 1 CV',        grupo:'motor', cat:'Motores/Bombas', ico:'💧', w:750,  fp:0.85, fd:0.75, tensao:220, circ:false, obs:'fd 0,75'},
-  {n:'Bomba de agua 2 CV',        grupo:'motor', cat:'Motores/Bombas', ico:'💧', w:1500, fp:0.85, fd:0.75, tensao:220, circ:true,  obs:'Circ. exclusivo recomendado'},
-  {n:'Bomba de piscina 1 CV',     grupo:'motor', cat:'Motores/Bombas', ico:'🏊', w:750,  fp:0.85, fd:0.85, tensao:220, circ:false, obs:'fd 0,85 — uso contínuo'},
-  {n:'Bomba de piscina 2 CV',     grupo:'motor', cat:'Motores/Bombas', ico:'🏊', w:1500, fp:0.85, fd:0.85, tensao:220, circ:true,  obs:'Circ. exclusivo'},
+  {n:'Bomba de agua 0,5 CV',      grupo:'bomba', cat:'Motores/Bombas', ico:'💧', w:370,  fp:0.85, fd:1.00, tensao:127, circ:false, obs:'Tab.16 — bomba'},
+  {n:'Bomba de agua 1 CV',        grupo:'bomba', cat:'Motores/Bombas', ico:'💧', w:750,  fp:0.85, fd:1.00, tensao:220, circ:false, obs:'Tab.16 — bomba'},
+  {n:'Bomba de agua 2 CV',        grupo:'bomba', cat:'Motores/Bombas', ico:'💧', w:1500, fp:0.85, fd:1.00, tensao:220, circ:true,  obs:'Tab.16 — circ. exclusivo recomendado'},
+  {n:'Bomba de piscina 1 CV',     grupo:'bomba', cat:'Motores/Bombas', ico:'🏊', w:750,  fp:0.85, fd:1.00, tensao:220, circ:false, obs:'Tab.16 — bomba'},
+  {n:'Bomba de piscina 2 CV',     grupo:'bomba', cat:'Motores/Bombas', ico:'🏊', w:1500, fp:0.85, fd:1.00, tensao:220, circ:true,  obs:'Tab.16 — circ. exclusivo'},
   {n:'Portão automático',         grupo:'motor', cat:'Motores/Bombas', ico:'🚗', w:500,  fp:0.85, fd:0.20, tensao:127, circ:false, obs:'fd 0,2 — uso esporádico'},
   {n:'Elevador residencial',      grupo:'motor', cat:'Motores/Bombas', ico:'🛗', w:2200, fp:0.85, fd:0.50, tensao:220, circ:true,  obs:'Circ. exclusivo — NBR 5410'},
   {n:'Motor bomba de calor',      grupo:'motor', cat:'Motores/Bombas', ico:'🌡️', w:1800, fp:0.85, fd:0.80, tensao:220, circ:true,  obs:'Circ. exclusivo'},
@@ -8480,7 +8638,40 @@ const DEM_EQUIPAMENTOS = [
 ];
 
 // ── Cálculos NBR 5410 ──
-function demCalcIlum(area){return area<=6?100:100+Math.floor((area-6)/4)*60;}
+// ── DIS-NOR-030 §6.26.1.1 — Tomadas: Tab.5 × área total; Iluminação: 100W/cômodo ──
+// TAB5_RES: [{max, tom100, tom600}] — tomadas em função da área total construída
+var TAB5_RES = [
+  {max:8,   tom100:1,  tom600:1},
+  {max:15,  tom100:3,  tom600:1},
+  {max:20,  tom100:4,  tom600:2},
+  {max:30,  tom100:5,  tom600:2},
+  {max:50,  tom100:6,  tom600:3},
+  {max:70,  tom100:7,  tom600:3},
+  {max:90,  tom100:8,  tom600:3},
+  {max:110, tom100:9,  tom600:3},
+  {max:140, tom100:10, tom600:3},
+  {max:170, tom100:11, tom600:3},
+  {max:200, tom100:12, tom600:3},
+  {max:220, tom100:13, tom600:3},
+  {max:250, tom100:14, tom600:3},
+];
+function demTab5(totalArea) {
+  // Retorna {tom100, tom600, totalW} para a área total
+  var r = TAB5_RES.find(function(x){ return totalArea <= x.max; });
+  if (!r) r = {tom100:14, tom600:3}; // >250m²: mínimo 14+3
+  return { tom100: r.tom100, tom600: r.tom600, totalW: r.tom100*100 + r.tom600*600 };
+}
+function demCalcTomIlumBase(totalArea, nComodos) {
+  // Carga base tom+ilum conforme §6.26.1.1
+  // tomadas: Tab.5 × área total; ilum: 100W × nº cômodos
+  var t = demTab5(totalArea);
+  var tomW  = t.totalW;
+  var ilumW = nComodos * 100;
+  return { tomW: tomW, ilumW: ilumW, totalW: tomW + ilumW,
+           tom100: t.tom100, tom600: t.tom600 };
+}
+// Mantidas para compatibilidade com demCalcMinimo e demRenderSelecionados (uso secundário)
+function demCalcIlum(area){return 100;} // §6.26.1.1: 100W fixo por ponto (mínimo 1/cômodo)
 function demCalcPtsTom(tp,area){
   const perim=Math.ceil(4*Math.sqrt(area));
   return tp==='molhado'?Math.max(1,Math.ceil(perim/3.5)):Math.max(1,Math.ceil(perim/5));
@@ -8525,6 +8716,11 @@ function demSubAba(idx,el){
 }
 
 // ── Sistema e tensão ──
+function demMostrarRecalc() {
+  // Reexibir botão recalcular se já houve um cálculo anterior
+  var rb = document.getElementById('dem-recalc-btn');
+  if (rb && _demCalcFeito) rb.style.display = 'block';
+}
 function demSistema(el,tipo){
   el.closest('[style]').querySelectorAll('.ferr-pill').forEach(b=>b.classList.remove('on'));
   el.classList.add('on');
@@ -8533,11 +8729,13 @@ function demSistema(el,tipo){
   if(tipo==='mono'){t.innerHTML='<button class="ferr-pill on" onclick="demTensao(this)">127V</button><button class="ferr-pill" onclick="demTensao(this)">220V</button>';demTensaoAtual=127;}
   else if(tipo==='bi'){t.innerHTML='<button class="ferr-pill on" onclick="demTensao(this)">220V</button>';demTensaoAtual=220;}
   else{t.innerHTML='<button class="ferr-pill on" onclick="demTensao(this)">220V</button><button class="ferr-pill" onclick="demTensao(this)">380V</button>';demTensaoAtual=220;}
+  demMostrarRecalc();
 }
 function demTensao(el){
   el.closest('#dem-tensoes').querySelectorAll('.ferr-pill').forEach(b=>b.classList.remove('on'));
   el.classList.add('on');
   demTensaoAtual=parseInt(el.textContent);
+  demMostrarRecalc();
 }
 
 // ── Grid de cômodos ──
@@ -8927,10 +9125,35 @@ function disnorFDTomIlum(kw) {
   return 0.24;
 }
 
-// Tabela 7 — FD Chuveiros, Torneiras, Ferros (por quantidade)
+// Tabela 7 — FD Chuveiros, Torneiras, Ferros (por quantidade) — Rev.07 corrigido
+// n=7→0.60, n=10→0.52, n=12→0.48 · estendido até n=25 e acima de 25
 function disnorFDChuv(n) {
-  var tab = [1.00,1.00,0.84,0.76,0.70,0.65,0.61,0.57,0.54,0.51,0.49,0.47,0.46,0.45,0.44];
-  return n <= 0 ? 1.00 : (tab[Math.min(n,15)-1] || 0.44);
+  if (n <= 0)  return 1.00;
+  if (n === 1)  return 1.00;
+  if (n === 2)  return 1.00;
+  if (n === 3)  return 0.84;
+  if (n === 4)  return 0.76;
+  if (n === 5)  return 0.70;
+  if (n === 6)  return 0.65;
+  if (n === 7)  return 0.60;
+  if (n === 8)  return 0.57;
+  if (n === 9)  return 0.54;
+  if (n === 10) return 0.52;
+  if (n === 11) return 0.49;
+  if (n === 12) return 0.48;
+  if (n === 13) return 0.46;
+  if (n === 14) return 0.45;
+  if (n === 15) return 0.44;
+  if (n === 16) return 0.43;
+  if (n === 17) return 0.42;
+  if (n === 18) return 0.41;
+  if (n === 19) return 0.40;
+  if (n === 20) return 0.40;
+  if (n === 21) return 0.39;
+  if (n === 22) return 0.39;
+  if (n === 23) return 0.39;
+  if (n === 24) return 0.38;
+  return 0.38; // n >= 25
 }
 
 // Tabela 8 — FD Boiler/Aquecedor Central (por quantidade)
@@ -8960,13 +9183,60 @@ function disnorFDAC(n) {
   return 0.60;
 }
 
-// Tabela 14 — FD Motores
-function disnorFDMotor(n) {
+// Tabela 14 — FD Motores — DIS-NOR-030 Rev.07 §6.27.7
+// LÓGICA CORRETA: maior motor FD=1,00 · todos os demais FD=0,50 (por TAMANHO, não quantidade)
+// Esta função recebe lista de kVA individuais ordenada e retorna demanda total (kVA)
+function disnorMotorDemanda(listaKVA) {
+  if (!listaKVA || !listaKVA.length) return 0;
+  var sorted = listaKVA.slice().sort(function(a,b){return b-a;});
+  return sorted.reduce(function(sum, kva, i) {
+    return sum + kva * (i === 0 ? 1.00 : 0.50);
+  }, 0);
+}
+
+// Tabela 15 — FD Equipamentos Especiais — DIS-NOR-030 Rev.07 §6.27.8
+// Maior equipamento FD=1,00 · demais FD=0,60
+function disnorEquipEspDemanda(listaKVA) {
+  if (!listaKVA || !listaKVA.length) return 0;
+  var sorted = listaKVA.slice().sort(function(a,b){return b-a;});
+  return sorted.reduce(function(sum, kva, i) {
+    return sum + kva * (i === 0 ? 1.00 : 0.60);
+  }, 0);
+}
+
+// Tabela 16 — FD Bombas e Hidromassagem — DIS-NOR-030 Rev.07 §6.27.9
+function disnorFDBombas(n) {
   if (n <= 1) return 1.00;
-  if (n <= 2) return 0.75;
-  if (n <= 3) return 0.70;
-  if (n <= 4) return 0.65;
-  return 0.60;
+  if (n === 2) return 0.56;
+  if (n === 3) return 0.47;
+  return 0.39;
+}
+
+// Tabela 10 — FD Fogões e Fornos Elétricos — DIS-NOR-030 Rev.07 §6.27.5
+function disnorFDFogao(n) {
+  if (n <= 1) return 1.00;
+  if (n === 2) return 0.60;
+  if (n === 3) return 0.48;
+  if (n === 4) return 0.40;
+  if (n === 5) return 0.37;
+  if (n === 6) return 0.35;
+  if (n === 7) return 0.33;
+  if (n === 8) return 0.32;
+  if (n === 9) return 0.31;
+  if (n <= 11) return 0.30;
+  if (n <= 15) return 0.28;
+  return 0.26;
+}
+
+// Tabela 13 — FD Estações de Recarga Individuais — DIS-NOR-030 Rev.07 §6.27.10
+// Para postos coletivos: FD = 1,00 sempre (passar n=0 ou coletivo=true)
+function disnorFDEV(n) {
+  if (n <= 10) return 1.00;
+  if (n <= 20) return 0.90;
+  if (n <= 30) return 0.82;
+  if (n <= 40) return 0.80;
+  if (n <= 50) return 0.77;
+  return 0.75;
 }
 
 // ══ NOVO demCalcNBR — DIS-NOR-030 ════════════════════════════
@@ -8981,26 +9251,31 @@ function demCalcNBR() {
 
   // ── 1. Acumular cargas por grupo ──────────────────────────
   var grp = {
-    tom_ilum: { kw:0, n:0 },
-    chuv:     { kw:0, n:0 },
-    boiler:   { kw:0, n:0 },
-    elet_dom: { kw:0, n:0 },
-    ac:       { kw:0, n:0 },
-    motor:    { kw:0, n:0 },
-    bomba:    { kw:0, n:0 },
-    outros:   { kw:0, n:0 }
+    tom_ilum:  { kw:0, n:0 },
+    chuv:      { kw:0, n:0 },
+    boiler:    { kw:0, n:0 },
+    elet_dom:  { kw:0, n:0 },
+    ac:        { kw:0, n:0 },
+    motor:     { kw:0, n:0, lista:[] },  // lista: kVA individuais p/ Tab.14
+    bomba:     { kw:0, n:0 },            // Tab.16 — separado de motor
+    fogao:     { kw:0, n:0 },            // Tab.10 — separado de elet_dom
+    equip_esp: { kw:0, n:0, lista:[] },  // Tab.15 — maior×1,0 demais×0,6
+    ev:        { kw:0, n:0 },            // Tab.13 — estações de recarga
+    outros:    { kw:0, n:0 }
   };
   var circsIndep = [];
   var ciTotal = 0;
 
+  // ── §6.26.1.1: tom+ilum pela Tab.5 (área total) e 100W/cômodo ──
+  var totalAreaRes = keys.reduce(function(s,i){ return s + (demComodos[i].area||0); }, 0);
+  var nComodos     = keys.length;
+  var _tomIlumBase = demCalcTomIlumBase(totalAreaRes, nComodos);
+  grp.tom_ilum.kw  = _tomIlumBase.totalW / 1000;
+  grp.tom_ilum.n   = nComodos;
+  ciTotal          = _tomIlumBase.totalW;
+
   keys.forEach(function(i) {
     var c = demComodos[i];
-    var ilumW = demCalcIlum(c.area);
-    var pts   = c.pts_tom || demCalcPtsTom(c.tp, c.area);
-    var tomW  = demCalcVaTom(c.tp, pts);
-    grp.tom_ilum.kw += (ilumW + tomW) / 1000;
-    grp.tom_ilum.n++;
-    ciTotal += ilumW + tomW;
 
     (c.equips || []).forEach(function(e) {
       var wBruto = e.w || 0;
@@ -9013,70 +9288,83 @@ function demCalcNBR() {
       if (!grp[g]) g = 'outros';
       grp[g].kw += wBruto / 1000;
       grp[g].n++;
+      // Acumular lista individual para Tab.14 (motor) e Tab.15 (equip_esp)
+      if (g === 'motor')     grp.motor.lista.push(wBruto / 1000 / (e.fp || 0.85));
+      if (g === 'equip_esp') grp.equip_esp.lista.push(wBruto / 1000 / (e.fp || 0.50));
     });
   });
 
   var ciKW = ciTotal / 1000;
 
   // ── 2. Calcular demanda conforme norma ────────────────────
-  // DIS-NOR-030 §6.27: fórmula D=a+b+... aplica-se a instalações TRIFÁSICAS
-  // Mono/bi: usa carga instalada + verificação de categoria
+  // DIS-NOR-030 §6.27: D=a+b+c+d+e+f+g+h+i+j — apenas instalações TRIFÁSICAS
+  // Mono/bi: carga instalada direta (§6.28.1)
   var demandakW;
   var breakdown = [];
 
   if (isTri) {
-    // Aplicar fatores DIS-NOR-030 por grupo
     var fdTomIlum = disnorFDTomIlumTipo(grp.tom_ilum.kw, _demTipoInstalacao);
     var fdChuv    = disnorFDChuv(grp.chuv.n);
     var fdBoiler  = disnorFDBoiler(grp.boiler.n);
     var fdEletDom = disnorFDEletDom(grp.elet_dom.n);
     var fdAC      = disnorFDACTipo(grp.ac.n, _demTipoInstalacao);
-    var fdMotor   = disnorFDMotor(grp.motor.n);
+    var fdBomba   = disnorFDBombas(grp.bomba.n);
+    var fdFogao   = disnorFDFogao(grp.fogao.n);
 
-    var da = grp.tom_ilum.kw * fdTomIlum;
-    var db = grp.chuv.kw    * fdChuv;
-    var dc = grp.boiler.kw  * fdBoiler;
-    var dd = grp.elet_dom.kw * fdEletDom;
-    var df = grp.ac.kw       * fdAC;
-    var dg = grp.motor.kw   * fdMotor;
-    var dh = grp.bomba.kw   * 1.00;
-    var di = grp.outros.kw  * 1.00;
+    var da  = grp.tom_ilum.kw  * fdTomIlum;
+    var db  = grp.chuv.kw      * fdChuv;
+    var dc  = grp.boiler.kw    * fdBoiler;
+    var dd  = grp.elet_dom.kw  * fdEletDom / 0.92;  // §6.27.4: FP=0,92
+    var de  = grp.fogao.kw     * fdFogao;            // Tab.10 — fogões
+    var df  = grp.ac.kw        * fdAC;
+    var dg  = disnorMotorDemanda(grp.motor.lista);   // Tab.14 — maior×1,0 demais×0,5
+    var dh  = grp.bomba.kw     * fdBomba;            // Tab.16
+    var dh2 = disnorEquipEspDemanda(grp.equip_esp.lista); // Tab.15
+    var di  = grp.ev.kw        * disnorFDEV(grp.ev.n);   // Tab.13
+    var dj  = grp.outros.kw    * 1.00;
 
-    demandakW = da + db + dc + dd + df + dg + dh + di;
+    demandakW = da + db + dc + dd + de + df + dg + dh + dh2 + di + dj;
 
     breakdown = [
-      { lbl:'💡 Tom. + Ilum.', kw: grp.tom_ilum.kw, fd: fdTomIlum,  dem: da, tab:'Tab.6'  },
-      { lbl:'🚿 Chuv./Torn.',  kw: grp.chuv.kw,     fd: fdChuv,     dem: db, tab:'Tab.7'  },
-      { lbl:'🌡️ Boiler',       kw: grp.boiler.kw,   fd: fdBoiler,   dem: dc, tab:'Tab.8'  },
-      { lbl:'🍽️ Elet.Dom.',    kw: grp.elet_dom.kw, fd: fdEletDom,  dem: dd, tab:'Tab.9'  },
-      { lbl:'❄️ Ar-cond.',     kw: grp.ac.kw,       fd: fdAC,       dem: df, tab:'Tab.12' },
-      { lbl:'⚙️ Motores',      kw: grp.motor.kw,    fd: fdMotor,    dem: dg, tab:'Tab.14' },
-      { lbl:'💧 Bombas',       kw: grp.bomba.kw,    fd: 1.00,       dem: dh, tab:'—'      },
-      { lbl:'📦 Outros',       kw: grp.outros.kw,   fd: 1.00,       dem: di, tab:'—'      }
+      { lbl:'💡 Tom. + Ilum.', kw: grp.tom_ilum.kw,  fd: fdTomIlum, dem: da,  tab:'Tab.6'  },
+      { lbl:'🚿 Chuv./Torn.',  kw: grp.chuv.kw,       fd: fdChuv,    dem: db,  tab:'Tab.7'  },
+      { lbl:'🌡️ Boiler',       kw: grp.boiler.kw,     fd: fdBoiler,  dem: dc,  tab:'Tab.8'  },
+      { lbl:'🍽️ Elet.Dom.',    kw: grp.elet_dom.kw,   fd: fdEletDom, dem: dd,  tab:'Tab.9'  },
+      { lbl:'🍳 Fogões/Fornos',kw: grp.fogao.kw,       fd: fdFogao,   dem: de,  tab:'Tab.10' },
+      { lbl:'❄️ Ar-cond.',     kw: grp.ac.kw,          fd: fdAC,      dem: df,  tab:'Tab.12' },
+      { lbl:'⚙️ Motores',      kw: grp.motor.kw,       fd: null,      dem: dg,  tab:'Tab.14' },
+      { lbl:'💧 Bombas',       kw: grp.bomba.kw,       fd: fdBomba,   dem: dh,  tab:'Tab.16' },
+      { lbl:'🔬 Equip.Esp.',   kw: grp.equip_esp.kw,  fd: null,      dem: dh2, tab:'Tab.15' },
+      { lbl:'🔌 Rec.Veicular', kw: grp.ev.kw,          fd: disnorFDEV(grp.ev.n), dem: di, tab:'Tab.13' },
+      { lbl:'📦 Outros',       kw: grp.outros.kw,      fd: 1.00,      dem: dj,  tab:'—'      }
     ].filter(function(g) { return g.kw > 0.001; });
 
   } else {
-    // Mono/bi: carga instalada (DIS-NOR-030 §6.26)
+    // Mono/bi: carga instalada (DIS-NOR-030 §6.28.1)
     demandakW = ciKW;
 
     breakdown = [
-      { lbl:'💡 Tom. + Ilum.', kw: grp.tom_ilum.kw, dem: grp.tom_ilum.kw },
-      { lbl:'🚿 Chuv./Torn.',  kw: grp.chuv.kw,     dem: grp.chuv.kw     },
-      { lbl:'🌡️ Boiler',       kw: grp.boiler.kw,   dem: grp.boiler.kw   },
-      { lbl:'🍽️ Elet.Dom.',    kw: grp.elet_dom.kw, dem: grp.elet_dom.kw },
-      { lbl:'❄️ Ar-cond.',     kw: grp.ac.kw,       dem: grp.ac.kw       },
-      { lbl:'⚙️ Motores',      kw: grp.motor.kw,    dem: grp.motor.kw    },
-      { lbl:'💧 Bombas',       kw: grp.bomba.kw,    dem: grp.bomba.kw    },
-      { lbl:'📦 Outros',       kw: grp.outros.kw,   dem: grp.outros.kw   }
+      { lbl:'💡 Tom. + Ilum.', kw: grp.tom_ilum.kw,  dem: grp.tom_ilum.kw  },
+      { lbl:'🚿 Chuv./Torn.',  kw: grp.chuv.kw,       dem: grp.chuv.kw      },
+      { lbl:'🌡️ Boiler',       kw: grp.boiler.kw,     dem: grp.boiler.kw    },
+      { lbl:'🍽️ Elet.Dom.',    kw: grp.elet_dom.kw,   dem: grp.elet_dom.kw  },
+      { lbl:'🍳 Fogões/Fornos',kw: grp.fogao.kw,       dem: grp.fogao.kw     },
+      { lbl:'❄️ Ar-cond.',     kw: grp.ac.kw,          dem: grp.ac.kw        },
+      { lbl:'⚙️ Motores',      kw: grp.motor.kw,       dem: grp.motor.kw     },
+      { lbl:'💧 Bombas',       kw: grp.bomba.kw,       dem: grp.bomba.kw     },
+      { lbl:'🔌 Rec.Veicular', kw: grp.ev.kw,          dem: grp.ev.kw        },
+      { lbl:'📦 Outros',       kw: grp.outros.kw,      dem: grp.outros.kw    }
     ].filter(function(g) { return g.kw > 0.001; });
   }
 
   // ── 3. Corrente de projeto ────────────────────────────────
+  // Trifásico: I = P/(√3×VL) qualquer tensão (380V ou 220V)
+  // Bifásico 220/127V: I = P/(2×127) = P/254
   var corrente;
-  if (tensao === 380) {
-    corrente = (demandakW * 1000) / (Math.sqrt(3) * 380);
+  if (isTri) {
+    corrente = (demandakW * 1000) / (Math.sqrt(3) * tensao);
   } else if (isBi) {
-    corrente = (demandakW * 1000) / (tensao * 2);
+    corrente = (demandakW * 1000) / (tensao === 220 ? 254 : tensao * 2);
   } else {
     corrente = (demandakW * 1000) / tensao;
   }
@@ -9093,8 +9381,13 @@ function demCalcNBR() {
   var bit = (BITOLAS_B1.find(function(b) { return b.a >= corrente; }) || {b:'+50mm²'}).b;
 
   // ── 5. Categoria Neoenergia ───────────────────────────────
-  var tensaoStr = tensao >= 380 ? '380' : '220';
-  var cats = (typeof MUC_CATS !== 'undefined') ? (MUC_CATS[tensaoStr] || []) : [];
+  // tensaoStr: chave para busca de categoria no DIST_PERFIS
+  // Mono 220V = rede 380/220V (cliente recebe fase-neutro = 220V) → cats['380']
+  // Mono 127V = rede 220/127V (cliente recebe fase-neutro = 127V) → cats['220']
+  // Bi/Tri 220V = rede 220/127V → cats['220']
+  // Bi/Tri 380V = rede 380/220V → cats['380']
+  var tensaoStr = (tensao >= 380 || (sistema === 'mono' && tensao === 220)) ? '380' : '220';
+  var cats = distCats(tensaoStr);
 
   var catNeo = null;
   var cargaRef = isTri ? demandakW : ciKW;
@@ -9146,15 +9439,16 @@ function demCalcNBR() {
   if (breakdownEl) {
     breakdownEl.style.display = 'block';
     var bLabel = isTri
-      ? '<div style="font-size:9px;color:var(--text3);margin-bottom:8px;font-weight:700">📋 DIS-NOR-030 — Fórmula D=a+b+c... (Tab.6 a Tab.14)</div>'
-      : '<div style="font-size:9px;color:var(--text3);margin-bottom:8px;font-weight:700">📋 Carga instalada por grupo (DIS-NOR-030 §6.26 — ' + (isBi?'Bifásico':'Monofásico') + ')</div>';
+      ? '<div style="font-size:9px;color:var(--text3);margin-bottom:8px;font-weight:700">📋 DIS-NOR-030 Rev.07 — D=a+b+c+d+e+f+g+h+i+j (Tab.6–Tab.16)</div>'
+      : '<div style="font-size:9px;color:var(--text3);margin-bottom:8px;font-weight:700">📋 Carga instalada por grupo (DIS-NOR-030 §6.28.1 — ' + (isBi?'Bifásico':'Monofásico') + ')</div>';
 
     breakdownEl.innerHTML = bLabel +
       breakdown.map(function(g) {
+        var fdStr = g.fd === null ? 'maior×1,0 demais×0,5' : (g.fd !== undefined ? 'fd ' + g.fd : '');
         return '<div style="display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border)">' +
           '<span style="font-size:11px;color:var(--text2);flex:1">' + g.lbl + '</span>' +
           (isTri
-            ? '<span style="font-size:10px;color:var(--text3);margin:0 6px">' + fmt(g.kw) + ' kW × fd ' + g.fd + ' (' + g.tab + ')</span>'
+            ? '<span style="font-size:10px;color:var(--text3);margin:0 6px">' + fmt(g.kw) + ' kW · ' + fdStr + (g.tab?' ('+g.tab+')':'') + '</span>'
             : '<span style="font-size:10px;color:var(--text3);margin:0 6px">' + fmt(g.kw) + ' kW (CI)</span>'
           ) +
           '<span style="font-size:11px;font-weight:700;color:var(--acc)">' + fmt(g.dem) + ' kVA</span>' +
@@ -9169,6 +9463,13 @@ function demCalcNBR() {
   // Categoria Neoenergia
   var catEl = document.getElementById('nbr-r-cat');
   if (catEl) {
+    var _sugEl2 = document.getElementById('nbr-r-sugestao');
+    // Botão âncora sempre visível — permite voltar ao topo sem rolar a página
+    if (_sugEl2) _sugEl2.innerHTML =
+      '<button onclick="(function(){var el=document.getElementById(\'dem-s0\');if(el)el.scrollIntoView({behavior:\'smooth\',block:\'start\'});})()" '
+      + 'style="width:100%;padding:8px;background:transparent;border:1px solid var(--border);border-radius:9px;'
+      + 'font-size:11px;font-weight:700;color:var(--text3);cursor:pointer;text-align:center;margin-bottom:2px">'
+      + '↑ Ajustar sistema / tensão</button>';
     if (alertaLimite) {
       catEl.innerHTML =
         '<div style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:10px;padding:10px 12px;font-size:11px;color:#f87171;font-weight:700;margin-bottom:6px">' +
@@ -9181,7 +9482,72 @@ function demCalcNBR() {
           '<div style="font-size:11px;color:var(--text2);margin-top:4px">Disjuntor: <strong>' + catNeo.disj + 'A</strong> · Cabo: <strong>' + catNeo.cabo + '</strong></div>' +
         '</div>';
     } else {
-      catEl.innerHTML = '<span style="font-size:11px;color:var(--text3)">Categoria não identificada — verifique a carga e a distribuidora</span>';
+      var _noTensaoCats = cats.length === 0;
+      var _catMsg = _noTensaoCats
+        ? '⚠️ ' + distPerfil().nome + ' não possui categorias para ' + tensaoStr + 'V nesta norma.'
+        : '⚠️ Categoria não identificada — carga fora dos limites disponíveis.';
+      catEl.innerHTML = '<span style="font-size:11px;color:var(--text3)">' + _catMsg + '</span>';
+
+      // ── Painel de sugestão de tensão ─────────────────────────
+      var _sugEl = document.getElementById('nbr-r-sugestao');
+      if (_sugEl) {
+        var _perfil = distPerfil();
+        var _cats380 = (_perfil.cats && _perfil.cats['380']) || [];
+        var _cats220 = (_perfil.cats && _perfil.cats['220']) || [];
+        var _sugs = [];
+
+        if (_cats380.length && tensaoStr !== '380') {
+          if (_cats380.some(function(c){return c.id.startsWith('T');}))
+            _sugs.push({label:'⚡ Trifásico 380/220V', sistema:'tri', tensao:380, cor:'#4ade80'});
+          if (_cats380.some(function(c){return c.id.startsWith('M');}))
+            _sugs.push({label:'〇 Monofásico 380V',    sistema:'mono', tensao:380, cor:'#60a5fa'});
+        }
+        if (_cats220.length && tensaoStr !== '220') {
+          if (_cats220.some(function(c){return c.id.startsWith('T');}))
+            _sugs.push({label:'⚡ Trifásico 220/127V', sistema:'tri', tensao:220, cor:'#4ade80'});
+          if (_cats220.some(function(c){return c.id.startsWith('B');}))
+            _sugs.push({label:'⊶ Bifásico 220V',       sistema:'bi',  tensao:220, cor:'#f59e0b'});
+          if (_cats220.some(function(c){return c.id.startsWith('M');}))
+            _sugs.push({label:'〇 Monofásico 220V',    sistema:'mono',tensao:220, cor:'#60a5fa'});
+        }
+        if (_sugs.length === 0 && sistema !== 'tri') {
+          if (_cats380.length) _sugs.push({label:'⚡ Trifásico 380/220V', sistema:'tri', tensao:380, cor:'#4ade80'});
+          else if (_cats220.length) _sugs.push({label:'⚡ Trifásico 220/127V', sistema:'tri', tensao:220, cor:'#4ade80'});
+        }
+
+        // Montar lista de sistemas disponíveis (apenas informativo)
+        var _dispInfo = [];
+        if (_cats380.length) {
+          var _tri380 = _cats380.some(function(c){return c.id.startsWith('T');});
+          var _mono380 = _cats380.some(function(c){return c.id.startsWith('M');});
+          if (_tri380)  _dispInfo.push('Trifásico 380/220V');
+          if (_mono380) _dispInfo.push('Monofásico 380/220V');
+        }
+        if (_cats220.length) {
+          var _tri220  = _cats220.some(function(c){return c.id.startsWith('T');});
+          var _bi220   = _cats220.some(function(c){return c.id.startsWith('B');});
+          var _mono220 = _cats220.some(function(c){return c.id.startsWith('M');});
+          if (_tri220)  _dispInfo.push('Trifásico 220/127V');
+          if (_bi220)   _dispInfo.push('Bifásico 220V');
+          if (_mono220) _dispInfo.push('Monofásico 220/127V');
+        }
+
+        if (_dispInfo.length > 0) {
+          _sugEl.innerHTML = '<div style="background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.25);border-radius:12px;padding:12px 14px">'
+            + '<div style="font-size:9px;color:#60a5fa;font-weight:800;letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px">🔌 SISTEMAS DISPONÍVEIS NESTA DISTRIBUIDORA</div>'
+            + '<div style="font-size:11px;color:var(--text2);margin-bottom:10px">'
+            + _dispInfo.join(' · ')
+            + '</div>'
+            + '<button onclick="(function(){var el=document.getElementById(\'dem-s0\');if(el)el.scrollIntoView({behavior:\'smooth\',block:\'start\'});})()" '
+            + 'style="width:100%;padding:10px;background:rgba(59,130,246,.15);border:1.5px solid rgba(59,130,246,.35);border-radius:10px;font-size:12px;font-weight:800;color:#60a5fa;cursor:pointer">'
+            + '↑ Ajustar sistema e tensão</button>'
+            + '<div style="font-size:10px;color:var(--text3);margin-top:8px;line-height:1.5">'
+            + '💡 Escolha o sistema disponível na sua região, depois calcule novamente.'
+            + '</div></div>';
+        } else {
+          _sugEl.innerHTML = '';
+        }
+      }
     }
   }
 
@@ -9207,6 +9573,11 @@ function demCalcNBR() {
   var padraoConteudo = document.getElementById('nbr-r-padrao-conteudo');
   if (padraoEl && padraoConteudo) {
     padraoEl.style.display = 'block';
+    var _dp = distPerfil();
+    var tituloEl = document.getElementById('nbr-r-padrao-titulo');
+    var linkEl   = document.getElementById('nbr-r-padrao-link');
+    if (tituloEl) tituloEl.textContent = '🔌 PADRÃO DE ENTRADA — ' + _dp.nome.toUpperCase();
+    if (linkEl)   linkEl.href = _dp.norma.link;
     var sistLabel = sistema === 'tri' ? 'Trifásico' : (sistema === 'bi' ? 'Bifásico' : 'Monofásico');
     var tensLabel = tensao >= 380 ? '380/220V' : '220/127V';
     if (catNeo) {
@@ -9251,6 +9622,11 @@ function demCalcNBR() {
     alertaLimite: alertaLimite,
     norma: isTri ? 'DIS-NOR-030' : 'DIS-NOR-030 §6.26'
   };
+
+  // Ativar botão de recalcular após primeiro cálculo
+  _demCalcFeito = true;
+  var _rb = document.getElementById('dem-recalc-btn');
+  if (_rb) _rb.style.display = 'block';
 }
 
 function demLevarMUC(){
@@ -9390,7 +9766,7 @@ function demExportarPDF(){
   const normaLabel=r.norma||'DIS-NOR-030';
   const catNeoId=r.catNeo||null;
   var catNeoObj=null;
-  try{var _c=(typeof MUC_CATS!=='undefined')?(MUC_CATS[r.tensao>=380?'380':'220']||[]):[];
+  try{var _c=distCats(r.tensao>=380?'380':'220');
   catNeoObj=catNeoId?_c.find(function(x){return x.id===catNeoId;}):null;}catch(e){}
 
   // Tabela de cômodos
@@ -9590,10 +9966,6 @@ const Q35=[
 const Q36=[100,98,97.3,97,96.8,96.6,96.57,96.5,96.45,96.4,94.73,93.33,92.15,91.14,90.27,89.5,88.82,88.22,87.68,87.2,85.9,84.77,83.7,82.75,81.84,81,80.26,79.54,78.9,78.27,77.68,77.16,76.64,76.18,75.71,75.28,74.89,74.45,74.11,73.8,73.46,73.17,72.89,72.6,72.31,71.96,71.62,71.29,70.98,70.68,70.39,70.17,69.85,69.6,69.35,69.11,68.88,68.66,68.44,68.23];
 function getFc(n){return n>=60?68.23:Q36[n-1]||68.23;}
 function getDemApto(area){return Q35.find(r=>area<=r.max)?.d||9.91;}
-const MUC_CATS={
-  '380':[{id:'M2',min:0,max:10,disj:40,cabo:'6+6 CU CONC / 10+10 AL CONC'},{id:'M3',min:10.1,max:15,disj:63,cabo:'10+10 CU CONC / 16+16 AL CONC'},{id:'T6',min:0,max:21,disj:32,cabo:'3x6/6mm² CU XLPE'},{id:'T7',min:21.1,max:26,disj:40,cabo:'3x6/6mm² CU XLPE'},{id:'T8',min:26.1,max:33,disj:50,cabo:'3x10/10mm² CU XLPE'},{id:'T9',min:33.1,max:40,disj:63,cabo:'3x16/16mm² CU XLPE'},{id:'T10',min:40.1,max:52,disj:80,cabo:'3x16/16mm² CU XLPE'},{id:'T11',min:52.1,max:66,disj:100,cabo:'3x25/25mm² CU XLPE'},{id:'T12',min:66.1,max:75,disj:125,cabo:'3x50/50mm² CU XLPE'}],
-  '220':[{id:'M0',min:0,max:5,disj:40,cabo:'6/6mm² CU XLPE'},{id:'M1',min:5.1,max:10,disj:63,cabo:'10/10mm² CU XLPE'},{id:'B0',min:0,max:11,disj:50,cabo:'2x10/10mm² CU XLPE'},{id:'B1',min:11.1,max:18,disj:70,cabo:'2x16/16mm² CU XLPE'},{id:'T0',min:0,max:19,disj:50,cabo:'3x10/10mm² CU XLPE'},{id:'T1',min:19.1,max:24,disj:63,cabo:'3x16/16mm² CU XLPE'},{id:'T2',min:24.1,max:38,disj:100,cabo:'3x25/25mm² CU XLPE'},{id:'T3',min:38.1,max:47,disj:125,cabo:'3x35/35mm² CU XLPE'},{id:'T4',min:47.1,max:57,disj:150,cabo:'3x50/50mm² CU XLPE'},{id:'T5',min:57.1,max:75,disj:200,cabo:'3x70/70mm² CU XLPE'}]
-};
 
 function mucAddTipo() {
   var popup = document.createElement('div');
@@ -9728,7 +10100,11 @@ function demCalcMUC(){
   const Dc=parseFloat(document.getElementById('muc-dc').value)||0;
   const Ded=Drf+Ds+Dc;
   const tensaoKey=document.querySelector('#dem-s1 .ferr-pill.on')?.textContent.includes('380')?'380':'220';
-  const cats=MUC_CATS[tensaoKey];
+  const cats=distCats(tensaoKey);
+  if (!cats.length) {
+    alert('A distribuidora ' + distPerfil().nome + ' não possui categorias para ' + (tensaoKey==='380'?'380/220V':'220/127V') + '.\n\nSelecione a tensão correta no painel MUC.');
+    return;
+  }
   const cat=cats.find(c=>Ded>=c.min&&Ded<=c.max)||cats[cats.length-1];
   document.getElementById('muc-r-drf').textContent=Drf.toFixed(2)+' kVA';
   document.getElementById('muc-r-fc').textContent=(fc*100).toFixed(2)+'%';
@@ -11637,76 +12013,6 @@ try { window._logoB64Cache = LS.getItem('logo_b64') || ''; } catch(e) { window._
   }, { passive: true });
 })();
 
-// ══ FIREBASE AUTH — FUNÇÕES ════════════════════════════════
-function loginEntrar() {
-  var email   = (document.getElementById('login-email').value || '').trim();
-  var senha   = (document.getElementById('login-senha').value || '');
-  var btn     = document.getElementById('login-btn');
-  var erro    = document.getElementById('login-erro');
-  var erroMsg = document.getElementById('login-erro-msg');
-  var erroBtns= document.getElementById('login-erro-btns');
-  if (!email || !senha) {
-    erro.style.display = 'flex'; erroMsg.textContent = 'Preencha e-mail e senha.';
-    erroBtns.style.display = 'none'; return;
-  }
-  btn.textContent = '⏳ Entrando...'; btn.disabled = true;
-  erro.style.display = 'none'; erroBtns.style.display = 'none';
-  firebase.auth().signInWithEmailAndPassword(email, senha)
-    .then(function() { btn.textContent = '⚡ ENTRAR'; btn.disabled = false; })
-    .catch(function(e) {
-      btn.textContent = '⚡ ENTRAR'; btn.disabled = false;
-      erro.style.display = 'flex'; erroBtns.style.display = 'flex';
-      var cod = e.code || '';
-      if (cod === 'auth/user-not-found' || cod === 'auth/invalid-credential') {
-        erroMsg.textContent = 'E-mail não cadastrado na plataforma.';
-      } else if (cod === 'auth/wrong-password') {
-        erroMsg.textContent = 'Senha incorreta.'; erroBtns.style.display = 'none';
-      } else if (cod === 'auth/invalid-email') {
-        erroMsg.textContent = 'E-mail inválido.'; erroBtns.style.display = 'none';
-      } else if (cod === 'auth/too-many-requests') {
-        erroMsg.textContent = 'Muitas tentativas. Tente novamente mais tarde.'; erroBtns.style.display = 'none';
-      } else {
-        erroMsg.textContent = 'E-mail não cadastrado na plataforma.';
-      }
-    });
-}
-function loginSair() { firebase.auth().signOut().catch(function(){}); }
-function loginRedefinir() {
-  var email   = (document.getElementById('login-email').value || '').trim();
-  var erro    = document.getElementById('login-erro');
-  var erroMsg = document.getElementById('login-erro-msg');
-  var erroBtns= document.getElementById('login-erro-btns');
-  if (!email) {
-    erro.style.display = 'flex';
-    erroMsg.textContent = 'Digite seu e-mail para redefinir a senha.';
-    erroBtns.style.display = 'none'; return;
-  }
-  firebase.auth().sendPasswordResetEmail(email)
-    .then(function() { erro.style.display='flex'; erroMsg.textContent='✅ Link enviado para '+email; erroBtns.style.display='none'; })
-    .catch(function() { erro.style.display='flex'; erroMsg.textContent='E-mail não encontrado.'; erroBtns.style.display='none'; });
-}
-function loginEnviarRedefinicao() {
-  var user = firebase.auth().currentUser; if (!user) return;
-  firebase.auth().sendPasswordResetEmail(user.email)
-    .then(function() { alert('✅ Link enviado para ' + user.email); })
-    .catch(function() { alert('Erro ao enviar link. Tente novamente.'); });
-}
-function loginToggleSenha() {
-  var inp = document.getElementById('login-senha');
-  var btn = document.getElementById('login-eye-btn');
-  if (inp.type === 'password') { inp.type = 'text'; btn.textContent = '🙈'; }
-  else { inp.type = 'password'; btn.textContent = '👁️'; }
-}
-document.addEventListener('DOMContentLoaded', function() {
-  var s = document.getElementById('login-senha');
-  if (s) s.addEventListener('keydown', function(e) { if (e.key==='Enter') loginEntrar(); });
-  var em = document.getElementById('login-email');
-  if (em) em.addEventListener('keydown', function(e) {
-    if (e.key==='Enter') { var s2=document.getElementById('login-senha'); if(s2) s2.focus(); }
-  });
-});
-// ══ FIM FIREBASE AUTH ══════════════════════════════════════
-
 </script>
 <!-- ══ MODAL CONFIG PDF DEMANDA ══ -->
 <div id="modal-cfg-dem-pdf" onclick="if(event.target===this)fecharConfigDemPDF()"
@@ -11915,44 +12221,6 @@ document.addEventListener('DOMContentLoaded', function() {
     style="background:var(--bg-card);border-radius:20px 20px 0 0;width:100%;max-width:520px;max-height:88vh;display:flex;flex-direction:column;overflow:hidden">
   </div>
 </div>
-
-<!-- ══ FIREBASE SDK ══ -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-<script>
-(function() {
-  var firebaseConfig = {
-    apiKey: "AIzaSyCUoVzr9_PIGZXe1DKBZaINNCVQVj14Iqk",
-    authDomain: "eletricista-pro.firebaseapp.com",
-    projectId: "eletricista-pro",
-    storageBucket: "eletricista-pro.firebasestorage.app",
-    messagingSenderId: "184661625796",
-    appId: "1:184661625796:web:18c38153a0a2621025b291"
-  };
-  try { firebase.initializeApp(firebaseConfig); } catch(e) {}
-  firebase.auth().onAuthStateChanged(function(user) {
-    var telaLogin = document.getElementById('tela-login');
-    if (user) {
-      if (telaLogin) telaLogin.style.display = 'none';
-      var el = document.getElementById('acesso-email');
-      if (el) el.textContent = user.email || '—';
-      try { gerarNumeroOrc(); }         catch(e) {}
-      try { _carregarCustomLocal(); }   catch(e) {}
-      try { renderNBR(); }              catch(e) {}
-      try { renderCheck(); }            catch(e) {}
-      try { demRenderGrid(); }          catch(e) {}
-      try { demRenderSelecionados(); }  catch(e) {}
-      try { orcDadosResumo(); }         catch(e) {}
-      try { _atualizarBtnCalc(); }      catch(e) {}
-      try { _sincPdfCfg(); }            catch(e) {}
-      try { _sincDemPdfCfg(); }         catch(e) {}
-      try { window._logoB64Cache = LS.getItem('logo_b64') || ''; } catch(e) { window._logoB64Cache = ''; }
-    } else {
-      if (telaLogin) telaLogin.style.display = 'flex';
-    }
-  });
-})();
-</script>
 
 </body>
 </html>
