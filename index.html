@@ -6814,13 +6814,11 @@ try {
         _appInit();
       }
     } else {
-      // ── Proteção offline: se já usou antes neste dispositivo, deixa entrar ──
+      // ── Proteção offline: se já usou antes neste dispositivo, libera sem login ──
       var temDadosLocais = LS.getItem('ajustes_config') ||
                            LS.getItem('orc_historico')  ||
                            LS.getItem('clientes_data');
-
       if (temDadosLocais && !navigator.onLine) {
-        // Offline com dados locais — acesso liberado sem login
         try {
           document.getElementById('acesso-email').textContent           = 'Modo offline';
           document.getElementById('acesso-status-dot').style.background = '#f59e0b';
