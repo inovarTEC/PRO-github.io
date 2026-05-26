@@ -46,7 +46,7 @@ html,body{height:100%;overflow-x:hidden;background:var(--bg);color:var(--text);f
 /* ── MELHORIA 1: Micro-animações globais na troca de tema/acento ── */
 *{transition-property:background-color,border-color,color,box-shadow,opacity;transition-duration:.28s;transition-timing-function:ease}
 /* Elementos que precisam de transição mais específica mantêm suas próprias */
-.tela,.modal,.hdr,.hdr-home,.bnav,.card,.greet-logo,.ni-box,.acc-pill,.tema-btn,.inp,.hbtn,.hbk,.hgear,.home-gestao-btn,.home-ferr-btn,.home-novo-orc,.g-pill{transition:background-color .28s ease,border-color .28s ease,box-shadow .28s ease,color .28s ease,opacity .15s ease}
+.tela,.modal,.hdr,.hdr-home,.bnav,.card,.greet-logo,.ni-box,.acc-pill,.tema-btn,.inp,.hbtn,.hbk,.hgear,.home-gestao-btn,.home-ferr-btn,.home-novo-orc,.home-agenda-card,.g-pill{transition:background-color .28s ease,border-color .28s ease,box-shadow .28s ease,color .28s ease,opacity .15s ease}
 /* Animações de layout (transform, width, height) não entram no * para não atrasar interações */
 .ni-box,.acc-pill,.home-ferr-btn,.home-gestao-ico{transition:background-color .28s ease,border-color .28s ease,box-shadow .28s ease,transform .15s ease,color .28s ease}
 .tela{display:none;position:fixed;inset:0;z-index:10;flex-direction:column;background:var(--bg-home);overflow:hidden;transition:background .3s}
@@ -132,7 +132,7 @@ select.inp{appearance:none;-webkit-appearance:none;background-image:url("data:im
 .hdr-home-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:900;letter-spacing:.6px;line-height:1;background:linear-gradient(135deg,var(--text) 20%,var(--acc));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hdr-home-sub{font-family:'Syne',sans-serif;font-size:11px;font-weight:800;letter-spacing:2px;color:var(--acc);margin-top:3px;display:block}
 .ndot{position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:50%;background:#ef4444;border:1.5px solid var(--bg-home)}
-.home-body{flex:1;overflow-y:auto;padding:80px 12px 80px;-webkit-overflow-scrolling:touch}
+.home-body{flex:1;overflow-y:auto;padding:80px 12px 24px;-webkit-overflow-scrolling:touch}
 .home-body::-webkit-scrollbar{display:none}
 .greet{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding:10px 12px;background:var(--bg-card);border:1px solid var(--border-card);border-radius:18px;box-shadow:0 2px 12px rgba(0,0,0,.1)}
 .greet-left{display:flex;align-items:flex-start;gap:12px}
@@ -375,7 +375,7 @@ textarea.inp { font-size: 15px; }
   padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
 }
 .home-body {
-  padding-bottom: calc(76px + env(safe-area-inset-bottom, 16px));
+  padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
 }
 .orc-pad { padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px)); }
 .tela-resultado .scroll > div {
@@ -503,7 +503,7 @@ table { min-width: 0; }
   .ni-i { font-size: 20px; }
   .ni-bar { margin-top: 2px; }
   .greet { padding: 10px; }
-  .home-body { padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px)); }
+  .home-body { padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px)); }
 }
 
 /* ══════════════════════════════════════════════════════
@@ -512,6 +512,58 @@ table { min-width: 0; }
 
 /* Botão principal "Novo Orçamento" */
 .home-novo-orc {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 20px;
+  background: var(--co-bg,linear-gradient(135deg,#16a34a,#15803d));
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  margin-bottom: 0;
+  text-align: left;
+  color: #fff;
+  transition: opacity .15s, transform .12s, box-shadow .28s;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 10px 32px var(--co-glow,rgba(22,163,74,.5)),
+              0 0 0 5px var(--co-glow,rgba(22,163,74,.08)),
+              0 0 0 11px var(--co-glow,rgba(22,163,74,.04));
+  position: relative;
+  overflow: hidden;
+}
+
+/* Card Agenda — usa variável de tema --ca-bg / --ca-glow */
+.home-agenda-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  background: var(--ca-bg, linear-gradient(135deg,#2563eb,#1d4ed8));
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  text-align: left;
+  color: #fff;
+  transition: opacity .15s, transform .12s, box-shadow .28s;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 8px 24px var(--ca-glow, rgba(37,99,235,.4)),
+              0 0 0 4px var(--ca-glow, rgba(37,99,235,.08)),
+              0 0 0 9px var(--ca-glow, rgba(37,99,235,.03));
+  position: relative;
+  overflow: hidden;
+}
+.home-agenda-card::before {
+  content: '';
+  position: absolute;
+  right: -20px; top: -20px;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.07);
+  pointer-events: none;
+}
+.home-agenda-card:active { opacity: .88; transform: scale(.97); }
   width: 100%;
   display: flex;
   align-items: center;
@@ -896,7 +948,6 @@ var _scpPrice            = null;
 
     <!-- E-mail -->
     <input id="login-email" type="email" placeholder="Seu e-mail"
-      autocomplete="email"
       style="width:100%;box-sizing:border-box;padding:15px 16px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:14px;color:#fff;font-size:15px;font-family:'Syne',sans-serif;outline:none;transition:border-color .2s"
       onfocus="this.style.borderColor='rgba(245,158,11,.7)'"
       onblur="this.style.borderColor='rgba(255,255,255,.12)'"
@@ -905,7 +956,6 @@ var _scpPrice            = null;
     <!-- Senha -->
     <div style="position:relative">
       <input id="login-senha" type="password" placeholder="Senha"
-        autocomplete="current-password"
         style="width:100%;box-sizing:border-box;padding:15px 48px 15px 16px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:14px;color:#fff;font-size:15px;font-family:'Syne',sans-serif;outline:none;transition:border-color .2s"
         onfocus="this.style.borderColor='rgba(245,158,11,.7)'"
         onblur="this.style.borderColor='rgba(255,255,255,.12)'"
@@ -992,11 +1042,21 @@ var _scpPrice            = null;
 
 
     <!-- ── AÇÃO PRINCIPAL: NOVO ORÇAMENTO (protagonista) ── -->
-    <button class="home-novo-orc" onclick="novoOrcamento()" style="margin-top:4px;margin-bottom:14px">
+    <button class="home-novo-orc" onclick="novoOrcamento()" style="margin-top:4px;margin-bottom:10px">
       <div class="novo-orc-ico">🧾</div>
       <div class="novo-orc-txt">
         <div class="novo-orc-title">Novo Orçamento</div>
         <div class="novo-orc-sub">Serviços + materiais + PDF</div>
+      </div>
+      <div class="novo-orc-arrow">›</div>
+    </button>
+
+    <!-- ── AÇÃO SECUNDÁRIA: AGENDA ── -->
+    <button class="home-agenda-card" onclick="navTo('agenda')" style="margin-bottom:14px">
+      <div class="novo-orc-ico" style="background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.30)">📅</div>
+      <div class="novo-orc-txt">
+        <div class="novo-orc-title">Agenda</div>
+        <div class="novo-orc-sub">Visitas agendadas e histórico</div>
       </div>
       <div class="novo-orc-arrow">›</div>
     </button>
@@ -1068,7 +1128,7 @@ var _scpPrice            = null;
 
   </div><!-- /home-body -->
 
-  <div class="bnav">
+  <div class="bnav" style="transform:translateY(110%);pointer-events:none">
     <div class="ni on ni-home" onclick="navTo('home')">
       <div class="ni-box">🏠</div>
       <div class="ni-lbl">Home</div>
@@ -5536,12 +5596,10 @@ function _appInit() {
     if (Math.abs(accumulated) < THRESHOLD) return;
 
     if (accumulated > 0) {
-      // Scroll BAIXO — header some, rodapé aparece
+      // Scroll BAIXO — header some
       if (!hdrHidden)  { hdr.style.transform  = 'translateY(-110%)'; hdrHidden  = true; }
-      if (bnavHidden)  { bnav.style.transform = '';                   bnavHidden = false; }
     } else {
-      // Scroll CIMA — rodapé some, header aparece
-      if (!bnavHidden) { bnav.style.transform = 'translateY(110%)';   bnavHidden = true; }
+      // Scroll CIMA — header aparece
       if (hdrHidden)   { hdr.style.transform  = '';                   hdrHidden  = false; }
     }
 
@@ -5572,6 +5630,17 @@ function navTo(tela) {
   if (niCls) {
     var niEl = document.querySelector('.' + niCls);
     if (niEl) niEl.classList.add('on');
+  }
+  // Ocultar barra de navegação na tela Home
+  var bnav = document.querySelector('.bnav');
+  if (bnav) {
+    if (tela === 'home') {
+      bnav.style.transform = 'translateY(110%)';
+      bnav.style.pointerEvents = 'none';
+    } else {
+      bnav.style.transform = '';
+      bnav.style.pointerEvents = '';
+    }
   }
   if (tela === 'home') try { homeAtualizar(); } catch(e) {}
 }
@@ -6297,6 +6366,8 @@ function homeAtualizar() {
     var hist = JSON.parse(LS.getItem('orc_historico') || '[]');
     var el = document.getElementById('gestao-orc-num');
     if (el) el.textContent = hist.length;
+    var cc = document.getElementById('home-orc-count');
+    if (cc) cc.textContent = hist.length;
   } catch(e) {}
   try {
     var agenda = JSON.parse(LS.getItem('agenda_data') || '[]');
