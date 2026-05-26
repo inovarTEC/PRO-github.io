@@ -86,7 +86,7 @@ select.inp{appearance:none;-webkit-appearance:none;background-image:url("data:im
 .tag{font-size:9px;font-weight:700;letter-spacing:.5px;border-radius:8px;padding:4px 10px;cursor:pointer;border:none;transition:opacity .15s}
 .tag-blue{background:rgba(59,130,246,.18);color:#60a5fa}
 .tag-green{background:rgba(34,197,94,.15);color:#4ade80}
-.bnav{background:var(--bg-bnav);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(4,1fr);padding:10px 4px calc(env(safe-area-inset-bottom) + 10px);flex-shrink:0;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);position:fixed;bottom:0;left:0;right:0;z-index:20}
+.bnav{background:var(--bg-bnav);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(3,1fr);padding:10px 4px calc(env(safe-area-inset-bottom) + 10px);flex-shrink:0;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);position:fixed;bottom:0;left:0;right:0;z-index:20}
 .ni{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;padding:6px 2px;-webkit-tap-highlight-color:transparent;transition:opacity .15s}
 .ni-box{width:48px;height:42px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;transition:all .2s;line-height:1}
 .ni-lbl{font-size:9px;font-weight:700;letter-spacing:.3px;transition:color .15s}
@@ -527,8 +527,8 @@ table { min-width: 0; }
   transition: opacity .15s, transform .12s, box-shadow .28s;
   -webkit-tap-highlight-color: transparent;
   box-shadow: 0 10px 32px var(--co-glow,rgba(22,163,74,.5)),
-              0 0 0 5px rgba(255,255,255,.07),
-              0 0 0 10px rgba(255,255,255,.03);
+              0 0 0 5px var(--co-glow,rgba(22,163,74,.08)),
+              0 0 0 11px var(--co-glow,rgba(22,163,74,.04));
   position: relative;
   overflow: hidden;
 }
@@ -564,8 +564,9 @@ table { min-width: 0; }
 .novo-orc-txt { flex:1; text-align:left; position:relative; z-index:1; }
 .novo-orc-title {
   font-family:'Syne',sans-serif;
-  font-size:17px; font-weight:900;
-  letter-spacing:.2px; color:#fff; line-height:1;
+  font-size:15px; font-weight:900;
+  letter-spacing:.2px; color:#fff; line-height:1.2;
+  white-space:nowrap;
 }
 .novo-orc-sub {
   font-size:11px; color:rgba(255,255,255,.72);
@@ -584,7 +585,7 @@ table { min-width: 0; }
 /* Ferramentas técnicas — linha de 4 botões */
 .home-ferr-row {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 8px;
   margin-bottom: 10px;
 }
@@ -635,8 +636,8 @@ table { min-width: 0; }
 }
 
 .home-gestao-btn {
-  border-radius: 18px;
-  padding: 16px 12px 14px;
+  border-radius: 16px;
+  padding: 12px 10px 10px;
   cursor: pointer;
   transition: opacity .15s, transform .1s;
   -webkit-tap-highlight-color: transparent;
@@ -644,7 +645,7 @@ table { min-width: 0; }
   flex-direction: column;
   align-items: center;
   text-align: center;
-  min-height: calc(13vh);
+  min-height: calc(9vh);
   position: relative;
   overflow: hidden;
   color: var(--text);
@@ -653,23 +654,23 @@ table { min-width: 0; }
 .home-gestao-btn:active { transform: scale(.97); opacity: .85; }
 .home-gestao-lbl { color: var(--text) !important; }
 .home-gestao-sub { color: var(--text2) !important; }
-.hg-num { color: var(--text) !important; font-size: 38px !important; font-weight: 800 !important; line-height: 1.1; }
+.hg-num { color: var(--text) !important; font-size: 22px !important; font-weight: 700 !important; line-height: 1.1; }
 .hg-top {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   width: 100%;
   position: relative;
 }
 .home-gestao-ico {
-  width: 40px;
-  height: 40px;
-  border-radius: 11px;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 19px;
+  font-size: 15px;
   flex-shrink: 0;
 }
 .hg-badge {
@@ -691,18 +692,18 @@ table { min-width: 0; }
 }
 .hg-num {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 28px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--text);
   line-height: 1;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
   letter-spacing: -1px;
 }
 .home-gestao-lbl {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
   letter-spacing: .3px;
-  margin-bottom: 3px;
+  margin-bottom: 2px;
 }
 .home-gestao-sub {
   font-size: 10px;
@@ -716,7 +717,7 @@ table { min-width: 0; }
 
 /* Responsive: em telas < 360px, ferramentas em 2x2 */
 @media (max-width: 359px) {
-  .home-ferr-row { grid-template-columns: repeat(2, 1fr); }
+  .home-ferr-row { grid-template-columns: repeat(3, 1fr); }
 }
 
 /* ── Orçamento: obs collapsível ── */
@@ -895,6 +896,7 @@ var _scpPrice            = null;
 
     <!-- E-mail -->
     <input id="login-email" type="email" placeholder="Seu e-mail"
+      autocomplete="email"
       style="width:100%;box-sizing:border-box;padding:15px 16px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:14px;color:#fff;font-size:15px;font-family:'Syne',sans-serif;outline:none;transition:border-color .2s"
       onfocus="this.style.borderColor='rgba(245,158,11,.7)'"
       onblur="this.style.borderColor='rgba(255,255,255,.12)'"
@@ -903,6 +905,7 @@ var _scpPrice            = null;
     <!-- Senha -->
     <div style="position:relative">
       <input id="login-senha" type="password" placeholder="Senha"
+        autocomplete="current-password"
         style="width:100%;box-sizing:border-box;padding:15px 48px 15px 16px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:14px;color:#fff;font-size:15px;font-family:'Syne',sans-serif;outline:none;transition:border-color .2s"
         onfocus="this.style.borderColor='rgba(245,158,11,.7)'"
         onblur="this.style.borderColor='rgba(255,255,255,.12)'"
@@ -984,13 +987,7 @@ var _scpPrice            = null;
           <div class="g-sub" id="home-sub">Toque em ⚙️ para configurar</div>
         </div>
       </div>
-      <div class="g-pill" style="flex-shrink:0;cursor:pointer" onclick="abrirModal('modal-relatorio')">
-        <div style="display:flex;align-items:center;gap:5px;justify-content:center">
-          <span style="font-size:14px">📊</span>
-          <div class="gp-n" id="home-orc-count" style="font-size:15px">0</div>
-        </div>
-        <div class="gp-l">relatório</div>
-      </div>
+
     </div>
 
 
@@ -1009,6 +1006,10 @@ var _scpPrice            = null;
       <div class="home-ferr-btn" onclick="abrirModal('modal-garantias')">
         <div class="home-ferr-ico">🛡️</div>
         <div class="home-ferr-lbl">Garantias</div>
+      </div>
+      <div class="home-ferr-btn" onclick="abrirModal('modal-relatorio')">
+        <div class="home-ferr-ico">📊</div>
+        <div class="home-ferr-lbl">Relatório</div>
       </div>
       <div class="home-ferr-btn" onclick="abrirModal('modal-ferramentas');ferrAba(0)">
         <div class="home-ferr-ico">📋</div>
@@ -1072,10 +1073,7 @@ var _scpPrice            = null;
       <div class="ni-box">🏠</div>
       <div class="ni-lbl">Home</div>
     </div>
-    <div class="ni ni-ferr" onclick="abrirModal('modal-ferramentas')">
-      <div class="ni-box">🔧</div>
-      <div class="ni-lbl">Ferramentas</div>
-    </div>
+
     <div class="ni ni-agen" onclick="navTo('agenda')">
       <div class="ni-box">📅</div>
       <div class="ni-lbl">Agendar</div>
@@ -6299,8 +6297,6 @@ function homeAtualizar() {
     var hist = JSON.parse(LS.getItem('orc_historico') || '[]');
     var el = document.getElementById('gestao-orc-num');
     if (el) el.textContent = hist.length;
-    var cc = document.getElementById('home-orc-count');
-    if (cc) cc.textContent = hist.length;
   } catch(e) {}
   try {
     var agenda = JSON.parse(LS.getItem('agenda_data') || '[]');
