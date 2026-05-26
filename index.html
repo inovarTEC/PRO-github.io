@@ -4331,13 +4331,13 @@ function gerarPDF() {
       <div class="pdf-ass-line">${empresa}<br><span>Assinatura do Prestador</span></div>
     </div>` : ''}
 
-    ${_pdfSocialLinks()}
-
     ${S.rodape !== false ? `
     <div class="pdf-foot">
       <span>Gerado por Eletricista Power</span>
       <span>${dataBr}</span>
     </div>` : ''}
+
+    ${_pdfSocialLinks()}
   </div>`;
 
   const area = document.getElementById('print-area');
@@ -6345,7 +6345,7 @@ function _renderCfgPDFSocial() {
     { k:'youtube',  label:'YouTube',   val: cfg.youtube   || '' }
   ];
   el.innerHTML = redes.filter(function(r) { return r.val; }).map(function(r) {
-    var on = !(pdfCfg.socialPdf && pdfCfg.socialPdf[r.k] === false);
+    var on = pdfCfg.socialPdf && pdfCfg.socialPdf[r.k] !== false;
     return '<div class="scp-toggle">' +
       '<span class="scp-toggle-lbl">' + r.label + ' <span style="font-size:10px;color:var(--text3)">' + r.val + '</span></span>' +
       '<div class="scp-toggle-sw' + (on?' on':'') + '" onclick="cfgToggleSocial(this,\'' + r.k + '\')">' +
