@@ -6814,15 +6814,34 @@ try {
         _appInit();
       }
     } else {
-      overlay.style.opacity       = '1';
-      overlay.style.pointerEvents = 'auto';
-      window._appReady = false;
-      try {
-        document.getElementById('acesso-email').textContent           = '—';
-        document.getElementById('acesso-status-dot').style.background = '#f87171';
-        document.getElementById('acesso-status-txt').style.color      = '#f87171';
-        document.getElementById('acesso-status-txt').textContent      = 'Desconectado';
-      } catch(e) {}
+      // ── Proteção offline: se já usou antes neste dispositivo, deixa entrar ──
+      var temDadosLocais = LS.getItem('ajustes_config') ||
+                           LS.getItem('orc_historico')  ||
+                           LS.getItem('clientes_data');
+
+      if (temDadosLocais && !navigator.onLine) {
+        // Offline com dados locais — acesso liberado sem login
+        try {
+          document.getElementById('acesso-email').textContent           = 'Modo offline';
+          document.getElementById('acesso-status-dot').style.background = '#f59e0b';
+          document.getElementById('acesso-status-txt').style.color      = '#f59e0b';
+          document.getElementById('acesso-status-txt').textContent      = 'Offline';
+        } catch(e) {}
+        if (!window._appReady) {
+          window._appReady = true;
+          _appInit();
+        }
+      } else {
+        overlay.style.opacity       = '1';
+        overlay.style.pointerEvents = 'auto';
+        window._appReady = false;
+        try {
+          document.getElementById('acesso-email').textContent           = '—';
+          document.getElementById('acesso-status-dot').style.background = '#f87171';
+          document.getElementById('acesso-status-txt').style.color      = '#f87171';
+          document.getElementById('acesso-status-txt').textContent      = 'Desconectado';
+        } catch(e) {}
+      }
     }
   });
 } catch(e) {
