@@ -42,7 +42,7 @@
   color-scheme:light;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;overflow-x:hidden;background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;-webkit-font-smoothing:antialiased;transition:background .35s ease,color .35s ease}
+html,body{height:100%;overflow-x:hidden;overflow-y:hidden;overscroll-behavior:none;background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;-webkit-font-smoothing:antialiased;transition:background .35s ease,color .35s ease}
 /* ── MELHORIA 1: Micro-animações globais na troca de tema/acento ── */
 *{transition-property:background-color,border-color,color,box-shadow,opacity;transition-duration:.28s;transition-timing-function:ease}
 /* Elementos que precisam de transição mais específica mantêm suas próprias */
@@ -62,7 +62,7 @@ html,body{height:100%;overflow-x:hidden;background:var(--bg);color:var(--text);f
 .btn-acc:active{opacity:.8;transform:scale(.96)}
 #tela-orcamento button,#tela-resultado button,#print-area button,#modal-cfg-pdf button{transition:opacity .15s,transform .1s}
 #tela-orcamento button:active,#tela-resultado button:active,#print-area button:active,#modal-cfg-pdf button:active{opacity:.8;transform:scale(.97)}
-.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 .scroll::-webkit-scrollbar{display:none}
 .inp{width:100%;background:var(--bg-input);border:1px solid var(--border-input);border-radius:11px;padding:12px 13px;font-size:14px;color:var(--text);outline:none;transition:border-color .2s,background .3s;margin-bottom:8px}
 .inp::placeholder{color:var(--text3)}
@@ -132,7 +132,7 @@ select.inp{appearance:none;-webkit-appearance:none;background-image:url("data:im
 .hdr-home-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:900;letter-spacing:.6px;line-height:1;background:linear-gradient(135deg,var(--text) 20%,var(--acc));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hdr-home-sub{font-family:'Syne',sans-serif;font-size:11px;font-weight:800;letter-spacing:2px;color:var(--acc);margin-top:3px;display:block}
 .ndot{position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:50%;background:#ef4444;border:1.5px solid var(--bg-home)}
-.home-body{flex:1;overflow-y:auto;padding:80px 12px 24px;-webkit-overflow-scrolling:touch}
+.home-body{flex:1;overflow-y:auto;padding:80px 12px 24px;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 .home-body::-webkit-scrollbar{display:none}
 .greet{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding:10px 12px;background:var(--bg-card);border:1px solid var(--border-card);border-radius:18px;box-shadow:0 2px 12px rgba(0,0,0,.1)}
 .greet-left{display:flex;align-items:flex-start;gap:12px}
@@ -174,7 +174,7 @@ select.inp{appearance:none;-webkit-appearance:none;background-image:url("data:im
 .total-val{font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:600;color:var(--acc)}
 .btn-calc{width:100%;background:var(--bg-input);border:1px solid var(--border-input);border-radius:11px;padding:14px;font-family:'Syne',sans-serif;font-size:12px;font-weight:800;letter-spacing:1px;color:var(--text3);cursor:pointer;transition:all .3s;opacity:.5}
 .btn-calc.ativo{background:var(--acc);border-color:var(--acc);color:#fff;opacity:1;box-shadow:0 4px 16px var(--acc-glow)}
-.gest-body{flex:1;overflow-y:auto;padding:16px 14px 30px;-webkit-overflow-scrolling:touch}
+.gest-body{flex:1;overflow-y:auto;padding:16px 14px 30px;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 .gest-body::-webkit-scrollbar{display:none}
 .gest-sec{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text3);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px}
 .btn-nova{background:#3b82f6;color:#fff;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;border:none;border-radius:10px;padding:8px 14px;cursor:pointer}
@@ -192,7 +192,7 @@ select.inp{appearance:none;-webkit-appearance:none;background-image:url("data:im
 .ajtab-ico{font-size:18px}
 .ajtab-lbl{font-size:8px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--text3)}
 .ajtab.on .ajtab-lbl{color:var(--acc)}
-.aj-body{flex:1;overflow-y:auto;padding:16px 14px 30px;-webkit-overflow-scrolling:touch}
+.aj-body{flex:1;overflow-y:auto;padding:16px 14px 30px;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 .aj-body::-webkit-scrollbar{display:none}
 .aj-panel{display:none;flex-direction:column;flex:1;overflow:hidden}.aj-panel.on{display:flex}
 .aj-sec{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px}
@@ -218,7 +218,7 @@ select.inp{appearance:none;-webkit-appearance:none;background-image:url("data:im
 .cat-subtabs{display:flex;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto}
 .cstab{flex:1;padding:12px;text-align:center;font-size:11px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:color .2s,border-color .2s}
 .cstab.on{color:var(--acc);border-color:var(--acc)}
-.cat-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.cat-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 .cat-ac{border-bottom:1px solid var(--border)}
 .cat-ac:last-child{border-bottom:none}
 .cat-ac-hdr{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;cursor:pointer;user-select:none;-webkit-user-select:none}
@@ -1183,8 +1183,8 @@ var _scpPrice            = null;
             </div>
             <div>
               <div class="ilbl">Nº do Orçamento</div>
-              <input class="inp" id="orc-numero" type="text" readonly
-                style="margin-bottom:0;margin-top:4px;font-family:'IBM Plex Mono',monospace;font-weight:700;color:var(--acc);background:var(--acc-bg);border-color:var(--acc-border);cursor:default">
+              <input class="inp" id="orc-numero" type="text"
+                style="margin-bottom:0;margin-top:4px;font-family:'IBM Plex Mono',monospace;font-weight:700;color:var(--acc);background:var(--acc-bg);border-color:var(--acc-border)">
             </div>
           </div>
         </div>
@@ -1819,6 +1819,12 @@ var _scpPrice            = null;
             <button onclick="limparOrcAntigos()" style="background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:5px 12px;font-size:11px;font-weight:800;color:var(--acc);cursor:pointer">Limpar</button>
           </div>
           <div style="font-size:11px;color:var(--text3)">ℹ️ Remove orçamentos com mais de 90 dias. Os recentes são mantidos.</div>
+        </div><div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:11px;padding:12px;margin-bottom:6px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
+            <span style="font-size:13px;font-weight:700;color:var(--text)">🗑️ Todos os orçamentos</span>
+            <button onclick="limparTodosOrc()" style="background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:5px 12px;font-size:11px;font-weight:800;color:#f87171;cursor:pointer">Limpar</button>
+          </div>
+          <div style="font-size:11px;color:var(--text3)">ℹ️ Apaga todo o histórico de orçamentos salvos.</div>
         </div><div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:11px;padding:12px;margin-bottom:6px">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
             <span style="font-size:13px;font-weight:700;color:var(--text)">✅ Checklists</span>
@@ -3832,12 +3838,24 @@ function collectMaterials() {
 // ══════════════════════════════════════════════════════════════
 function gerarNumeroOrc() {
   const n = (parseInt(LS.getItem('orcCounter') || '0') + 1);
-  LS.setItem('orcCounter', n);
   const codigo = 'ORC-' + String(n).padStart(3, '0');
   document.getElementById('orc-numero').value = codigo;
   document.getElementById('orc-num-badge').textContent = '#' + codigo;
   document.getElementById('orc-titulo').textContent = 'Orçamento';
   return codigo;
+}
+
+function _confirmarNumeroOrc(numero) {
+  var match = numero.match(/^ORC-(\d+)$/);
+  if (match) {
+    var n = parseInt(match[1]);
+    var atual = parseInt(LS.getItem('orcCounter') || '0');
+    if (n > atual) LS.setItem('orcCounter', n);
+  } else {
+    // número personalizado: apenas garante que o próximo padrão não repita
+    var atual2 = parseInt(LS.getItem('orcCounter') || '0');
+    LS.setItem('orcCounter', atual2 + 1);
+  }
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -4051,6 +4069,11 @@ function novoOrcamento() {
   // limpar obs
   const se = document.getElementById('orc-serv-obs'); if (se) se.value = '';
   const me = document.getElementById('orc-mat-obs');  if (me) me.value = '';
+  // limpar dados do cliente
+  ['orc-cliente','orc-endereco','orc-tel'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+  // limpar tipo de serviço e hora
+  const tsEl = document.getElementById('orc-tipo-serv'); if (tsEl) tsEl.value = '';
+  const hrEl = document.getElementById('orc-hora'); if (hrEl) hrEl.value = '09:00';
   // resetar custos
   ['orc-desc','orc-acre','orc-km'].forEach(id => { const el = document.getElementById(id); if(el) el.value = '0'; });
   // auto-fill empresa dos ajustes
@@ -4075,8 +4098,7 @@ function novoOrcamento() {
   // auto-fill data de hoje
   try {
     const dataEl = document.getElementById('orc-data');
-    if (dataEl && !dataEl.value)
-      dataEl.value = new Date().toISOString().slice(0,10);
+    if (dataEl) dataEl.value = new Date().toISOString().slice(0,10);
   } catch(e) {}
   // resetar pagamento
   orcPagamento = 'pix';
@@ -5206,7 +5228,7 @@ function limparOrcAntigos() {
     limite.setDate(limite.getDate() - 90);
     var antes = hist.length;
     hist = hist.filter(function(o) {
-      if (!o.data) return true;
+      if (!o.data) return false;
       return new Date(o.data + 'T12:00:00') >= limite;
     });
     LS.setItem('orc_historico', JSON.stringify(hist));
@@ -5214,6 +5236,30 @@ function limparOrcAntigos() {
     backupFeedback('✅ ' + removidos + ' orçamento(s) antigo(s) removido(s).\n' + hist.length + ' mantidos.', 'ok');
     backupAtualizarResumo();
     backupRenderStorage();
+    try { homeAtualizar(); } catch(e2) {}
+    try {
+      var ho = document.getElementById('hist-overlay');
+      if (ho && ho.style.display !== 'none') histRenderizar('');
+    } catch(e2) {}
+  } catch(e) {
+    backupFeedback('❌ Erro: ' + e.message, 'erro');
+  }
+}
+
+function limparTodosOrc() {
+  if (!confirm('Apagar TODOS os orçamentos do histórico?\n\nEssa ação não pode ser desfeita.')) return;
+  try {
+    LS.removeItem('orc_historico');
+    LS.setItem('orcCounter', '0');
+    try { gerarNumeroOrc(); } catch(e2) {}
+    backupFeedback('✅ Histórico apagado. Numeração reiniciada em ORC-001.', 'ok');
+    backupAtualizarResumo();
+    backupRenderStorage();
+    try { homeAtualizar(); } catch(e2) {}
+    try {
+      var ho = document.getElementById('hist-overlay');
+      if (ho && ho.style.display !== 'none') histRenderizar('');
+    } catch(e2) {}
   } catch(e) {
     backupFeedback('❌ Erro: ' + e.message, 'erro');
   }
@@ -5546,7 +5592,6 @@ function _acessoResetSenha() {
 
 // ── Init do app (chamado 1x após autenticação) ────────────────
 function _appInit() {
-  try { gerarNumeroOrc(); }         catch(e) {}
   try { _carregarCustomLocal(); }   catch(e) {}
   try { renderCheck(); }            catch(e) {}
   try { orcDadosResumo(); }         catch(e) {}
@@ -5895,6 +5940,8 @@ function salvarOrcamento() {
     };
     var hist = [];
     try { hist = JSON.parse(LS.getItem('orc_historico') || '[]'); } catch(e2) {}
+    // Confirma o número e incrementa o contador apenas agora
+    try { _confirmarNumeroOrc(orc.numero); } catch(e2) {}
     // Atualizar se já existe mesmo número, senão adicionar
     var idx = hist.findIndex(function(o) { return o.numero === orc.numero && orc.numero; });
     if (idx >= 0) hist[idx] = orc;
@@ -6789,15 +6836,38 @@ function renderGarantias() {
 // var (não const/let) garante acesso global entre todos os blocos de script
 try {
   var _fbApp  = firebase.initializeApp({
-    apiKey:            "AIzaSyCUoVzr9_PIGZXe1DKBZaINNCVQVj14Iqk",
-    authDomain:        "eletricista-pro.firebaseapp.com",
-    projectId:         "eletricista-pro",
-    storageBucket:     "eletricista-pro.firebasestorage.app",
-    messagingSenderId: "184661625796",
-    appId:             "1:184661625796:web:18c38153a0a2621025b291"
+    apiKey:            "AIzaSyBsws-hQkcJQOLKJvYhz2yZ43AZiu9Rsus",
+    authDomain:        "eletricista-power.firebaseapp.com",
+    databaseURL:       "https://eletricista-power-default-rtdb.firebaseio.com",
+    projectId:         "eletricista-power",
+    storageBucket:     "eletricista-power.firebasestorage.app",
+    messagingSenderId: "111779689903",
+    appId:             "1:111779689903:web:3999844c7ccaa1ec71ab5a"
   });
   var _fbAuth = firebase.auth();
+  // Garantir persistência local — sessão sobrevive ao fechar/abrir o app
+  _fbAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(function(){});
+  var _authResolved = false;
+  // Proteção: se Firebase demorar >4s online, libera se tiver dados locais
+  var _authTimer = setTimeout(function() {
+    if (_authResolved) return;
+    var temDados = LS.getItem('ajustes_config') || LS.getItem('orc_historico') || LS.getItem('clientes_data');
+    if (temDados && !window._appReady) {
+      window._appReady = true;
+      _appInit();
+      try {
+        document.getElementById('acesso-email').textContent           = 'Verificando...';
+        document.getElementById('acesso-status-dot').style.background = '#f59e0b';
+        document.getElementById('acesso-status-txt').style.color      = '#f59e0b';
+        document.getElementById('acesso-status-txt').textContent      = 'Conectando...';
+        document.getElementById('login-overlay').style.opacity        = '0';
+        document.getElementById('login-overlay').style.pointerEvents  = 'none';
+      } catch(e2) {}
+    }
+  }, 4000);
   _fbAuth.onAuthStateChanged(function(user) {
+    _authResolved = true;
+    clearTimeout(_authTimer);
     var overlay = document.getElementById('login-overlay');
     if (!overlay) return;
     if (user) {
