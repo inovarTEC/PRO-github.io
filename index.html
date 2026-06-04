@@ -1853,7 +1853,7 @@ var _scpPrice            = null;
       </div>
       <div id="bk-info" style="display:none;padding:12px 14px;border-top:1px solid var(--border-input)">
         <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)"><span style="font-size:12px;color:var(--text3)">App</span><span style="font-size:12px;font-weight:700;color:var(--text)">Eletricista Power</span></div>
-        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)"><span style="font-size:12px;color:var(--text3)">Versão</span><span style="font-size:12px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:var(--acc)">v4</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)"><span style="font-size:12px;color:var(--text3)">Versão</span><span style="font-size:12px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:var(--acc)">v38</span></div>
         <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)"><span style="font-size:12px;color:var(--text3)">Plataforma</span><span style="font-size:12px;font-weight:700;color:var(--text)">Web App (offline)</span></div>
         <div style="display:flex;justify-content:space-between;padding:6px 0"><span style="font-size:12px;color:var(--text3)">Suporte</span><span style="font-size:12px;font-weight:700;color:var(--text)">eletricistapro.com.br</span></div>
       </div>
@@ -4080,7 +4080,7 @@ function novoOrcamento() {
   try {
     const cfg = JSON.parse(LS.getItem('ajustes_config') || '{}');
     const empEl = document.getElementById('orc-empresa');
-    if (empEl && !empEl.value && (cfg.nome || cfg.empresa))
+    if (empEl && (cfg.nome || cfg.empresa))
       empEl.value = cfg.nome || cfg.empresa;
     const garantiaEl = document.getElementById('orc-garantia');
     if (garantiaEl && cfg.garantia) garantiaEl.value = cfg.garantia;
@@ -4107,6 +4107,7 @@ function novoOrcamento() {
   // resetar fornecimento
   orcFornecimento = 'eletricista';
   // novo número
+  window._orcEditandoId = null; // novo orçamento, sem id herdado
   gerarNumeroOrc();
   // badges + btn-calc
   updateServiceBadge(); updateMaterialBadge();
@@ -5857,6 +5858,7 @@ function histCarregar(id) {
     var orc  = hist.find(function(o) { return o.id === id; });
     if (!orc) return;
     fecharHistorico();
+    window._orcEditandoId = orc.id; // preserva id para re-salvar sem duplicar
     // Preencher campos do orçamento com os dados salvos
     var set = function(elId, v) { var el = document.getElementById(elId); if (el && v !== undefined && v !== null) el.value = v; };
     set('orc-empresa',  orc.empresa);
@@ -5872,13 +5874,41 @@ function histCarregar(id) {
     set('orc-acre',     orc.acre);
     set('orc-km',       orc.km);
     set('orc-km-val',   orc.kmVal);
+    set('orc-tipo-serv', orc.tipoServ);
+    // Restaurar pagamento
+    try {
+      orcPagamento = orc.pagamento || 'pix';
+      document.querySelectorAll('.pagbtn').forEach(function(b) {
+        var tipo = b.getAttribute('onclick').match(/selPagamento\(this,'(\w+)'\)/);
+        if (tipo) b.classList.toggle('on', tipo[1] === orcPagamento);
+      });
+      document.getElementById('orc-parcelas-wrap').style.display = orcPagamento === 'credito' ? 'block' : 'none';
+    } catch(e2) {}
+    // Restaurar fornecimento
+    try {
+      orcFornecimento = orc.fornecimento || 'eletricista';
+      var fMap = {eletricista:'forn-eletricista', cliente:'forn-cliente', nao_incluir:'forn-nao'};
+      ['forn-eletricista','forn-cliente','forn-nao'].forEach(function(fid) {
+        var fel = document.getElementById(fid);
+        if (fel) fel.classList.remove('on');
+      });
+      var fEl = document.getElementById(fMap[orcFornecimento]);
+      if (fEl) fEl.classList.add('on');
+    } catch(e2) {}
+    // Restaurar parcelas, sinal e obs
+    try {
+      if (orc.parcelas) { var parEl = document.getElementById('orc-parcelas'); if(parEl) parEl.value = orc.parcelas; }
+      if (orc.sinal)    { var sinEl = document.getElementById('orc-sinal-pct'); if(sinEl) sinEl.value = orc.sinal; }
+      var soEl = document.getElementById('orc-serv-obs'); if(soEl) soEl.value = orc.obsServ || '';
+      var moEl = document.getElementById('orc-mat-obs');  if(moEl) moEl.value = orc.obsMat  || '';
+    } catch(e2) {}
     // Restaurar serviços e materiais
     var srvCont = document.getElementById('srv-container');
     var matCont = document.getElementById('mat-container');
     if (srvCont) srvCont.innerHTML = '';
     if (matCont) matCont.innerHTML = '';
     (orc.servicos || []).forEach(function(s) {
-      try { addService(null, {ico:s.ico||'⚡',n:s.nome,cat:s.cat||'',p:parseCurrencySafe(s.preco),un:s.un||'un'}); } catch(e2) {}
+      try { var sRow = addService(null, {ico:s.ico||'⚡',n:s.nome,cat:s.cat||'',p:parseCurrencySafe(s.preco),un:s.un||'un'}); var sQtyEl = document.getElementById('srv-container').lastElementChild?.querySelector('.qty-val'); if(sQtyEl && s.qty) { sQtyEl.value = parseFloat(s.qty)||1; } } catch(e2) {}
     });
     (orc.materiais || []).forEach(function(m) {
       try { addMaterial(null, {ico:m.ico||'📦',n:m.nome,cat:m.cat||'',p:parseCurrencySafe(m.preco),un:m.un||'un'}, parseFloat(m.qty)||1, parseCurrencySafe(m.preco)); } catch(e2) {}
@@ -5918,7 +5948,7 @@ function salvarOrcamento() {
     var tots = {};
     try { tots = orcCalcTotal(); } catch(e2) {}
     var orc = {
-      id:        'orc_' + Date.now(),
+      id:        window._orcEditandoId || ('orc_' + Date.now()),
       numero:    document.getElementById('orc-numero')?.value    || '',
       empresa:   document.getElementById('orc-empresa')?.value   || '',
       cliente:   document.getElementById('orc-cliente')?.value   || '',
@@ -5933,10 +5963,15 @@ function salvarOrcamento() {
       acre:      document.getElementById('orc-acre')?.value      || '0',
       km:        document.getElementById('orc-km')?.value        || '0',
       kmVal:     document.getElementById('orc-km-val')?.value    || '2',
-      pagamento: orcPagamento,
-      total:     tots.total || 0,
-      servicos:  servicos,
-      materiais: materiais
+      pagamento:   orcPagamento,
+      parcelas:    document.getElementById('orc-parcelas')?.value    || '1',
+      sinal:       document.getElementById('orc-sinal-pct')?.value   || '30',
+      fornecimento:orcFornecimento,
+      obsServ:     document.getElementById('orc-serv-obs')?.value    || '',
+      obsMat:      document.getElementById('orc-mat-obs')?.value     || '',
+      total:       tots.total || 0,
+      servicos:    servicos,
+      materiais:   materiais
     };
     var hist = [];
     try { hist = JSON.parse(LS.getItem('orc_historico') || '[]'); } catch(e2) {}
@@ -5947,6 +5982,7 @@ function salvarOrcamento() {
     if (idx >= 0) hist[idx] = orc;
     else hist.push(orc);
     LS.setItem('orc_historico', JSON.stringify(hist));
+    window._orcEditandoId = orc.id; // mantém id para re-saves consecutivos
     try { homeAtualizar(); } catch(e2) {}
     _feedbackSalvo('Orçamento salvo! ✅');
   } catch(e) {
