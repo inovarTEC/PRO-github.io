@@ -3840,7 +3840,7 @@ function gerarNumeroOrc() {
   const n = (parseInt(LS.getItem('orcCounter') || '0') + 1);
   const codigo = 'ORC-' + String(n).padStart(3, '0');
   document.getElementById('orc-numero').value = codigo;
-  document.getElementById('orc-num-badge').textContent = '#' + codigo;
+  document.getElementById('orc-num-badge').textContent = ''; // oculto até salvar
   document.getElementById('orc-titulo').textContent = 'Orçamento';
   return codigo;
 }
@@ -5870,6 +5870,7 @@ function histCarregar(id) {
     set('orc-garantia', orc.garantia);
     set('orc-validade', orc.validade);
     set('orc-numero',   orc.numero);
+    try { document.getElementById('orc-num-badge').textContent = orc.numero ? '#' + orc.numero : ''; } catch(e2) {}
     set('orc-desc',     orc.desc);
     set('orc-acre',     orc.acre);
     set('orc-km',       orc.km);
@@ -5983,6 +5984,7 @@ function salvarOrcamento() {
     else hist.push(orc);
     LS.setItem('orc_historico', JSON.stringify(hist));
     window._orcEditandoId = orc.id; // mantém id para re-saves consecutivos
+    try { document.getElementById('orc-num-badge').textContent = '#' + orc.numero; } catch(e2) {}
     try { homeAtualizar(); } catch(e2) {}
     _feedbackSalvo('Orçamento salvo! ✅');
   } catch(e) {
