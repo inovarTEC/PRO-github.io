@@ -42,7 +42,7 @@
   color-scheme:light;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;overflow-x:hidden;overscroll-behavior:none;background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
+html,body{height:100%;overflow-x:hidden;overflow-y:hidden;overscroll-behavior:none;background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
 .tela{display:none;position:fixed;inset:0;z-index:10;flex-direction:column;background:var(--bg-home);overflow:hidden;transition:background .3s}
 .tela.ativa{display:flex}
 .modal{display:none;position:fixed;inset:0;z-index:50;flex-direction:column;background:var(--bg-home);overflow:hidden}
@@ -56,7 +56,7 @@ html,body{height:100%;overflow-x:hidden;overscroll-behavior:none;background:var(
 .btn-acc:active{opacity:.8;transform:scale(.96)}
 #tela-orcamento button,#tela-resultado button,#print-area button,#modal-cfg-pdf button{transition:opacity .15s,transform .1s}
 #tela-orcamento button:active,#tela-resultado button:active,#print-area button:active,#modal-cfg-pdf button:active{opacity:.8;transform:scale(.97)}
-.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 .scroll::-webkit-scrollbar{display:none}
 .inp{width:100%;background:var(--bg-input);border:1px solid var(--border-input);border-radius:11px;padding:12px 13px;font-size:14px;color:var(--text);outline:none;transition:border-color .2s,background .3s;margin-bottom:8px}
 .inp::placeholder{color:var(--text3)}
@@ -2345,12 +2345,13 @@ var _demCfgVeioDoPreview = false;
             <button onclick="limparOrcAntigos()" style="background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:5px 12px;font-size:11px;font-weight:800;color:var(--acc);cursor:pointer">Limpar</button>
           </div>
           <div style="font-size:11px;color:var(--text3)">ℹ️ Remove orçamentos com mais de 90 dias. Os recentes são mantidos.</div>
-        </div><div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:11px;padding:12px;margin-bottom:6px">
+        </div>
+        <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:11px;padding:12px;margin-bottom:6px">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
-            <span style="font-size:13px;font-weight:700;color:#f87171">🗑️ Todos os orçamentos</span>
-            <button onclick="limparTodosOrcamentos()" style="background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:5px 12px;font-size:11px;font-weight:800;color:#f87171;cursor:pointer">Limpar tudo</button>
+            <span style="font-size:13px;font-weight:700;color:var(--text)">🗑️ Todos os orçamentos</span>
+            <button onclick="limparTodosOrc()" style="background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:5px 12px;font-size:11px;font-weight:800;color:#f87171;cursor:pointer">Limpar</button>
           </div>
-          <div style="font-size:11px;color:var(--text3)">⚠️ Remove todos os orçamentos do histórico. Não pode ser desfeito.</div>
+          <div style="font-size:11px;color:var(--text3)">ℹ️ Apaga todo o histórico de orçamentos salvos.</div>
         </div><div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:11px;padding:12px;margin-bottom:6px">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
             <span style="font-size:13px;font-weight:700;color:var(--text)">✅ Checklists</span>
@@ -4363,21 +4364,25 @@ function collectMaterials() {
 // ══════════════════════════════════════════════════════════════
 // NÚMERO DE ORÇAMENTO
 // ══════════════════════════════════════════════════════════════
-// B1/B12 — _peekNumeroOrc: apenas lê o próximo número SEM incrementar nem salvar
-function _peekNumeroOrc() {
-  const n = (parseInt(LS.getItem('orcCounter') || '0') + 1);
-  return 'ORC-' + String(n).padStart(3, '0');
-}
-
-// gerarNumeroOrc: incrementa o contador e salva — chamado APENAS em salvarOrcamento
 function gerarNumeroOrc() {
   const n = (parseInt(LS.getItem('orcCounter') || '0') + 1);
-  LS.setItem('orcCounter', n);
   const codigo = 'ORC-' + String(n).padStart(3, '0');
   document.getElementById('orc-numero').value = codigo;
-  document.getElementById('orc-num-badge').textContent = '#' + codigo;
+  document.getElementById('orc-num-badge').textContent = '';
   document.getElementById('orc-titulo').textContent = 'Orçamento';
   return codigo;
+}
+
+function _confirmarNumeroOrc(numero) {
+  var match = numero.match(/^ORC-(\d+)$/);
+  if (match) {
+    var n = parseInt(match[1]);
+    var atual = parseInt(LS.getItem('orcCounter') || '0');
+    if (n > atual) LS.setItem('orcCounter', n);
+  } else {
+    var atual2 = parseInt(LS.getItem('orcCounter') || '0');
+    LS.setItem('orcCounter', atual2 + 1);
+  }
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -4591,16 +4596,18 @@ function novoOrcamento() {
   // limpar obs
   const se = document.getElementById('orc-serv-obs'); if (se) se.value = '';
   const me = document.getElementById('orc-mat-obs');  if (me) me.value = '';
-  // B4 — limpar dados do cliente
+  // limpar dados do cliente
   ['orc-cliente','orc-endereco','orc-tel'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
-  const tipoEl = document.getElementById('orc-tipo'); if(tipoEl) tipoEl.value = tipoEl.options[0]?.value || '';
+  const tsEl = document.getElementById('orc-tipo-serv'); if (tsEl) tsEl.value = '';
+  const hrEl = document.getElementById('orc-hora'); if (hrEl) hrEl.value = '09:00';
   // resetar custos
   ['orc-desc','orc-acre','orc-km'].forEach(id => { const el = document.getElementById(id); if(el) el.value = '0'; });
-  // B6 — sempre preencher empresa com valor dos ajustes
+  // auto-fill empresa dos ajustes
   try {
     const cfg = JSON.parse(LS.getItem('ajustes_config') || '{}');
     const empEl = document.getElementById('orc-empresa');
-    if (empEl) empEl.value = cfg.nome || cfg.empresa || '';
+    if (empEl && (cfg.nome || cfg.empresa))
+      empEl.value = cfg.nome || cfg.empresa;
     const garantiaEl = document.getElementById('orc-garantia');
     if (garantiaEl && cfg.garantia) garantiaEl.value = cfg.garantia;
     const subtEl = document.getElementById('cfg-subtitulo');
@@ -4614,7 +4621,7 @@ function novoOrcamento() {
     const validEl = document.getElementById('orc-validade');
     if (validEl && pag.validade) validEl.value = pag.validade;
   } catch(e) {}
-  // B5 — sempre preencher data com hoje
+  // auto-fill data de hoje
   try {
     const dataEl = document.getElementById('orc-data');
     if (dataEl) dataEl.value = new Date().toISOString().slice(0,10);
@@ -4625,7 +4632,9 @@ function novoOrcamento() {
   document.getElementById('orc-parcelas-wrap').style.display = 'none';
   // resetar fornecimento
   orcFornecimento = 'eletricista';
-  // B1/B12 — NÃO gerar número aqui; número só gerado ao salvar
+  // novo número
+  window._orcEditandoId = null;
+  gerarNumeroOrc();
   // badges + btn-calc
   updateServiceBadge(); updateMaterialBadge();
   // esconder sticky
@@ -4637,11 +4646,6 @@ function novoOrcamento() {
   const da = document.getElementById('orc-dados-arrow'); if(da) da.style.transform = '';
   const cb = document.getElementById('orc-custos-body'); if(cb) cb.style.display = 'none';
   const ca = document.getElementById('orc-custos-arrow'); if(ca) ca.style.transform = '';
-  // B2 — limpar badge e campo número até salvar
-  const numEl = document.getElementById('orc-numero'); if(numEl) numEl.value = '';
-  const badge = document.getElementById('orc-num-badge'); if(badge) badge.textContent = '';
-  // B7 — novo orçamento = novo ID estável
-  window._orcEditandoId = null;
   orcDadosResumo();
   navTo('orcamento');
 }
@@ -4661,7 +4665,7 @@ function gerarPDF() {
   const data       = document.getElementById('orc-data')?.value || '';
   const garantia   = document.getElementById('orc-garantia')?.value || '90';
   const validade   = document.getElementById('orc-validade')?.value || '15';
-  const numero     = document.getElementById('orc-numero')?.value || _peekNumeroOrc();
+  const numero     = document.getElementById('orc-numero')?.value || gerarNumeroOrc();
   const obsServ    = _esc(document.getElementById('orc-serv-obs')?.value || '');
   const obsMat     = _esc(document.getElementById('orc-mat-obs')?.value || '');
 
@@ -5581,20 +5585,9 @@ function abrirCatalogo(tipo) {
 // ══ SALVAR ORÇAMENTO COMPLETO ════════════════════════════════
 function salvarOrcamento() {
   try {
-    // B1 — gerar número apenas se ainda não foi atribuído
-    var numEl = document.getElementById('orc-numero');
-    if (numEl && !numEl.value.trim()) {
-      gerarNumeroOrc(); // incrementa e preenche o campo + badge
-    } else if (numEl && numEl.value.trim()) {
-      // Garantir que badge e titulo estejam corretos
-      var badge = document.getElementById('orc-num-badge');
-      if (badge) badge.textContent = '#' + numEl.value.trim();
-      var titulo = document.getElementById('orc-titulo');
-      if (titulo) titulo.textContent = 'Orçamento';
-    }
-
     // Coletar dados do header
     var dados = {
+      id:          window._orcEditandoId || ('orc_' + Date.now()),
       numero:      document.getElementById('orc-numero')?.value      || '',
       empresa:     document.getElementById('orc-empresa')?.value     || '',
       cliente:     document.getElementById('orc-cliente')?.value     || '',
@@ -5648,13 +5641,14 @@ function salvarOrcamento() {
     // Salvar como lastOrcamento
     LS.setItem('lastOrcamento', JSON.stringify(dados));
 
-    // B7 — usar _id estável para deduplicação (evita duplicatas ao editar número)
+    // Confirma número e incrementa contador apenas agora
+    try { _confirmarNumeroOrc(dados.numero); } catch(e) {}
+    // Salvar no histórico (máx 10)
     var hist = [];
     try { hist = JSON.parse(LS.getItem('orc_historico') || '[]'); } catch(e) {}
-    // Garantir _id estável no registro atual
-    if (!window._orcEditandoId) window._orcEditandoId = 'orc_' + Date.now() + '_' + Math.random().toString(36).slice(2,7);
-    dados._id = window._orcEditandoId;
-    var idx = hist.findIndex(function(x) { return x._id === dados._id; });
+    // Substituir se mesmo número, senão adicionar
+    var idx = hist.findIndex(function(x) { return x.id && x.id === dados.id; });
+    if (idx === -1) idx = hist.findIndex(function(x) { return x.numero === dados.numero && dados.numero; });
     if (idx !== -1) hist[idx] = dados;
     else hist.unshift(dados);
     if (hist.length > 50) hist = hist.slice(0, 50);
@@ -5670,6 +5664,8 @@ function salvarOrcamento() {
     }
 
     // Atualizar contadores
+    try { document.getElementById('orc-num-badge').textContent = '#' + dados.numero; } catch(e) {}
+    window._orcEditandoId = dados.id;
     LS.setItem('lastOrcamentoTs', new Date().toISOString());
     try { registrarGarantiaOrcamento(); } catch(e) {}
     try { atualizarContadorNotif(); }     catch(e) {}
@@ -5693,8 +5689,7 @@ function carregarOrcamento(dados) {
       var el = document.getElementById(id);
       if (el && v !== undefined && v !== null) el.value = v;
     };
-    // B7 — restaurar _id estável para que re-salvar atualize o mesmo registro
-    window._orcEditandoId = dados._id || ('orc_' + Date.now() + '_' + Math.random().toString(36).slice(2,7));
+    window._orcEditandoId = dados.id || null;
     set('orc-numero',    dados.numero);
     set('orc-empresa',   dados.empresa);
     set('orc-cliente',   dados.cliente);
@@ -6981,7 +6976,30 @@ function limparOrcAntigos() {
     backupFeedback('✅ ' + removidos + ' orçamento(s) antigo(s) removido(s).\n' + hist.length + ' mantidos.', 'ok');
     backupAtualizarResumo();
     backupRenderStorage();
-    try { _renderHistorico(); } catch(e) {}
+    try { homeAtualizar(); } catch(e2) {}
+    try {
+      var ho = document.getElementById('hist-overlay');
+      if (ho && ho.style.display !== 'none') histRenderizar('');
+    } catch(e2) {}
+  } catch(e) {
+    backupFeedback('❌ Erro: ' + e.message, 'erro');
+  }
+}
+
+function limparTodosOrc() {
+  if (!confirm('Apagar TODOS os orçamentos do histórico?\n\nEssa ação não pode ser desfeita.')) return;
+  try {
+    LS.removeItem('orc_historico');
+    LS.setItem('orcCounter', '0');
+    try { gerarNumeroOrc(); } catch(e2) {}
+    backupFeedback('✅ Histórico apagado. Numeração reiniciada em ORC-001.', 'ok');
+    backupAtualizarResumo();
+    backupRenderStorage();
+    try { homeAtualizar(); } catch(e2) {}
+    try {
+      var ho = document.getElementById('hist-overlay');
+      if (ho && ho.style.display !== 'none') histRenderizar('');
+    } catch(e2) {}
   } catch(e) {
     backupFeedback('❌ Erro: ' + e.message, 'erro');
   }
@@ -7009,19 +7027,6 @@ function limparChipsExtras() {
     LS.removeItem('scp_extras');
     backupFeedback('✅ Chips extras dos configuradores removidos.', 'ok');
     backupRenderStorage();
-  } catch(e) {
-    backupFeedback('❌ Erro: ' + e.message, 'erro');
-  }
-}
-
-function limparTodosOrcamentos() {
-  if (!confirm('⚠️ Isso vai apagar TODOS os orçamentos do histórico.\n\nEssa ação não pode ser desfeita. Confirma?')) return;
-  try {
-    LS.removeItem('orc_historico');
-    backupFeedback('✅ Todos os orçamentos foram removidos.', 'ok');
-    backupAtualizarResumo();
-    backupRenderStorage();
-    try { _renderHistorico(); } catch(e) {}
   } catch(e) {
     backupFeedback('❌ Erro: ' + e.message, 'erro');
   }
